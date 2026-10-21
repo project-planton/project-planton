@@ -53,6 +53,7 @@ metadata:
 |---------|---------|---------|
 | (absent) | the default shared cluster | everything else |
 | `cilium-cni` | `<base>-cilium`, single-node, `disableDefaultCNI: true` | Cilium-as-primary-CNI lanes; NetworkPolicy behavioral enforcement |
+| `pod-certificates` | `<base>-podcert`, single-node, node image pinned to `kindest/node:v1.37.0` (needs kind v0.33 or newer), feature gates `ClusterTrustBundle`, `ClusterTrustBundleProjection`, `PodCertificateRequest`, runtime config `certificates.k8s.io/v1beta1`, parallel image pulls, node sysctls `net.ipv4.conf.all.proxy_arp=1` and `net.ipv6.conf.all.proxy_ndp=1` (set over `docker exec` on create and on reuse, as Substrate's own kind script does for gVisor's pod-to-pod networking) | Software that mints workload identities through the pod-certificate APIs: every Agent Substrate lane (its pod-certificate controller signs every component's mTLS), the worker pool's actor lane included |
 | `aws-eks` | REAL cluster (no local constructor) — batch-provisioned EKS via `realcluster/aws-eks/` | Cloud-LB provisioning, IRSA identity hops, snapshot-capable CSI storage, real node autoscaling |
 | `gcp-gke` | REAL cluster (no local constructor) — an existing GKE cluster with Workload Identity; the GCP side (identities, bindings, bucket) and the Cloudflare R2 side (bucket, scoped API token) created from the catalog via `realcluster/gcp-gke/` | Keyless GCS backups and restores through Workload Identity, R2 backups and restores through the databases' `r2` arms, multi-node HA under real anti-affinity, lanes beside resident operators |
 
@@ -189,6 +190,23 @@ per-family maps such as `crdInstallKinds`, `gatewayApiKinds` and
 New catalog kinds are added to the appropriate map. Tier 1 native resources
 (namespace, deployment, statefulset, secret, service) are routed via the switch.
 
+A verifier may implement optional capabilities beyond `ResourceVerifier`:
+`DeployFailureVerifier` pins a designed refusal to its three-part text,
+`RuntimeCauseVerifier` pins a designed runtime failure to its cause, and
+`OutputsVerifier` receives the deployed kind's outputs in place of
+`VerifyExists`, for proofs that must use the handles a consumer composes
+against rather than restate them. The Agent Substrate verifier is the
+reference for the last: it calls the API from the address, server name,
+token audience and trust bundle the kind outputs.
+
+A verifier whose proof runs through what the resource composes with reads
+the outputs of the prerequisites deployed in front of the scenario from the
+verify context (`provider.DependencyOutputsFrom(ctx)`, keyed by kind name and
+then by instance). The Agent Substrate worker pool and sandbox config
+verifiers are the reference: they reach the API through the control plane
+the registry prerequisite installed, and the actor lane lists its snapshot
+in the SeaweedFS store in front of it, so no proof restates an address.
+
 ### Retry Strategy (`kubectl.go`)
 
 All kubectl operations use retry loops with progressive backoff to handle
@@ -214,6 +232,8 @@ When extending E2E testing to a new provider (e.g., AWS):
 ## Test Manifests
 
 Test manifests live colocated with their kinds at
-`{kind}/v1alpha1/e2e/*.yaml`, not in this directory. The test framework
+`{kind}/e2e/scenarios/*.yaml` (the kind root, beside `iac/`), not in this
+directory; fixtures a kind's scenarios depend on live in
+`{kind}/e2e/prerequisites/`. The test framework
 discovers them automatically via `e2e/framework/discovery/`. Adding a new
 test scenario means dropping a YAML file -- zero Go code changes.

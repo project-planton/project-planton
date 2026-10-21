@@ -93,6 +93,15 @@ const (
 	// scenarios on it skip locally with the reason and run when the external
 	// lane declares the profile. Batch runbook: realcluster/gcp-gke/.
 	ClusterProfileGcpGke = "gcp-gke"
+
+	// ClusterProfilePodCertificates is a kind cluster whose API server serves
+	// the pod-certificate APIs: PodCertificateRequest, ClusterTrustBundle and
+	// the projected-volume sources that read them. Software that mints its own
+	// workload identities through them (Agent Substrate's pod-certificate
+	// controller, and every Substrate component's mTLS on top) cannot start
+	// anywhere else. The default cluster runs an older Kubernetes with the
+	// features off, so these scenarios get their own cluster.
+	ClusterProfilePodCertificates = "pod-certificates"
 )
 
 // RealClusterProfiles lists the profiles no harness-owned cluster can
@@ -130,6 +139,81 @@ func NewCiliumCniHarness(baseClusterName string) *Harness {
 	}
 }
 
+// podCertificatesKindConfigYAML is the kind cluster configuration for the
+// pod-certificates profile, the configuration Agent Substrate's own local
+// clusters use (hack/create-kind-cluster.sh at its pinned release):
+//   - the three feature gates and the certificates.k8s.io/v1beta1 API, which
+//     Kubernetes still ships off by default;
+//   - parallel image pulls, because a Substrate install pulls about a dozen
+//     images onto the one node, and kubelet's serial default queues them
+//     long enough for the last workload to miss its rollout deadline;
+//   - a node image pinned by digest to the release those gates were proven
+//     on (kind v0.33's default), which needs kind v0.33 or newer.
+const podCertificatesKindConfigYAML = `kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+nodes:
+  - role: control-plane
+    image: kindest/node:v1.37.0@sha256:a1ed56cfb0e7b93589bdf97c8cd566405a265939e3620fc4f5de89adff580ae5
+featureGates:
+  ClusterTrustBundle: true
+  ClusterTrustBundleProjection: true
+  PodCertificateRequest: true
+runtimeConfig:
+  "certificates.k8s.io/v1beta1": "true"
+kubeadmConfigPatches:
+  - |
+    kind: KubeletConfiguration
+    serializeImagePulls: false
+    maxParallelImagePulls: 4
+`
+
+// podCertificatesNodeSysctls are the node settings Agent Substrate's own kind
+// clusters carry (hack/create-kind-cluster.sh at its pinned release): proxy
+// ARP and NDP, which upstream sets on every kind node for gVisor's loopback
+// pod-to-pod networking, the path a request takes from the router through a
+// worker pod to the actor sandboxed inside it. proxy_ndp is optional because
+// a kernel built without IPv6 has no such key, exactly as upstream's
+// `sysctl -e` skips it.
+var podCertificatesNodeSysctls = []nodeSysctl{
+	{key: "net.ipv4.conf.all.proxy_arp", value: "1"},
+	{key: "net.ipv6.conf.all.proxy_ndp", value: "1", optional: true},
+}
+
+// NewPodCertificatesHarness builds the harness for the pod-certificates
+// profile: a dedicated persistent kind cluster (default name
+// "<base>-podcert"). kind's default CNI stays, and it enforces
+// NetworkPolicy, which Substrate's default-deny ingress relies on.
+func NewPodCertificatesHarness(baseClusterName string) *Harness {
+	return &Harness{
+		clusterName:    baseClusterName + "-podcert",
+		kindConfigYAML: podCertificatesKindConfigYAML,
+		nodeSysctls:    podCertificatesNodeSysctls,
+	}
+}
+
+// nodeSysctl is one kernel setting a cluster profile applies inside every kind
+// node container. kind's configuration has no field for a node's own sysctls
+// (kubelet's allowed sysctls are for pods), so the harness sets them over
+// `docker exec`, the way the software's own kind scripts do.
+type nodeSysctl struct {
+	key   string
+	value string
+	// optional tolerates a kernel that has no such key.
+	optional bool
+}
+
+// dockerExecArgs is the docker command line that sets the sysctl inside a
+// kind node. Writing a value a node already holds changes nothing, which is
+// what lets the harness apply the profile on every run, to a reused cluster
+// as to a new one.
+func (s nodeSysctl) dockerExecArgs(node string) []string {
+	args := []string{"exec", node, "sysctl"}
+	if s.optional {
+		args = append(args, "-e")
+	}
+	return append(args, "-w", s.key+"="+s.value)
+}
+
 // Harness manages the test cluster for Kubernetes E2E tests.
 type Harness struct {
 	clusterName    string
@@ -149,6 +233,11 @@ type Harness struct {
 	// API-server readiness instead. Required for CNI-less profiles, whose
 	// nodes stay NotReady until a CNI installs.
 	skipNodeWait bool
+
+	// nodeSysctls are applied inside every node after the cluster is created
+	// AND when a running cluster is reused: a sysctl set over docker exec does
+	// not survive a node container restart, and setting it again is a no-op.
+	nodeSysctls []nodeSysctl
 }
 
 // NewHarness creates a Kubernetes test harness with the given kind cluster name.
@@ -239,9 +328,41 @@ func (h *Harness) Setup(ctx context.Context) error {
 		fmt.Printf("  [kind] Cluster %q ready in %s\n", h.clusterName, time.Since(start).Round(time.Second))
 	}
 
+	if err := h.applyNodeSysctls(ctx); err != nil {
+		return err
+	}
+
 	// Set KUBECONFIG globally so Pulumi's kubernetes provider picks it up
 	os.Setenv("KUBECONFIG", h.kubeconfigPath)
 
+	return nil
+}
+
+// applyNodeSysctls sets the profile's node sysctls inside every node of the
+// harness-owned cluster.
+func (h *Harness) applyNodeSysctls(ctx context.Context) error {
+	if len(h.nodeSysctls) == 0 {
+		return nil
+	}
+	out, err := exec.CommandContext(ctx, "kind", "get", "nodes", "--name", h.clusterName).Output()
+	if err != nil {
+		return errors.Wrapf(err, "listing the nodes of kind cluster %q to apply its node sysctls", h.clusterName)
+	}
+	nodes := strings.Fields(string(out))
+	if len(nodes) == 0 {
+		return errors.Errorf("kind cluster %q has no nodes to apply its node sysctls to", h.clusterName)
+	}
+	for _, node := range nodes {
+		for _, s := range h.nodeSysctls {
+			var stderr bytes.Buffer
+			cmd := exec.CommandContext(ctx, "docker", s.dockerExecArgs(node)...)
+			cmd.Stderr = &stderr
+			if err := cmd.Run(); err != nil {
+				return errors.Wrapf(err, "setting %s=%s on kind node %s: %s", s.key, s.value, node, strings.TrimSpace(stderr.String()))
+			}
+		}
+	}
+	fmt.Printf("  [kind] Node sysctls applied on %d node(s) of %q\n", len(nodes), h.clusterName)
 	return nil
 }
 
@@ -353,6 +474,9 @@ func (h *Harness) VerifyDeployed(ctx context.Context, kindDir string, outputs ma
 	verifier, err := verify.GetVerifierFromManifest(manifestPath)
 	if err != nil {
 		return err
+	}
+	if ov, ok := verifier.(verify.OutputsVerifier); ok {
+		return ov.VerifyExistsWithOutputs(ctx, h.kubeconfigPath, outputs)
 	}
 	return verifier.VerifyExists(ctx, h.kubeconfigPath)
 }

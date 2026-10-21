@@ -1,0 +1,4 @@
+name: wp
+runtime:
+  name: go
+description: Pulumi module that provisions an Agent Substrate WorkerPool from a KubernetesAgentSubstrateWorkerPool manifest.

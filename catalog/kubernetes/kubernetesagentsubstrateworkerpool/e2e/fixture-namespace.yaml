@@ -1,0 +1,11 @@
+# The worker pool's own namespace: a pool lives in any namespace, and a pool
+# per tenant usually has one. Workers run as root with broad capabilities
+# (gVisor needs them), so the namespace enforces no Pod Security level; the
+# privileged level is set explicitly so the intent reads in the manifest.
+apiVersion: kubernetes.planton.dev/v1alpha1
+kind: KubernetesNamespace
+metadata:
+  name: e2e-ate-workers-namespace
+spec:
+  name: e2e-ate-workers
+  podSecurityStandard: privileged

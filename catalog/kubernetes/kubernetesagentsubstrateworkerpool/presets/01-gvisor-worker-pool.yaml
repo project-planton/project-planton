@@ -1,0 +1,25 @@
+apiVersion: kubernetes.planton.dev/v1alpha1
+kind: KubernetesAgentSubstrateWorkerPool
+metadata:
+  name: <pool-name>
+spec:
+  namespace:
+    value: <namespace>
+  labels:
+    workload: agents
+  replicas: 3
+  workerImage:
+    valueFrom:
+      kind: KubernetesAgentSubstrate
+      name: <substrate-resource-name>
+      fieldPath: status.outputs.gvisor_worker_image
+  template:
+    resources:
+      requests:
+        cpu: "1"
+        memory: 8Gi
+      limits:
+        cpu: "4"
+        memory: 8Gi
+  sandboxClasses:
+    - name: gvisor

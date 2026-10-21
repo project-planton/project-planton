@@ -194,6 +194,37 @@ spec:
         - yaml_body
         - yaml_body_parsed
 
+    # OpenTofu's built-in terraform_data, as a module's preflight: a resource
+    # that writes nothing to the cluster and exists to carry plan-time
+    # refusals as preconditions (the agent-sandbox controller's ownership
+    # checks).
+    - terraform_type: terraform_data
+      not_importable_upstream_reason: >-
+        terraform_data is OpenTofu's built-in store, not a cluster object: a
+        preflight holds no input and writes nothing to the cluster, it only
+        carries the module's plan-time refusals. Left out of the import, it is
+        created on the first apply after import, which changes nothing on the
+        cluster (the round trip's only re-create).
+
+    # --- TLS (provider-local key material — no cluster state) -----------------
+    # A module that generates a certificate authority or a signing key (Agent
+    # Substrate's CA pools and actor token key) holds it in state and writes it
+    # into a Secret. The Secret imports; the key material cannot.
+    - terraform_type: tls_private_key
+      pulumi_type: tls:index/privateKey:PrivateKey
+      not_importable_upstream_reason: >-
+        hashicorp/tls ships NO ImportState for tls_private_key -- the import
+        command answers "Resource Import Not Implemented" (measured live
+        2026-08-28 at v4.3.0). Adopting an installation mints a new key on the
+        first apply, and the Secret that holds it is rewritten from it.
+    - terraform_type: tls_self_signed_cert
+      pulumi_type: tls:index/selfSignedCert:SelfSignedCert
+      not_importable_upstream_reason: >-
+        hashicorp/tls ships NO ImportState for tls_self_signed_cert (verified
+        in the provider source) -- the certificate is derived from a key that
+        cannot import either. Adopting an installation issues a new root on
+        the first apply, and everything chained to the old one is re-issued.
+
     # --- Random (provider-local — no cluster state) ---------------------------
     - terraform_type: random_password
       pulumi_type: random:index/randomPassword:RandomPassword

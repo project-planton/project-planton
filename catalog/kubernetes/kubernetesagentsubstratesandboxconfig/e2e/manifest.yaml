@@ -1,0 +1,42 @@
+# The full surface, for offline proofs (tofu plan, pulumi preview, a server
+# dry run): every field of the config, the same object the full-surface lane
+# deploys.
+apiVersion: kubernetes.planton.dev/v1alpha1
+kind: KubernetesAgentSubstrateSandboxConfig
+metadata:
+  name: e2e-asubsc-full
+spec:
+  name: e2e-gvisor-rollout
+  labels:
+    team: platform
+    runtime: gvisor
+  annotations:
+    planton.dev/e2e-note: full-surface
+  sandboxClass: gvisor
+  defaultVersion: gvisor-2026-10-10
+  versions:
+    - name: gvisor-2026-10-10
+      state: Enabled
+      pauseImage: registry.k8s.io/pause:3.10.2@sha256:f548e0e8e3dc1896ca956272154dde3314e8cc4fde0a57577ee9fa1c63f5baf4
+      assets:
+        amd64:
+          entries:
+            gvisor:
+              url: gs://gvisor/releases/nightly/2026-10-10/x86_64/gvisor.tar.zstd
+              sha256: 4ae7fab988c3647d2a835d6c3c70c6a99021c562db97827592562b6c51c3e88c
+        arm64:
+          entries:
+            gvisor:
+              url: gs://gvisor/releases/nightly/2026-10-10/aarch64/gvisor.tar.zstd
+              sha256: aaf414f06eea7960238e43165c691f0a36cefc0593fb141e011e96211c7b6f57
+    # Retired, so no sandbox ever boots it and no node downloads its file
+    # (the checksum is a placeholder that only has to be well-formed).
+    - name: runsc-legacy
+      state: Disabled
+      pauseImage: registry.k8s.io/pause:3.10.2@sha256:f548e0e8e3dc1896ca956272154dde3314e8cc4fde0a57577ee9fa1c63f5baf4
+      assets:
+        amd64:
+          entries:
+            runsc:
+              url: gs://gvisor/releases/nightly/2026-10-10/x86_64/runsc
+              sha256: "0000000000000000000000000000000000000000000000000000000000000000"

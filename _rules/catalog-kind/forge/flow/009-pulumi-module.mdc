@@ -59,7 +59,7 @@ KUBERNETES MANIFEST PROJECTION KINDS -- ONE PROJECTION, NO HAND MAPPING
   by hand and needs no crd2pulumi SDK, so a field the spec gains reaches the
   object on both engines with no module change. The projection also writes
   the shapes the spec marks (`kubernetes_int_or_string`,
-  `kubernetes_list_valued_map`) as upstream's, so the module still maps
+  `kubernetes_list_valued_map`, `kubernetes_map_valued_map`) as upstream's, so the module still maps
   nothing. Reference:
   `catalog/kubernetes/kubernetesprometheusrule/iac/pulumi/module/main.go`.
 - The permissions gate (`pkg/iac/permissions`) models each `manifestcr.Apply` as

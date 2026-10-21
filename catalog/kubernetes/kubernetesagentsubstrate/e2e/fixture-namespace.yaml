@@ -1,0 +1,13 @@
+# The namespace's OWNER for the kind lanes: the Secrets the control plane
+# reads (the snapshot store's key, a database's connection strings) must be
+# in ate-system before it starts, so a KubernetesNamespace creates
+# ate-system first and the control plane runs with createNamespace off --
+# the shape the kind's docs recommend for exactly this. Its teardown removes
+# the namespace, and the bundled database's volume with it, after the
+# verifier has seen that volume outlive the control plane.
+apiVersion: kubernetes.planton.dev/v1alpha1
+kind: KubernetesNamespace
+metadata:
+  name: e2e-ate-namespace
+spec:
+  name: ate-system

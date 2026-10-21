@@ -1,0 +1,38 @@
+# THE DEFINITION-OWNED-ELSEWHERE REFUSAL: the WorkerPool definition already
+# exists, applied by someone else (the fixture), as an `ate-setup` install
+# of upstream's release would leave it. The deploy must be refused before
+# anything is written, naming the definition and its owner, and the
+# remedies; the verifier asserts the three parts and that the definition
+# gained no stamp. It sorts after agentgateway, which lets the definitions
+# go, so no definition of this kind's is left on the shared cluster here.
+apiVersion: kubernetes.planton.dev/v1alpha1
+kind: KubernetesAgentSubstrate
+metadata:
+  name: e2e-ate-crd-owned
+  annotations:
+    planton.dev/e2e-cluster-profile: "pod-certificates"
+    planton.dev/e2e-prerequisites: "catalog/kubernetes/kubernetesagentsubstrate/e2e/fixture-foreign-crd.yaml"
+    planton.dev/e2e-expect-deploy-failure: crd-owned-elsewhere
+    planton.dev/e2e-expect-crds: workerpools.ate.dev
+spec:
+  namespace:
+    value: ate-system
+  createNamespace: true
+  crds:
+    keepOnUninstall: false
+  platform:
+    generic:
+      serviceAccountIssuer: https://kubernetes.default.svc.cluster.local
+  database:
+    bundled: {}
+  storage:
+    s3:
+      endpoint:
+        value: http://s3.example.invalid:8333
+      bucket: substrate-snapshots
+      credentials:
+        secretName:
+          value: substrate-s3
+  egress:
+    credentialProvider:
+      disabled: {}

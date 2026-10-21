@@ -968,6 +968,19 @@ func TestOutputsConformance(t *testing.T) {
 			},
 		},
 		{
+			// KubernetesGkeComputeClass: the created class's name (spec.name,
+			// the value pods select) from both engines must land on the
+			// Outputs proto.
+			name: "KubernetesGkeComputeClass",
+			kind: catalogkind.CatalogKind_KubernetesGkeComputeClass,
+			rawOutputs: map[string]interface{}{
+				"compute_class_name": "default",
+			},
+			mustPopulate: []string{
+				"compute_class_name",
+			},
+		},
+		{
 			// KubernetesKarpenterEc2NodeClass: the created cluster-scoped
 			// CR's identity (what NodePools reference via node_class_ref)
 			// from both engines must land on the Outputs proto.
@@ -1210,6 +1223,42 @@ func TestOutputsConformance(t *testing.T) {
 				"namespace":            "monitoring",
 			},
 			mustPopulate: []string{"prometheus_rule_name", "namespace"},
+		},
+		{
+			name: "KubernetesAgentSandbox",
+			kind: catalogkind.CatalogKind_KubernetesAgentSandbox,
+			rawOutputs: map[string]interface{}{
+				"sandbox_name": "coding-agent",
+				"namespace":    "agents",
+			},
+			mustPopulate: []string{"sandbox_name", "namespace"},
+		},
+		{
+			name: "KubernetesAgentSandboxTemplate",
+			kind: catalogkind.CatalogKind_KubernetesAgentSandboxTemplate,
+			rawOutputs: map[string]interface{}{
+				"sandbox_template_name": "coding-agent",
+				"namespace":             "agents",
+			},
+			mustPopulate: []string{"sandbox_template_name", "namespace"},
+		},
+		{
+			name: "KubernetesAgentSandboxWarmPool",
+			kind: catalogkind.CatalogKind_KubernetesAgentSandboxWarmPool,
+			rawOutputs: map[string]interface{}{
+				"sandbox_warm_pool_name": "coding-agent-pool",
+				"namespace":              "agents",
+			},
+			mustPopulate: []string{"sandbox_warm_pool_name", "namespace"},
+		},
+		{
+			name: "KubernetesAgentSandboxClaim",
+			kind: catalogkind.CatalogKind_KubernetesAgentSandboxClaim,
+			rawOutputs: map[string]interface{}{
+				"sandbox_claim_name": "alice-workbench",
+				"namespace":          "agents",
+			},
+			mustPopulate: []string{"sandbox_claim_name", "namespace"},
 		},
 		{
 			name: "KubernetesServiceMonitor",
@@ -1749,6 +1798,87 @@ func TestOutputsConformance(t *testing.T) {
 			},
 		},
 		{
+			// KubernetesAgentSandboxController: upstream's fixed namespace,
+			// the controller's metrics handles a ServiceMonitor composes
+			// against, and the router handles (populated with a router).
+			name: "KubernetesAgentSandboxController",
+			kind: catalogkind.CatalogKind_KubernetesAgentSandboxController,
+			rawOutputs: map[string]interface{}{
+				"namespace":            "agent-sandbox-system",
+				"metrics_service_name": "agent-sandbox-controller",
+				"metrics_port":         "8080",
+				"router_service_name":  "sandbox-router-svc",
+				"router_endpoint":      "http://sandbox-router-svc.agent-sandbox-system.svc.cluster.local:8080",
+			},
+			mustPopulate: []string{
+				"namespace", "metrics_service_name", "metrics_port",
+				"router_service_name", "router_endpoint",
+			},
+		},
+		{
+			// KubernetesAgentSubstrate: the handles a product calls the API
+			// with (address, server name, token audience, trust bundle, the
+			// namespace label the API admits), the router, the storage
+			// location actor templates use, and the worker images the worker
+			// pool kind runs.
+			name: "KubernetesAgentSubstrate",
+			kind: catalogkind.CatalogKind_KubernetesAgentSubstrate,
+			rawOutputs: map[string]interface{}{
+				"namespace":                  "ate-system",
+				"api_address":                "api.ate-system.svc:443",
+				"api_server_name":            "api.ate-system.svc",
+				"api_token_audience":         "api.ate-system.svc",
+				"api_trust_bundle_name":      "servicedns.podcert.ate.dev:identity:primary-bundle",
+				"api_trust_bundle_signer":    "servicedns.podcert.ate.dev/identity",
+				"api_access_namespace_label": "ate.dev/api-access=true",
+				"router_endpoint":            "http://atenet-router.ate-system.svc:80",
+				"router_tls_endpoint":        "https://atenet-router.ate-system.svc:443",
+				"storage_location":           "s3://substrate-snapshots",
+				"actor_jwt_issuer":           "https://idp.ate-system.svc",
+				"gvisor_worker_image":        "ghcr.io/plantonhq/planton/agent-substrate/ateom-gvisor:v0.5.0@sha256:0000000000000000000000000000000000000000000000000000000000000000",
+				"microvm_worker_image":       "ghcr.io/plantonhq/planton/agent-substrate/ateom-microvm:v0.5.0@sha256:0000000000000000000000000000000000000000000000000000000000000000",
+				"version":                    "v0.5.0",
+			},
+			mustPopulate: []string{
+				"namespace", "api_address", "api_server_name", "api_token_audience",
+				"api_trust_bundle_name", "api_trust_bundle_signer", "api_access_namespace_label",
+				"router_endpoint", "router_tls_endpoint", "storage_location", "actor_jwt_issuer",
+				"gvisor_worker_image", "microvm_worker_image", "version",
+			},
+		},
+		{
+			// KubernetesAgentSubstrateWorkerPool: the pool's identity, which
+			// its worker Deployment shares.
+			name: "KubernetesAgentSubstrateWorkerPool",
+			kind: catalogkind.CatalogKind_KubernetesAgentSubstrateWorkerPool,
+			rawOutputs: map[string]interface{}{
+				"worker_pool_name": "acme-workers",
+				"namespace":        "acme-agents",
+			},
+			mustPopulate: []string{"worker_pool_name", "namespace"},
+		},
+		{
+			// KubernetesAgentSubstrateSandboxConfig: what an actor template's
+			// config_name names, and the class the template must match.
+			name: "KubernetesAgentSubstrateSandboxConfig",
+			kind: catalogkind.CatalogKind_KubernetesAgentSubstrateSandboxConfig,
+			rawOutputs: map[string]interface{}{
+				"sandbox_config_name": "gvisor-pinned",
+				"sandbox_class":       "gvisor",
+			},
+			mustPopulate: []string{"sandbox_config_name", "sandbox_class"},
+		},
+		{
+			// KubernetesAgentSubstrateCsiDriverConfig: the driver's name, which
+			// a StorageClass names as its provisioner.
+			name: "KubernetesAgentSubstrateCsiDriverConfig",
+			kind: catalogkind.CatalogKind_KubernetesAgentSubstrateCsiDriverConfig,
+			rawOutputs: map[string]interface{}{
+				"driver_name": "hostpath.csi.k8s.io",
+			},
+			mustPopulate: []string{"driver_name"},
+		},
+		{
 			// KubernetesTekton: the resolved installation handles — target
 			// namespace, profile, and the dashboard Service handles exposure
 			// kinds compose against (populated on profile `all`).
@@ -1879,6 +2009,41 @@ func TestOutputsConformance(t *testing.T) {
 				"otel_collector_service", "otlp_grpc_endpoint", "otlp_http_endpoint",
 				"clickhouse_endpoint", "clickhouse_username",
 				"clickhouse_password_secret",
+			},
+		},
+		{
+			// KubernetesLangfuse: the pinned-fullname naming contract — the
+			// `<name>-web` Service and its endpoints, the module-owned instance
+			// Secret, the seeded organization and project, and the two Secret
+			// handles into that instance Secret (nested name/key).
+			name: "KubernetesLangfuse",
+			kind: catalogkind.CatalogKind_KubernetesLangfuse,
+			rawOutputs: map[string]interface{}{
+				"namespace":            "langfuse",
+				"service":              "tracing-web",
+				"endpoint":             "http://tracing-web.langfuse.svc.cluster.local:3000",
+				"external_url":         "https://langfuse.example.com",
+				"otel_endpoint":        "http://tracing-web.langfuse.svc.cluster.local:3000/api/public/otel",
+				"port_forward_command": "kubectl port-forward -n langfuse svc/tracing-web 3000:3000",
+				"instance_secret_name": "tracing-secrets",
+				"organization_id":      "tracing",
+				"project_id":           "tracing-project",
+				"project_public_key":   "pk-lf-0a1b2c3d4e5f",
+				"project_secret_key_secret": map[string]interface{}{
+					"name": "tracing-secrets",
+					"key":  "init-project-secret-key",
+				},
+				"admin_email": "admin@example.com",
+				"admin_password_secret": map[string]interface{}{
+					"name": "tracing-secrets",
+					"key":  "init-user-password",
+				},
+			},
+			mustPopulate: []string{
+				"namespace", "service", "endpoint", "external_url", "otel_endpoint",
+				"port_forward_command", "instance_secret_name", "organization_id",
+				"project_id", "project_public_key", "project_secret_key_secret",
+				"admin_email", "admin_password_secret",
 			},
 		},
 		{

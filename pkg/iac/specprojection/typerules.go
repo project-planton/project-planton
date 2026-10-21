@@ -50,6 +50,19 @@ func IsKubernetesListValuedMapField(fd protoreflect.FieldDescriptor) bool {
 	return ok && v
 }
 
+// IsKubernetesMapValuedMapField reports whether a map field carries
+// `(dev.planton.shared.options.kubernetes_map_valued_map)`: each value is a
+// wrapper message around one map field, and the projection writes the bare
+// inner map in the wrapper's place.
+func IsKubernetesMapValuedMapField(fd protoreflect.FieldDescriptor) bool {
+	opts := fd.Options()
+	if opts == nil {
+		return false
+	}
+	v, ok := proto.GetExtension(opts, options.E_KubernetesMapValuedMap).(bool)
+	return ok && v
+}
+
 // TypeRule defines how a specific proto message type is treated when a
 // manifest is projected into an engine's input. Rules are registered once and
 // consulted by the projection (Terraform tfvars and the Pulumi custom-resource

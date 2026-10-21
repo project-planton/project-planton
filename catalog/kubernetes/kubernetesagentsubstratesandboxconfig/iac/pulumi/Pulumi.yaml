@@ -1,0 +1,4 @@
+name: kubernetes-agent-substrate-sandbox-config
+runtime:
+  name: go
+description: Pulumi module that provisions an Agent Substrate SandboxConfig from a KubernetesAgentSubstrateSandboxConfig manifest.

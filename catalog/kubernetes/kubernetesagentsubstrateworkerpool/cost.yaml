@@ -1,0 +1,24 @@
+# Cost profile: what drives this component's bill. Field paths are
+# spec-relative proto field names, held to the served contract by the
+# catalog-data conformance gate. Schema: finops/catalogkindcostprofile/v1.
+apiVersion: finops.planton.dev/v1
+kind: CatalogKindCostProfile
+metadata:
+  name: kubernetesagentsubstrateworkerpool
+spec:
+  billing_model: cluster_capacity
+  cost_drivers:
+    - field_path: replicas
+      sku_meter: cluster CPU and memory reservations
+      impact: Every worker is a running pod reserving its template's requests whether it runs an actor or waits for one -- the pool's size times each worker's requests is the standing cost of the runtime, and the most actors that run at once.
+    - field_path: template
+      sku_meter: cluster CPU and memory reservations
+      impact: "template.resources: the requests are what each worker reserves on its node; the limits are each worker's capacity, a budget the actors it hosts share. Placement (node selector, affinity, tolerations) decides which nodes -- and so which machine prices -- the workers occupy."
+    - field_path: sandbox_classes
+      sku_meter: cluster CPU and memory reservations
+      impact: A microVM pool needs nodes with nested virtualization, which some providers offer only on particular machine families, and each worker carries a guest kernel's overhead inside its limits.
+  estimate_exclusions:
+    - the price of reserved CPU and memory is the target cluster's node economics, which this catalog cannot know
+    - suspended actors cost no worker -- their snapshots bill as object storage in the control plane's bucket (KubernetesAgentSubstrate's storage), which grows with the actors that exist, not with the pool
+    - each worker node downloads and caches the pool's runtime versions once; egress from a bucket you own is the storage provider's
+  notes: "A worker pool is the compute an agent runtime runs on. Size it for the actors running at the same moment -- each spends its template's limits from a worker's budget -- not for the actors that exist: a suspended actor is a snapshot in storage, not a share of a worker. Shrink it outside working hours by lowering replicas."

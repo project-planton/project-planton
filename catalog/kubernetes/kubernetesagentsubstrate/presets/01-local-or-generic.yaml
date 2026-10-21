@@ -1,0 +1,33 @@
+apiVersion: kubernetes.planton.dev/v1alpha1
+kind: KubernetesAgentSubstrate
+metadata:
+  name: agent-substrate
+spec:
+  # The control plane on any conformant cluster, kind included: upstream's
+  # bundled PostgreSQL on a small volume, snapshots in an S3-compatible store
+  # (a SeaweedFS by reference), no credential injection. This resource owns
+  # ate-system; the S3 access key Secret must be in it.
+  namespace:
+    value: ate-system
+  createNamespace: true
+  platform:
+    generic:
+      # kind and kubeadm clusters; read yours with
+      # kubectl get --raw /.well-known/openid-configuration
+      serviceAccountIssuer: https://kubernetes.default.svc.cluster.local
+  database:
+    bundled:
+      volumeSize: 20Gi
+  storage:
+    s3:
+      endpoint:
+        valueFrom:
+          name: agent-snapshots
+      bucket: agent-snapshots
+      credentials:
+        secretName:
+          valueFrom:
+            name: substrate-s3
+  egress:
+    credentialProvider:
+      disabled: {}

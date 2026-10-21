@@ -1,0 +1,30 @@
+# THE MISSING-NAMESPACE REFUSAL: another resource is declared ate-system's
+# owner (createNamespace off), and nobody has created it. The deploy must be
+# refused at plan, saying to deploy the KubernetesNamespace first or let
+# this resource create it.
+apiVersion: kubernetes.planton.dev/v1alpha1
+kind: KubernetesAgentSubstrate
+metadata:
+  name: e2e-ate-ns-missing
+  annotations:
+    planton.dev/e2e-cluster-profile: "pod-certificates"
+    planton.dev/e2e-expect-deploy-failure: namespace-missing
+spec:
+  namespace:
+    value: ate-system
+  platform:
+    generic:
+      serviceAccountIssuer: https://kubernetes.default.svc.cluster.local
+  database:
+    bundled: {}
+  storage:
+    s3:
+      endpoint:
+        value: http://s3.example.invalid:8333
+      bucket: substrate-snapshots
+      credentials:
+        secretName:
+          value: substrate-s3
+  egress:
+    credentialProvider:
+      disabled: {}

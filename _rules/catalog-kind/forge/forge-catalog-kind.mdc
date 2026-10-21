@@ -488,8 +488,10 @@ minutes on a default kubelet).
     - **Lists that carry a free-form value arrive untyped** (`variables.tf`
       declares any list or map whose element holds a `Struct` as `any`): read
       every field with `try()`, and wrap every numeric leaf in `tonumber()` --
-      the converter renders int64 fields as JSON strings, and only typed
-      variables convert them back. A conditional whose branches are differently
+      the snake_case converter renders int64 fields as JSON strings, and only
+      typed variables convert them back. (A projection kind's generated module
+      receives numbers: the manifest-projection converter writes 64-bit
+      integers as JSON numbers.) A conditional whose branches are differently
       shaped objects fails plan-time type unification (`cond ? {} : {...}`);
       use the null-prune idiom, and `try(<object expression>, fallback)` where a
       value may be an object or a scalar (a depth-limited key lowercase of a
@@ -649,6 +651,49 @@ by exact name is at total accounting with no `provider-parity.yaml` at all.
 For a provider without schema artifacts, skip silently -- the gate reports
 NOT INSTRUMENTED there.
 
+### Phase 6e: Mirror schema for a projection kind (orchestrator step -- no flow-rule file)
+
+A Kubernetes projection kind (registry `kubernetes_manifest_projection`)
+promises that its spec mirrors one custom resource field for field. Its
+parity is measured against that resource's served definition, not a
+Terraform schema, by `TestProjection_MirrorsItsPinnedCustomResource` in
+`pkg/kubernetes/manifestprojection`:
+
+1. Pin the definition at
+   `pkg/kubernetes/manifestprojection/testdata/schemas/<group>_<plural>.yaml`.
+   Take it from the pinned upstream release when one publishes it, or read
+   it from a real cluster when only the cloud serves it
+   (`kubectl get crd <plural>.<group> -o yaml`). Head the file with a
+   comment naming the version it was captured at and the exact command.
+   The served schema is the target, documented or not.
+2. Model the spec from it: every property under `spec` is a field under the
+   same JSON key (`json_name` where protojson would spell an acronym or a
+   snake_case key differently), types match, free-form subtrees are
+   `google.protobuf.Struct`, number-or-name values carry
+   `kubernetes_int_or_string`, quantities (an int-or-string with
+   Kubernetes' quantity pattern, such as resource limits) are plain strings
+   held to the quantity grammar and never marked, an object served with no
+   properties is an empty message, and a property the definition requires is
+   present in every valid manifest (a required rule, a minimum count or
+   length, or a platform default). The object's own name, labels and
+   annotations are envelope fields (`kubernetes_object_metadata`), never
+   part of the comparison. Types the custom resource embeds from Kubernetes
+   itself (a pod specification, NetworkPolicy rules) come from the faithful
+   libraries `catalog/kubernetes/core_v1_api.proto` and
+   `networking_v1_api.proto`, never from the curated `workload_*` protos.
+3. Run `go test ./pkg/kubernetes/manifestprojection/`. The mirror test
+   names every key divergence by its upstream path; fix the spec, never the
+   pinned file. A pinned file no projection kind applies fails the same
+   test. `TestProjection_RenderedExamplesValidateAgainstServedSchema` then
+   renders the kind's e2e scenarios and `e2e/manifest.yaml` the way both
+   engines do and runs them through the API server's own pruning and
+   validation: a value the projection writes in the wrong form fails there,
+   with no cluster. The `lint.manifest-projection` lane runs both.
+
+Re-pinning (an upstream release or a cloud version adds fields) repeats the
+three steps with the new definition; the test then names every field the
+spec must gain.
+
 ### Phase 7: Presets (Rule 018)
 
 16. **018-presets** - Generate initial presets (2-3 common configuration templates)
@@ -795,7 +840,11 @@ Steps 018–019 prove the kind compiles and its schema validates. **Live E2E**
 proves the IaC modules actually create, verify, and destroy real resources via
 the provider API. Every kind ships an `e2e/profile.yaml` + `e2e/scenarios/*.yaml`,
 and the provider harness (`catalog/<provider>/aa_e2e/`) runs them
-on both Pulumi and Terraform.
+on both Pulumi and Terraform. Lifecycle lanes (an upgrade, a reinstall, a
+refused change) follow `e2e/README.md`'s "Lifecycle lanes" section; an
+upgrade's second-act manifest carries `planton.dev/e2e-second-act: <first-act
+file>`, or discovery runs it as a lane of its own, out of context, and it
+fails on state its first act was meant to leave.
 
 Live E2E needs provider credentials. **Never ask the human to paste them, and never
 fabricate them.** Acquire them with this do-first, two-tier protocol. (Note: `gh`
@@ -953,6 +1002,16 @@ the kind has never had E2E coverage of its own. A dependency without a
 verifier fails every consumer's DEPENDENCIES-UP phase with "no verifier
 registered", after the resource has already deployed.
 
+**A verifier proves a resource through its prerequisite's outputs, never
+restated names.** When the promise runs through what the kind composes with
+(a worker pool proved by an actor the control plane's API places on it), read
+the prerequisite's outputs from the verify context
+(`provider.DependencyOutputsFrom(ctx)`, keyed by kind name, then instance)
+and reach it at the addresses it published. The Agent Substrate resource
+verifiers (`aa_e2e/verify/agentsubstrateresources.go`) are the reference;
+the shared dial in `agentsubstrateapi.go` is how any Substrate verifier calls
+the API.
+
 **Consumer-specific fixture shapes live in the shared profile.** There is
 exactly ONE prerequisite profile per kind, shared by every consumer that
 declares the kind in `prerequisites` — so when consumers need differently
@@ -1006,7 +1065,15 @@ assert the NotReady→Ready transition in the kind's install verifier
 instead, where it becomes part of the proof; and behavioral scenarios that
 merely CONSUME the profile kind declare it a scenario-level prerequisite
 (annotation), never a registry prerequisite — the kind under test
-deploys fine without it on ordinary clusters.
+deploys fine without it on ordinary clusters. A profile also exists for
+Kubernetes APIs that ship off by default (`pod-certificates`: the
+pod-certificate and cluster-trust-bundle APIs, upstream's own kind
+configuration at the pin). Lanes on one profile cluster share every
+cluster-scoped name, and run in scenario filename order on each engine:
+when one lane must leave kept definitions behind (the keep-and-readopt
+proof) and another plants a foreign one (the owned-elsewhere refusal),
+the lane that sorts first lets definitions go on destroy, so every
+engine's pass starts clean; say so in both scenarios.
 
 **Real-cluster lanes fit what is already on the cluster.** A real cluster
 (`aws-eks`, `gcp-gke` profiles) arrives with residents — the GKE management
@@ -1421,7 +1488,9 @@ directory, `templates/`, and the values file) and choose:
    provider 3.x; the Helm SDK's client-only dry-run install with CRDs
    included on Pulumi — both return the same document set, verified),
    or fetches the pinned upstream bundle by a URL derived from the
-   version; filters the documents to `kind: CustomResourceDefinition`;
+   version (for a kind installed from a released manifest, the release
+   asset itself, with the CRDs dropped from the module's own document
+   set); filters the documents to `kind: CustomResourceDefinition`;
    applies each one keyed by its OWN `metadata.name` as a KEPT resource
    (server-side apply with force; `apply_only` on `kubectl_manifest`;
    the classic-yaml ConfigGroup with a retainOnDelete transformation
@@ -1436,9 +1505,14 @@ directory, `templates/`, and the values file) and choose:
    that every module carries byte-identically under a drift test.
    Per-kind code supplies one contract, the twin of the other engine's:
    `keptcrds.Args` on Pulumi and the `local.helm_crds_args` object on
-   Terraform — the chart identity, the release's own values, the render
-   override that turns the chart's CRDs on, the API versions the chart
-   gates on, the bundle URL when one exists, and the kind's policy.
+   Terraform — the version and the spec field that chooses it (none when
+   the module pins it, so every refusal names the right remedy), the
+   kind's policy, and exactly one source: a chart (its identity, the
+   release's own values, the render override that turns its CRDs on, the
+   API versions it gates on) or a bundle (the upstream project's own name,
+   which is the ownership label, and its URL). A bundle's label is never
+   derived from the download host, because unrelated projects share hosts
+   and two owners must never read as one.
 
 **Which rendered CRDs the module owns follows ONE rule, stated in the
 primitive and repeated nowhere else.** Helm has two CRD surfaces: the

@@ -1,0 +1,41 @@
+# AN EARLIER INSTALLATION for the upgrade-refused lane: the API server
+# Deployment as this kind leaves it, carrying the kind's ownership label and
+# the release stamp of v0.4.0, the minor before the pinned one. Before 1.0
+# every minor is a reinstall, so the deploy must refuse at plan with the
+# backup, destroy and clear steps, and leave the stamp as it was. The
+# fixture owns the namespace, so the control plane runs with
+# createNamespace off. A pause container is enough: the refusal reads the
+# stamp before anything is applied.
+apiVersion: kubernetes.planton.dev/v1alpha1
+kind: KubernetesManifest
+metadata:
+  name: e2e-ate-earlier-release
+spec:
+  namespace:
+    value: ate-system
+  create_namespace: true
+  skip_await: true
+  manifest_yaml: |
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: ate-api-server
+      namespace: ate-system
+      labels:
+        app: ate-api-server
+        planton.ai/kind: KubernetesAgentSubstrate
+      annotations:
+        planton.ai/agent-substrate-version: v0.4.0
+    spec:
+      replicas: 1
+      selector:
+        matchLabels:
+          app: ate-api-server
+      template:
+        metadata:
+          labels:
+            app: ate-api-server
+        spec:
+          containers:
+            - name: ate-api-server
+              image: registry.k8s.io/pause:3.10

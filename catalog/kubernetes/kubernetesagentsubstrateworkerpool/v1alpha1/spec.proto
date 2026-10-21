@@ -1,0 +1,276 @@
+syntax = "proto3";
+
+package dev.planton.kubernetes.kubernetesagentsubstrateworkerpool.v1alpha1;
+
+import "buf/validate/validate.proto";
+import "catalog/kubernetes/core_v1_api.proto";
+import "shared/foreignkey/v1/foreign_key.proto";
+import "shared/options/options.proto";
+
+// KubernetesAgentSubstrateWorkerPoolSpec defines an Agent Substrate
+// WorkerPool: a set of worker pods actors run in. Substrate's controller
+// renders the pool as a Deployment of the same name, each worker registers
+// with the node agent on its node and then with the API server, and the API
+// server places each new or resumed actor on a worker with room for it. A
+// suspended actor leaves its worker for storage and gives its share back,
+// which is how a pool serves more actors than it holds at once.
+//
+// 100% fidelity with the upstream WorkerPool custom resource
+// (ate.dev/v1alpha1), pinned to Agent Substrate v0.5.0 -- the release
+// KubernetesAgentSubstrate installs -- and held to its served definition by
+// the mirror test. The upstream spec follows the Planton envelope directly:
+// the size, the worker image, the worker pods' placement and resources, and
+// the sandbox class the pool runs.
+//
+// What a pool is for:
+//   - Capacity. A worker hosts many actors at once. Its resource limits are
+//     a budget they share: an actor is placed only on a worker whose unspent
+//     limits still cover the limits its actor template declares, and only
+//     while the worker hosts fewer actors than its actor limit (1000 at this
+//     release, a worker setting the pool does not expose). A worker without
+//     limits puts no bound on that resource.
+//   - Isolation. Pools are placed and selected independently: one pool per
+//     tenant, on its own tainted nodes, is a pool per tenant; an actor
+//     template's `worker_selector` names the pool by the pool's labels.
+//   - Runtime. A pool runs one sandbox class (gVisor or microVM) and
+//     resolves one SandboxConfig of that class, which the cluster then keeps
+//     from deletion. The runtime an actor boots comes from the SandboxConfig
+//     its actor template names, so the templates that run on a pool name the
+//     config the pool resolves.
+//
+// A pool can live in any namespace and needs no label there; the controller
+// adds a NetworkPolicy that admits only Substrate's router to the workers.
+message KubernetesAgentSubstrateWorkerPoolSpec {
+  // Kubernetes namespace the WorkerPool and its worker pods run in. Typically
+  // a reference to a KubernetesNamespace resource's `spec.name`. The worker
+  // pods run as root with broad capabilities (gVisor and microVM need them),
+  // so a namespace that enforces the restricted or baseline Pod Security
+  // level refuses them.
+  dev.planton.shared.foreignkey.v1.StringValueOrRef namespace = 1 [
+    (buf.validate.field).required = true,
+    (dev.planton.shared.foreignkey.v1.default_kind) = KubernetesNamespace,
+    (dev.planton.shared.foreignkey.v1.default_kind_field_path) = "spec.name"
+  ];
+
+  // Labels on the WorkerPool object itself (its metadata.labels), merged
+  // under Planton's identity labels (a key in both keeps the identity value).
+  //
+  // These are the labels actors select the pool by: Substrate registers every
+  // worker with the pool's labels, and an actor template's
+  // `worker_selector.match_labels` must match them (for example
+  // `tenant: acme`). The worker pods' own labels come from
+  // `template.labels`.
+  map<string, string> labels = 2 [
+    (dev.planton.shared.options.kubernetes_object_metadata) = object_labels,
+    (buf.validate.field).map = {
+      keys: {
+        string: {
+          min_len: 1
+          max_len: 317
+          pattern: "^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?[A-Za-z0-9]([-A-Za-z0-9_.]{0,61}[A-Za-z0-9])?$"
+        }
+      }
+      values: {
+        string: {
+          max_len: 63
+          pattern: "^([A-Za-z0-9]([-A-Za-z0-9_.]{0,61}[A-Za-z0-9])?)?$"
+        }
+      }
+    }
+  ];
+
+  // Annotations on the WorkerPool object itself (its metadata.annotations).
+  map<string, string> annotations = 3 [(dev.planton.shared.options.kubernetes_object_metadata) = object_annotations];
+
+  // How many worker pods the pool runs. Zero keeps the pool defined with no
+  // workers. A rollout replaces at most 10% of the workers at once and never
+  // starts extra ones, and a stopping worker is given up to an hour to drain
+  // its actors first, so shrinking and rolling a pool are gradual.
+  //
+  // Required: every apply writes it. The pool serves the scale subresource,
+  // but upstream treats worker autoscaling as a demo at this release, so an
+  // autoscaler that resizes the pool is undone by the next apply.
+  optional int32 replicas = 4 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).int32.gte = 0
+  ];
+
+  // The worker image the pool runs, which must match the sandbox class: the
+  // control plane's `gvisor_worker_image` output for a gvisor pool, its
+  // `microvm_worker_image` output for a microvm pool. Defaults to a
+  // KubernetesAgentSubstrate reference (its gvisor_worker_image output), so
+  // the pool always runs the worker built with the installed release, with
+  // the control plane's registry mirror already applied; a microvm pool
+  // points the reference at `status.outputs.microvm_worker_image`. A literal
+  // image works too, pinned by digest.
+  dev.planton.shared.foreignkey.v1.StringValueOrRef worker_image = 5 [
+    (buf.validate.field).required = true,
+    (dev.planton.shared.foreignkey.v1.default_kind) = KubernetesAgentSubstrate,
+    (dev.planton.shared.foreignkey.v1.default_kind_field_path) = "status.outputs.gvisor_worker_image",
+    (dev.planton.shared.options.diagram_label) = "worker image"
+  ];
+
+  // Metadata, placement and resources for the worker pods. Unset, workers run
+  // anywhere the scheduler puts them, with no resource requests.
+  KubernetesAgentSubstrateWorkerPoolPodTemplate template = 6;
+
+  // The sandbox class the pool runs, with the SandboxConfig it runs it with.
+  // Exactly one entry at this release. Its name cannot change after the pool
+  // is created (the cluster refuses the change, a rule a spec cannot check
+  // because it compares with the object as it was); recreate the pool to
+  // switch classes.
+  repeated KubernetesAgentSubstrateWorkerPoolSandboxClass sandbox_classes = 7 [
+    (buf.validate.field).repeated.min_items = 1,
+    (buf.validate.field).repeated.max_items = 1
+  ];
+}
+
+// KubernetesAgentSubstrateWorkerPoolPodTemplate is the worker pods' metadata,
+// placement and resources. The controller writes everything else about a
+// worker (its image, ports, capabilities, host directory and certificates).
+// Faithful to upstream WorkerPoolPodTemplate.
+message KubernetesAgentSubstrateWorkerPoolPodTemplate {
+  // Labels added to the worker Deployment and its pods, at most 64. Keys in
+  // the ate.dev domain and its subdomains are Substrate's own. These do not
+  // select the pool for actors; the pool's own labels do.
+  map<string, string> labels = 1 [
+    (buf.validate.field).map = {
+      max_pairs: 64
+      keys: {
+        string: {
+          min_len: 1
+          max_len: 317
+          pattern: "^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?[A-Za-z0-9]([-A-Za-z0-9_.]{0,61}[A-Za-z0-9])?$"
+        }
+      }
+      values: {
+        string: {
+          max_len: 63
+          pattern: "^(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])?$"
+        }
+      }
+    },
+    (buf.validate.field).cel = {
+      id: "template.labels.reserved"
+      message: "label keys in the ate.dev domain and its subdomains are reserved for Substrate's controllers"
+      expression: "this.all(key, !key.startsWith('ate.dev/') && !key.contains('.ate.dev/'))"
+    }
+  ];
+
+  // Annotations added to the worker Deployment and its pods, at most 64. Keys
+  // in the ate.dev domain and its subdomains are Substrate's own.
+  map<string, string> annotations = 2 [
+    (buf.validate.field).map = {
+      max_pairs: 64
+      keys: {
+        string: {
+          min_len: 1
+          max_len: 317
+          pattern: "^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?[A-Za-z0-9]([-A-Za-z0-9_.]{0,61}[A-Za-z0-9])?$"
+        }
+      }
+    },
+    (buf.validate.field).cel = {
+      id: "template.annotations.reserved"
+      message: "annotation keys in the ate.dev domain and its subdomains are reserved for Substrate's controllers"
+      expression: "this.all(key, !key.startsWith('ate.dev/') && !key.contains('.ate.dev/'))"
+    }
+  ];
+
+  // Node labels a worker's node must carry, for example a dedicated node
+  // pool's label. A microvm pool needs no selector for KVM: the node agent
+  // advertises KVM as a device and the worker requests it.
+  map<string, string> node_selector = 3;
+
+  // Tolerations for the worker pods, at most 16, for placing a pool on
+  // tainted nodes (a tenant's own nodes, say). The controller always adds
+  // `ate.dev/sandboxClass=<class>:NoSchedule`, so nodes tainted that way take
+  // only workers of that class.
+  repeated dev.planton.kubernetes.KubernetesCoreV1ApiToleration tolerations = 4 [(buf.validate.field).repeated.max_items = 16];
+
+  // The PriorityClass of the worker pods. Defaults to a KubernetesPriorityClass
+  // reference (its priority_class_name output); pass the literal name with
+  // `value:` for one Planton does not manage.
+  dev.planton.shared.foreignkey.v1.StringValueOrRef priority_class_name = 5 [
+    (dev.planton.shared.foreignkey.v1.default_kind) = KubernetesPriorityClass,
+    (dev.planton.shared.foreignkey.v1.default_kind_field_path) = "status.outputs.priority_class_name"
+  ];
+
+  // Node affinity rules for the worker pods, written to the pods'
+  // `affinity.nodeAffinity`.
+  dev.planton.kubernetes.KubernetesCoreV1ApiNodeAffinity node_affinity = 6;
+
+  // Compute resources of each worker pod. The cpu and memory limits are the
+  // capacity the worker advertises, a budget its actors share: each placed
+  // actor spends the limits its actor template declares, and an actor that
+  // fits on no worker's remainder is refused for lack of capacity. Leaving a
+  // limit unset leaves that resource unbounded for placement, so size the
+  // limits for the actors a worker should host together. Requests size what
+  // the Kubernetes scheduler reserves per worker. Upstream's controller
+  // copies only requests and limits to the worker container; `claims` is
+  // accepted and not applied.
+  dev.planton.kubernetes.KubernetesCoreV1ApiResourceRequirements resources = 7;
+
+  // The ServiceAccount the worker pods run as, in the pool's namespace.
+  // Unset, the namespace's default ServiceAccount. Defaults to a
+  // KubernetesServiceAccount reference (its service_account_name output);
+  // pass the literal name with `value:` for one Planton does not manage.
+  dev.planton.shared.foreignkey.v1.StringValueOrRef service_account_name = 8 [
+    (dev.planton.shared.foreignkey.v1.default_kind) = KubernetesServiceAccount,
+    (dev.planton.shared.foreignkey.v1.default_kind_field_path) = "status.outputs.service_account_name"
+  ];
+}
+
+// KubernetesAgentSubstrateWorkerPoolSandboxClass is the sandbox class a pool
+// runs and the SandboxConfig it runs it with. Faithful to upstream
+// WorkerPoolSandboxClass.
+message KubernetesAgentSubstrateWorkerPoolSandboxClass {
+  // The sandbox runtime family, which shapes the worker pods: "gvisor" runs
+  // actors under gVisor inside an ordinary worker pod; "microvm" requests
+  // the KVM device the node agent advertises (so workers land only on nodes
+  // that have it) and mounts the host's TUN device. The worker image must be
+  // built for the same class.
+  string name = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string = {
+      in: [
+        "gvisor",
+        "microvm"
+      ]
+    }
+  ];
+
+  // The SandboxConfig the pool resolves for this class; its class must match.
+  // Unset, the pool resolves the newest config of the class annotated
+  // `sandboxconfig.ate.dev/is-class-default: "true"` (for gvisor, the
+  // control plane's `gvisor-default` unless a newer default exists). The
+  // pool's status reports the config in use; the controller starts the
+  // worker Deployment only once the class resolves, and a config a pool uses
+  // cannot be deleted until the pool moves off it.
+  //
+  // An actor boots the default version of the config its actor template
+  // names, not of this one, so name the same config in the templates that
+  // run on the pool: the pool's deletion guard then covers the runtime its
+  // actors boot.
+  KubernetesAgentSubstrateWorkerPoolSandboxConfigRef config_ref = 2;
+}
+
+// KubernetesAgentSubstrateWorkerPoolSandboxConfigRef names the cluster-scoped
+// SandboxConfig a pool runs. Faithful to upstream SandboxConfigReference.
+message KubernetesAgentSubstrateWorkerPoolSandboxConfigRef {
+  // Name of the SandboxConfig. Defaults to a
+  // KubernetesAgentSubstrateSandboxConfig reference (its sandbox_config_name
+  // output), so the config is created first; pass the literal name with
+  // `value:` for one Planton does not manage, such as `gvisor-default`.
+  dev.planton.shared.foreignkey.v1.StringValueOrRef name = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).cel = {
+      id: "config_ref.name.max_len"
+      message: "a SandboxConfig name is at most 253 characters"
+      expression: "!has(this.value) || size(this.value) <= 253"
+    },
+    (dev.planton.shared.foreignkey.v1.default_kind) = KubernetesAgentSubstrateSandboxConfig,
+    (dev.planton.shared.foreignkey.v1.default_kind_field_path) = "status.outputs.sandbox_config_name",
+    (dev.planton.shared.options.diagram_label) = "sandbox config"
+  ];
+}

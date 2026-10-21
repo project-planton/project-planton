@@ -1,0 +1,36 @@
+apiVersion: kubernetes.planton.dev/v1alpha1
+kind: KubernetesAgentSubstrate
+metadata:
+  name: agent-substrate
+spec:
+  # GKE, keyless end to end: Cloud SQL with IAM login as the API server's
+  # Google service account, snapshots in a GCS bucket, both through Workload
+  # Identity. The cluster, the instance, the bucket and the two service
+  # accounts are resources of their own, referenced by name.
+  namespace:
+    value: ate-system
+  createNamespace: true
+  platform:
+    gke:
+      clusterId:
+        valueFrom:
+          name: agents
+      apiServerServiceAccount:
+        valueFrom:
+          name: ate-api-server
+      nodeAgentServiceAccount:
+        valueFrom:
+          name: atelet
+  database:
+    cloudSql:
+      instanceConnectionName:
+        valueFrom:
+          name: substrate
+  storage:
+    gcs:
+      bucket:
+        valueFrom:
+          name: agent-snapshots
+  egress:
+    credentialProvider:
+      disabled: {}

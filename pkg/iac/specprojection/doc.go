@@ -7,8 +7,9 @@
 // collapse to the primitive an engine expects (a StringValueOrRef becomes its
 // resolved string), orchestrator-only messages are dropped, free-form JSON
 // well-known types pass through verbatim, manifest-only fields never leave
-// the manifest, and the two Kubernetes shape markers write an IntOrString as a
-// number or a name and a list-valued map's wrapper values as bare lists.
+// the manifest, and the three Kubernetes shape markers write an IntOrString as
+// a number or a name, a list-valued map's wrapper values as bare lists and a
+// map-valued map's wrapper values as bare maps.
 //
 // Two key styles exist (KeyStyle). Provider-abstraction Terraform modules read
 // snake_case variables. Kubernetes-manifest-projection kinds read the custom

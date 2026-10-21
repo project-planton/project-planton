@@ -25,6 +25,9 @@
 #   CLOUDFLARE_API_TOKEN    the Cloudflare credential both engines read (required;
 #                           needs Workers R2 Storage Write + Account API Tokens Write)
 #   CLOUDFLARE_ACCOUNT_ID   the Cloudflare account the R2 side lives in (required)
+#   GKE_CLUSTER_LOCATION    optional, with GKE_CLUSTER_NAME; the cluster's location and
+#   GKE_CLUSTER_NAME        name, whose tokens the Agent Substrate lane trusts. Default:
+#                           read from a gcloud-written context name (gke_<p>_<l>_<n>).
 #   PLANTON_BIN             the planton CLI to use (default: planton on PATH; point it
 #                           at a tree build when the lanes exercise unreleased specs)
 #
@@ -45,6 +48,15 @@ here="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 : "${CLOUDFLARE_API_TOKEN:?set CLOUDFLARE_API_TOKEN to a Cloudflare token with Workers R2 Storage Write and Account API Tokens Write}"
 : "${CLOUDFLARE_ACCOUNT_ID:?set CLOUDFLARE_ACCOUNT_ID to the Cloudflare account the R2 side lives in}"
 PLANTON_BIN="${PLANTON_BIN:-planton}"
+if [ -z "${GKE_CLUSTER_LOCATION:-}" ] || [ -z "${GKE_CLUSTER_NAME:-}" ]; then
+  if [[ "${KUBE_CONTEXT}" =~ ^gke_([^_]+)_([^_]+)_(.+)$ ]]; then
+    GKE_CLUSTER_LOCATION="${BASH_REMATCH[2]}"
+    GKE_CLUSTER_NAME="${BASH_REMATCH[3]}"
+  else
+    echo "context ${KUBE_CONTEXT} is not a gcloud-written GKE context; set GKE_CLUSTER_LOCATION and GKE_CLUSTER_NAME to the cluster's location and name" >&2
+    exit 1
+  fi
+fi
 
 state_dir="${HOME}/.planton-e2e/planton-e2e-gke"
 mkdir -p "${state_dir}/rendered"
@@ -132,6 +144,11 @@ pg_gsa="planton-e2e-gke-pg-backup@${GCP_PROJECT_ID}.iam.gserviceaccount.com"
 openbao_backup_gsa="planton-e2e-gke-openbao-backup@${GCP_PROJECT_ID}.iam.gserviceaccount.com"
 openbao_unseal_gsa="planton-e2e-gke-openbao-unseal@${GCP_PROJECT_ID}.iam.gserviceaccount.com"
 bucket="planton-e2e-gke-backups-${GCP_PROJECT_ID}"
+langfuse_gsa="planton-e2e-gke-langfuse@${GCP_PROJECT_ID}.iam.gserviceaccount.com"
+langfuse_bucket="planton-e2e-gke-langfuse-${GCP_PROJECT_ID}"
+substrate_atelet_gsa="planton-e2e-gke-atelet@${GCP_PROJECT_ID}.iam.gserviceaccount.com"
+substrate_api_gsa="planton-e2e-gke-ate-api@${GCP_PROJECT_ID}.iam.gserviceaccount.com"
+substrate_bucket="planton-e2e-gke-substrate-${GCP_PROJECT_ID}"
 # The seal's key ring and key are named by the manifest (the ring fixed and
 # permanent, the key by this bootstrap's id); the OpenBao seal wants the
 # BARE names, in the ring's location — which is the bucket's region.
@@ -184,6 +201,13 @@ export PLANTON_E2E_GKE_OPENBAO_BACKUP_GSA="${openbao_backup_gsa}"
 export PLANTON_E2E_GKE_OPENBAO_UNSEAL_GSA="${openbao_unseal_gsa}"
 export PLANTON_E2E_GKE_OPENBAO_KEY_RING="${openbao_key_ring}"
 export PLANTON_E2E_GKE_OPENBAO_CRYPTO_KEY="${openbao_crypto_key}"
+export PLANTON_E2E_GKE_LANGFUSE_GSA="${langfuse_gsa}"
+export PLANTON_E2E_GKE_LANGFUSE_BUCKET="${langfuse_bucket}"
+export PLANTON_E2E_GKE_SUBSTRATE_ATELET_GSA="${substrate_atelet_gsa}"
+export PLANTON_E2E_GKE_SUBSTRATE_API_GSA="${substrate_api_gsa}"
+export PLANTON_E2E_GKE_SUBSTRATE_BUCKET="${substrate_bucket}"
+export PLANTON_E2E_GKE_CLUSTER_LOCATION="${GKE_CLUSTER_LOCATION}"
+export PLANTON_E2E_GKE_CLUSTER_NAME="${GKE_CLUSTER_NAME}"
 EOF
 chmod 600 "${state_dir}/env.sh"
 
@@ -192,3 +216,4 @@ echo "    source ${state_dir}/env.sh"
 echo "    go test -tags=e2e -timeout=60m -v -count=1 -run 'TestKubernetesPostgres_' ./e2e/"
 echo "    go test -tags=e2e -timeout=60m -v -count=1 -run 'TestKubernetesMongodb_' ./e2e/"
 echo "    go test -tags=e2e -timeout=90m -v -count=1 -run 'TestKubernetesOpenBao_' ./e2e/"
+echo "    go test -tags=e2e -timeout=60m -v -count=1 -run 'TestKubernetesAgentSubstrate_' ./e2e/"

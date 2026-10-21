@@ -1,0 +1,17 @@
+apiVersion: qa.planton.dev/v1
+kind: CatalogKindE2EProfile
+metadata:
+  name: kubernetesagentsubstratesandboxconfig
+spec:
+  tier: 4
+  # Every lane runs on the pod-certificates cluster profile, behind the
+  # control plane the registry prerequisite installs from its published
+  # profile (bundled database, S3 on the catalog's SeaweedFS, definitions not
+  # kept), whose namespace, store and store key come from this kind's
+  # consumer-scoped prerequisites/. Each lane reads its fields back from the
+  # live object and proves the API server resolves the config: a template of
+  # its class is accepted and one of the other class is refused. A pool
+  # running a non-default config is proved by the worker pool's actor lane.
+  status: pending_proof
+  validated_provisioners: []
+  timeout_minutes: 40

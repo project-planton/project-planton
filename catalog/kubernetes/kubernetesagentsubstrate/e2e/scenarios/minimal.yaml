@@ -1,0 +1,45 @@
+# The smallest kind install: a generic cluster, upstream's bundled
+# PostgreSQL, snapshots in the catalog's own S3 store (the endpoint by
+# reference, the key in a Secret in ate-system), credential injection off.
+# A KubernetesNamespace owns ate-system so the Secret can be there first.
+# The verifier asserts every workload rolled out, the definitions stamped
+# with v0.5.0, the release stamps on, and then calls the API from the
+# outputs alone: an atespace created, read and deleted.
+#
+# THE KEEP-AND-READOPT PROOF: crds.keepOnUninstall defaults true, so the
+# first destroy must leave the three definitions on the cluster, and the
+# bundled database's volume too (another resource owns the namespace); the
+# reinstall the annotation requests must re-adopt both, the volume's 0.5
+# stamp passing the upgrade check, and serve again. This is the only lane
+# that keeps definitions behind on the shared cluster; agentgateway, which
+# runs first, lets them go, so the definition refusal after it starts
+# clean.
+apiVersion: kubernetes.planton.dev/v1alpha1
+kind: KubernetesAgentSubstrate
+metadata:
+  name: e2e-ate-min
+  annotations:
+    planton.dev/e2e-cluster-profile: "pod-certificates"
+    planton.dev/e2e-reinstall: "true"
+    planton.dev/e2e-prerequisites: "catalog/kubernetes/kubernetesagentsubstrate/e2e/fixture-namespace.yaml, catalog/kubernetes/kubernetesagentsubstrate/e2e/fixture-s3-store.yaml, catalog/kubernetes/kubernetesagentsubstrate/e2e/fixture-s3-credentials.yaml"
+spec:
+  namespace:
+    value: ate-system
+  platform:
+    generic:
+      serviceAccountIssuer: https://kubernetes.default.svc.cluster.local
+  database:
+    bundled:
+      volumeSize: 2Gi
+  storage:
+    s3:
+      endpoint:
+        valueFrom:
+          name: e2e-ate-s3
+      bucket: substrate-snapshots
+      credentials:
+        secretName:
+          value: substrate-s3
+  egress:
+    credentialProvider:
+      disabled: {}

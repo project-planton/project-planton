@@ -32,6 +32,8 @@ const (
 	KubernetesObjectMetadataField_object_labels KubernetesObjectMetadataField = 1
 	// metadata.annotations
 	KubernetesObjectMetadataField_object_annotations KubernetesObjectMetadataField = 2
+	// metadata.name
+	KubernetesObjectMetadataField_object_name KubernetesObjectMetadataField = 3
 )
 
 // Enum value maps for KubernetesObjectMetadataField.
@@ -40,11 +42,13 @@ var (
 		0: "kubernetes_object_metadata_field_unspecified",
 		1: "object_labels",
 		2: "object_annotations",
+		3: "object_name",
 	}
 	KubernetesObjectMetadataField_value = map[string]int32{
 		"kubernetes_object_metadata_field_unspecified": 0,
 		"object_labels":      1,
 		"object_annotations": 2,
+		"object_name":        3,
 	}
 )
 
@@ -233,6 +237,14 @@ var file_shared_options_options_proto_extTypes = []protoimpl.ExtensionInfo{
 		Filename:      "shared/options/options.proto",
 	},
 	{
+		ExtendedType:  (*descriptorpb.FieldOptions)(nil),
+		ExtensionType: (*bool)(nil),
+		Field:         60014,
+		Name:          "dev.planton.shared.options.kubernetes_map_valued_map",
+		Tag:           "varint,60014,opt,name=kubernetes_map_valued_map",
+		Filename:      "shared/options/options.proto",
+	},
+	{
 		ExtendedType:  (*descriptorpb.EnumValueOptions)(nil),
 		ExtensionType: (*string)(nil),
 		Field:         60050,
@@ -382,26 +394,32 @@ var (
 	//
 	// optional string secret_home = 60010;
 	E_SecretHome = &file_shared_options_options_proto_extTypes[9]
-	// Marks a top-level map<string, string> field of a Kubernetes manifest
-	// projection kind's spec (a kind whose registry entry carries
-	// kubernetes_manifest_projection) as the custom resource's OWN metadata: its
-	// labels or its annotations. Such a field describes the object, not its
-	// spec, so every engine routes it to metadata.labels or
-	// metadata.annotations and never into the custom resource's spec -- the
-	// same way the namespace reference is routed to metadata.namespace.
+	// Marks a top-level field of a Kubernetes manifest projection kind's spec (a
+	// kind whose registry entry carries kubernetes_manifest_projection) as part
+	// of the custom resource's OWN metadata: its name (a singular string), its
+	// labels or its annotations (map<string, string>). Such a field describes
+	// the object, not its spec, so every engine routes it to metadata.name,
+	// metadata.labels or metadata.annotations and never into the custom
+	// resource's spec -- the same way the namespace reference is routed to
+	// metadata.namespace.
 	//
-	// It exists because for some custom resources the object's labels are
+	// It exists because for some custom resources the object's metadata is
 	// configuration: prometheus-operator selects ServiceMonitors, PodMonitors
 	// and PrometheusRules by their labels, so a kind that could not set them
-	// could not be picked up by a Prometheus with a selector.
+	// could not be picked up by a Prometheus with a selector; and a GKE
+	// ComputeClass named `default` is the cluster's default class, while pods
+	// select every other class by its name, so the object's name is the value
+	// workloads reference rather than the Planton resource's name. A kind
+	// without an object_name field names its object after metadata.name.
 	//
 	// Planton's identity labels (planton.ai/resource, resource-name,
 	// resource-kind, resource-id, organization, environment) are stamped on top
 	// and always win, so a manifest can never relabel an object as another
 	// resource. The routing is implemented once, in
 	// pkg/kubernetes/manifestprojection, which both the generated Terraform
-	// module and the Pulumi module read; a catalog test proves the marker sits
-	// only on top-level string maps of projection kinds' specs.
+	// module and the Pulumi module read; a catalog test proves each value sits
+	// only on its field shape (a top-level string map, or a top-level singular
+	// string for object_name) of a projection kind's spec.
 	//
 	// optional dev.planton.shared.options.KubernetesObjectMetadataField kubernetes_object_metadata = 60011;
 	E_KubernetesObjectMetadata = &file_shared_options_options_proto_extTypes[10]
@@ -434,19 +452,34 @@ var (
 	// `{key: [...]}`. Honored once, in pkg/iac/specprojection, which both
 	// engines' modules read.
 	//
-	// A catalog test proves each of the three projection markers
-	// (kubernetes_object_metadata, kubernetes_int_or_string and this one) sits
-	// only on the field shape it is defined for, and only where a projection
-	// kind's spec reaches it.
+	// A catalog test proves each of the four projection markers
+	// (kubernetes_object_metadata, kubernetes_int_or_string, this one and
+	// kubernetes_map_valued_map) sits only on the field shape it is defined for,
+	// and only where a projection kind's spec reaches it.
 	//
 	// optional bool kubernetes_list_valued_map = 60013;
 	E_KubernetesListValuedMap = &file_shared_options_options_proto_extTypes[12]
+	// Marks a map<string, Wrapper> field of a Kubernetes manifest projection
+	// kind whose upstream values are themselves free-keyed maps (an Agent
+	// Substrate SandboxConfig's assets: architecture, then asset name, then the
+	// file). A proto map value cannot be a map, so each value is a wrapper
+	// message whose single field is the inner map (named `entries`, the
+	// catalog's wrapper convention); the projection writes each entry as that
+	// bare map, the custom resource's own shape, and projects the inner values
+	// by their own type's rules.
+	//
+	// The manifest author writes `{key: {entries: {name: ...}}}`; the object
+	// carries `{key: {name: ...}}`. Honored once, in pkg/iac/specprojection,
+	// which both engines' modules read.
+	//
+	// optional bool kubernetes_map_valued_map = 60014;
+	E_KubernetesMapValuedMap = &file_shared_options_options_proto_extTypes[13]
 )
 
 // Extension fields to descriptorpb.EnumValueOptions.
 var (
 	// optional string display_label = 60050;
-	E_DisplayLabel = &file_shared_options_options_proto_extTypes[13]
+	E_DisplayLabel = &file_shared_options_options_proto_extTypes[14]
 )
 
 var File_shared_options_options_proto protoreflect.FileDescriptor
@@ -456,11 +489,12 @@ const file_shared_options_options_proto_rawDesc = "" +
 	"\x1cshared/options/options.proto\x12\x1adev.planton.shared.options\x1a google/protobuf/descriptor.proto\"6\n" +
 	"\fKeyValuePair\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value*|\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value*\x8d\x01\n" +
 	"\x1dKubernetesObjectMetadataField\x120\n" +
 	",kubernetes_object_metadata_field_unspecified\x10\x00\x12\x11\n" +
 	"\robject_labels\x10\x01\x12\x16\n" +
-	"\x12object_annotations\x10\x02:9\n" +
+	"\x12object_annotations\x10\x02\x12\x0f\n" +
+	"\vobject_name\x10\x03:9\n" +
 	"\adefault\x12\x1d.google.protobuf.FieldOptions\x18\xe1\xd4\x03 \x01(\tR\adefault:P\n" +
 	"\x13recommended_default\x12\x1d.google.protobuf.FieldOptions\x18\xe2\xd4\x03 \x01(\tR\x12recommendedDefault:\x81\x01\n" +
 	"\x17recommended_default_map\x12\x1d.google.protobuf.FieldOptions\x18\xe3\xd4\x03 \x03(\v2(.dev.planton.shared.options.KeyValuePairR\x15recommendedDefaultMap:=\n" +
@@ -474,7 +508,8 @@ const file_shared_options_options_proto_rawDesc = "" +
 	"secretHome:\x98\x01\n" +
 	"\x1akubernetes_object_metadata\x12\x1d.google.protobuf.FieldOptions\x18\xeb\xd4\x03 \x01(\x0e29.dev.planton.shared.options.KubernetesObjectMetadataFieldR\x18kubernetesObjectMetadata:X\n" +
 	"\x18kubernetes_int_or_string\x12\x1d.google.protobuf.FieldOptions\x18\xec\xd4\x03 \x01(\bR\x15kubernetesIntOrString:\\\n" +
-	"\x1akubernetes_list_valued_map\x12\x1d.google.protobuf.FieldOptions\x18\xed\xd4\x03 \x01(\bR\x17kubernetesListValuedMap:H\n" +
+	"\x1akubernetes_list_valued_map\x12\x1d.google.protobuf.FieldOptions\x18\xed\xd4\x03 \x01(\bR\x17kubernetesListValuedMap:Z\n" +
+	"\x19kubernetes_map_valued_map\x12\x1d.google.protobuf.FieldOptions\x18\xee\xd4\x03 \x01(\bR\x16kubernetesMapValuedMap:H\n" +
 	"\rdisplay_label\x12!.google.protobuf.EnumValueOptions\x18\x92\xd5\x03 \x01(\tR\fdisplayLabelB\xe7\x01\n" +
 	"\x1ecom.dev.planton.shared.optionsB\fOptionsProtoP\x01Z+github.com/plantonhq/planton/shared/options\xa2\x02\x04DPSO\xaa\x02\x1aDev.Planton.Shared.Options\xca\x02\x1aDev\\Planton\\Shared\\Options\xe2\x02&Dev\\Planton\\Shared\\Options\\GPBMetadata\xea\x02\x1dDev::Planton::Shared::Optionsb\x06proto3"
 
@@ -512,13 +547,14 @@ var file_shared_options_options_proto_depIdxs = []int32{
 	2,  // 10: dev.planton.shared.options.kubernetes_object_metadata:extendee -> google.protobuf.FieldOptions
 	2,  // 11: dev.planton.shared.options.kubernetes_int_or_string:extendee -> google.protobuf.FieldOptions
 	2,  // 12: dev.planton.shared.options.kubernetes_list_valued_map:extendee -> google.protobuf.FieldOptions
-	3,  // 13: dev.planton.shared.options.display_label:extendee -> google.protobuf.EnumValueOptions
-	1,  // 14: dev.planton.shared.options.recommended_default_map:type_name -> dev.planton.shared.options.KeyValuePair
-	0,  // 15: dev.planton.shared.options.kubernetes_object_metadata:type_name -> dev.planton.shared.options.KubernetesObjectMetadataField
-	16, // [16:16] is the sub-list for method output_type
-	16, // [16:16] is the sub-list for method input_type
-	14, // [14:16] is the sub-list for extension type_name
-	0,  // [0:14] is the sub-list for extension extendee
+	2,  // 13: dev.planton.shared.options.kubernetes_map_valued_map:extendee -> google.protobuf.FieldOptions
+	3,  // 14: dev.planton.shared.options.display_label:extendee -> google.protobuf.EnumValueOptions
+	1,  // 15: dev.planton.shared.options.recommended_default_map:type_name -> dev.planton.shared.options.KeyValuePair
+	0,  // 16: dev.planton.shared.options.kubernetes_object_metadata:type_name -> dev.planton.shared.options.KubernetesObjectMetadataField
+	17, // [17:17] is the sub-list for method output_type
+	17, // [17:17] is the sub-list for method input_type
+	15, // [15:17] is the sub-list for extension type_name
+	0,  // [0:15] is the sub-list for extension extendee
 	0,  // [0:0] is the sub-list for field type_name
 }
 
@@ -534,7 +570,7 @@ func file_shared_options_options_proto_init() {
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_shared_options_options_proto_rawDesc), len(file_shared_options_options_proto_rawDesc)),
 			NumEnums:      1,
 			NumMessages:   1,
-			NumExtensions: 14,
+			NumExtensions: 15,
 			NumServices:   0,
 		},
 		GoTypes:           file_shared_options_options_proto_goTypes,

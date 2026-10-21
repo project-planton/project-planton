@@ -1,0 +1,4 @@
+name: kubernetes-agent-substrate-csi-driver-config
+runtime:
+  name: go
+description: Pulumi module that provisions an Agent Substrate CSIDriverConfig from a KubernetesAgentSubstrateCsiDriverConfig manifest.

@@ -1,0 +1,86 @@
+# Control profile: this component's posture against every control in the
+# central catalog (catalog/_compliance/controls-catalog.yaml). Every control
+# is examined; not_applicable states why. Evidence is verifiable against the
+# spec contract and the platform modules. Schema:
+# compliance/catalogkindcontrolprofile/v1.
+apiVersion: compliance.planton.dev/v1
+kind: CatalogKindControlProfile
+metadata:
+  name: kubernetesagentsubstrateworkerpool
+spec:
+  controls:
+    - control_id: enc-at-rest
+      status: not_applicable
+      notes: "Workers keep no data beyond a node-local cache; an actor's durable state goes to the control plane's snapshot storage, whose encryption is the bucket's (KubernetesAgentSubstrate)."
+    - control_id: enc-at-rest-cmk
+      status: not_applicable
+      notes: "Customer-managed keys for snapshots are the control plane's bucket's choice."
+    - control_id: enc-in-transit
+      status: enforced_by_default
+      evidence:
+        type: module_default
+        reference: "Substrate's controller gives every worker pod-certificate volumes (pod identity and the service-DNS trust bundle); workers register with the node agent and the API server over mutual TLS, and the router reaches a worker's tunnel on port 443."
+      notes: "The certificates come from the control plane's pod-certificate controller; nothing in this spec turns them off."
+    - control_id: no-public-access
+      status: enforced_by_default
+      evidence:
+        type: module_default
+        reference: "The controller renders no Service for a pool; workers are reached only through Substrate's router."
+      notes: "Expose actors to the outside through the router, never through the workers."
+    - control_id: restricted-ingress
+      status: enforced_by_default
+      evidence:
+        type: module_default
+        reference: "Substrate's controller creates a NetworkPolicy per pool that admits ingress to the workers only from the router pods in the control plane's namespace."
+      notes: "Egress from actors is governed by the control plane's egress gateway and policies, not by the pool."
+    - control_id: edge-protection
+      status: not_applicable
+      notes: "Workers are not an edge endpoint; edge protection belongs in front of the router."
+    - control_id: rbac
+      status: not_applicable
+      notes: "Who may create or resize a pool is the cluster's Kubernetes RBAC on workerpools.ate.dev in the pool's namespace; who may place actors on it is the control plane's API authorization."
+    - control_id: workload-identity
+      status: configurable
+      field_path: template
+      evidence:
+        type: spec_default
+        reference: "template.service_account_name sets the ServiceAccount the workers run as; unset, the namespace's default ServiceAccount. Actors get their own identities from the control plane (actor JWTs and certificates)."
+      notes: "Give workers a dedicated ServiceAccount with no permissions of its own."
+    - control_id: no-legacy-auth
+      status: not_applicable
+      notes: "Workers authenticate with pod certificates only."
+    - control_id: strong-user-auth
+      status: not_applicable
+      notes: "The pool has no users."
+    - control_id: audit-logging
+      status: not_applicable
+      notes: "Changes to the pool are recorded by the cluster's API server audit log; actor operations are the control plane's to log."
+    - control_id: monitoring-integration
+      status: enforced_by_default
+      evidence:
+        type: module_default
+        reference: "The pool's status reports desired, current and ready workers and the Resolved condition of its class; the control plane exports a count of workers by state on its metrics endpoint."
+      notes: "Alert when ready workers stay below the declared size, or when every worker is busy for long: resumes then wait for capacity."
+    - control_id: backup-recovery
+      status: not_applicable
+      notes: "The pool holds no state; actors are suspended into the control plane's storage, and a pool recovers by re-applying the manifest."
+    - control_id: backup-retention-policy
+      status: not_applicable
+      notes: "There is nothing to retain (see backup-recovery); snapshot retention is the control plane's bucket's."
+    - control_id: multi-zone-ha
+      status: configurable
+      field_path: template
+      evidence:
+        type: spec_default
+        reference: "template.node_affinity and template.tolerations place workers; the controller rolls a pool at most 10% at a time with no surge, so a rollout never takes the pool down."
+      notes: "A pool of one worker puts every actor it hosts on one pod and one node; spread the pool over several workers and nodes for the concurrency and resilience a product needs."
+    - control_id: deletion-protection
+      status: not_applicable
+      notes: "The object carries no deletion protection of its own; Kubernetes objects are protected through RBAC and admission policy on the cluster. Deleting a pool stops its workers; their actors' snapshots stay in storage."
+    - control_id: managed-patching
+      status: configurable
+      field_path: worker_image
+      evidence:
+        type: spec_default
+        reference: "worker_image references the control plane's worker image output, so upgrading the control plane rolls the pool to the matching worker; the runtime versions come from the SandboxConfig the pool runs."
+      notes: "Keep the worker image a reference rather than a literal, so it moves with the control plane."

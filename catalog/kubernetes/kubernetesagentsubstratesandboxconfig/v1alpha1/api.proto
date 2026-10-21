@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+package dev.planton.kubernetes.kubernetesagentsubstratesandboxconfig.v1alpha1;
+
+import "buf/validate/validate.proto";
+import "catalog/kubernetes/kubernetesagentsubstratesandboxconfig/v1alpha1/outputs.proto";
+import "catalog/kubernetes/kubernetesagentsubstratesandboxconfig/v1alpha1/spec.proto";
+import "shared/metadata.proto";
+
+// KubernetesAgentSubstrateSandboxConfig is an Agent Substrate SandboxConfig:
+// the exact sandbox runtime (gVisor or microVM files, checked by SHA-256) an
+// actor boots with, in versions a team rolls forward and back.
+message KubernetesAgentSubstrateSandboxConfig {
+  // api-version
+  string api_version = 1 [(buf.validate.field).string.const = 'kubernetes.planton.dev/v1alpha1'];
+
+  // resource-kind
+  string kind = 2 [(buf.validate.field).string.const = 'KubernetesAgentSubstrateSandboxConfig'];
+
+  // metadata
+  dev.planton.shared.CatalogObjectMetadata metadata = 3 [(buf.validate.field).required = true];
+
+  // spec
+  KubernetesAgentSubstrateSandboxConfigSpec spec = 4 [(buf.validate.field).required = true];
+
+  // status
+  KubernetesAgentSubstrateSandboxConfigStatus status = 5;
+}
+
+// KubernetesAgentSubstrateSandboxConfigStatus holds the deployment status and outputs.
+message KubernetesAgentSubstrateSandboxConfigStatus {
+  // outputs
+  KubernetesAgentSubstrateSandboxConfigOutputs outputs = 1;
+}

@@ -1,0 +1,20 @@
+# The smallest pool: one gVisor worker on the class default
+# (the control plane's gvisor-default), running the worker image the control
+# plane publishes for the installed release. The verifier waits for the class
+# to resolve, the worker to be ready, and the API to list it as active.
+apiVersion: kubernetes.planton.dev/v1alpha1
+kind: KubernetesAgentSubstrateWorkerPool
+metadata:
+  name: e2e-asubwp-min
+  annotations:
+    planton.dev/e2e-cluster-profile: "pod-certificates"
+    planton.dev/e2e-prerequisites: "catalog/kubernetes/kubernetesagentsubstrateworkerpool/e2e/fixture-namespace.yaml"
+spec:
+  namespace:
+    value: e2e-ate-workers
+  replicas: 1
+  workerImage:
+    valueFrom:
+      name: e2e-ate-prereq
+  sandboxClasses:
+    - name: gvisor

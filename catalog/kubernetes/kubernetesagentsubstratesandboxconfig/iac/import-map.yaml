@@ -1,0 +1,31 @@
+apiVersion: iac.planton.dev/v1
+kind: CatalogKindImportMap
+metadata:
+  name: kubernetesagentsubstratesandboxconfig
+spec:
+  # One kubectl_manifest applying the SandboxConfig. The composed import ID is
+  # apiVersion//kind//name — apiVersion and kind are constants of this module
+  # (it renders exactly one GVK), declared as literals. SandboxConfig is
+  # cluster-scoped, so the optional namespace segment drops.
+  values:
+    - name: api_version
+      derivations:
+        - literal: ate.dev/v1alpha1
+      where_to_find: >-
+        Always "ate.dev/v1alpha1" — the module pins the served SandboxConfig
+        version.
+    - name: kind
+      derivations:
+        - literal: SandboxConfig
+      where_to_find: Always "SandboxConfig" — the CR kind this module applies.
+    - name: name
+      derivations:
+        - from_output: sandbox_config_name
+        - from_spec_field: name
+      where_to_find: >-
+        The SandboxConfig's metadata.name (the spec's `name`) —
+        `kubectl get sandboxconfigs` (NAME column).
+    - name: namespace
+      where_to_find: >-
+        Not applicable — SandboxConfig is cluster-scoped, so the composed import
+        ID has no namespace segment (the optional [//{namespace}] group drops).

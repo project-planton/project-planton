@@ -1,0 +1,20 @@
+# The full surface, for offline proofs (tofu plan, pulumi preview, a server
+# dry run): every field of the config, the same object the full-surface lane
+# deploys.
+apiVersion: kubernetes.planton.dev/v1alpha1
+kind: KubernetesAgentSubstrateCsiDriverConfig
+metadata:
+  name: e2e-asubcsi-full
+spec:
+  name: hostpath.csi.k8s.io
+  labels:
+    team: storage
+  annotations:
+    planton.dev/e2e-note: full-surface
+  driverName: hostpath.csi.k8s.io
+  controllerEndpoint: tcp://csi-hostpath-controller.default.svc.cluster.local:50051
+  nodeSocketOverride: unix:///var/lib/kubelet/plugins/csi-hostpath/csi.sock
+  tls:
+    enabled: true
+    usePodIdentity: true
+    serverName: csi-hostpath-controller.default.svc

@@ -95,7 +95,7 @@ func RunKindTest(ctx context.Context, tc *provider.KindTestContext, harness prov
 	}
 	tc.ManifestPath = expandedPath
 
-	verifyCtx := context.WithValue(ctx, provider.ManifestPathKey{}, tc.ManifestPath)
+	verifyCtx := verifyContext(ctx, tc.ManifestPath, nil)
 
 	// Phase 0: deploy dependencies (registry prerequisites merged with any the
 	// scenario manifest declares via its e2e-prerequisites annotation)
@@ -166,7 +166,7 @@ func RunKindTest(ctx context.Context, tc *provider.KindTestContext, harness prov
 				return result
 			}
 			tc.ManifestPath = resolvedPath
-			verifyCtx = context.WithValue(ctx, provider.ManifestPathKey{}, tc.ManifestPath)
+			verifyCtx = verifyContext(ctx, tc.ManifestPath, depOutputs)
 		}
 	}
 
@@ -183,7 +183,7 @@ func RunKindTest(ctx context.Context, tc *provider.KindTestContext, harness prov
 		seededPath, setupErr := runSetupScript(tc, setupScript, expandRunID)
 		if setupErr == nil {
 			tc.ManifestPath = seededPath
-			verifyCtx = context.WithValue(ctx, provider.ManifestPathKey{}, tc.ManifestPath)
+			verifyCtx = verifyContext(ctx, tc.ManifestPath, depOutputs)
 		}
 		result.Phases = append(result.Phases, PhaseResult{
 			Phase:    PhaseSetup,
@@ -367,7 +367,7 @@ func RunKindTest(ctx context.Context, tc *provider.KindTestContext, harness prov
 					return runUpgradeExpectFailure(verifyCtx, tc, harness, upgradeManifest, expectation, originalManifest)
 				}})
 			} else {
-				upgradedCtx := context.WithValue(ctx, provider.ManifestPathKey{}, upgradeManifest)
+				upgradedCtx := verifyContext(ctx, upgradeManifest, depOutputs)
 				upgradedCtx = context.WithValue(upgradedCtx, provider.FirstActManifestPathKey{}, originalManifest)
 				cleanupCtx = upgradedCtx
 				phases = append(phases,

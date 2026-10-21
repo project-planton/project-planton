@@ -1,0 +1,34 @@
+# Cost profile: what drives this component's bill. Field paths are
+# spec-relative proto field names, held to the served contract by the
+# catalog-data conformance gate. Schema: finops/catalogkindcostprofile/v1.
+apiVersion: finops.planton.dev/v1
+kind: CatalogKindCostProfile
+metadata:
+  name: kubernetesagentsubstrate
+spec:
+  billing_model: cluster_capacity
+  cost_drivers:
+    - field_path: database.bundled.volume_size
+      sku_meter: persistent volume storage (GB-month)
+      impact: The bundled database's volume, 500Gi by default (upstream's), billed by the cluster's storage class for as long as it exists -- it outlives a destroy while another resource owns the namespace. Size it to the fleet; evaluation installs need a few Gi.
+    - field_path: database.bundled.resources
+      sku_meter: cluster CPU and memory reservations
+      impact: The bundled database's reservation. Empty means upstream's -- 2 CPU and 1Gi requested; size10 requests 80 CPU and 140Gi.
+    - field_path: cluster_size
+      sku_meter: cluster CPU and memory reservations
+      impact: size10 reserves a large-server database (80 CPU, 140Gi) and raises connection pools; it is upstream's profile for clusters running thousands of agents.
+    - field_path: api_server.replicas
+      sku_meter: cluster CPU and memory reservations
+      impact: Each API server pod reserves api_server.resources again (two by default), plus its object-storage sidecar's 50m CPU and 128Mi.
+    - field_path: node_agent.node_selector
+      sku_meter: cluster CPU and memory reservations
+      impact: The node agent runs one pod per selected node (every node by default), each reserving 100m CPU and 256Mi with its sidecar. Narrow it to the nodes worker pools use.
+    - field_path: storage
+      sku_meter: object storage (GB-month, operations)
+      impact: Every suspended agent's memory and disk snapshot lives in the bucket, billed by its provider; the snapshot count follows the agent count, not this component.
+  estimate_exclusions:
+    - no capacity derivation is published for this kind -- most component reservations are empty unless set, and the database's depends on the database choice
+    - the worker pools that run agents are the real capacity story -- they are declared, sized and priced on the worker pool, never this component's footprint
+    - Cloud SQL, GCS and external databases are their own components' bills
+    - the price of reserved CPU, memory and volumes is the target cluster's node and storage economics, which this catalog cannot know
+  notes: "This component creates no cloud SKU of its own -- its cost is the share of the cluster its control-plane pods and the bundled database reserve, and the bundled database's volume, realized on the cluster's bill. The bucket of agent snapshots and the worker pools are the costs that grow with the fleet."

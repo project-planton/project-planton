@@ -1700,6 +1700,7 @@ Fields on other kinds that can point at this resource:
 | GcpDatastreamConnectionProfile | `spec.mysqlProfile.hostname` | `status.outputs.public_ip` |
 | GcpDatastreamConnectionProfile | `spec.postgresqlProfile.hostname` | `status.outputs.public_ip` |
 | GcpDatastreamConnectionProfile | `spec.sqlServerProfile.hostname` | `status.outputs.public_ip` |
+| KubernetesAgentSubstrate | `spec.database.cloudSql.instanceConnectionName` | `status.outputs.connection_name` |
 
 ## See Also
 

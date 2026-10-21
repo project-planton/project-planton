@@ -1,0 +1,253 @@
+# Least-privilege permissions the IaC runner's Kubernetes principal needs to
+# provision, update, and destroy this component with the platform modules.
+# Every entry is `derived` (static analysis of the module sources plus the
+# document census of the pinned v0.5.0 release Planton publishes, cited in
+# notes) until the live capture lane upgrades it to `proven`. Schema:
+# iac/catalogkindpermissions/v1.
+apiVersion: iac.planton.dev/v1
+kind: CatalogKindPermissions
+metadata:
+  name: kubernetesagentsubstrate
+spec:
+  kubernetes:
+    rules:
+      - api_groups:
+          - ""
+        resources:
+          - namespaces
+        verbs:
+          - get
+          - list
+          - watch
+          - create
+          - update
+          - patch
+          - delete
+        cluster_scoped: true
+        provenance: derived
+        notes: Upstream's FIXED ate-system and podcertificate-controller-system namespaces. get and list are the plan-time namespace checks on both engines (workloadowner on Pulumi, data.kubernetes_resources.namespace on OpenTofu). create, update, patch and delete cover the namespaces group -- ate-system only with create_namespace, the pod-certificate namespace always -- applied first and deleted last. watch is Pulumi's wait for a deleted namespace to be gone. list and watch are Pulumi's informers on the awaited rollout or delete (pulumi-kubernetes v4.33.0, await.go:984-1006), which OpenTofu, polling with get, never needs.
+      - api_groups:
+          - apiextensions.k8s.io
+        resources:
+          - customresourcedefinitions
+        verbs:
+          - get
+          - list
+          - watch
+          - create
+          - update
+          - patch
+          - delete
+        cluster_scoped: true
+        provenance: derived
+        notes: The kept resource definitions (helm_crds.tf, keptcrds.Apply) -- WorkerPool, SandboxConfig and CSIDriverConfig, from the release's crds.yaml. Read by name first (the ownership and never-downgrade checks), then server-side applied; delete only when crds.keep_on_uninstall is false; watch is Pulumi's wait on that delete. list and watch are Pulumi's informers on the awaited rollout or delete (pulumi-kubernetes v4.33.0, await.go:984-1006), which OpenTofu, polling with get, never needs.
+      - api_groups:
+          - apps
+        resources:
+          - deployments
+          - daemonsets
+          - statefulsets
+        verbs:
+          - get
+          - list
+          - watch
+          - create
+          - update
+          - patch
+          - delete
+        cluster_scoped: false
+        provenance: derived
+        notes: The pod-certificate controller, API server, controller, router, egress gateway and credential provider Deployments, the node agent DaemonSet and the bundled database StatefulSet, with the typed settings applied. list is the plan-time workload ownership read and the installed-version stamp on the API server; watch is the awaited rollout. list and watch are Pulumi's informers on the awaited rollout or delete (pulumi-kubernetes v4.33.0, await.go:984-1006), which OpenTofu, polling with get, never needs.
+      - api_groups:
+          - ""
+        resources:
+          - serviceaccounts
+          - services
+          - configmaps
+        verbs:
+          - get
+          - list
+          - watch
+          - create
+          - update
+          - patch
+          - delete
+        cluster_scoped: false
+        provenance: derived
+        notes: Upstream's ServiceAccounts (annotated with Google service accounts on GKE) and Services, upstream's ConfigMaps (Envoy and agentgateway configurations, the OpenTelemetry settings, postgresql.conf), and the module's spec-derived ones (the API server's environment and authentication, the credential provider's namespace policy, the database setup script). list and watch are Pulumi's informers on the awaited rollout or delete (pulumi-kubernetes v4.33.0, await.go:984-1006), which OpenTofu, polling with get, never needs.
+      - api_groups:
+          - ""
+        resources:
+          - secrets
+        verbs:
+          - get
+          - list
+          - watch
+          - create
+          - update
+          - patch
+          - delete
+        cluster_scoped: false
+        provenance: derived
+        notes: The generated CA pools, the actor CA certificate and token signing key, the API server's environment Secret and an external database's server CA (kubernetes_secret_v1 on OpenTofu, core/v1 Secret on Pulumi), in ate-system and podcertificate-controller-system. The runner never reads the S3 or database Secrets a spec references -- pods read those. list and watch are Pulumi's informers on the awaited rollout or delete (pulumi-kubernetes v4.33.0, await.go:984-1006), which OpenTofu, polling with get, never needs.
+      - api_groups:
+          - ""
+        resources:
+          - persistentvolumeclaims
+        verbs:
+          - get
+          - list
+        cluster_scoped: false
+        provenance: derived
+        notes: The plan-time read of the bundled database's volume (data-postgres-0) for the minor that wrote it, which the upgrade refusal checks. The StatefulSet controller creates the volume, never the runner.
+      - api_groups:
+          - ""
+        resources:
+          - persistentvolumeclaims
+        verbs:
+          - watch
+        cluster_scoped: false
+        provenance: derived
+        notes: Pulumi only -- a Deployment's awaited rollout watches the claims its pods mount (pulumi-kubernetes v4.33.0, deployment.go:194-195).
+      - api_groups:
+          - ""
+        resources:
+          - pods
+          - events
+          - endpoints
+        verbs:
+          - list
+          - watch
+        cluster_scoped: false
+        provenance: derived
+        notes: Pulumi only -- the awaited rollouts of the Deployments, DaemonSet and StatefulSet watch their pods and events, and a Service's watches its endpoints (pulumi-kubernetes v4.33.0, deployment.go:184-185, daemonset.go:152-153, statefulset.go:205-206, service.go:147-148, watchers.go:213-215).
+      - api_groups:
+          - apps
+        resources:
+          - replicasets
+        verbs:
+          - list
+          - watch
+        cluster_scoped: false
+        provenance: derived
+        notes: Pulumi only -- a Deployment's awaited rollout watches its ReplicaSets (pulumi-kubernetes v4.33.0, deployment.go:174-175).
+      - api_groups:
+          - rbac.authorization.k8s.io
+        resources:
+          - clusterroles
+          - clusterrolebindings
+          - roles
+          - rolebindings
+        verbs:
+          - get
+          - list
+          - watch
+          - create
+          - update
+          - patch
+          - delete
+        cluster_scoped: true
+        provenance: derived
+        notes: Upstream's ClusterRoles, Roles and bindings, applied verbatim -- every component's, the controller's generated role, the pod-certificate controller's signer role, and with the Kubernetes Secrets provider its cluster-wide Secret reader. list and watch are Pulumi's informers on the awaited rollout or delete (pulumi-kubernetes v4.33.0, await.go:984-1006), which OpenTofu, polling with get, never needs.
+      - api_groups:
+          - rbac.authorization.k8s.io
+        resources:
+          - clusterroles
+          - roles
+        verbs:
+          - escalate
+          - bind
+        cluster_scoped: true
+        provenance: derived
+        notes: Kubernetes refuses to let an identity create a role granting more than it holds, or bind one it does not hold, unless it has escalate and bind. Substrate's roles grant pods, workloads, Secrets (the credential provider), PodCertificateRequests and their signers, ClusterTrustBundles and Substrate's resources cluster-wide; a runner that holds all of those itself needs neither verb.
+      - api_groups:
+          - networking.k8s.io
+        resources:
+          - networkpolicies
+        verbs:
+          - get
+          - list
+          - watch
+          - create
+          - update
+          - patch
+          - delete
+        cluster_scoped: false
+        provenance: derived
+        notes: Upstream's network policies -- default-deny ingress in ate-system and the allowances for the API, database, node agent, router, egress gateway, credential provider and observability. list and watch are Pulumi's informers on the awaited rollout or delete (pulumi-kubernetes v4.33.0, await.go:984-1006), which OpenTofu, polling with get, never needs.
+      - api_groups:
+          - policy
+        resources:
+          - poddisruptionbudgets
+        verbs:
+          - get
+          - list
+          - watch
+          - create
+          - update
+          - patch
+          - delete
+        cluster_scoped: false
+        provenance: derived
+        notes: The API server's disruption budget, from upstream's manifest. list and watch are Pulumi's informers on the awaited rollout or delete (pulumi-kubernetes v4.33.0, await.go:984-1006), which OpenTofu, polling with get, never needs.
+      - api_groups:
+          - scheduling.k8s.io
+        resources:
+          - priorityclasses
+        verbs:
+          - get
+          - list
+          - watch
+          - create
+          - update
+          - patch
+          - delete
+        cluster_scoped: true
+        provenance: derived
+        notes: Upstream's ate-node-critical PriorityClass, which keeps the node agent scheduled ahead of the agents it runs. list and watch are Pulumi's informers on the awaited rollout or delete (pulumi-kubernetes v4.33.0, await.go:984-1006), which OpenTofu, polling with get, never needs.
+      - api_groups:
+          - admissionregistration.k8s.io
+        resources:
+          - validatingadmissionpolicies
+          - validatingadmissionpolicybindings
+        verbs:
+          - get
+          - list
+          - watch
+          - create
+          - update
+          - patch
+          - delete
+        cluster_scoped: true
+        provenance: derived
+        notes: Upstream's sandboxconfig-assets policy and binding, which refuse a SandboxConfig missing the runtime assets its class needs. list and watch are Pulumi's informers on the awaited rollout or delete (pulumi-kubernetes v4.33.0, await.go:984-1006), which OpenTofu, polling with get, never needs.
+      - api_groups:
+          - ate.dev
+        resources:
+          - sandboxconfigs
+        verbs:
+          - get
+          - list
+          - watch
+          - create
+          - update
+          - patch
+          - delete
+        cluster_scoped: true
+        provenance: derived
+        notes: Upstream's default gVisor SandboxConfig (gvisor-default), applied last and deleted first. list and watch are Pulumi's informers on the awaited rollout or delete (pulumi-kubernetes v4.33.0, await.go:984-1006), which OpenTofu, polling with get, never needs.
+      - api_groups:
+          - monitoring.googleapis.com
+        resources:
+          - podmonitorings
+        verbs:
+          - get
+          - list
+          - watch
+          - create
+          - update
+          - patch
+          - delete
+        cluster_scoped: false
+        provenance: derived
+        notes: GKE only -- upstream's PodMonitoring for the router, which Managed Service for Prometheus scrapes. list and watch are Pulumi's informers on the awaited rollout or delete (pulumi-kubernetes v4.33.0, await.go:984-1006), which OpenTofu, polling with get, never needs.

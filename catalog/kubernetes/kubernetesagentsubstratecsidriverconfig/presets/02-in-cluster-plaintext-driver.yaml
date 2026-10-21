@@ -1,0 +1,9 @@
+apiVersion: kubernetes.planton.dev/v1alpha1
+kind: KubernetesAgentSubstrateCsiDriverConfig
+metadata:
+  name: <config-resource-name>
+spec:
+  name: csi.example.com
+  driverName: csi.example.com
+  controllerEndpoint: tcp://<controller-service>.<controller-namespace>.svc.cluster.local:50052
+  nodeSocketOverride: unix:///var/lib/kubelet/plugins/<plugin-directory>/csi.sock

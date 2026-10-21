@@ -1,0 +1,31 @@
+# AN EARLIER DATABASE for the volume-upgrade-refused lane: the bundled
+# database's volume claim as an earlier installation leaves it after its
+# destroy (the control plane gone, the volume kept because another resource
+# owns the namespace), carrying the minor that wrote it, 0.4. Installing
+# v0.5.0 over it would migrate that data irreversibly, so the deploy must
+# refuse at plan and name the volume. Nothing binds the claim; the refusal
+# reads only its label.
+apiVersion: kubernetes.planton.dev/v1alpha1
+kind: KubernetesManifest
+metadata:
+  name: e2e-ate-earlier-volume
+spec:
+  namespace:
+    value: ate-system
+  create_namespace: true
+  skip_await: true
+  manifest_yaml: |
+    apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      name: data-postgres-0
+      namespace: ate-system
+      labels:
+        app: postgres
+        planton.ai/agent-substrate-minor: "0.4"
+    spec:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: 1Gi

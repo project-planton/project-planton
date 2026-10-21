@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package dev.planton.kubernetes.kubernetesagentsubstratesandboxconfig.v1alpha1;
+
+import "catalog/kubernetes/kubernetesagentsubstratesandboxconfig/v1alpha1/api.proto";
+import "catalog/kubernetes/provider.proto";
+
+// KubernetesAgentSubstrateSandboxConfigIacInput provides the inputs for creating the
+// SandboxConfig on a Kubernetes cluster.
+message KubernetesAgentSubstrateSandboxConfigIacInput {
+  // the catalog object to deploy
+  KubernetesAgentSubstrateSandboxConfig target = 1;
+  // provider-config
+  dev.planton.kubernetes.KubernetesProviderConfig provider_config = 2;
+}

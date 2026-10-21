@@ -1,0 +1,8 @@
+# The PriorityClass the full-surface pool's workers run at.
+apiVersion: kubernetes.planton.dev/v1alpha1
+kind: KubernetesPriorityClass
+metadata:
+  name: e2e-ate-workers-priority
+spec:
+  name: e2e-ate-workers
+  value: 1000

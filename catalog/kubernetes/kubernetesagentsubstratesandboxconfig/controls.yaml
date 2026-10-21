@@ -1,0 +1,69 @@
+# Control profile: this component's posture against every control in the
+# central catalog (catalog/_compliance/controls-catalog.yaml). Every control
+# is examined; not_applicable states why. Evidence is verifiable against the
+# spec contract and the platform modules. Schema:
+# compliance/catalogkindcontrolprofile/v1.
+apiVersion: compliance.planton.dev/v1
+kind: CatalogKindControlProfile
+metadata:
+  name: kubernetesagentsubstratesandboxconfig
+spec:
+  controls:
+    - control_id: enc-at-rest
+      status: not_applicable
+      notes: "The config stores no data of its own; it names files by URL and checksum."
+    - control_id: enc-at-rest-cmk
+      status: not_applicable
+      notes: "Keys for staged microVM files are the hosting bucket's choice."
+    - control_id: enc-in-transit
+      status: not_applicable
+      notes: "The config opens no connection. Every download it causes is verified against the version's SHA-256 before a sandbox boots it, so a tampered file is refused whatever the transport."
+    - control_id: no-public-access
+      status: not_applicable
+      notes: "A config is a declaration the control plane reads, not a network endpoint."
+    - control_id: restricted-ingress
+      status: not_applicable
+      notes: "There is no endpoint to restrict."
+    - control_id: edge-protection
+      status: not_applicable
+      notes: "There is no endpoint to protect at the edge."
+    - control_id: rbac
+      status: not_applicable
+      notes: "Who may create or change a config is the cluster's Kubernetes RBAC on sandboxconfigs.ate.dev (cluster-scoped). Because a config decides the runtime every actor boots, grant write access as narrowly as cluster administration."
+    - control_id: workload-identity
+      status: not_applicable
+      notes: "The node agent fetches files with the control plane's object-store identity (KubernetesAgentSubstrate's storage settings)."
+    - control_id: no-legacy-auth
+      status: not_applicable
+      notes: "The config performs no authentication."
+    - control_id: strong-user-auth
+      status: not_applicable
+      notes: "The config has no users."
+    - control_id: audit-logging
+      status: not_applicable
+      notes: "Changes to the config are recorded by the cluster's API server audit log, a property of the cluster component."
+    - control_id: monitoring-integration
+      status: not_applicable
+      notes: "A config has no status; which config each worker pool runs, and whether it resolves, is on the pool's status (the Resolved condition per sandbox class)."
+    - control_id: backup-recovery
+      status: not_applicable
+      notes: "The config holds no state beyond its manifest; it recovers by re-applying it. The files of its default version must stay at their URLs: every boot and restore fetches them on a node that has not cached them."
+    - control_id: backup-retention-policy
+      status: not_applicable
+      notes: "There is nothing to retain (see backup-recovery)."
+    - control_id: multi-zone-ha
+      status: not_applicable
+      notes: "A cluster-scoped declaration has no placement."
+    - control_id: deletion-protection
+      status: enforced_by_default
+      evidence:
+        type: module_default
+        reference: "Agent Substrate's controller puts the finalizer sandboxconfig.ate.dev/workerpool-protection on a config before any worker pool records it, and a delete waits until no pool runs the config."
+      notes: "A config named only by actor templates deletes at once, and those templates stop resolving; keep a config while templates still name it: their actors resolve it at every boot and resume."
+    - control_id: managed-patching
+      status: configurable
+      field_path: versions
+      evidence:
+        type: spec_default
+        reference: "A new runtime release is a new version and a move of default_version; every actor runs the new default from its next boot or resume on, the previous version stays listed for a one-field rollback, and a Disabled version can never be made the default."
+      notes: "Nothing patches a pinned runtime on its own; roll gVisor or Kata releases forward through new versions."

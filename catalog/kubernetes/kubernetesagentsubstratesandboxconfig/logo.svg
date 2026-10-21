@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <desc>Planton-drawn glyph: an Agent Substrate SandboxConfig -- a sandbox runtime as stacked, pinned versions, the default one marked and checked</desc>
+  <rect x="4" y="3" width="16" height="4.4" rx="1.1" fill="none" stroke="#74a5f4" stroke-width="1.4"/>
+  <rect x="4" y="9.6" width="16" height="4.4" rx="1.1" fill="none" stroke="#74a5f4" stroke-width="1.4"/>
+  <rect x="4" y="16.2" width="16" height="4.8" rx="1.2" fill="#326ce5"/>
+  <polyline points="7.4,18.6 9.2,20.2 12.4,17.2" fill="none" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="16.6" cy="5.2" r="0.9" fill="#74a5f4"/>
+  <circle cx="16.6" cy="11.8" r="0.9" fill="#74a5f4"/>
+</svg>

@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package dev.planton.kubernetes.kubernetesagentsubstrateworkerpool.v1alpha1;
+
+import "catalog/kubernetes/kubernetesagentsubstrateworkerpool/v1alpha1/api.proto";
+import "catalog/kubernetes/provider.proto";
+
+// KubernetesAgentSubstrateWorkerPoolIacInput provides the inputs for creating the
+// WorkerPool on a Kubernetes cluster.
+message KubernetesAgentSubstrateWorkerPoolIacInput {
+  // the catalog object to deploy
+  KubernetesAgentSubstrateWorkerPool target = 1;
+  // provider-config
+  dev.planton.kubernetes.KubernetesProviderConfig provider_config = 2;
+}

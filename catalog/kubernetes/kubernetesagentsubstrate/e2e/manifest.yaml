@@ -1,0 +1,173 @@
+# Full-surface offline-proof manifest: GKE with Cloud SQL over keyless IAM
+# login and a GCS snapshot bucket, both through Workload Identity, the
+# definitions handed over on destroy, authorization with an owner, every
+# workload's knobs, the Envoy dataplane with an additional ext_proc filter,
+# the Kubernetes Secrets credential provider with grants, the control plane
+# cordoned onto its own nodes, the size10 tuning, telemetry to a collector,
+# and an image mirror with a pull Secret -- so the offline tofu plan and
+# pulumi preview proofs cover the typed surface. Placeholder values; never
+# applied to a real cluster.
+apiVersion: kubernetes.planton.dev/v1alpha1
+kind: KubernetesAgentSubstrate
+metadata:
+  name: agent-substrate-hack
+spec:
+  namespace:
+    value: ate-system
+  createNamespace: true
+  crds:
+    install: true
+    keepOnUninstall: false
+  platform:
+    gke:
+      clusterId:
+        value: projects/example-project/locations/us-central1/clusters/agents
+      apiServerServiceAccount:
+        value: ate-api-server@example-project.iam.gserviceaccount.com
+      nodeAgentServiceAccount:
+        value: atelet@example-project.iam.gserviceaccount.com
+  database:
+    cloudSql:
+      instanceConnectionName:
+        value: example-project:us-central1:substrate
+      iamAuthentication: true
+      ipType: private_ip
+      roles:
+        readWrite: substrate_readwrite
+        owner: substrate_owner
+        schema: substrate
+    poolMaxConnections: 16
+  storage:
+    gcs:
+      bucket:
+        value: example-agent-snapshots
+  apiServer:
+    replicas: 3
+    resources:
+      requests:
+        cpu: 500m
+        memory: 512Mi
+      limits:
+        cpu: "2"
+        memory: 2Gi
+    logLevel: debug
+    authorization:
+      enabled: true
+      bootstrapOwners:
+        - system:serviceaccount:platform:agent-orchestrator
+    actorJwt:
+      algorithm: rs256
+      issuer: https://agents.example.com
+    drainDelay: 10s
+    drainTimeout: 20s
+    templateResyncInterval: 30s
+  controller:
+    resources:
+      requests:
+        cpu: 200m
+        memory: 256Mi
+    logLevel: warn
+    workerSyncConcurrency: 8
+  nodeAgent:
+    resources:
+      requests:
+        cpu: 200m
+        memory: 256Mi
+    logLevel: info
+    nodeSelector:
+      cloud.google.com/gke-nodepool: agents
+    tolerations:
+      - key: agents
+        operator: Equal
+        value: "true"
+        effect: NoSchedule
+    actorStatsPollInterval: 15s
+    drainDelay: 5s
+    drainTimeout: 60s
+    imageCache:
+      gcPeriod: 10m
+      highPercent: 85
+      lowPercent: 70
+      maxBytes: 107374182400
+      minAge: 1h
+      dryRun: false
+    assetStagingCapacityGib: 20
+  router:
+    dataplane: envoy
+    replicas: 2
+    resources:
+      requests:
+        cpu: 250m
+        memory: 256Mi
+    logLevel: error
+    allowedClientSpiffeIds:
+      - spiffe://cluster.local/ns/platform/sa/agent-orchestrator
+    routeTimeout: 10m
+    parkedRequests:
+      budget: 10s
+      max: 2048
+      retryInterval: 200ms
+      retryFactor: 1.5
+      retryJitter: 0.2
+    extProcMaxRequests: 512
+    drainDelay: 15s
+    drainTimeout: 30s
+  egress:
+    credentialProvider:
+      kubernetesSecrets:
+        grants:
+          - atespace: research
+            allowedNamespaces:
+              - research-credentials
+          - atespace: support
+            allowedNamespaces:
+              - support-credentials
+              - shared-credentials
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+        logLevel: debug
+        kubeApiQps: 100
+        kubeApiBurst: 200
+        drainGrace: 10s
+    replicas: 2
+    resources:
+      requests:
+        cpu: 250m
+        memory: 256Mi
+    logLevel: warn
+    policyCacheTtl: 30s
+    interceptCertificateTtl: 30m
+    envoyConcurrency: 4
+    additionalExtProcService:
+      namespace: egress-policy
+      service: dlp-filter
+      port: 9001
+    drainDelay: 20s
+  podCertificates:
+    resources:
+      requests:
+        cpu: 100m
+        memory: 128Mi
+    workersPerSigner: 4
+    kubeApiQps: 200
+    kubeApiBurst: 400
+  telemetry:
+    otlpEndpoint: http://otel-collector.observability.svc:4317
+    tracesExporters:
+      - otlp
+    metricsExporters:
+      - otlp
+      - prometheus
+    logsExporters:
+      - otlp
+    tracesSampler: parentbased_traceidratio
+    tracesSamplerRatio: 0.25
+    metricExportIntervalMs: 30000
+    metricExportTimeoutMs: 10000
+  clusterSize: size10
+  cordonControlPlane: true
+  imageRegistry: mirror.example.com/substrate
+  imagePullSecrets:
+    - mirror-pull
