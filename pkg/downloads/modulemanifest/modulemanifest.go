@@ -1,12 +1,18 @@
-// Package modulemanifest is the grammar of a release's module manifest: the
-// one document that says which bytes every platform IaC module of a release
-// is, and what each module's digest is.
+// Package modulemanifest is the grammar of a release's module manifests: the
+// documents that say which bytes every platform IaC module of a release is,
+// and what each module's digest is.
 //
-// A release publishes the manifest at releases/<tag>/modules/manifest.json
-// once every module artifact is uploaded. It is keyed by module directory,
-// exactly as the catalog names it (catalog/aws/awsrdsinstance/iac/tf), and
-// records, for every artifact a runner may execute, the sha256 of the bytes
-// actually published under the tag.
+// A release publishes one manifest per engine, beside that engine's
+// artifacts: releases/<tag>/modules/terraform/manifest.json and
+// releases/<tag>/modules/pulumi/manifest.json. Each engine's modules are
+// built by their own release lane, and each manifest is published the moment
+// its lane has uploaded every module of that engine -- so the presence of an
+// engine's manifest means that engine's modules are complete, and one
+// engine's slow build never holds back a platform that runs the other.
+// A manifest is keyed by module directory, exactly as the catalog names it
+// (catalog/aws/awsrdsinstance/iac/tf), and records, for every artifact a
+// runner may execute, the sha256 of the bytes actually published under the
+// tag.
 //
 // A module's digest is computed from those checksums (see Digest), so it is
 // exact by construction: two releases carry the same digest for a module only
@@ -22,15 +28,66 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	"path"
 	"sort"
 	"strings"
 )
 
-// FileName is the manifest's file name under a release's modules/ prefix.
+// FileName is the manifest's file name under a release's
+// modules/<engine>/ prefix.
 const FileName = "manifest.json"
 
-// FormatVersion is the manifest shape this package writes and reads.
-const FormatVersion = 1
+// FormatVersion is the manifest shape this package writes and reads. Format 2
+// is one manifest per engine, naming its engine.
+const FormatVersion = 2
+
+// Engine is the IaC engine a manifest describes. Its value is the engine's
+// segment in the release's artifact keys (releases/<tag>/modules/<engine>/).
+type Engine string
+
+const (
+	// Terraform modules are archived sources, run by OpenTofu or Terraform.
+	Terraform Engine = "terraform"
+	// Pulumi modules are compiled binaries, one per platform.
+	Pulumi Engine = "pulumi"
+)
+
+// Engines are every engine a release publishes modules for.
+var Engines = []Engine{Pulumi, Terraform}
+
+// ParseEngine reads an engine by its name.
+func ParseEngine(name string) (Engine, error) {
+	for _, e := range Engines {
+		if name == string(e) {
+			return e, nil
+		}
+	}
+	return "", fmt.Errorf("engine %q is neither pulumi nor terraform", name)
+}
+
+// ModuleDirName is the name of an engine's module directory under a kind's
+// iac/ directory in the catalog (catalog/<provider>/<kind>/iac/<name>).
+func (e Engine) ModuleDirName() string {
+	if e == Terraform {
+		return "tf"
+	}
+	return string(e)
+}
+
+// EngineOfModuleDir is the engine whose module lives at dir, a catalog
+// module directory (catalog/aws/awsvpc/iac/tf); ok is false for any other
+// path.
+func EngineOfModuleDir(dir string) (engine Engine, ok bool) {
+	if path.Base(path.Dir(dir)) != "iac" {
+		return "", false
+	}
+	for _, e := range Engines {
+		if path.Base(dir) == e.ModuleDirName() {
+			return e, true
+		}
+	}
+	return "", false
+}
 
 // TerraformArtifact is the one artifact an OpenTofu/Terraform module ships:
 // its module directory, archived.
@@ -56,12 +113,16 @@ func PulumiArtifact(platform string) string {
 	return platform + ".gz"
 }
 
-// Manifest is a release's module manifest.
+// Manifest is a release's module manifest for one engine.
 type Manifest struct {
 	FormatVersion int `json:"formatVersion"`
 	// ReleaseTag is the tag the manifest describes.
 	ReleaseTag string `json:"releaseTag"`
-	// Modules is keyed by module directory (catalog/<provider>/<kind>/iac/<engine>).
+	// Engine is the engine whose modules it lists. A manifest names it so a
+	// copy read away from its URL (a platform vendors one) still says which
+	// modules it vouches for.
+	Engine Engine `json:"engine"`
+	// Modules is keyed by module directory (catalog/<provider>/<kind>/iac/<engine dir>).
 	Modules map[string]Module `json:"modules"`
 }
 
@@ -90,9 +151,10 @@ func Digest(artifacts map[string]string) string {
 	return hex.EncodeToString(h.Sum(nil))
 }
 
-// Parse reads a manifest and proves it whole: its format, its tag, and that
-// every module's digest is the digest of the artifacts it lists. A manifest
-// that fails any of these is refused rather than trusted in part.
+// Parse reads a manifest and proves it whole: its format, its tag, its
+// engine, that every module it lists is that engine's, and that every
+// module's digest is the digest of the artifacts it lists. A manifest that
+// fails any of these is refused rather than trusted in part.
 func Parse(data []byte) (*Manifest, error) {
 	var m Manifest
 	if err := json.Unmarshal(data, &m); err != nil {
@@ -104,7 +166,13 @@ func Parse(data []byte) (*Manifest, error) {
 	if m.ReleaseTag == "" {
 		return nil, fmt.Errorf("module manifest names no release tag")
 	}
+	if _, err := ParseEngine(string(m.Engine)); err != nil {
+		return nil, fmt.Errorf("module manifest's %w", err)
+	}
 	for dir, module := range m.Modules {
+		if engine, ok := EngineOfModuleDir(dir); !ok || engine != m.Engine {
+			return nil, fmt.Errorf("module manifest for %s lists %s, which is not a %s module directory", m.Engine, dir, m.Engine)
+		}
 		if len(module.Artifacts) == 0 {
 			return nil, fmt.Errorf("module manifest lists no artifacts for %s", dir)
 		}

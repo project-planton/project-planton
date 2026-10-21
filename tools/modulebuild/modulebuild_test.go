@@ -69,7 +69,7 @@ func TestReleasedModulesSkipsInternalProviders(t *testing.T) {
 	for _, m := range modules {
 		dirs = append(dirs, m.Dir+" "+string(m.Engine))
 	}
-	want := []string{"catalog/aws/awsvpc/iac/pulumi pulumi", "catalog/aws/awsvpc/iac/tf tf"}
+	want := []string{"catalog/aws/awsvpc/iac/pulumi pulumi", "catalog/aws/awsvpc/iac/tf terraform"}
 	if strings.Join(dirs, ",") != strings.Join(want, ",") {
 		t.Fatalf("released modules %v, want %v", dirs, want)
 	}
@@ -141,7 +141,7 @@ func TestBuildEnvFixesEveryBuildVariable(t *testing.T) {
 
 func TestGoModToolchain(t *testing.T) {
 	cases := map[string]string{
-		"module x\n\ngo 1.26.6\n":                        "go1.26.6",
+		"module x\n\ngo 1.26.6\n":                       "go1.26.6",
 		"module x\n\ngo 1.26.0\n\ntoolchain go1.26.6\n": "go1.26.6",
 	}
 	for gomod, want := range cases {
@@ -156,47 +156,61 @@ func TestGoModToolchain(t *testing.T) {
 	}
 }
 
-func TestBuildManifestRefusesAnIncompleteRelease(t *testing.T) {
+func TestBuildManifestRefusesAnIncompleteEngine(t *testing.T) {
 	sum := strings.Repeat("a", 64)
-	tf := Module{Dir: "catalog/aws/awsvpc/iac/tf", Engine: Terraform}
-	pu := Module{Dir: "catalog/aws/awsvpc/iac/pulumi", Engine: Pulumi}
-	complete := func() map[string]map[string]string {
-		p := map[string]map[string]string{tf.Dir: {modulemanifest.TerraformArtifact: sum}, pu.Dir: {}}
-		for _, platform := range modulemanifest.PulumiPlatforms {
-			p[pu.Dir][modulemanifest.PulumiArtifact(platform)] = sum
-		}
-		return p
+	tf := Module{Dir: "catalog/aws/awsvpc/iac/tf", Engine: modulemanifest.Terraform}
+	pu := Module{Dir: "catalog/aws/awsvpc/iac/pulumi", Engine: modulemanifest.Pulumi}
+	released := []Module{tf, pu}
+	// What each engine's legs publish, and nothing of the other engine's:
+	// each manifest job downloads only its own lane's parts.
+	complete := map[modulemanifest.Engine]func() map[string]map[string]string{
+		modulemanifest.Terraform: func() map[string]map[string]string {
+			return map[string]map[string]string{tf.Dir: {modulemanifest.TerraformArtifact: sum}}
+		},
+		modulemanifest.Pulumi: func() map[string]map[string]string {
+			p := map[string]map[string]string{pu.Dir: {}}
+			for _, platform := range modulemanifest.PulumiPlatforms {
+				p[pu.Dir][modulemanifest.PulumiArtifact(platform)] = sum
+			}
+			return p
+		},
 	}
 
-	data, err := BuildManifest("v1.2.3", []Module{tf, pu}, complete())
-	if err != nil {
-		t.Fatalf("a complete release was refused: %v", err)
-	}
-	m, err := modulemanifest.Parse(data)
-	if err != nil {
-		t.Fatalf("the manifest written does not parse: %v", err)
-	}
-	if len(m.Modules[pu.Dir].Artifacts) != len(modulemanifest.PulumiPlatforms) || m.ReleaseTag != "v1.2.3" {
-		t.Fatalf("manifest %+v does not describe the release", m)
+	for engine, own := range map[modulemanifest.Engine]Module{modulemanifest.Terraform: tf, modulemanifest.Pulumi: pu} {
+		data, err := BuildManifest("v1.2.3", engine, released, complete[engine]())
+		if err != nil {
+			t.Fatalf("a complete %s lane was refused while the other engine published nothing: %v", engine, err)
+		}
+		m, err := modulemanifest.Parse(data)
+		if err != nil {
+			t.Fatalf("the %s manifest written does not parse: %v", engine, err)
+		}
+		if m.Engine != engine || m.ReleaseTag != "v1.2.3" || len(m.Modules) != 1 || m.Modules[own.Dir].Digest == "" {
+			t.Fatalf("the %s manifest %+v does not describe exactly that engine's modules", engine, m)
+		}
 	}
 
 	cases := []struct {
-		name string
-		edit func(p map[string]map[string]string)
-		want string
+		name   string
+		engine modulemanifest.Engine
+		edit   func(p map[string]map[string]string)
+		want   string
 	}{
-		{"a platform missing", func(p map[string]map[string]string) { delete(p[pu.Dir], "windows_amd64.exe.gz") }, "windows_amd64.exe.gz was not published"},
-		{"a module no leg recorded", func(p map[string]map[string]string) { delete(p, tf.Dir) }, "module.zip was not published"},
-		{"an unexpected artifact", func(p map[string]map[string]string) { p[tf.Dir]["source.zip"] = sum }, "not an artifact this module ships"},
-		{"a module the release does not ship", func(p map[string]map[string]string) {
+		{"a platform missing", modulemanifest.Pulumi, func(p map[string]map[string]string) { delete(p[pu.Dir], "windows_amd64.exe.gz") }, "windows_amd64.exe.gz was not published"},
+		{"a module no leg recorded", modulemanifest.Terraform, func(p map[string]map[string]string) { delete(p, tf.Dir) }, "module.zip was not published"},
+		{"an unexpected artifact", modulemanifest.Terraform, func(p map[string]map[string]string) { p[tf.Dir]["source.zip"] = sum }, "not an artifact this module ships"},
+		{"a module the release does not ship", modulemanifest.Terraform, func(p map[string]map[string]string) {
 			p["catalog/aws/gone/iac/tf"] = map[string]string{modulemanifest.TerraformArtifact: sum}
-		}, "ships no such module"},
+		}, "ships no such terraform module"},
+		{"the other engine's part", modulemanifest.Terraform, func(p map[string]map[string]string) {
+			p[pu.Dir] = map[string]string{modulemanifest.PulumiArtifact("linux_amd64"): sum}
+		}, "ships no such terraform module"},
 	}
 	for _, tc := range cases {
 		t.Run(tc.name, func(t *testing.T) {
-			p := complete()
+			p := complete[tc.engine]()
 			tc.edit(p)
-			if _, err := BuildManifest("v1.2.3", []Module{tf, pu}, p); err == nil || !strings.Contains(err.Error(), tc.want) {
+			if _, err := BuildManifest("v1.2.3", tc.engine, released, p); err == nil || !strings.Contains(err.Error(), tc.want) {
 				t.Fatalf("BuildManifest() error = %v, want one mentioning %q", err, tc.want)
 			}
 		})

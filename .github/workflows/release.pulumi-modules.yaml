@@ -12,14 +12,15 @@
 # not change: it compares module digests (see pkg/downloads/modulemanifest).
 #
 #   - Matrix: provider x platform (linux_amd64, linux_arm64, darwin_arm64,
-#     darwin_amd64, windows_amd64 -- the platforms the module manifest
+#     darwin_amd64, windows_amd64 -- the platforms the Pulumi module manifest
 #     requires; linux_arm64 is every ARM runner the platform ships: Graviton,
 #     and kind on an Apple Silicon Mac)
 #   - Modules: `modulebuild list`, the tracked catalog/{provider}/{kind}/iac/pulumi
 #     directories
 #   - Each leg records what it published (module dir, artifact, the published
 #     sha256 publish_once.sh reports) and uploads that list as a workflow
-#     artifact; release.yaml merges every leg's list into the module manifest
+#     artifact; release.yaml's pulumi-module-manifest job merges every
+#     leg's list into this engine's module manifest the moment the lane is done
 #
 # Upload path: s3://planton-foundation-downloads/releases/{tag}/modules/pulumi/{kind}/{platform}.gz
 #              (windows artifacts carry the executable suffix: {platform}.exe.gz)
@@ -30,7 +31,7 @@
 # Source is platform-independent, so the zip uploads from exactly one matrix
 # leg (linux_amd64) instead of five redundant writes. Consumers: the CLI's
 # module-eject flow and source-rendering surfaces. Nothing executes it, so it
-# is not part of the module manifest.
+# is not part of the Pulumi module manifest.
 #
 # Called by: .github/workflows/release.yaml (after CLI release creates the release)
 # =============================================================================
@@ -227,8 +228,10 @@ jobs:
             exit 1
           fi
 
-      # What this leg published, for the module manifest release.yaml
-      # publishes once every leg has finished. A rerun of the leg replaces it.
+      # What this leg published, for the Pulumi module manifest release.yaml
+      # publishes once every leg of this lane has finished. A rerun of the leg
+      # replaces it. The name's module-part-pulumi- prefix is what that
+      # manifest job collects, so it must stay.
       - name: Record what this leg published
         uses: actions/upload-artifact@v4
         with:
