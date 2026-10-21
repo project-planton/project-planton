@@ -633,10 +633,11 @@ questions:
       able to do in it, and does it keep our credentials?
     answer: >
       Planton can deploy, change and destroy exactly the kinds the grant
-      covers, with exactly the permissions the catalog lists for them, in a
-      role that is the connection's own. "Everything" never includes Owner
-      or Editor, never power over who has access in the account, and never
-      permissions above the target -- those are separate opt-ins. A keyless
+      covers, with the permissions the catalog lists for them, in a role that
+      is the connection's own, plus any predefined roles the plan's `granted`
+      names -- each read to the person. The default grant never includes Owner
+      or Editor, and never permissions above the target; power over who has
+      access and the tier above the target are separate opt-ins. A keyless
       connection stores no secret: each deploy gets a short-lived token only
       this connection's trust accepts, and the person's own sign-in never
       leaves their machine. `--print-documents` shows every permission
@@ -644,7 +645,7 @@ questions:
     checks:
       - skill: planton
         file: references/infra.connecting-clouds.md
-        pattern: '\*\*It can do exactly what the grant says, nothing more\.\*\*'
+        pattern: '\*\*It can do what the grant says, nothing more\.\*\*'
       - skill: planton
         file: references/infra.connecting-clouds.md
         pattern: '(?s)never\s+includes\s+Owner\s+or\s+Editor'
