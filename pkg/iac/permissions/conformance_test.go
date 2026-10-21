@@ -1169,3 +1169,32 @@ func TestGcpPredefinedRolesAreGrantedWhereGoogleAcceptsThem(t *testing.T) {
 		}
 	}
 }
+
+// An AWS statement's resources go into the policy exactly as written: the
+// renderer fills in nothing, so a placeholder such as {account_id} reaches
+// AWS, which refuses the whole policy ("The policy failed legacy parsing")
+// and with it every setup carrying the kind. The account is written "*": an
+// identity policy only ever acts in its own account.
+func TestAwsResourcesNameNoPlaceholder(t *testing.T) {
+	root := repoRoot(t)
+	if _, err := os.Stat(filepath.Join(root, "catalog")); err != nil {
+		t.Skip("catalog source tree not present (bazel sandbox); runs under go test and the lint.catalog-data lane")
+	}
+	discovered, err := Discover(root)
+	if err != nil {
+		t.Fatalf("discovering permissions manifests: %v", err)
+	}
+	for _, kindDir := range discovered["aws"] {
+		manifest, err := Load(root, "aws", kindDir)
+		if err != nil {
+			t.Fatalf("%s permissions manifest: %v", kindDir, err)
+		}
+		for _, statement := range manifest.GetSpec().GetAws().GetStatements() {
+			for _, resource := range statement.GetResources() {
+				if strings.ContainsAny(resource, "{}") {
+					t.Errorf("%s statement %s resource %q holds a placeholder the renderer never fills -- write the account as *", kindDir, statement.GetSid(), resource)
+				}
+			}
+		}
+	}
+}

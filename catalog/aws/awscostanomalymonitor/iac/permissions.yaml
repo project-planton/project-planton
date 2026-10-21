@@ -27,7 +27,7 @@ spec:
           - ce:UpdateAnomalyMonitor
           - ce:DeleteAnomalyMonitor
         resources:
-          - "arn:aws:ce::{account_id}:anomalymonitor/*"
+          - "arn:aws:ce::*:anomalymonitor/*"
         provenance: derived
         reach: target
         privilege: ordinary
@@ -38,7 +38,7 @@ spec:
           - ce:UpdateAnomalySubscription
           - ce:DeleteAnomalySubscription
         resources:
-          - "arn:aws:ce::{account_id}:anomalysubscription/*"
+          - "arn:aws:ce::*:anomalysubscription/*"
         provenance: derived
         reach: target
         privilege: ordinary
@@ -49,8 +49,8 @@ spec:
           - ce:UntagResource
           - ce:ListTagsForResource
         resources:
-          - "arn:aws:ce::{account_id}:anomalymonitor/*"
-          - "arn:aws:ce::{account_id}:anomalysubscription/*"
+          - "arn:aws:ce::*:anomalymonitor/*"
+          - "arn:aws:ce::*:anomalysubscription/*"
         provenance: derived
         reach: target
         privilege: ordinary
