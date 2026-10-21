@@ -51,6 +51,8 @@ planton service status <service>          # a service's environments in promotio
                                           # runs, rollout, distance ("3 commits behind dev"), runs in
                                           # flight by number; -o json|yaml for the path itself
 planton search connections                # provider connections (which clouds/clusters)
+planton search infra-components --all-envs -o json  # deployed infra components in every environment;
+                                          # an answer with only indexFreshness means none
 planton connection authorization list     # which connections which envs may use
 planton secret list -o json               # managed secrets ("env" field = scope)
 planton variable list -o json             # managed variables ("env" field = scope)
@@ -498,8 +500,8 @@ the `--dark-theme` command to run. The craft is
 planton custom-domain get                       # the organization's domain and its state (exit 3: none)
 planton custom-domain set <name> --no-wait      # set it; prints the one record to add
 planton custom-domain prompt -o json            # the setup guide: the record, the DNS host, its command
-planton custom-domain verify --wait -o json     # Check Now until Live (exit 0) or a diagnosis (exit 2)
-planton custom-domain delete --yes              # remove it
+planton custom-domain verify --wait --timeout 8m -o json  # Check Now until Live (exit 0) or a diagnosis (exit 2)
+planton custom-domain delete --force            # remove it
 ```
 
 Team plan, hosted Planton only; `--org` names the organization. `set` and

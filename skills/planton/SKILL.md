@@ -39,6 +39,10 @@ For activity, unread failures, pending reviews, or "what changed", read
 workflow and capability checks; do not enter chart composition or probe with
 a chart build. A request to review a saved edit is not permission to deploy it.
 
+To put the organization's console at its own address ("set up planton.acme.com as
+our custom domain"), read `references/organization.custom-domain.md` and follow
+its loop; it writes no files, so the chart workflow below does not apply.
+
 ## Know your instruments (check once, first)
 
 The craft is the same everywhere; only the instruments differ by where you

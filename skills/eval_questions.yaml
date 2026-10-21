@@ -496,7 +496,7 @@ questions:
       organization's label under plantonedge.com, proxied false, its zoneId
       wired with valueFrom to the zone component -- show it, and apply it
       through Planton on the person's yes. Then verify (`planton
-      custom-domain verify --wait -o json`), never looking the name up
+      custom-domain verify --wait --timeout 8m -o json`), never looking the name up
       through a public resolver before it is Live; act on reading.diagnosis
       (record_missing and record_not_yet_public mean wait), and repeat until
       exit 0, the recorded state Live.
@@ -524,7 +524,7 @@ questions:
         pattern: 'never look the name up yourself'
       - skill: planton
         file: references/organization.custom-domain.md
-        pattern: 'planton custom-domain verify --wait -o json'
+        pattern: 'planton custom-domain verify --wait --timeout 8m -o json'
 
   - id: custom-domain-record-proxied
     persona: coding agent
