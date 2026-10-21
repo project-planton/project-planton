@@ -16,7 +16,8 @@
 #     directories
 #   - Each leg records what it published (module dir, artifact, the published
 #     sha256 publish_once.sh reports) and uploads that list as a workflow
-#     artifact; release.yaml merges every leg's list into the module manifest
+#     artifact; release.yaml's terraform-module-manifest job merges every
+#     leg's list into this engine's module manifest the moment the lane is done
 #
 # Upload path: s3://planton-foundation-downloads/releases/{tag}/modules/terraform/{kind}/module.zip
 # Public URL:  https://downloads.planton.ai/releases/{tag}/modules/terraform/{kind}/module.zip
@@ -157,8 +158,10 @@ jobs:
             exit 1
           fi
 
-      # What this leg published, for the module manifest release.yaml
-      # publishes once every leg has finished. A rerun of the leg replaces it.
+      # What this leg published, for the OpenTofu module manifest release.yaml
+      # publishes once every leg of this lane has finished. A rerun of the leg
+      # replaces it. The name's module-part-terraform- prefix is what that
+      # manifest job collects, so it must stay.
       - name: Record what this leg published
         uses: actions/upload-artifact@v4
         with:

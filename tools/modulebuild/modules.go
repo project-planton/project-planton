@@ -8,26 +8,9 @@ import (
 	"path/filepath"
 	"sort"
 	"strings"
+
+	"github.com/plantonhq/planton/pkg/downloads/modulemanifest"
 )
-
-// Engine is the IaC engine a module is written for. Its value is the module
-// directory's name under iac/.
-type Engine string
-
-const (
-	Pulumi    Engine = "pulumi"
-	Terraform Engine = "tf"
-)
-
-func parseEngine(s string) (Engine, error) {
-	switch s {
-	case "pulumi":
-		return Pulumi, nil
-	case "terraform", "tf":
-		return Terraform, nil
-	}
-	return "", fmt.Errorf("engine %q is neither pulumi nor terraform", s)
-}
 
 // Module is one platform module a release ships.
 type Module struct {
@@ -36,7 +19,7 @@ type Module struct {
 	Dir      string
 	Provider string
 	Kind     string
-	Engine   Engine
+	Engine   modulemanifest.Engine
 }
 
 // licenseFiles accompany every redistributed module at its archive root
@@ -56,14 +39,14 @@ func ReleasedModules(root string) ([]Module, error) {
 	seen := map[string]Module{}
 	for _, f := range files {
 		parts := strings.Split(f, "/")
-		if len(parts) < 6 || parts[3] != "iac" || strings.HasPrefix(parts[1], "_") {
-			continue
-		}
-		engine := Engine(parts[4])
-		if engine != Pulumi && engine != Terraform {
+		if len(parts) < 6 || strings.HasPrefix(parts[1], "_") {
 			continue
 		}
 		dir := strings.Join(parts[:5], "/")
+		engine, ok := modulemanifest.EngineOfModuleDir(dir)
+		if !ok {
+			continue
+		}
 		seen[dir] = Module{Dir: dir, Provider: parts[1], Kind: parts[2], Engine: engine}
 	}
 	modules := make([]Module, 0, len(seen))

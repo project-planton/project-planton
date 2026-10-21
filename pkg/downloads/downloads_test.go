@@ -1,9 +1,14 @@
 package downloads
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/plantonhq/planton/pkg/downloads/modulemanifest"
+)
 
 // These tests pin the R2 key shapes to what the release workflows upload
-// (release.terraform-modules.yaml, release.pulumi-modules.yaml). The expected
+// (release.terraform-modules.yaml, release.pulumi-modules.yaml, release.yaml's
+// per-engine module manifests). The expected
 // strings are deliberate literals: if either side changes its shape, exactly
 // one of the two must fail — that failure is the contract doing its job.
 // Update the workflows and these literals together, never one alone.
@@ -136,9 +141,13 @@ func TestBuildDefinitionsExplodedFileURL(t *testing.T) {
 }
 
 func TestBuildModuleManifestURL(t *testing.T) {
-	got := BuildModuleManifestURL("v0.6.15")
-	want := "https://downloads.planton.ai/releases/v0.6.15/modules/manifest.json"
-	if got != want {
-		t.Errorf("BuildModuleManifestURL() = %q, want %q", got, want)
+	// Each engine's manifest sits beside that engine's artifacts.
+	for engine, want := range map[modulemanifest.Engine]string{
+		modulemanifest.Terraform: "https://downloads.planton.ai/releases/v0.6.20/modules/terraform/manifest.json",
+		modulemanifest.Pulumi:    "https://downloads.planton.ai/releases/v0.6.20/modules/pulumi/manifest.json",
+	} {
+		if got := BuildModuleManifestURL("v0.6.20", engine); got != want {
+			t.Errorf("BuildModuleManifestURL(%s) = %q, want %q", engine, got, want)
+		}
 	}
 }

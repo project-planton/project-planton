@@ -1,0 +1,77 @@
+# =============================================================================
+# One-off: give the releases that published one module manifest for both
+# engines (v0.6.15 to v0.6.19) the per-engine manifests every reader now asks
+# for.
+#
+# Each per-engine manifest is the release's own published manifest restricted
+# to that engine's modules: the same directories, digests and checksums,
+# written in format 2 with the engine named. Nothing is rebuilt, so the
+# backfilled manifests vouch for exactly the bytes those releases published.
+# publish_once.sh keeps any manifest already at a key, so a rerun is safe.
+#
+# This workflow is deleted once it has run: it describes no lasting part of
+# the release.
+# =============================================================================
+
+name: backfill.engine-module-manifests
+
+on:
+  workflow_dispatch:
+    inputs:
+      tags:
+        description: Release tags whose single module manifest is split by engine
+        required: true
+        default: >-
+          v0.6.15 v0.6.16-rc.1 v0.6.16-rc.2 v0.6.16 v0.6.17-rc.1 v0.6.17-rc.2
+          v0.6.17-rc.3 v0.6.17-rc.4 v0.6.17-rc.5 v0.6.17-rc.6 v0.6.17-rc.7 v0.6.19
+
+permissions:
+  contents: read
+
+env:
+  R2_BUCKET: planton-foundation-downloads
+
+jobs:
+  split:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Split each release's manifest by engine and publish it
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.CLOUDFLARE_R2_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.CLOUDFLARE_R2_SECRET_ACCESS_KEY }}
+          AWS_ENDPOINT_URL: ${{ secrets.CLOUDFLARE_R2_ENDPOINT }}
+          TAGS: ${{ inputs.tags }}
+        run: |
+          set -euo pipefail
+          for TAG in ${TAGS}; do
+            SOURCE="${RUNNER_TEMP}/${TAG}.json"
+            curl -sf --retry 3 --retry-delay 5 -o "${SOURCE}" \
+              "https://downloads.planton.ai/releases/${TAG}/modules/manifest.json"
+            jq -e --arg tag "${TAG}" '.formatVersion == 1 and .releaseTag == $tag' "${SOURCE}" > /dev/null \
+              || { echo "✗ ERROR: ${TAG}'s manifest is not a format-1 manifest of ${TAG}"; exit 1; }
+
+            for ENGINE in terraform pulumi; do
+              if [ "${ENGINE}" = "terraform" ]; then DIR=tf; else DIR=pulumi; fi
+              OUT="${RUNNER_TEMP}/${TAG}-${ENGINE}.json"
+              jq --arg engine "${ENGINE}" --arg dir "/iac/${DIR}" \
+                '{formatVersion: 2, releaseTag, engine: $engine,
+                  modules: (.modules | with_entries(select(.key | endswith($dir))))}' \
+                "${SOURCE}" > "${OUT}"
+              COUNT=$(jq '.modules | length' "${OUT}")
+              [ "${COUNT}" -gt 0 ] || { echo "✗ ERROR: ${TAG} lists no ${ENGINE} modules"; exit 1; }
+
+              KEY="releases/${TAG}/modules/${ENGINE}/manifest.json"
+              tools/ci/release/publish_once.sh "${OUT}" "${KEY}" \
+                --content-type application/json \
+                --cache-control "public, max-age=31536000, immutable" > /dev/null
+              PROBE_CODE=$(curl -sf -I -o /dev/null -w "%{http_code}" \
+                --retry 3 --retry-delay 5 --retry-all-errors "https://downloads.planton.ai/${KEY}" || true)
+              [ "${PROBE_CODE}" = "200" ] \
+                || { echo "✗ ERROR: ${KEY} does not serve (HTTP ${PROBE_CODE})"; exit 1; }
+              echo "✓ ${TAG}: ${ENGINE} manifest, ${COUNT} modules"
+            done
+          done

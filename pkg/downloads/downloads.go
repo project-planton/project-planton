@@ -16,8 +16,8 @@ const (
 
 // This package is pure URL grammar: every function composes the R2 key shapes
 // that the release workflows upload (release.terraform-modules.yaml,
-// release.pulumi-modules.yaml, and the module manifest release.yaml publishes
-// after both). The two sides MUST stay in lockstep — a shape
+// release.pulumi-modules.yaml, and the per-engine module manifests release.yaml
+// publishes as each of those finishes). The two sides MUST stay in lockstep — a shape
 // change here or in CI without the matching change on the other side does not
 // fail loudly; it turns every module fetch into a 404 that downstream code
 // masks with a slow git-clone fallback. The unit tests in this package pin the
@@ -73,20 +73,21 @@ func BuildTerraformDownloadURL(kindDir, releaseVersion string) string {
 	return fmt.Sprintf("%s/%s/modules/terraform/%s/%s", BaseURL, releaseVersion, strings.ToLower(kindDir), modulemanifest.TerraformArtifact)
 }
 
-// BuildModuleManifestURL constructs the R2 download URL for a release's module
-// manifest: every platform module's published artifact checksums and digest
-// (see package modulemanifest). The release publishes it once, after every
-// module artifact under the tag is uploaded, so its presence means the
-// release's modules are complete.
+// BuildModuleManifestURL constructs the R2 download URL for a release's
+// module manifest for one engine: that engine's every platform module, with
+// its published artifact checksums and digest (see package modulemanifest).
+// The release publishes it beside the engine's artifacts once that engine's
+// lane has uploaded every module, so its presence means the engine's modules
+// are complete -- whatever the other engine's lane is still doing.
 //
-// URL format: https://downloads.planton.ai/releases/{version}/modules/manifest.json
+// URL format: https://downloads.planton.ai/releases/{version}/modules/{engine}/manifest.json
 //
 // Examples:
 //
-//	BuildModuleManifestURL("v0.6.15")
-//	  -> https://downloads.planton.ai/releases/v0.6.15/modules/manifest.json
-func BuildModuleManifestURL(releaseVersion string) string {
-	return fmt.Sprintf("%s/%s/modules/%s", BaseURL, releaseVersion, modulemanifest.FileName)
+//	BuildModuleManifestURL("v0.6.20", modulemanifest.Terraform)
+//	  -> https://downloads.planton.ai/releases/v0.6.20/modules/terraform/manifest.json
+func BuildModuleManifestURL(releaseVersion string, engine modulemanifest.Engine) string {
+	return fmt.Sprintf("%s/%s/modules/%s/%s", BaseURL, releaseVersion, engine, modulemanifest.FileName)
 }
 
 // BuildDefinitionsDownloadURL constructs the R2 download URL for a file in

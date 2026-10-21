@@ -15,7 +15,7 @@
 //	pulumi    -module <dir> -platform <goos_goarch> -out <file.gz>
 //	terraform -module <dir> -out <module.zip>
 //	source    -module <dir> -out <source.zip>
-//	manifest  -tag <tag> -parts <dir> -out <manifest.json>
+//	manifest  -engine pulumi|terraform -tag <tag> -parts <dir> -out <manifest.json>
 //
 // Every subcommand runs from the repository root.
 package main
@@ -25,6 +25,8 @@ import (
 	"fmt"
 	"os"
 	"strings"
+
+	"github.com/plantonhq/planton/pkg/downloads/modulemanifest"
 )
 
 func main() {
@@ -62,7 +64,7 @@ func runList(args []string) error {
 	engine := fs.String("engine", "", "pulumi or terraform")
 	provider := fs.String("provider", "", "only this provider's modules")
 	_ = fs.Parse(args)
-	e, err := parseEngine(*engine)
+	e, err := modulemanifest.ParseEngine(*engine)
 	if err != nil {
 		return err
 	}
@@ -118,12 +120,17 @@ func runSource(args []string) error {
 
 func runManifest(args []string) error {
 	fs := flag.NewFlagSet("manifest", flag.ExitOnError)
+	engine := fs.String("engine", "", "pulumi or terraform: whose modules the manifest describes")
 	tag := fs.String("tag", "", "release tag the manifest describes")
-	parts := fs.String("parts", "", "directory holding every leg's published-artifact list")
+	parts := fs.String("parts", "", "directory holding every leg's published-artifact list for the engine")
 	out := fs.String("out", "", "manifest.json to write")
 	_ = fs.Parse(args)
-	if *tag == "" || *parts == "" || *out == "" {
-		return fmt.Errorf("-tag, -parts and -out are required")
+	if *engine == "" || *tag == "" || *parts == "" || *out == "" {
+		return fmt.Errorf("-engine, -tag, -parts and -out are required")
+	}
+	e, err := modulemanifest.ParseEngine(*engine)
+	if err != nil {
+		return err
 	}
 	modules, err := ReleasedModules(".")
 	if err != nil {
@@ -133,7 +140,7 @@ func runManifest(args []string) error {
 	if err != nil {
 		return err
 	}
-	data, err := BuildManifest(*tag, modules, published)
+	data, err := BuildManifest(*tag, e, modules, published)
 	if err != nil {
 		return err
 	}

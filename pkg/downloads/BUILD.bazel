@@ -12,4 +12,5 @@ go_test(
     name = "downloads_test",
     srcs = ["downloads_test.go"],
     embed = [":downloads"],
+    deps = ["//pkg/downloads/modulemanifest"],
 )

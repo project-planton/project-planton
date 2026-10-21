@@ -29,7 +29,7 @@ func TestDigestIsOrderIndependentAndMovesWithAnyByte(t *testing.T) {
 
 func TestParseProvesTheManifestWhole(t *testing.T) {
 	artifacts := map[string]string{TerraformArtifact: "abc"}
-	good := &Manifest{FormatVersion: FormatVersion, ReleaseTag: "v0.6.15", Modules: map[string]Module{
+	good := &Manifest{FormatVersion: FormatVersion, ReleaseTag: "v0.6.15", Engine: Terraform, Modules: map[string]Module{
 		"catalog/aws/awsvpc/iac/tf": {Digest: Digest(artifacts), Artifacts: artifacts},
 	}}
 	data, err := Encode(good)
@@ -49,8 +49,17 @@ func TestParseProvesTheManifestWhole(t *testing.T) {
 		edit func(m *Manifest)
 		want string
 	}{
-		{"another format", func(m *Manifest) { m.FormatVersion = 2 }, "format 2"},
+		{"another format", func(m *Manifest) { m.FormatVersion = 3 }, "format 3"},
 		{"no tag", func(m *Manifest) { m.ReleaseTag = "" }, "no release tag"},
+		{"no engine", func(m *Manifest) { m.Engine = "" }, "neither pulumi nor terraform"},
+		{"an unknown engine", func(m *Manifest) { m.Engine = "tf" }, "neither pulumi nor terraform"},
+		{"another engine's module", func(m *Manifest) {
+			pulumi := map[string]string{PulumiArtifact("linux_amd64"): "abc"}
+			m.Modules["catalog/aws/awsvpc/iac/pulumi"] = Module{Digest: Digest(pulumi), Artifacts: pulumi}
+		}, "not a terraform module directory"},
+		{"a directory that is no module's", func(m *Manifest) {
+			m.Modules["catalog/aws/awsvpc"] = good.Modules["catalog/aws/awsvpc/iac/tf"]
+		}, "not a terraform module directory"},
 		{"a digest that is not its artifacts'", func(m *Manifest) {
 			m.Modules["catalog/aws/awsvpc/iac/tf"] = Module{Digest: "f00", Artifacts: artifacts}
 		}, "digest to"},
@@ -60,7 +69,7 @@ func TestParseProvesTheManifestWhole(t *testing.T) {
 	}
 	for _, tc := range cases {
 		t.Run(tc.name, func(t *testing.T) {
-			m := &Manifest{FormatVersion: good.FormatVersion, ReleaseTag: good.ReleaseTag, Modules: map[string]Module{}}
+			m := &Manifest{FormatVersion: good.FormatVersion, ReleaseTag: good.ReleaseTag, Engine: good.Engine, Modules: map[string]Module{}}
 			for k, v := range good.Modules {
 				m.Modules[k] = v
 			}
@@ -77,8 +86,8 @@ func TestParseProvesTheManifestWhole(t *testing.T) {
 }
 
 func TestEncodeIsDeterministic(t *testing.T) {
-	m := &Manifest{FormatVersion: FormatVersion, ReleaseTag: "v1.0.0", Modules: map[string]Module{}}
-	for _, dir := range []string{"catalog/b/x/iac/tf", "catalog/a/y/iac/pulumi", "catalog/c/z/iac/tf"} {
+	m := &Manifest{FormatVersion: FormatVersion, ReleaseTag: "v1.0.0", Engine: Terraform, Modules: map[string]Module{}}
+	for _, dir := range []string{"catalog/b/x/iac/tf", "catalog/a/y/iac/tf", "catalog/c/z/iac/tf"} {
 		artifacts := map[string]string{TerraformArtifact: dir}
 		m.Modules[dir] = Module{Digest: Digest(artifacts), Artifacts: artifacts}
 	}
@@ -87,6 +96,26 @@ func TestEncodeIsDeterministic(t *testing.T) {
 		again, _ := Encode(m)
 		if string(again) != string(first) {
 			t.Fatal("encoding the same manifest twice gave different bytes")
+		}
+	}
+}
+
+func TestEngineOfModuleDir(t *testing.T) {
+	for dir, want := range map[string]Engine{
+		"catalog/aws/awsvpc/iac/tf":     Terraform,
+		"catalog/aws/awsvpc/iac/pulumi": Pulumi,
+		"catalog/aws/awsvpc/iac":        "",
+		"catalog/aws/awsvpc/tf":         "",
+		"catalog/aws/awsvpc/iac/cdk":    "",
+	} {
+		got, ok := EngineOfModuleDir(dir)
+		if got != want || ok != (want != "") {
+			t.Errorf("EngineOfModuleDir(%q) = %q, %v; want %q", dir, got, ok, want)
+		}
+	}
+	for _, e := range Engines {
+		if got, _ := EngineOfModuleDir("catalog/aws/awsvpc/iac/" + e.ModuleDirName()); got != e {
+			t.Errorf("%s's module directory name reads back as %q", e, got)
 		}
 	}
 }

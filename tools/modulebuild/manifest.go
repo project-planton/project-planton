@@ -93,7 +93,7 @@ func record(published map[string]map[string]string, module, name, sum, source st
 // describe it: every platform's binary for a Pulumi module, module.zip for an
 // OpenTofu/Terraform one.
 func expectedArtifacts(m Module) []string {
-	if m.Engine == Pulumi {
+	if m.Engine == modulemanifest.Pulumi {
 		names := make([]string, 0, len(modulemanifest.PulumiPlatforms))
 		for _, p := range modulemanifest.PulumiPlatforms {
 			names = append(names, modulemanifest.PulumiArtifact(p))
@@ -103,20 +103,27 @@ func expectedArtifacts(m Module) []string {
 	return []string{modulemanifest.TerraformArtifact}
 }
 
-// BuildManifest assembles the release's module manifest from what its legs
-// published, and refuses an incomplete one: a module the release ships but no
-// leg recorded, a module missing an artifact, or an artifact nobody expects.
-// A manifest that described part of a release would let a platform trust a
-// module it cannot verify, so the release publishes none until every leg has.
-func BuildManifest(tag string, modules []Module, published map[string]map[string]string) ([]byte, error) {
+// BuildManifest assembles a release's module manifest for one engine from
+// what that engine's legs published, and refuses an incomplete one: a module
+// of the engine the release ships but no leg recorded, a module missing an
+// artifact, or an artifact nobody expects. A manifest that described part of
+// an engine's modules would let a platform trust a module it cannot verify,
+// so the release publishes none until every leg of that engine has. The
+// other engine's modules play no part: each engine's manifest is published
+// the moment its own lane is done.
+func BuildManifest(tag string, engine modulemanifest.Engine, modules []Module, published map[string]map[string]string) ([]byte, error) {
 	manifest := &modulemanifest.Manifest{
 		FormatVersion: modulemanifest.FormatVersion,
 		ReleaseTag:    tag,
+		Engine:        engine,
 		Modules:       map[string]modulemanifest.Module{},
 	}
 	var problems []string
 	shipped := map[string]bool{}
 	for _, m := range modules {
+		if m.Engine != engine {
+			continue
+		}
 		shipped[m.Dir] = true
 		got := published[m.Dir]
 		artifacts := map[string]string{}
@@ -137,12 +144,13 @@ func BuildManifest(tag string, modules []Module, published map[string]map[string
 	}
 	for dir := range published {
 		if !shipped[dir] {
-			problems = append(problems, fmt.Sprintf("%s: published, but the release ships no such module", dir))
+			problems = append(problems, fmt.Sprintf("%s: published, but the release ships no such %s module", dir, engine))
 		}
 	}
 	if len(problems) > 0 {
 		sort.Strings(problems)
-		return nil, fmt.Errorf("the release's modules are incomplete, so no manifest is published:\n  %s", strings.Join(problems, "\n  "))
+		return nil, fmt.Errorf("the release's %s modules are incomplete, so no %s manifest is published:\n  %s",
+			engine, engine, strings.Join(problems, "\n  "))
 	}
 	return modulemanifest.Encode(manifest)
 }
