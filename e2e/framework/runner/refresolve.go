@@ -14,8 +14,9 @@ import (
 	"google.golang.org/protobuf/encoding/protojson"
 )
 
-// DependencyOutputs holds the captured outputs of every deployed
-// prerequisite, keyed by kind and then by manifest name. The second level exists
+// DependencyOutputs holds what a reference can read from every deployed
+// prerequisite (its captured outputs, and the spec and metadata its manifest
+// declared; see ReferableValues), keyed by kind and then by manifest name. The second level exists
 // because a prerequisite install profile may deploy several instances of the
 // same kind (e.g. the two different-AZ subnets a load balancer requires), and a
 // reference must be able to pick the specific instance it means.
@@ -49,6 +50,30 @@ type DependencyOutputs map[catalogkind.CatalogKind]map[string]map[string]interfa
 // The resolved manifest is written to a temp file whose path is returned; the
 // original is left untouched. When there is nothing to resolve, the original path
 // is returned unchanged.
+// ReferableValues is what a dependent's value_from reference reads from one
+// deployed instance: its captured outputs, plus the spec and metadata of the
+// manifest it deployed from (keyed by proto field name), so a reference to a
+// field the instance declares (a namespace's spec.name) resolves the way the
+// control plane resolves it, beside one to a field it exports.
+func ReferableValues(outputs map[string]interface{}, manifestPath string) (map[string]interface{}, error) {
+	manifestObject, err := manifest.LoadManifest(manifestPath)
+	if err != nil {
+		return nil, errors.Wrapf(err, "failed to load %s to read its fields", manifestPath)
+	}
+	fields, err := manifestgraph.ManifestFields(manifestObject)
+	if err != nil {
+		return nil, errors.Wrapf(err, "failed to read the fields of %s", manifestPath)
+	}
+	values := make(map[string]interface{}, len(outputs)+len(fields))
+	for key, value := range fields {
+		values[key] = value
+	}
+	for key, value := range outputs {
+		values[key] = value
+	}
+	return values, nil
+}
+
 func ResolveManifestRefs(manifestPath string, depOutputs DependencyOutputs) (string, error) {
 	if len(depOutputs) == 0 {
 		return manifestPath, nil

@@ -67,6 +67,11 @@ type DependencyState struct {
 	// verify the dependency and to resolve the dependent kind's value_from
 	// references (see ResolveManifestRefs).
 	Outputs map[string]interface{}
+
+	// Referable is what a dependent's value_from reference reads from this
+	// instance: its outputs, plus the spec and metadata of the manifest it
+	// deployed from (ReferableValues).
+	Referable map[string]interface{}
 }
 
 // tracked reports whether the deploy may have created resources that teardown
@@ -546,6 +551,10 @@ func DeployDependencies(ctx context.Context, t testing.TB, repoRoot, kindProvide
 			docDep.ManifestPath = resolvedManifestPath
 
 			state, err := deployDependency(ctx, t, repoRoot, kindProvider, docDep, backendURL, runID, harness, docIndex)
+			if err == nil {
+				state.Referable, err = ReferableValues(state.Outputs, docDep.ManifestPath)
+				err = errors.Wrapf(err, "failed to read what dependents can reference from dependency %q", dep.KindSlug)
+			}
 			if state.tracked() {
 				deployed = append(deployed, state)
 			}
@@ -557,7 +566,7 @@ func DeployDependencies(ctx context.Context, t testing.TB, repoRoot, kindProvide
 			if accumulated[kind] == nil {
 				accumulated[kind] = make(map[string]map[string]interface{})
 			}
-			accumulated[kind][state.ManifestName] = state.Outputs
+			accumulated[kind][state.ManifestName] = state.Referable
 		}
 	}
 	return deployed, nil

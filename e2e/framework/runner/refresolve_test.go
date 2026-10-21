@@ -11,6 +11,7 @@ import (
 	gcpbackendservicev1alpha1 "github.com/plantonhq/planton/catalog/gcp/gcpbackendservice/v1alpha1"
 	gcptargethttpsproxyv1alpha1 "github.com/plantonhq/planton/catalog/gcp/gcptargethttpsproxy/v1alpha1"
 	gcpurlmapv1alpha1 "github.com/plantonhq/planton/catalog/gcp/gcpurlmap/v1alpha1"
+	kubernetesagentsandboxcontrollerv1alpha1 "github.com/plantonhq/planton/catalog/kubernetes/kubernetesagentsandboxcontroller/v1alpha1"
 	"github.com/plantonhq/planton/internal/manifest"
 	"github.com/plantonhq/planton/shared/catalogkind"
 )
@@ -463,5 +464,49 @@ func TestResolveManifestRefs_ResolvesExplicitValueFromKindWithoutDefaultKind(t *
 	want := "https://www.googleapis.com/compute/v1/projects/p/global/backendServices/bs"
 	if got != want {
 		t.Errorf("default_service = %q, want %q", got, want)
+	}
+}
+
+// A reference to a field a prerequisite declares rather than exports (a
+// namespace's spec.name, the default path of every namespaced kind) resolves
+// from the manifest the prerequisite deployed from: ReferableValues carries
+// its spec and metadata beside its outputs.
+func TestResolveManifestRefs_ResolvesAPrerequisitesDeclaredField(t *testing.T) {
+	namespacePath := writeTempManifest(t, `apiVersion: kubernetes.planton.dev/v1alpha1
+kind: KubernetesNamespace
+metadata:
+  name: e2e-asbx-namespace
+spec:
+  name: agent-sandbox-system
+`)
+	referable, err := ReferableValues(map[string]interface{}{"namespace": "agent-sandbox-system"}, namespacePath)
+	if err != nil {
+		t.Fatalf("ReferableValues: %v", err)
+	}
+	controllerPath := writeTempManifest(t, `apiVersion: kubernetes.planton.dev/v1alpha1
+kind: KubernetesAgentSandboxController
+metadata:
+  name: e2e-asbx-full
+spec:
+  namespace:
+    valueFrom:
+      kind: KubernetesNamespace
+      name: e2e-asbx-namespace
+      fieldPath: spec.name
+`)
+	resolvedPath, err := ResolveManifestRefs(controllerPath, singleInstance(catalogkind.CatalogKind_KubernetesNamespace, "e2e-asbx-namespace", referable))
+	if err != nil {
+		t.Fatalf("ResolveManifestRefs: %v", err)
+	}
+	obj, err := manifest.LoadManifest(resolvedPath)
+	if err != nil {
+		t.Fatalf("failed to load resolved manifest: %v", err)
+	}
+	controller, ok := obj.(*kubernetesagentsandboxcontrollerv1alpha1.KubernetesAgentSandboxController)
+	if !ok {
+		t.Fatalf("resolved manifest is a %T", obj)
+	}
+	if got := controller.GetSpec().GetNamespace().GetValue(); got != "agent-sandbox-system" {
+		t.Errorf("namespace = %q, want the namespace manifest's declared name agent-sandbox-system", got)
 	}
 }

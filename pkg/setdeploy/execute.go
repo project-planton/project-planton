@@ -90,12 +90,13 @@ func Execute(plan *Plan, deployer NodeDeployer, events Events) (*Result, error) 
 		result.Statuses[i] = NodeStatusNeverStarted
 	}
 
+	// referable holds what a later node's reference can read from each
+	// deployed node: its captured outputs and the fields its manifest declares
+	// (a namespace's spec.name), as the control plane resolves references.
+	referable := map[manifestgraph.Identity]map[string]string{}
 	lookup := func(id manifestgraph.Identity) (map[string]string, bool) {
-		captured, ok := result.Outputs[id]
-		if !ok || captured == nil {
-			return nil, false
-		}
-		return captured.Flat, true
+		values, ok := referable[id]
+		return values, ok
 	}
 
 	for position, idx := range plan.Order {
@@ -138,10 +139,32 @@ func Execute(plan *Plan, deployer NodeDeployer, events Events) (*Result, error) 
 		if captured != nil {
 			result.Outputs[node.Identity] = captured
 		}
+		values, err := referableValues(msg, captured)
+		if err != nil {
+			return result, errors.Wrapf(err, "reading what later nodes can reference from %s", node.Identity)
+		}
+		referable[node.Identity] = values
 		events.NodeSucceeded(node, captured)
 	}
 
 	return result, nil
+}
+
+// referableValues is what a reference can read from a deployed node: its
+// flattened outputs, and its resolved manifest's own fields under their full
+// paths (spec.name).
+func referableValues(msg proto.Message, captured *outputs.CaptureResult) (map[string]string, error) {
+	fields, err := manifestgraph.ManifestFields(msg)
+	if err != nil {
+		return nil, err
+	}
+	values := outputs.Flatten(fields)
+	if captured != nil {
+		for key, value := range captured.Flat {
+			values[key] = value
+		}
+	}
+	return values, nil
 }
 
 // resolutionFailure turns resolution findings into the node's failure. After
@@ -175,7 +198,7 @@ func warnSensitiveResolutions(msg proto.Message, node NodePlan, captured map[man
 		if !ok || producer == nil {
 			continue
 		}
-		key := strings.TrimPrefix(target.FieldPath, "status.outputs.")
+		key := manifestgraph.LookupKey(target)
 		if producer.IsSensitive(key) {
 			events.NodeWarning(node, fmt.Sprintf(
 				"%s resolves from %s's sensitive output %q — the value enters this manifest and may appear in IaC diff output; prefer a provider-native secret reference for secret material",

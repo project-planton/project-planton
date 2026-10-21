@@ -120,7 +120,11 @@ func DeploySuite(t testing.TB, repoRoot, provider string, suite *mappingeval.Loa
 		if accumulated[member.Kind] == nil {
 			accumulated[member.Kind] = map[string]map[string]interface{}{}
 		}
-		accumulated[member.Kind][member.Name] = rawOutputs
+		referable, err := runner.ReferableValues(rawOutputs, resolvedPath)
+		if err != nil {
+			return deployed, nil, errors.Wrapf(err, "reading what later members can reference from %s %q", member.KindDir, member.Name)
+		}
+		accumulated[member.Kind][member.Name] = referable
 
 		claims, invisible, err := stateResourceIdentities(workDir, ccTypeByTerraformType)
 		if err != nil {

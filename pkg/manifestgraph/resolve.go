@@ -2,15 +2,16 @@ package manifestgraph
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/plantonhq/planton/shared/catalogkind"
 	foreignkeyv1 "github.com/plantonhq/planton/shared/foreignkey/v1"
 	"google.golang.org/protobuf/proto"
 )
 
-// OutputsLookup supplies a deployed resource's FLATTENED outputs (dotted
-// string keys, the platform's flattening) by graph identity. Returning false
+// OutputsLookup supplies what a reference can read from a deployed resource,
+// by graph identity: its FLATTENED outputs (dotted string keys, the
+// platform's flattening), and the fields its manifest declares under their
+// full paths (ManifestFields, flattened: "spec.name"). Returning false
 // means the identity's outputs are not available — the reference is left
 // untouched and reported, and the caller's policy decides what that means
 // (a preflighted deployment treats it as a bug; the E2E harness treats it as
@@ -26,14 +27,16 @@ type OutputsLookup func(id Identity) (map[string]string, bool)
 //     a reference the rules reject is reported and left untouched;
 //   - the target's outputs come from the lookup; a lookup miss leaves the
 //     reference untouched and reports FindingUnresolvedRef;
-//   - a lookup HIT whose outputs lack the referenced field reports
+//   - a lookup HIT that lacks the referenced field reports
 //     FindingMissingOutput — the sharper class, because the resource exists
-//     and the composition names a field it does not export;
+//     and the composition names a field it does not export or declare;
 //   - on success the whole StringValueOrRef is replaced with the literal arm.
 //
-// Field paths address outputs by their flattened key: the "status.outputs."
-// prefix is stripped, the remainder is the dotted key (map-typed composition
-// keys address entries by suffix, e.g. "backend_pool_ids.web").
+// Field paths are read canonically (LookupKey): proto field names, so a
+// camelCase path reads the same value as its snake_case form. Outputs read by
+// their flattened key, the "status.outputs." prefix stripped (map-typed
+// composition keys address entries by suffix, e.g. "backend_pool_ids.web");
+// a manifest field reads by its full path ("spec.name").
 func ResolveRefs(msg proto.Message, consumerEnv string, lookup OutputsLookup) (int, []Finding) {
 	resolved := 0
 	var findings []Finding
@@ -63,13 +66,17 @@ func ResolveRefs(msg proto.Message, consumerEnv string, lookup OutputsLookup) (i
 			continue
 		}
 
-		key := strings.TrimPrefix(target.FieldPath, "status.outputs.")
+		key := LookupKey(target)
 		value, ok := outs[key]
 		if !ok {
 			t := target
+			message := fmt.Sprintf("%s: %s has no output %q — the resource deployed but does not export the referenced field", use.FieldPath, targetID, key)
+			if isManifestField(key) {
+				message = fmt.Sprintf("%s: %s does not set %q in its manifest — set it there, or reference a field it does set", use.FieldPath, targetID, key)
+			}
 			findings = append(findings, Finding{
 				Class: FindingMissingOutput, FieldPath: use.FieldPath, Target: &t,
-				Message: fmt.Sprintf("%s: %s has no output %q — the resource deployed but does not export the referenced field", use.FieldPath, targetID, key),
+				Message: message,
 			})
 			continue
 		}

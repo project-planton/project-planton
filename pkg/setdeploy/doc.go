@@ -1,6 +1,6 @@
 // Package setdeploy deploys a SET of catalog object manifests as one
 // operation: the preflight wall, the dependency-ordered execution loop, and
-// the output-fed reference resolution between nodes.
+// the reference resolution between nodes.
 //
 // The package composes two layers that already exist and adds no second
 // opinion on either: pkg/manifestgraph answers what depends on what, what
@@ -8,8 +8,9 @@
 // lane shares); the engine's single-manifest run paths (tofumodule,
 // pulumistack) answer how one resource deploys. setdeploy's own job is the
 // part neither owns — verifying EVERYTHING verifiable before the first IaC
-// handoff and walking the order with each node's captured outputs feeding the
-// next nodes' references.
+// handoff and walking the order with each node's captured outputs, and the
+// fields its manifest declares (a namespace's spec.name), feeding the next
+// nodes' references.
 //
 // The preflight wall is the product surface here: every check the deploy
 // environment can fail is probed up front — schema, identity, references,

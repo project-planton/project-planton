@@ -108,3 +108,30 @@ func TestResolveValueFromPath(t *testing.T) {
 		})
 	}
 }
+
+// A reference reads the resource's stored document, where every schema field
+// is keyed by its proto name: the canonical path rewrites camelCase segments
+// to snake_case and bare-indexes list elements, and keeps map keys exactly as
+// written (they are runtime data, not schema).
+func TestCanonicalValueFromPath(t *testing.T) {
+	cases := []struct {
+		name      string
+		kind      catalogkind.CatalogKind
+		fieldPath string
+		want      string
+	}{
+		{"spec field already canonical", catalogkind.CatalogKind_KubernetesNamespace, "spec.name", "spec.name"},
+		{"metadata field", catalogkind.CatalogKind_KubernetesNamespace, "metadata.name", "metadata.name"},
+		{"camelCase output becomes snake_case", catalogkind.CatalogKind_AzureLoadBalancer, "status.outputs.loadBalancerId", "status.outputs.load_balancer_id"},
+		{"map key kept as written", catalogkind.CatalogKind_AzureLoadBalancer, "status.outputs.backendPoolIds.WebTier", "status.outputs.backend_pool_ids.WebTier"},
+		{"bracketed index bared", catalogkind.CatalogKind_AwsRoute53Zone, "status.outputs.nameservers.[1]", "status.outputs.nameservers.1"},
+		{"unresolvable path returned unchanged", catalogkind.CatalogKind_KubernetesNamespace, "spec.noSuchField", "spec.noSuchField"},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			if got := CanonicalValueFromPath(c.kind, c.fieldPath); got != c.want {
+				t.Errorf("CanonicalValueFromPath(%s, %q) = %q, want %q", c.kind, c.fieldPath, got, c.want)
+			}
+		})
+	}
+}

@@ -123,3 +123,69 @@ func TestResolveRefs_FindingClasses(t *testing.T) {
 	assert.NotNil(t, msg.Spec.Namespace.GetValueFrom())
 	assert.NotNil(t, msg.Spec.RefMap["broken"].GetValueFrom())
 }
+
+// TestResolveRefs_ReadsCanonicalPaths pins that a reference reads its target
+// by the canonical path: a camelCase field path reads the same value as its
+// proto-named form, and a manifest field the target does not set is reported
+// as unset in its manifest, not as a missing output.
+func TestResolveRefs_ReadsCanonicalPaths(t *testing.T) {
+	msg := &testk8sv1alpha1.TestCatalogKindKubernetes{
+		Metadata: &shared.CatalogObjectMetadata{Name: "consumer", Env: "dev"},
+		Spec: &testk8sv1alpha1.TestCatalogKindKubernetesSpec{
+			Namespace: literal("apps"),
+			RefMap: map[string]*foreignkeyv1.StringValueOrRef{
+				"pf": ref(catalogkind.CatalogKind_TestCatalogKindKubernetes, "other", "status.outputs.portForwardCommand"),
+			},
+		},
+	}
+	lookup := func(id Identity) (map[string]string, bool) {
+		return map[string]string{"port_forward_command": "kubectl port-forward svc/other 8080"}, true
+	}
+	resolved, findings := ResolveRefs(msg, "dev", lookup)
+	assert.Equal(t, 1, resolved)
+	assert.Empty(t, findings)
+	assert.Equal(t, "kubectl port-forward svc/other 8080", msg.Spec.RefMap["pf"].GetValue())
+
+	unset := &testk8sv1alpha1.TestCatalogKindKubernetes{
+		Metadata: &shared.CatalogObjectMetadata{Name: "consumer", Env: "dev"},
+		Spec: &testk8sv1alpha1.TestCatalogKindKubernetesSpec{
+			Namespace: ref(catalogkind.CatalogKind_KubernetesNamespace, "apps", "spec.name"),
+		},
+	}
+	_, findings = ResolveRefs(unset, "dev", func(Identity) (map[string]string, bool) {
+		return map[string]string{"namespace": "apps"}, true
+	})
+	if assert.Len(t, findings, 1) {
+		assert.Equal(t, FindingMissingOutput, findings[0].Class)
+		assert.Contains(t, findings[0].Message, `does not set "spec.name" in its manifest`)
+	}
+}
+
+// TestManifestFields pins what a reference can read from a manifest itself:
+// its spec and metadata under proto field names, nothing else.
+func TestManifestFields(t *testing.T) {
+	msg := &testk8sv1alpha1.TestCatalogKindKubernetes{
+		ApiVersion: "_test.planton.dev/v1alpha1",
+		Kind:       "TestCatalogKindKubernetes",
+		Metadata:   &shared.CatalogObjectMetadata{Name: "consumer", Env: "dev", Labels: map[string]string{"team": "agents"}},
+		Spec: &testk8sv1alpha1.TestCatalogKindKubernetesSpec{
+			Namespace:       literal("apps"),
+			CreateNamespace: true,
+		},
+	}
+	fields, err := ManifestFields(msg)
+	assert.NoError(t, err)
+	assert.ElementsMatch(t, []string{"spec", "metadata"}, keysOf(fields))
+	spec, _ := fields["spec"].(map[string]interface{})
+	assert.Equal(t, true, spec["create_namespace"], "fields are keyed by proto field name")
+	metadata, _ := fields["metadata"].(map[string]interface{})
+	assert.Equal(t, map[string]interface{}{"team": "agents"}, metadata["labels"])
+}
+
+func keysOf(m map[string]interface{}) []string {
+	keys := make([]string, 0, len(m))
+	for k := range m {
+		keys = append(keys, k)
+	}
+	return keys
+}

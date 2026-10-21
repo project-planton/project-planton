@@ -144,7 +144,7 @@ func RunKindTest(ctx context.Context, tc *provider.KindTestContext, harness prov
 				if depOutputs[kind] == nil {
 					depOutputs[kind] = make(map[string]map[string]interface{})
 				}
-				depOutputs[kind][depState.ManifestName] = depState.Outputs
+				depOutputs[kind][depState.ManifestName] = depState.Referable
 			}
 			resolvedPath, resolveErr := ResolveManifestRefs(tc.ManifestPath, depOutputs)
 			if resolveErr != nil {

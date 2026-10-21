@@ -334,8 +334,11 @@ the service, attempt the subnet delete and read the error.
 ### Resolving `valueFrom` references in composed scenarios
 
 Before a scenario (or a prerequisite manifest) is applied, the runner resolves
-every `valueFrom` reference in the spec against already-deployed prerequisite
-outputs ([refresolve.go](framework/runner/refresolve.go)). Resolution walks the
+every `valueFrom` reference in the spec against already-deployed
+prerequisites ([refresolve.go](framework/runner/refresolve.go)): what each one
+exports (`status.outputs.<key>`) and what its manifest declares (`spec.name`,
+`metadata.labels.<key>`, read by proto field name), the way the control plane
+resolves a reference against the stored resource. Resolution walks the
 full spec tree — nested messages, repeated message elements such as
 `backends[0].group`, and repeated ref fields themselves (a `repeated
 StringValueOrRef` like a target HTTPS proxy's `ssl_certificates` resolves each

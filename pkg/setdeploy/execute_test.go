@@ -192,3 +192,50 @@ func TestExecute_RefusedPlanNeverRuns(t *testing.T) {
 		t.Fatalf("nothing may deploy behind a refused wall")
 	}
 }
+
+// A reference reads what the referenced manifest declares, not only what it
+// exports: a namespace referenced by its spec.name (every namespaced kind's
+// default path) resolves from the namespace manifest itself, as the control
+// plane resolves it, even though the namespace's outputs carry no "spec.name".
+func TestExecute_ManifestFieldsFeedDownstreamReferences(t *testing.T) {
+	docs := docsOf(t, map[string]string{
+		"01-namespace.yaml": `apiVersion: kubernetes.planton.dev/v1alpha1
+kind: KubernetesNamespace
+metadata:
+  name: apps
+  env: dev
+spec:
+  name: apps-real
+`,
+		"02-workload.yaml": `apiVersion: _test.planton.dev/v1alpha1
+kind: TestCatalogKindKubernetes
+metadata:
+  name: workload
+  env: dev
+spec:
+  namespace:
+    valueFrom:
+      name: apps
+`,
+	})
+	plan := Preflight(docs, Flags{}, newFakeProbes())
+	if plan.Report.Refused() {
+		t.Fatalf("fixture wall must pass: %+v", plan.Report)
+	}
+	deployer := &fakeDeployer{
+		outputs: map[string]*outputs.CaptureResult{
+			"KubernetesNamespace/apps@dev": {Flat: map[string]string{"namespace": "apps-real"}},
+		},
+	}
+	result, err := Execute(plan, deployer, &recordingEvents{})
+	if err != nil {
+		t.Fatalf("execute: %v", err)
+	}
+	if !result.Succeeded() {
+		t.Fatalf("a spec.name reference must resolve from the namespace's manifest; %v", result.FailedErr)
+	}
+	workload := deployer.manifests["TestCatalogKindKubernetes/workload@dev"]
+	if !strings.Contains(workload, "apps-real") || strings.Contains(workload, "valueFrom") {
+		t.Fatalf("the workload's handoff manifest must carry the namespace's declared name; got:\n%s", workload)
+	}
+}
