@@ -1,6 +1,6 @@
 ---
 name: planton
-description: Planton's craft for infrastructure, service delivery, organization activity, and self-hosted administration, for coding agents including Codex, Cursor, and Claude Code. Use to compose or troubleshoot Infra Charts and deployed infrastructure; register, deploy, promote or roll back services; set up CI/CD; explain what changed, unread failures, or decisions awaiting the caller; review saved edits and proposed deployments; administer a PlantonPlatform and company directory; put an organization's console at its own address (planton.<company>); or start, restart and diagnose the local instance Planton Desktop runs. Activity reads separate historical changes, personal inspection, and current approval eligibility. Never mutate uninvited, approve only on the person's word and never a run they started, never leave the workspace given. Not for authoring kind schemas.
+description: Planton's craft for infrastructure, service delivery, organization activity, and self-hosted administration, for coding agents including Codex, Cursor, and Claude Code. Use to compose or troubleshoot Infra Charts and deployed infrastructure; register, deploy, promote or roll back services; set up CI/CD; connect AWS, GCP, Azure, DigitalOcean or Cloudflare (keyless from the machine's own sign-in) and answer what access Planton holds; explain what changed, unread failures, or decisions awaiting the caller; review saved edits and proposed deployments; administer a PlantonPlatform and company directory; put an organization's console at its own address (planton.<company>); or start, restart and diagnose the local instance Planton Desktop runs. Activity reads separate historical changes, personal inspection, and current approval eligibility. Never mutate uninvited, approve only on the person's word and never a run they started, never leave the workspace given. Not for authoring kind schemas.
 ---
 
 # Planton
@@ -322,6 +322,11 @@ shared state and needs the user's explicit go-ahead:
   strongest form -- deploying from THIS machine
   (`references/infra.machine-deploy.md`: the probe, the grammar, the
   consent discipline).
+- **Connecting a cloud is the person's informed decision.** Explain what
+  Planton will be able to do and that the setup runs as them, in their own
+  cloud; show the plan, ask, narrate the run, read the verdict back, and
+  answer every worry from the server's own answer, never only execute
+  (`references/infra.connecting-clouds.md`).
 - **A working copy of a deployed Infra Stack is different**: every change
   is planned, shown with every Destroy named, and applied on the user's yes
   (`references/infra.deployed-stacks.md`).
@@ -381,13 +386,7 @@ Hold these invariants in every service answer:
 - **Receipts are exact.** Promote re-applies a captured artifact+configuration pair; rollback restores a receipt byte-for-byte; redeploy applies what runs again, exactly, to put drift back; none re-renders or needs the repository reachable. What a run no longer declares is removed after the rest applied (`references/service.delivery-verbs.md`).
 - **Refusals name their working paths**: relay them, never retry them.
 
-Registration has four doors: detection-first, the primary -- the platform
-reads the repository and proposes, the user confirms once
-(`references/service.detection-first-registration.md`); a console or
-agent apply (a pure catalog entry is valid); a `service.yaml` pushed to
-the connected repository's default branch
-(`references/service.push-to-register.md`); and a CI step with proven
-repository identity (`references/service.external-ci.md`). Every door needs a GitHub connection and a registry; on a machine that is already signed in, both come from that sign-in with nothing pasted (`references/service.connecting-github-and-registries.md`).
+Registration has four doors: detection-first, the primary -- the platform reads the repository and proposes, the user confirms once (`references/service.detection-first-registration.md`); a console or agent apply (a pure catalog entry is valid); a `service.yaml` pushed to the connected repository's default branch (`references/service.push-to-register.md`); and a CI step with proven repository identity (`references/service.external-ci.md`). Every door needs a GitHub connection and a registry; on a machine that is already signed in, both come from that sign-in with nothing pasted (`references/service.connecting-github-and-registries.md`).
 
 **Services deploy with or without a Planton backend.** Connected, the control plane runs pipelines, gates, and rollout verification. With NO backend configured, `planton service deploy --env <env>` deploys the repository's own kustomize tree entirely offline through the open-source engine -- preflight report first, dependency-ordered deploys, honest exit codes -- and the same published GitHub Action serves both postures, the mode inferred from its inputs. The complete offline journey -- authoring offline-clean trees, wiring GitHub Actions keylessly, verifying everything before declaring ready -- is `references/service.offline-deploy.md`.
 
@@ -421,6 +420,7 @@ Read the file whose "Read when" matches the moment; never answer from memory wha
 | `references/infra.issue-catalog.md` | A build failed and you need the fix pattern for an error |
 | `references/infra.deployment-model.md` | What happens after deploy (Infra Stacks, pipelines, Infra Jobs, IaC modules); explaining or diagnosing it |
 | `references/infra.machine-deploy.md` | Deployment is the next step on a signed-in instance; offering the machine's own cloud login as the deploy path; performing a consented deploy |
+| `references/infra.connecting-clouds.md` | Connecting AWS, GCP, Azure, DigitalOcean or Cloudflare, what access Planton needs or has, or a connection can't deploy something: keyless with the machine's own sign-in (`planton connect gcp`), the plan to show and the yes to ask for, every worry answered with a fact, the grant and its opt-in tiers, the verdict, resuming, `verify` and `cleanup`, the token clouds, every refusal and its fix |
 | `references/infra.deployed-stacks.md` | The folder has `.planton/stack.yaml`; fixing a failed deployment; planning and applying a change to a deployed Infra Stack (the plan's rows, Destroy and Keep, What Else This Affects: the stacks, services and resources that read what it changes); a request in a protected environment (reviewing it, approving or rejecting on the person's word, withdrawing it, one that lapsed); drift (checking a stack, Reconcile); a stack's revisions |
 | `references/infra.stack-promotion.md` | A stack across its environments: is prod behind, which chart version each runs; promoting, rolling back, upgrading to a chart's newer version, comparing two environments or revisions |
 | `references/infra.state-import.md` | A deploy failed saying a resource ALREADY EXISTS; importing a provider resource the state never recorded into IaC state |

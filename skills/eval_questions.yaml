@@ -591,3 +591,229 @@ questions:
       - skill: planton
         file: references/service.serving-domains-custom.md
         pattern: 'never as switches on the service record'
+
+  - id: agent-connects-gcp-for-the-user
+    persona: developer, through a coding agent
+    question: >
+      Connect my GCP project acme-prod to Planton.
+    answer: >
+      Read the plan first, which changes nothing -- `planton connect gcp
+      --project acme-prod -o json` -- then explain with its real values: the
+      setup runs as them, on this machine, with the gcloud sign-in they
+      already have, and writes a trust and a role only this connection can
+      use in their own project; Planton keeps no key. Tell them who it runs
+      as, where, what Planton may deploy, what it leaves alone, anything it
+      changes for other connections, and that the connection will be usable
+      by every environment and become the organization's default GCP
+      connection when there is none. Ask, naming the identity and the
+      project. Only on their yes run the plan's `run` command (it carries
+      --yes and every choice the plan was asked with), narrate each step,
+      and read the verdict back.
+    checks:
+      - skill: planton
+        file: SKILL.md
+        pattern: '(?s)Connecting a cloud is the person''s informed decision'
+      - skill: planton
+        file: references/infra.connecting-clouds.md
+        pattern: '\*\*Read the plan first; it changes nothing\.\*\*'
+      - skill: planton
+        file: references/infra.connecting-clouds.md
+        pattern: 'the plan''s `run` command carries exactly what the plan was asked with'
+      - skill: planton
+        file: references/infra.connecting-clouds.md
+        pattern: '\*\*Ask, naming the identity, the target and who may use it:\*\*'
+      - skill: planton
+        file: references/infra.connecting-clouds.md
+        pattern: '\*\*`--yes` is the person''s yes, given ahead\.\*\*'
+
+  - id: security-lead-asks-what-planton-can-do
+    persona: security lead, wary of granting access
+    question: >
+      Before I let you connect our AWS account: what exactly will Planton be
+      able to do in it, and does it keep our credentials?
+    answer: >
+      Planton can deploy, change and destroy exactly the kinds the grant
+      covers, with the permissions the catalog lists for them, in a role that
+      is the connection's own, plus any predefined roles the plan's `granted`
+      names -- each read to the person. The default grant never includes Owner
+      or Editor, and never permissions above the target; power over who has
+      access and the tier above the target are separate opt-ins. A keyless
+      connection stores no secret: each deploy gets a short-lived token only
+      this connection's trust accepts, and the person's own sign-in never
+      leaves their machine. `--print-documents` shows every permission
+      before anything runs.
+    checks:
+      - skill: planton
+        file: references/infra.connecting-clouds.md
+        pattern: '\*\*It can do what the grant says, nothing more\.\*\*'
+      - skill: planton
+        file: references/infra.connecting-clouds.md
+        pattern: '(?s)never\s+includes\s+Owner\s+or\s+Editor'
+      - skill: planton
+        file: references/infra.connecting-clouds.md
+        pattern: '\*\*Planton keeps no key\.\*\*'
+      - skill: planton
+        file: references/infra.connecting-clouds.md
+        pattern: 'Your sign-in never leaves this machine'
+
+  - id: security-lead-asks-how-to-take-it-back
+    persona: security lead, wary of granting access
+    question: >
+      If we change our minds, how do we take Planton's access away?
+    answer: >
+      The role is theirs: they can narrow or delete it in their own cloud at
+      any time, and deleting the trust cuts Planton off at once.
+      `planton connect aws cleanup <slug>` prints what deleting the
+      connection leaves in their cloud and the script that removes the trust
+      and the role Planton set up; `planton delete AwsProviderConnection
+      <slug>` deletes the connection.
+    checks:
+      - skill: planton
+        file: references/infra.connecting-clouds.md
+        pattern: '\*\*You stay in control, in your own cloud\.\*\*'
+      - skill: planton
+        file: references/infra.connecting-clouds.md
+        pattern: 'planton connect gcp cleanup <slug>` prints what deleting the connection leaves'
+
+  - id: security-lead-asks-whether-planton-reads-data
+    persona: security lead, wary of granting access
+    question: >
+      Can Planton read our data with this connection?
+    answer: >
+      Answer from the rendered permissions, never with a blanket no: the
+      grant includes what the granted kinds need to manage their resources,
+      which for some kinds includes reading the resource's contents (a
+      secret store's versions, for example). Show the permissions with
+      --print-documents, name any that read data, and offer to grant only
+      the kinds they need.
+    checks:
+      - skill: planton
+        file: references/infra.connecting-clouds.md
+        pattern: 'Answer from the documents, never with a blanket no'
+      - skill: planton
+        file: references/infra.connecting-clouds.md
+        pattern: 'Never tell the person Planton "can''t read anything"'
+
+  - id: aws-with-a-named-profile
+    persona: platform engineer
+    question: >
+      Connect our prod AWS account; my profile for it is prod-admin.
+    answer: >
+      `planton connect aws --profile prod-admin -o json` for the plan, shown
+      and agreed, then the plan's run command. The script refuses to act
+      when the profile is signed in to a different account than the target,
+      and the setup never falls back to another sign-in it finds.
+    checks:
+      - skill: planton
+        file: references/infra.connecting-clouds.md
+        pattern: 'AWS `--account-id` and `--profile`'
+      - skill: planton
+        file: references/infra.connecting-clouds.md
+        pattern: 'never another sign-in it happens to find'
+      - skill: planton
+        file: references/infra.connecting-clouds.md
+        pattern: 'The script says the AWS CLI is signed in to another account'
+
+  - id: verdict-with-blocked-kinds
+    persona: platform engineer
+    question: >
+      The connection says "171 of 186 GCP Kinds Can Deploy". What now?
+    answer: >
+      The headline counts against the grant. Blocked kinds are ones the grant
+      covers that cannot deploy yet, each with its missing permissions: apply
+      the grant again from the connection's Permissions section, never build
+      a second role by hand. Kinds outside the grant are what the person
+      chose, not a fault. Re-run `planton connect gcp verify <slug>` after a
+      change.
+    checks:
+      - skill: planton
+        file: references/infra.connecting-clouds.md
+        pattern: 'never by building a second role by hand'
+      - skill: planton
+        file: references/infra.connecting-clouds.md
+        pattern: 'the cloud may still be spreading the new role: verify again in a minute'
+      - skill: planton
+        file: references/infra.connecting-clouds.md
+        pattern: 'Not a fault -- what they chose'
+      - skill: planton
+        file: references/infra.connecting-clouds.md
+        pattern: 'planton connect gcp verify <slug>` re-runs Verify any time'
+
+  - id: connect-stopped-half-way
+    persona: developer
+    question: >
+      planton connect azure stopped half-way. Do I have to clean up first?
+    answer: >
+      No. Run the same command again: the script adopts what it already
+      made, and an existing keyless connection with the same trust goes
+      straight to Verify. Every failure after the script ran names the
+      command that resumes.
+    checks:
+      - skill: planton
+        file: references/infra.connecting-clouds.md
+        pattern: 'running the same command again picks up where it stopped'
+
+  - id: windows-without-bash
+    persona: developer on Windows
+    question: >
+      planton connect gcp says this machine has no bash. What do I do?
+    answer: >
+      Print the exact script with --print-documents and run it in the cloud's
+      own browser shell (Google Cloud Shell), which has bash and is already
+      signed in as them; the script ends by printing what Planton needs, and
+      the connection is created from those values in the console's wizard or
+      with `planton apply -f` on a manifest naming them, then verified.
+    checks:
+      - skill: planton
+        file: references/infra.connecting-clouds.md
+        pattern: 'the person runs it in Google Cloud Shell, AWS CloudShell or Azure Cloud Shell'
+      - skill: planton
+        file: references/infra.connecting-clouds.md
+        pattern: 'slug: <slug>      # exactly the slug the script was printed for: the trust pins it'
+
+  - id: connect-digitalocean
+    persona: developer
+    question: >
+      Connect my DigitalOcean account.
+    answer: >
+      DigitalOcean has no keyless trust: `planton connect digitalocean
+      --print-documents` prints the scopes the token needs and where to
+      create it. The person creates the token and runs the connect command
+      themselves with it in their own shell (DIGITALOCEAN_TOKEN, or stdin),
+      so it never enters the conversation or a flag; `planton connect
+      digitalocean --region <region>` stores it as the organization secret,
+      connects and verifies. Unlike keyless, Planton does keep this token.
+    checks:
+      - skill: planton
+        file: references/infra.connecting-clouds.md
+        pattern: 'so the token is never pasted into the conversation and never a command-line flag you write'
+      - skill: planton
+        file: references/infra.connecting-clouds.md
+        pattern: 'planton connect digitalocean --region <region>`'
+
+  - id: security-lead-asks-whether-the-identity-is-shared
+    persona: security lead, wary of granting access
+    question: >
+      Could another Planton connection in our GCP project end up with this
+      connection's permissions, or could another company's Planton use our
+      trust?
+    answer: >
+      The trust admits only this Planton's issuer and only this connection's
+      subject, so no other organization or Planton can present it. But by
+      default the role is granted to the service account
+      planton-provisioner@<project>, which every Planton connection in the
+      project may sign in as, so each of them can do what their roles allow
+      together; the plan's reachesOthers names them. To keep this
+      connection's role apart, name a service account of its own with
+      --service-account (Azure: --app-name). AWS gives every connection its
+      own role.
+    checks:
+      - skill: planton
+        file: references/infra.connecting-clouds.md
+        pattern: '\*\*Say plainly when the identity is shared\.\*\*'
+      - skill: planton
+        file: references/infra.connecting-clouds.md
+        pattern: '--service-account <name>@<project>\.iam\.gserviceaccount\.com'
+      - skill: planton
+        file: references/infra.connecting-clouds.md
+        pattern: 'no other connection, organization or Planton can present it'
