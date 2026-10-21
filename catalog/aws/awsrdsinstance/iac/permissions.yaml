@@ -25,10 +25,10 @@ spec:
           - rds:ListTagsForResource
         resources:
           - arn:aws:rds:*:*:db:*
-        provenance: derived
+        provenance: proven
         reach: target
         privilege: ordinary
-        notes: Covers aws_db_instance across its create shapes -- fresh instance, read replica (replicate_source_db), snapshot restore, and point-in-time restore -- plus modify, tagging, and teardown.
+        notes: "Covers aws_db_instance across its create shapes -- fresh instance, read replica (replicate_source_db), snapshot restore, and point-in-time restore -- plus modify, tagging, and teardown. Proven 2026-10-20 on dev by the least-privilege lane: an identity holding exactly the kind's rendered permissions deployed, updated and destroyed it."
       - sid: ManageSnapshotsOnLifecycle
         actions:
           - rds:CreateDBSnapshot
@@ -36,10 +36,10 @@ spec:
           - rds:DescribeDBSnapshots
         resources:
           - arn:aws:rds:*:*:snapshot:*
-        provenance: derived
+        provenance: proven
         reach: target
         privilege: ordinary
-        notes: Final snapshots on teardown (skip_final_snapshot=false) and reads of the source snapshot for restore-based creates.
+        notes: "Final snapshots on teardown (skip_final_snapshot=false) and reads of the source snapshot for restore-based creates. Proven 2026-10-20 on dev by the least-privilege lane: an identity holding exactly the kind's rendered permissions deployed, updated and destroyed it."
       - sid: ManageSubnetAndParameterGroups
         actions:
           - rds:CreateDBSubnetGroup
@@ -77,10 +77,10 @@ spec:
           - arn:aws:rds:*:*:subgrp:*
           - arn:aws:rds:*:*:pg:*
           - arn:aws:rds:*:*:og:*
-        provenance: derived
+        provenance: proven
         reach: target
         privilege: ordinary
-        notes: RDS authorizes an instance's create, modify, and restore calls on the ARN of every subnet, parameter, and option group the instance names, as well as on the instance's own ARN (rds:CreateDBInstance on a pg ARN was refused on a live create without it). A default parameter or option group is covered by the same wildcards.
+        notes: "RDS authorizes an instance's create, modify, and restore calls on the ARN of every subnet, parameter, and option group the instance names, as well as on the instance's own ARN (rds:CreateDBInstance on a pg ARN was refused on a live create without it). A default parameter or option group is covered by the same wildcards. Proven 2026-10-20 on dev by the least-privilege lane: an identity holding exactly the kind's rendered permissions deployed, updated and destroyed it."
       - sid: DescribeVpcContext
         actions:
           - ec2:DescribeSubnets
@@ -88,10 +88,10 @@ spec:
           - ec2:DescribeVpcs
         resources:
           - "*"
-        provenance: derived
+        provenance: proven
         reach: target
         privilege: ordinary
-        notes: Subnet-group creation and security-group attachment validate their references. EC2 Describe APIs support no resource-level scoping, so the wildcard is the narrowest possible scope.
+        notes: "Subnet-group creation and security-group attachment validate their references. EC2 Describe APIs support no resource-level scoping, so the wildcard is the narrowest possible scope. Proven 2026-10-20 on dev by the least-privilege lane: an identity holding exactly the kind's rendered permissions deployed, updated and destroyed it."
       - sid: ManageIamRoleAssociations
         actions:
           - rds:AddRoleToDBInstance
@@ -100,10 +100,10 @@ spec:
         resources:
           - arn:aws:rds:*:*:db:*
           - arn:aws:iam::*:role/*
-        provenance: derived
+        provenance: proven
         reach: target
         privilege: uses_identity
-        notes: Covers aws_db_instance_role_association (spec.iam_roles, and s3_import's ingestion role) plus monitoring_role_arn for Enhanced Monitoring -- RDS assumes the referenced roles, and associating them passes them. Narrow the role ARN in a hardened deployment.
+        notes: "Covers aws_db_instance_role_association (spec.iam_roles, and s3_import's ingestion role) plus monitoring_role_arn for Enhanced Monitoring -- RDS assumes the referenced roles, and associating them passes them. Narrow the role ARN in a hardened deployment. Proven 2026-10-20 on dev by the least-privilege lane: an identity holding exactly the kind's rendered permissions deployed, updated and destroyed it."
       - sid: UseCustomerManagedKeys
         actions:
           - kms:DescribeKey
@@ -121,16 +121,16 @@ spec:
           - secretsmanager:DescribeSecret
         resources:
           - arn:aws:secretsmanager:*:*:secret:rds!*
-        provenance: derived
+        provenance: proven
         reach: target
         privilege: ordinary
-        notes: With manage_master_user_password=true, RDS creates and tags the master user's Secrets Manager secret as the caller during the instance's create, modify, or restore, so the caller needs those actions itself (a live create was refused with "isn't authorized to create a secret in AWS Secrets Manager" without them); the provider reads the secret back into state after create, and RDS deletes it with the instance. Scoped to the rds!-prefixed secrets RDS manages.
+        notes: "With manage_master_user_password=true, RDS creates and tags the master user's Secrets Manager secret as the caller during the instance's create, modify, or restore, so the caller needs those actions itself (a live create was refused with \"isn't authorized to create a secret in AWS Secrets Manager\" without them); the provider reads the secret back into state after create, and RDS deletes it with the instance. Scoped to the rds!-prefixed secrets RDS manages. Proven 2026-10-20 on dev by the least-privilege lane: an identity holding exactly the kind's rendered permissions deployed, updated and destroyed it."
       - sid: DescribeMasterUserSecretKey
         actions:
           - kms:DescribeKey
         resources:
           - arn:aws:kms:*:*:key/*
-        provenance: derived
+        provenance: proven
         reach: target
         privilege: ordinary
-        notes: With manage_master_user_password=true, RDS describes the key that encrypts the master user's secret as the caller -- the aws/secretsmanager key by default, or master_user_secret_kms_key_id's customer-managed key.
+        notes: "With manage_master_user_password=true, RDS describes the key that encrypts the master user's secret as the caller -- the aws/secretsmanager key by default, or master_user_secret_kms_key_id's customer-managed key. Proven 2026-10-20 on dev by the least-privilege lane: an identity holding exactly the kind's rendered permissions deployed, updated and destroyed it."
