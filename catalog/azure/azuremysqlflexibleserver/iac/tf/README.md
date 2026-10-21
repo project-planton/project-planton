@@ -30,6 +30,7 @@ kind.
 | `spec.high_availability.mode` | Spec enum name string mapped to ARM values in `locals.tf` |
 | `spec.user_assigned_identity_ids` | MySQL supports user-assigned identities only; a non-empty list renders the `UserAssigned` identity block |
 | `spec.aad_administrator.tenant_id` | Falls back to the deploying credential's tenant when unset |
+| `spec.zone` / `spec.high_availability.standby_availability_zone` | Applied at creation only: `lifecycle.ignore_changes` keeps later edits (and Azure's own failover swaps) from planning a zone change or a planned failover |
 
 ## Usage
 
@@ -79,4 +80,5 @@ lifecycle modes (replica / point-in-time restore / geo-restore), the
 storage profile with elastic IOPS scaling, user-assigned identities,
 customer-managed-key encryption with the geo-backup key pair, the Entra
 administrator, maintenance windows, VNet injection, high availability,
-databases, firewall rules, server parameters, and user tags.
+databases, firewall rules, server parameters, and user tags. Both engines
+ignore later edits to the two zones (applied at creation only).

@@ -60,9 +60,7 @@ resource "azurerm_mysql_flexible_server" "main" {
   delegated_subnet_id   = var.spec.delegated_subnet_id
   private_dns_zone_id   = var.spec.private_dns_zone_id
 
-  # The primary's zone can only change via a planned failover that swaps
-  # zone and standby_availability_zone -- Azure rejects an independent
-  # zone change.
+  # Placement chosen at creation -- see the lifecycle block below.
   zone = var.spec.zone
 
   backup_retention_days        = var.spec.backup_retention_days
@@ -70,6 +68,8 @@ resource "azurerm_mysql_flexible_server" "main" {
 
   # High availability: a standby with synchronous replication and
   # automatic failover. Not supported on burstable SKUs or replicas.
+  # The standby zone is placement chosen at creation -- see the
+  # lifecycle block below.
   dynamic "high_availability" {
     for_each = var.spec.high_availability != null ? [var.spec.high_availability] : []
     content {
@@ -115,6 +115,18 @@ resource "azurerm_mysql_flexible_server" "main" {
   }
 
   tags = local.final_tags
+
+  # Both zones are create-time-only by contract. After Azure fails
+  # over on its own the zones in state are swapped: re-sending the
+  # spec's pair then reads as a swap request, and the provider runs a
+  # planned failover -- an outage on an unrelated edit -- while any
+  # other zone edit is refused by Azure. Zones move only through an
+  # Azure failover, never as a side effect of a spec edit (the spec
+  # field comments teach this). The Pulumi module carries the same
+  # guard -- keep the engines in step.
+  lifecycle {
+    ignore_changes = [zone, high_availability[0].standby_availability_zone]
+  }
 }
 
 # Databases, one Azure sub-resource each. All fields are fixed at

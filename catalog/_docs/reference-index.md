@@ -25,7 +25,7 @@ Start with:
 |---|---|---|---|
 | [auth0](../auth0/reference-index.md) | 17 | 17 | 17 |
 | [aws](../aws/reference-index.md) | 205 | 205 | 94 |
-| [azure](../azure/reference-index.md) | 185 | 185 | 76 |
+| [azure](../azure/reference-index.md) | 185 | 185 | 78 |
 | [cloudflare](../cloudflare/reference-index.md) | 66 | 66 | 66 |
 | [digitalocean](../digitalocean/reference-index.md) | 31 | 31 | 31 |
 | [gcp](../gcp/reference-index.md) | 186 | 186 | 184 |

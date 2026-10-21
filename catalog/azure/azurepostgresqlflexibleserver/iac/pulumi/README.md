@@ -35,6 +35,14 @@ grants when the spec does not pin one.
 - **`identity_principal_id` is exported conditionally** -- populated only
   when the identity type includes SYSTEM_ASSIGNED, empty otherwise,
   matching the Terraform module's conditional output.
+- **Both zones are create-time-only** -- `pulumi.IgnoreChanges` on `zone`
+  and `highAvailability.standbyAvailabilityZone`: azurerm models
+  both as plain optional fields, so a server created without them would
+  plan to clear Azure's assigned zones on every later update (and Azure
+  refuses that). After Azure fails
+  over on its own the zones in state are swapped, and re-sending the
+  spec's pair would run a planned failover on an unrelated edit. The
+  Terraform module's `lifecycle.ignore_changes` carries the same guard.
 
 ## Provider
 

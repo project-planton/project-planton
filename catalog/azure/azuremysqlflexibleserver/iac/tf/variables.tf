@@ -68,12 +68,13 @@ variable "spec" {
     }))
 
     # The primary's availability zone ("1", "2", "3"); unset lets Azure
-    # choose.
+    # choose. Applied at creation only -- later edits are ignored.
     zone = optional(string)
 
     # High availability: presence enables a standby with automatic
     # failover. mode arrives as the spec enum's name string
-    # (ZONE_REDUNDANT/SAME_ZONE).
+    # (ZONE_REDUNDANT/SAME_ZONE). The standby zone is applied at
+    # creation only -- later edits are ignored.
     high_availability = optional(object({
       mode                      = string
       standby_availability_zone = optional(string)

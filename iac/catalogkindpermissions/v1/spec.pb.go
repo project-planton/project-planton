@@ -30,8 +30,11 @@ const (
 	// covers the module's declared resources but has not been observed
 	// against a live cloud account.
 	Provenance_derived Provenance = 1
-	// Observed from live provisioning runs (API-call capture during e2e).
-	// The strongest claim: the run happened, these calls were made.
+	// Proven by a live run: an identity holding exactly these permissions --
+	// nothing more -- deployed, updated and destroyed this kind through
+	// Planton. The strongest claim: the entries are enough, observed against a
+	// real cloud account. (Not that every entry was called: a provider's logs
+	// record writes but not most reads, so sufficiency is what a run can show.)
 	Provenance_proven Provenance = 2
 )
 

@@ -6,6 +6,8 @@
 
 **apiVersion**: `azure.planton.dev/v1alpha1`
 
+**Guide**: [GUIDE.md](../GUIDE.md) -- authored operational judgment for this kind: conventions, trade-offs, and what pairs well with it.
+
 **AzureMysqlFlexibleServerSpec** defines the configuration for creating an
 Azure Database for MySQL Flexible Server: Azure's managed MySQL with
 per-server compute/storage sizing, zone-redundant high availability,
@@ -369,10 +371,11 @@ on-disk logs.
 
 `string`
 
-The availability zone for the primary server ("1", "2", or "3").
-Unset lets Azure choose. After creation the zone can only change via
-a planned failover that swaps primary and standby -- Azure rejects an
-independent zone change.
+The availability zone for the primary server ("1", "2", or "3"),
+applied at creation. Unset lets Azure choose. Later edits are not
+applied -- swapping it with standby_availability_zone included: zones
+move only through an Azure failover (which swaps them), and Planton
+never triggers one.
 
 - rule: zone must be "1", "2", or "3"
 
@@ -404,10 +407,11 @@ Allowed values (use exactly as shown):
 
 `string`
 
-The availability zone for the standby ("1", "2", or "3"). Unset lets
-Azure choose. For ZONE_REDUNDANT it must differ from the primary's
-zone. After creation, zones only change via a planned failover that
-swaps zone and standby_availability_zone.
+The availability zone for the standby ("1", "2", or "3"), applied
+when the server is created with high availability. Unset lets Azure
+choose. For ZONE_REDUNDANT it must differ from the primary's zone.
+Later edits are not applied: zones move only through an Azure
+failover, and Planton never triggers one.
 
 - rule: standby_availability_zone must be "1", "2", or "3"
 

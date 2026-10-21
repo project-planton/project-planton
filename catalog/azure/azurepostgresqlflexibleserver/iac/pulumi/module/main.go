@@ -121,6 +121,8 @@ func Resources(ctx *pulumi.Context, iacInput *azurepostgresqlflexibleserverv1alp
 		serverArgs.PrivateDnsZoneId = pulumi.String(spec.PrivateDnsZoneId.GetValue())
 	}
 
+	// Placement chosen at creation -- see the IgnoreChanges on the
+	// server below.
 	if spec.Zone != "" {
 		serverArgs.Zone = pulumi.String(spec.Zone)
 	}
@@ -153,7 +155,8 @@ func Resources(ctx *pulumi.Context, iacInput *azurepostgresqlflexibleserverv1alp
 	}
 
 	// High availability: a standby with synchronous replication and
-	// automatic failover. The standby zone is fixed at creation.
+	// automatic failover. The standby zone is placement chosen at
+	// creation -- see the IgnoreChanges on the server below.
 	if spec.HighAvailability != nil {
 		haArgs := &postgresql.FlexibleServerHighAvailabilityArgs{
 			Mode: pulumi.String(haModeStrings[spec.HighAvailability.Mode]),
@@ -222,10 +225,23 @@ func Resources(ctx *pulumi.Context, iacInput *azurepostgresqlflexibleserverv1alp
 		serverArgs.Cluster = clusterArgs
 	}
 
+	// Both zones are create-time-only by contract. azurerm models
+	// zone and standby_availability_zone as plain optional fields (not
+	// computed), so a server created without them holds the zones Azure
+	// assigned in state, and every later plan -- a tag edit included --
+	// tries to clear them, which Azure refuses ("`zone` can only be
+	// changed when exchanged with ..."). And after Azure fails over on its
+	// own the zones in state are swapped: re-sending the spec's pair then
+	// reads as a swap request, and the provider runs a planned failover --
+	// an outage on an unrelated edit. Zones move only through an Azure
+	// failover, never as a side effect of a spec edit (the spec field
+	// comments teach this). The Terraform module carries the same guard
+	// -- keep the engines in step.
 	server, err := postgresql.NewFlexibleServer(ctx,
 		spec.ServerName,
 		serverArgs,
-		pulumi.Provider(azureProvider))
+		pulumi.Provider(azureProvider),
+		pulumi.IgnoreChanges([]string{"zone", "highAvailability.standbyAvailabilityZone"}))
 	if err != nil {
 		return errors.Wrapf(err, "failed to create postgresql flexible server %s", spec.ServerName)
 	}
