@@ -29,6 +29,7 @@ kind.
 | `spec.storage_tier` | Spec enum name string (`P4`-`P80`), mapped through an exhaustive lookup so unknown values fail the plan loudly |
 | `spec.identity.type` / `spec.aad_administrators[].principal_type` / `spec.high_availability.mode` | Spec enum name strings mapped to ARM values in `locals.tf` |
 | `spec.authentication.tenant_id` | Falls back to the deploying credential's tenant when unset |
+| `spec.zone` / `spec.high_availability.standby_availability_zone` | Applied at creation only: `lifecycle.ignore_changes` keeps later edits (and Azure's own failover swaps) from planning a zone change or a planned failover |
 
 ## Usage
 
@@ -74,5 +75,6 @@ lifecycle modes (replica / point-in-time restore / geo-restore / revive),
 Entra authentication + administrators, managed identity, customer-managed-key
 encryption, elastic clusters, storage tiers, maintenance windows, VNet
 injection, high availability, databases, firewall rules, server parameters,
-and user tags. The `identity_principal_id` output is conditionally populated
+and user tags. Both engines ignore later edits to the two zones (applied
+at creation only). The `identity_principal_id` output is conditionally populated
 on both engines only when the identity type includes SYSTEM_ASSIGNED.

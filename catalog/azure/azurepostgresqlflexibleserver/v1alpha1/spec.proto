@@ -179,11 +179,12 @@ message AzurePostgresqlFlexibleServerSpec {
   // is false (storage stays at the provisioned size).
   bool auto_grow_enabled = 14;
 
-  // The availability zone for the primary server ("1", "2", or "3").
-  // Unset lets Azure choose. With ZONE_REDUNDANT high availability, set
-  // this (and standby_availability_zone) to control placement; after
-  // creation the zone can only change via a planned failover that swaps
-  // primary and standby.
+  // The availability zone for the primary server ("1", "2", or "3"),
+  // applied at creation. Unset lets Azure choose. With ZONE_REDUNDANT
+  // high availability, set this (and standby_availability_zone) to
+  // control placement. Later edits are not applied -- swapping it with
+  // standby_availability_zone included: zones move only through an Azure
+  // failover (which swaps them), and Planton never triggers one.
   string zone = 15 [(buf.validate.field).cel = {
     id: "postgres_zone_valid"
     message: "zone must be \"1\", \"2\", or \"3\""
@@ -514,10 +515,11 @@ message AzurePostgresqlFlexibleServerHighAvailability {
   // co-locates it (faster failover, no zone-level protection).
   AzurePostgresqlFlexibleServerHighAvailabilityMode mode = 1 [(buf.validate.field).required = true];
 
-  // The availability zone for the standby ("1", "2", or "3"). Unset lets
-  // Azure choose. For ZONE_REDUNDANT it must differ from the primary's
-  // zone. Fixed at creation -- after that, zones only change via planned
-  // failover.
+  // The availability zone for the standby ("1", "2", or "3"), applied
+  // when the server is created with high availability. Unset lets Azure
+  // choose. For ZONE_REDUNDANT it must differ from the primary's zone.
+  // Later edits are not applied: zones move only through an Azure
+  // failover, and Planton never triggers one.
   string standby_availability_zone = 2 [(buf.validate.field).cel = {
     id: "postgres_standby_zone_valid"
     message: "standby_availability_zone must be \"1\", \"2\", or \"3\""

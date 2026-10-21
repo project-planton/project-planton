@@ -50,6 +50,7 @@ resource "azurerm_postgresql_flexible_server" "main" {
   delegated_subnet_id           = var.spec.delegated_subnet_id
   private_dns_zone_id           = var.spec.private_dns_zone_id
 
+  # Placement chosen at creation -- see the lifecycle block below.
   zone = var.spec.zone
 
   backup_retention_days        = var.spec.backup_retention_days
@@ -68,8 +69,8 @@ resource "azurerm_postgresql_flexible_server" "main" {
   }
 
   # High availability: a standby with synchronous replication and
-  # automatic failover. The standby zone is fixed at creation -- after
-  # that, zones only change via planned failover.
+  # automatic failover. The standby zone is placement chosen at
+  # creation -- see the lifecycle block below.
   dynamic "high_availability" {
     for_each = var.spec.high_availability != null ? [var.spec.high_availability] : []
     content {
@@ -125,6 +126,22 @@ resource "azurerm_postgresql_flexible_server" "main" {
   }
 
   tags = local.final_tags
+
+  # Both zones are create-time-only by contract. azurerm models
+  # zone and standby_availability_zone as plain optional fields (not
+  # computed), so a server created without them holds the zones Azure
+  # assigned in state, and every later plan -- a tag edit included --
+  # tries to clear them, which Azure refuses ("`zone` can only be
+  # changed when exchanged with ..."). And after Azure fails over on its
+  # own the zones in state are swapped: re-sending the spec's pair then
+  # reads as a swap request, and the provider runs a planned failover --
+  # an outage on an unrelated edit. Zones move only through an Azure
+  # failover, never as a side effect of a spec edit (the spec field
+  # comments teach this). The Pulumi module carries the same guard
+  # -- keep the engines in step.
+  lifecycle {
+    ignore_changes = [zone, high_availability[0].standby_availability_zone]
+  }
 }
 
 # Databases, one Azure sub-resource each. All fields are fixed at

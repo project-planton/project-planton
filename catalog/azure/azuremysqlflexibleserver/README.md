@@ -89,6 +89,14 @@ set), `delegated_subnet_id`, `private_dns_zone_id`,
 `geo_redundant_backup_enabled`, the restore/replica trio, a `version`
 downgrade, and a `storage.size_gb` shrink.
 
+## Fields Applied Only at Creation
+
+`zone` and `high_availability.standby_availability_zone` place the server
+when it is created; later edits are ignored on both engines -- never a
+replacement, never a failover. Zones move only through an Azure failover
+(which swaps them), so an unrelated edit never moves the database. See
+[GUIDE.md](GUIDE.md) for placement and deliberate failover.
+
 ## Outputs
 
 | Output | Description |

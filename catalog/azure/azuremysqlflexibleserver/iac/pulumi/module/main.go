@@ -128,9 +128,8 @@ func Resources(ctx *pulumi.Context, iacInput *azuremysqlflexibleserverv1alpha1.A
 		serverArgs.PrivateDnsZoneId = pulumi.String(spec.PrivateDnsZoneId.GetValue())
 	}
 
-	// The primary's zone can only change via a planned failover that
-	// swaps zone and standby_availability_zone -- Azure rejects an
-	// independent zone change.
+	// Placement chosen at creation -- see the IgnoreChanges on the
+	// server below.
 	if spec.Zone != "" {
 		serverArgs.Zone = pulumi.String(spec.Zone)
 	}
@@ -145,6 +144,8 @@ func Resources(ctx *pulumi.Context, iacInput *azuremysqlflexibleserverv1alpha1.A
 
 	// High availability: a standby with synchronous replication and
 	// automatic failover. Not supported on burstable SKUs or replicas.
+	// The standby zone is placement chosen at creation -- see the
+	// IgnoreChanges on the server below.
 	if spec.HighAvailability != nil {
 		haArgs := &mysql.FlexibleServerHighAvailabilityArgs{
 			Mode: pulumi.String(haModeStrings[spec.HighAvailability.Mode]),
@@ -199,10 +200,19 @@ func Resources(ctx *pulumi.Context, iacInput *azuremysqlflexibleserverv1alpha1.A
 		serverArgs.CustomerManagedKey = cmkArgs
 	}
 
+	// Both zones are create-time-only by contract. After Azure fails
+	// over on its own the zones in state are swapped: re-sending the
+	// spec's pair then reads as a swap request, and the provider runs a
+	// planned failover -- an outage on an unrelated edit -- while any
+	// other zone edit is refused by Azure. Zones move only through an
+	// Azure failover, never as a side effect of a spec edit (the spec
+	// field comments teach this). The Terraform module carries the same
+	// guard -- keep the engines in step.
 	server, err := mysql.NewFlexibleServer(ctx,
 		spec.ServerName,
 		serverArgs,
-		pulumi.Provider(azureProvider))
+		pulumi.Provider(azureProvider),
+		pulumi.IgnoreChanges([]string{"zone", "highAvailability.standbyAvailabilityZone"}))
 	if err != nil {
 		return errors.Wrapf(err, "failed to create mysql flexible server %s", spec.ServerName)
 	}

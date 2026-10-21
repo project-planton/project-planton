@@ -43,6 +43,11 @@ spec does not pin one.
   `FlexibleServerActiveDirectoryAdministratory` carries an upstream
   typo; it is the correct symbol for
   `azurerm_mysql_flexible_server_active_directory_administrator`.)
+- **Both zones are create-time-only** -- `pulumi.IgnoreChanges` on `zone`
+  and `highAvailability.standbyAvailabilityZone`. After Azure fails
+  over on its own the zones in state are swapped, and re-sending the
+  spec's pair would run a planned failover on an unrelated edit. The
+  Terraform module's `lifecycle.ignore_changes` carries the same guard.
 
 ## Provider
 

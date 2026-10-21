@@ -156,10 +156,11 @@ message AzureMysqlFlexibleServerSpec {
   // size).
   AzureMysqlFlexibleServerStorage storage = 12;
 
-  // The availability zone for the primary server ("1", "2", or "3").
-  // Unset lets Azure choose. After creation the zone can only change via
-  // a planned failover that swaps primary and standby -- Azure rejects an
-  // independent zone change.
+  // The availability zone for the primary server ("1", "2", or "3"),
+  // applied at creation. Unset lets Azure choose. Later edits are not
+  // applied -- swapping it with standby_availability_zone included: zones
+  // move only through an Azure failover (which swaps them), and Planton
+  // never triggers one.
   string zone = 13 [(buf.validate.field).cel = {
     id: "mysql_zone_valid"
     message: "zone must be \"1\", \"2\", or \"3\""
@@ -377,10 +378,11 @@ message AzureMysqlFlexibleServerHighAvailability {
   // co-locates it (faster failover, no zone-level protection).
   AzureMysqlFlexibleServerHighAvailabilityMode mode = 1 [(buf.validate.field).required = true];
 
-  // The availability zone for the standby ("1", "2", or "3"). Unset lets
-  // Azure choose. For ZONE_REDUNDANT it must differ from the primary's
-  // zone. After creation, zones only change via a planned failover that
-  // swaps zone and standby_availability_zone.
+  // The availability zone for the standby ("1", "2", or "3"), applied
+  // when the server is created with high availability. Unset lets Azure
+  // choose. For ZONE_REDUNDANT it must differ from the primary's zone.
+  // Later edits are not applied: zones move only through an Azure
+  // failover, and Planton never triggers one.
   string standby_availability_zone = 2 [(buf.validate.field).cel = {
     id: "mysql_standby_zone_valid"
     message: "standby_availability_zone must be \"1\", \"2\", or \"3\""

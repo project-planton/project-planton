@@ -353,10 +353,11 @@ type AzureMysqlFlexibleServerSpec struct {
 	// accept Azure's defaults (20 GiB, auto-grow on, default IOPS for the
 	// size).
 	Storage *AzureMysqlFlexibleServerStorage `protobuf:"bytes,12,opt,name=storage,proto3" json:"storage,omitempty"`
-	// The availability zone for the primary server ("1", "2", or "3").
-	// Unset lets Azure choose. After creation the zone can only change via
-	// a planned failover that swaps primary and standby -- Azure rejects an
-	// independent zone change.
+	// The availability zone for the primary server ("1", "2", or "3"),
+	// applied at creation. Unset lets Azure choose. Later edits are not
+	// applied -- swapping it with standby_availability_zone included: zones
+	// move only through an Azure failover (which swaps them), and Planton
+	// never triggers one.
 	Zone string `protobuf:"bytes,13,opt,name=zone,proto3" json:"zone,omitempty"`
 	// High availability: presence enables a standby server with synchronous
 	// replication and automatic failover. Omit for a single-instance
@@ -752,10 +753,11 @@ type AzureMysqlFlexibleServerHighAvailability struct {
 	// (survives zone failure -- the production recommendation); SAME_ZONE
 	// co-locates it (faster failover, no zone-level protection).
 	Mode AzureMysqlFlexibleServerHighAvailabilityMode `protobuf:"varint,1,opt,name=mode,proto3,enum=dev.planton.azure.azuremysqlflexibleserver.v1alpha1.AzureMysqlFlexibleServerHighAvailabilityMode" json:"mode,omitempty"`
-	// The availability zone for the standby ("1", "2", or "3"). Unset lets
-	// Azure choose. For ZONE_REDUNDANT it must differ from the primary's
-	// zone. After creation, zones only change via a planned failover that
-	// swaps zone and standby_availability_zone.
+	// The availability zone for the standby ("1", "2", or "3"), applied
+	// when the server is created with high availability. Unset lets Azure
+	// choose. For ZONE_REDUNDANT it must differ from the primary's zone.
+	// Later edits are not applied: zones move only through an Azure
+	// failover, and Planton never triggers one.
 	StandbyAvailabilityZone string `protobuf:"bytes,2,opt,name=standby_availability_zone,json=standbyAvailabilityZone,proto3" json:"standby_availability_zone,omitempty"`
 	unknownFields           protoimpl.UnknownFields
 	sizeCache               protoimpl.SizeCache
