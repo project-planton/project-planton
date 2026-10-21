@@ -55,12 +55,10 @@ missing instrument is a fact you adapt to, not a problem you report.
    planton`). Found -- you are on the **CLI arm**: everything in this skill
    reads exactly as written, and `references/craft.planton-cli.md` is your
    COMPLETE command map -- read it before your first planton command and
-   trust it: never explore with `planton help` (a discovery journey wastes
-   the user's turn on commands this skill already wrote down; a specific
-   command's own `--help` is for when a command from the map fails). Then
-   probe the control plane cheaply: `planton chart build <dir> -o json` on
-   any chart directory -- exit code 2 with an empty stdout means the
-   environment (not the chart) is the problem
+   trust it: never explore with `planton help` (the map says when a
+   command's own `--help` is right). Then probe the control plane cheaply:
+   `planton chart build <dir> -o json` on any chart directory -- exit code 2
+   with an empty stdout means the environment (not the chart) is the problem
    (`references/infra.build-contract.md`). No backend at all? Ground with
    `planton explain` (fully offline) and validate draft manifests with
    `planton validate <file>` -- the full compile loop still needs a control
