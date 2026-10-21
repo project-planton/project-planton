@@ -16,9 +16,10 @@
 #     requires; linux_arm64 is every ARM runner the platform ships: Graviton,
 #     and kind on an Apple Silicon Mac)
 #   - Modules: `modulebuild list`, the tracked catalog/{provider}/{kind}/iac/pulumi
-#     directories, built and published several at a time by
+#     directories, built and published by
 #     tools/ci/release/publish_pulumi_module.sh (one run per module, each with
-#     its own scratch directory and part file)
+#     its own scratch directory and part file): the first alone, which puts
+#     the provider's SDK in the build cache, then the rest three at a time
 #   - Each leg records what it published (module dir, artifact, the published
 #     sha256 publish_once.sh reports) and uploads that list as a workflow
 #     artifact; release.yaml's pulumi-module-manifest job merges every
@@ -126,10 +127,11 @@ jobs:
           AWS_ENDPOINT_URL: ${{ secrets.CLOUDFLARE_R2_ENDPOINT }}
           PROVIDER: ${{ matrix.provider }}
           PLATFORM: ${{ matrix.platform.goos }}_${{ matrix.platform.goarch }}
-          # Modules built side by side. Linking a Pulumi binary is mostly
-          # one core's work, so one module at a time left three of the
-          # runner's four cores idle; three at a time keeps them busy within
-          # its memory, and takes the largest providers' legs from about 50
+          # Modules built side by side once the provider's SDK is in the
+          # build cache (see below). Linking a Pulumi binary is mostly one
+          # core's work, so one module at a time left three of the runner's
+          # four cores idle; three at a time keeps them busy within its
+          # memory, and takes the largest providers' legs from about 50
           # minutes to about 20.
           PARALLEL_BUILDS: "3"
         run: |
@@ -158,9 +160,17 @@ jobs:
           # (tools/ci/release/publish_pulumi_module.sh), which writes its
           # own part file; xargs exits non-zero when any of them failed, and
           # every failure has already said which module it was.
+          #
+          # The first module builds alone. It compiles the provider's Pulumi
+          # SDK -- by far the heaviest package of the build, gigabytes of
+          # memory for a large provider -- into the build cache, and three
+          # cold compiles of it at once run the runner out of memory. Once it
+          # is cached, every further module compiles only its own package and
+          # links, which three at a time fit.
           FAILED=0
-          printf '%s\n' "${MODULES[@]}" \
-            | xargs -P "${PARALLEL_BUILDS}" -I{} tools/ci/release/publish_pulumi_module.sh {} \
+          tools/ci/release/publish_pulumi_module.sh "${MODULES[0]}" || FAILED=1
+          printf '%s\n' "${MODULES[@]:1}" \
+            | xargs -r -P "${PARALLEL_BUILDS}" -I{} tools/ci/release/publish_pulumi_module.sh {} \
             || FAILED=1
           cat "${PARTS_DIR}"/*.tsv > "${RUNNER_TEMP}/published.tsv" 2>/dev/null || : > "${RUNNER_TEMP}/published.tsv"
           PUBLISHED=$(( $(wc -l < "${RUNNER_TEMP}/published.tsv") ))
