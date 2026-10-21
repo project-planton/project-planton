@@ -44,7 +44,8 @@ A person at the terminal can simply run `planton connect gcp`: it shows the same
 
 - **It runs as you, on your machine.** The setup script runs here with the sign-in you already have. Your sign-in never leaves this machine; Planton receives only what the script reports back (on GCP the trust's provider name and the service account, on AWS the role's ARN, on Azure the app's client id, tenant and subscription).
 - **Planton keeps no key.** A keyless connection stores no secret. When it deploys, Planton's issuer signs a token for exactly this connection, and the cloud exchanges it for short-lived credentials (about an hour).
-- **Only this connection can use the trust.** The trust accepts a token only from Planton's issuer and only with this connection's subject (`planton:v1:org:<org>:conn:<slug>:provider:<cloud>`); no other connection or organization can present it. `planton connect gcp verify <slug>` prints the issuer and subject.
+- **Only this connection can use the trust.** The trust accepts a token only from this Planton's issuer (planton.ai's, or a self-hosted Planton's own) and only with this connection's subject (`planton:v1:org:<org>:conn:<slug>:provider:<cloud>`); no other connection, organization or Planton can present it. `planton connect gcp verify <slug>` prints the issuer and subject.
+- **Say plainly when the identity is shared.** By default the role is granted to an identity every Planton connection in the account may sign in as -- GCP's service account `planton-provisioner@<project>`, Azure's app `planton-provisioner` -- so each connection there can do what all of their roles allow together; the plan's `reachesOthers` names the connections that share it. To keep a connection's role apart, name one of its own: `--service-account <name>@<project>.iam.gserviceaccount.com` (GCP) or `--app-name <name>` (Azure). AWS gives every connection its own role.
 - **It can do exactly what the grant says, nothing more.** The setup creates the connection's own role with exactly the permissions the catalog lists for the kinds granted. "Everything Planton can deploy" never includes Owner or Editor, never power over who has access in the account (IAM policies, roles, users, keys), and never permissions above the target (an organization, a folder, a billing account) -- those two tiers are separate opt-ins, `--access-granting` and `--organization-access`, each off unless the person asks.
 - **What else the setup creates or turns on, and what stays.** GCP: turns on the APIs Planton itself operates on in the project (the trust's, Cloud Resource Manager, Service Usage), and creates or adopts the workload identity pool `planton` and the service account `planton-provisioner`; every kind turns on the APIs it needs at its first deploy. AWS: registers the account's identity provider for Planton's issuer. Azure: creates or adopts the app registration `planton-provisioner`. These are shared by every Planton connection in the account, so the cleanup leaves them in place; the plan's `keeps` says so.
 - **You stay in control, in your own cloud.** The role is theirs: they can read it, narrow it or delete it at any time in their cloud's console. Verify always says what the connection can actually do after a change.
@@ -63,12 +64,12 @@ A person at the terminal can simply run `planton connect gcp`: it shows the same
 | "Does this touch my other roles or connections?" | The plan's `keeps` lists what stays untouched; `reachesOthers` lists what the change does to other connections that sign in as the same identity -- read it to them before asking. |
 | "Why does it need this permission?" | Because a kind in the grant needs it to deploy: the catalog's permission files list each kind's permissions by purpose, and the connection's Permissions section in the console shows which kind needs what. |
 | "What does Planton itself use it for?" | Beyond deploying kinds: the pickers that list what exists in the account, Verify, and -- when the organization uses them -- a state backend, a state encryption key, a secret backend, a container registry and Kubernetes access. "Everything" includes them; a grant of picked kinds keeps the pickers and Verify. |
-| "Who in my organization can use this connection?" | By default it is authorized for every environment of the organization, so the people who can deploy into those environments can deploy through it; it becomes the organization's default for that cloud when none exists (never replacing one). `--no-authorize` and `--no-default` leave both alone. |
+| "Who in my organization can use this connection?" | By default it is authorized for every environment of the organization, so the people who can deploy into those environments can deploy through it; it becomes the organization's default for that cloud when none exists (never replacing one). `--no-authorize` and `--no-default` leave both alone; then `planton connection auth create --provider gcp --connection <slug> --scope environment --environments <env>` authorizes the environments the person names. |
 
 ## The grant
 
 - **Default: everything Planton can deploy** for that cloud -- every catalog kind that needs neither opt-in tier, and every way Planton itself uses a connection.
-- **`--kinds`** narrows it to the kinds named, as the catalog spells them (`GcpGkeCluster`, `AwsVpc`).
+- **`--kinds`** narrows it to the kinds named, as the catalog spells them (`GcpGkeCluster`, `AwsVpc`). Name every kind the person's architecture needs -- a GKE cluster usually also wants its node pool, network and subnetwork kinds; `catalog.kind-grounding.md` finds them. A grant of picked kinds keeps the pickers and Verify; the other uses (state backend, state key, secret backend, registry, Kubernetes access) come with "everything".
 - **`--organization-access`** adds the permissions above the target that organization-level kinds need. **`--access-granting`** adds power over who has access in the account. Each is the person's explicit choice; say what it gives before passing it. The kinds that need a tier the grant leaves out are outside the grant.
 - **Changing a recorded grant** is Update the Grant in the connection's Permissions section: on GCP and Azure one consent applies it, everywhere the page also gives the update script to run with the person's own sign-in. Planton needs no power over access for this -- the person's consent or sign-in applies it. Running `planton connect` again keeps the recorded grant and refuses a different one.
 
@@ -87,8 +88,8 @@ A person at the terminal can simply run `planton connect gcp`: it shows the same
 ## Taking it back
 
 1. **Decide what happens to what it deployed.** Deleting a connection leaves everything it deployed running; destroy those first if the person wants them gone.
-2. **The removal script, while the connection exists:** `planton connect gcp cleanup <slug>` prints what deleting the connection leaves in the cloud (to stderr) and the script that removes the trust and the role Planton set up (to stdout). Run it on the person's yes with their sign-in, or hand it to them; it is safe to run again.
-3. **Then delete the connection:** `planton delete GcpProviderConnection <slug>` (`AwsProviderConnection`, `AzureProviderConnection`, `DigitalOceanProviderConnection`, `CloudflareProviderConnection`). It is a mutation like any other: the person's yes first.
+2. **The removal script, while the connection exists:** `planton connect gcp cleanup <slug>` prints what deleting the connection leaves in the cloud (to stderr) and the script that removes what the setup made for this connection (to stdout): on GCP its OIDC provider, its subject's binding on the service account and its own role with its bindings; on AWS its role and policies; on Azure its federated credential, its role's assignment and the role. The shared pool, service account, app, identity provider and the APIs stay, because other connections may use them. It is bash too: without bash, run it in the cloud's own shell. Run it on the person's yes with their sign-in, or hand it to them; it is safe to run again.
+3. **Then delete the connection:** `planton delete GcpProviderConnection <slug>` (`AwsProviderConnection`, `AzureProviderConnection`, `DigitalOceanProviderConnection`, `CloudflareProviderConnection`). Planton refuses while a state or secret backend signs in through the connection, and names it; it does not check what the connection deployed, which is why step 1 comes first. It is a mutation like any other: the person's yes first.
 
 A setup that stopped before the connection existed has no cleanup command: run the same `planton connect` again to finish it, then take it back as above.
 
@@ -128,18 +129,20 @@ spec:
   projectId:
     value: <project>
   grant:
-    coverage: everything
+    coverage: everything   # or: coverage: chosen, with kinds: [GcpGkeCluster, GcpGcsBucket] -- the grant the script was printed for
 ```
 
-Then `planton connect gcp verify <slug>`.
+Then `planton connect gcp verify <slug>`. `--print-documents` takes the same `--kinds`, `--name` and identity flags as the run, so the script matches the manifest's grant.
 
 ## DigitalOcean and Cloudflare: a token
 
 1. `planton connect digitalocean --print-documents` (or `cloudflare`) prints the scopes the token needs and where to create it.
-2. The person creates the token and runs the connect command themselves, with the token in their own shell -- `DIGITALOCEAN_TOKEN=<token> planton connect digitalocean --region <region>` (DigitalOcean asks for the region resources deploy to when a resource names none) or `CLOUDFLARE_API_TOKEN=<token> planton connect cloudflare` -- so the token is never pasted into the conversation and never a command-line flag you write. The command can also read it from stdin.
+2. The person creates the token and runs the connect command themselves, with the token in their own shell -- `DIGITALOCEAN_TOKEN=<token> planton connect digitalocean --region <region>` (the region is required: where resources deploy when they name none) or `CLOUDFLARE_API_TOKEN=<token> planton connect cloudflare`; in PowerShell, set `$env:DIGITALOCEAN_TOKEN` first -- so the token is never pasted into the conversation and never a command-line flag you write. The command can also read it from stdin. `--no-authorize` and `--no-default` work as for the keyless clouds.
 3. It stores the token as an organization secret (the one Planton Desktop uses too), connects, makes the connection ready and verifies it; `-o json` with `--yes` prints the receipt and the verdict.
 
-Connecting again with a new token rotates it. Revoking the token on the provider's token page cuts Planton off; `planton delete DigitalOceanProviderConnection digitalocean` removes the connection.
+The connection is named `digitalocean` (or `cloudflare`), the same one Planton Desktop makes, so an organization has one of each from these commands; connecting again with a new token rotates it. Revoking the token on the provider's token page cuts Planton off; `planton delete DigitalOceanProviderConnection digitalocean` removes the connection, and the stored secret (`do-api-token`, `cf-api-token`) stays until deleted with `planton secret delete do-api-token`.
+
+Without the planton CLI (the platform-tools arm), connecting a cloud happens in the console's connection wizard; the CLI is the only agent path.
 
 ## What never to do
 
