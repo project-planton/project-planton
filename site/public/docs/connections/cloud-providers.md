@@ -76,6 +76,42 @@ Google Cloud and Azure connections also offer a browser sign-in. You authorize P
 
 ---
 
+## What Verify Tells You
+
+Every cloud connection's page has **Verify**. It signs in through exactly the path a deploy uses, then asks your cloud what that identity is allowed to do. The answer is what Planton can deploy with the connection, judged against every kind in Planton's catalog: **"12 of 186 Google Cloud Kinds Can Deploy"**. Below that, each kind it can't deploy lists exactly which permissions it's missing.
+
+<!-- SCREENSHOT: Google Cloud connection - Verify's deployability answer
+  Page: /orgs/{org}/connections/gcp/{connection} (Verify panel)
+  Action: Click Verify Connection on a keyless Google Cloud connection whose grant covers only part of the catalog, then open Can't Deploy Yet
+  Focus: The "N of M Google Cloud Kinds Can Deploy" headline, the one-sentence way forward with its Roles and IAM buttons and Copy Permissions for gcloud, and one blocked kind with its missing permissions
+  Alt: Google Cloud connection Verify panel showing how many catalog kinds the connection can deploy, the steps to grant the rest, and a blocked kind's missing permissions
+-->
+
+- **Can't Deploy Yet** lists each blocked kind with its missing permissions. Above the list, one sentence says what to do in your cloud's own terms, and buttons open the right page:
+  - On Google Cloud, create a custom role on the project with the missing permissions and grant it to the service account. The buttons open the project's Roles page and its IAM page, and **Copy Permissions for gcloud** copies the list in the form `gcloud iam roles create --permissions=` takes.
+  - On AWS, add the missing actions to a policy attached to the role or user.
+  - On Azure, create a custom role with the missing actions and assign it to the application on the subscription.
+- **Needs Wider Access** lists kinds that also need access granted above the project, such as an organization, a folder or a billing account. Your cloud can't confirm that access from the project, so Planton shows it separately instead of guessing.
+- **Can Deploy** lists everything the connection's grant already covers.
+
+What each cloud is asked:
+
+| Cloud | How Planton checks | What lets it check |
+|---|---|---|
+| Google Cloud | Google's permission check on the connection's project | Nothing extra; the Cloud Resource Manager API must be on |
+| AWS | The IAM policy simulator, for the connection's role or user | `iam:SimulatePrincipalPolicy` on that role or user |
+| Azure | The permissions your roles grant at the subscription | Nothing extra |
+| Cloudflare | The token's own permission groups | **API Tokens Read** on the token |
+| DigitalOcean | Not checked: DigitalOcean shows a token's scopes only in its control panel | — |
+
+When Verify can't reach an answer, it says why in one line, for example a runner built before this check that needs upgrading. It never claims a connection can deploy nothing.
+
+### When Your Cloud Says No
+
+When your cloud refuses a step, the sentence says what happened and what to do. **Show Google Cloud's Reason** (or AWS's, or Azure's) opens your cloud's own words: its error code, the API it named, and its message, so you can check Planton's reading or hand it to whoever runs the account. When the cloud names a page that fixes it, for example an API that's turned off, that page is one button away: **Turn On Cloud Resource Manager API**.
+
+---
+
 ## AWS
 
 AWS connections support OIDC (Keyless), Inline API Keys, Self-Hosted Runner, and Vault Broker.
@@ -125,7 +161,7 @@ GCP connections support Sign in with Google, OIDC (Keyless), Service Account Key
 
 1. Navigate to **Connections** and click the **GCP** card under Infrastructure.
 2. **Name your connection** and choose an authentication method:
-   - **OIDC (Keyless)** — Enter your project number, the workload identity pool and provider IDs (the console proposes them), and the service account Planton acts as, then create the connection and either click **Set it up for me** or run the `gcloud` script the console gives you. See [Keyless Cloud Connections](/docs/connections/keyless-cloud-connections#google-cloud).
+   - **OIDC (Keyless)** — Enter your project ID and choose the deployment roles, then build the trust by clicking **Set It Up for Me** or by running the `gcloud` script the console gives you; the connection is created once the trust admits it. See [Keyless Cloud Connections](/docs/connections/keyless-cloud-connections#google-cloud).
    - **Service Account Key** — Reference a secret holding the service account's JSON key.
    - **Sign in with Google**, **Self-Hosted Runner**, or **Vault Broker** — as described in [Choosing an Authentication Method](#choosing-an-authentication-method).
 3. **Create the connection**.
@@ -163,7 +199,7 @@ Azure connections support Sign in with Microsoft, OIDC (Keyless), Service Princi
 
 1. Navigate to **Connections** and click the **Azure** card under Infrastructure.
 2. **Name your connection** and choose an authentication method:
-   - **OIDC (Keyless)** — Enter the tenant ID, subscription ID, and the app registration's client ID (no client secret), then create the connection and add the federated identity credential, by clicking **Add the credential for me** or by running the `az` command the console gives you. See [Keyless Cloud Connections](/docs/connections/keyless-cloud-connections#azure).
+   - **OIDC (Keyless)** — Enter the tenant ID, subscription ID, and the app registration's client ID (no client secret), then create the connection and add the federated identity credential, by clicking **Add the Credential for Me** or by running the `az` command the console gives you. See [Keyless Cloud Connections](/docs/connections/keyless-cloud-connections#azure).
    - **Service Principal** — Enter the tenant ID and subscription ID, and select the secrets that hold the client ID and client secret.
    - **Sign in with Microsoft**, **Self-Hosted Runner**, or **Vault Broker** — as described in [Choosing an Authentication Method](#choosing-an-authentication-method).
 3. **Create the connection**.

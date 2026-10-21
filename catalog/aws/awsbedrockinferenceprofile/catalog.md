@@ -71,11 +71,11 @@ This kind has no foreign key dependencies — `sourceArn` names an AWS foundatio
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
-| `inference_profile_arn` | The profile's ARN — the modelId applications pass to InvokeModel/Converse | An AwsBedrockAgent's `foundationModel`; IAM policies granting invoke on exactly this handle |
+| `inference_profile_arn` | The profile's ARN — the modelId applications pass to InvokeModel/Converse | An AWS Bedrock Agent's `foundationModel`; IAM policies granting invoke on exactly this handle |
 | `inference_profile_id` | The profile's unique identifier | Application configuration and usage queries |
 
 `status` (ACTIVE when usable) and `type` (always APPLICATION for profiles this component creates) are state echoes, not composition inputs.

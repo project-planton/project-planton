@@ -1,24 +1,24 @@
 # GCP Folder
 
-Creates a Google Cloud Resource Manager folder: a node in the resource hierarchy that groups projects and other folders so IAM policy, organization policies, and billing views apply to the whole group at once. A landing zone is folders inside folders -- `environments/production`, `teams/payments` -- each carrying the guardrails and grants every project beneath it inherits. Declare the parent as a reference to another `GcpFolder` and the chart builds the tree in order; place a project inside with `GcpProject`'s `folderId`.
+Creates a Google Cloud Resource Manager folder: a node in the resource hierarchy that groups projects and other folders so IAM policy, organization policies, and billing views apply to the whole group at once. A landing zone is folders inside folders — `environments/production`, `teams/payments` — each carrying the guardrails and grants every project beneath it inherits. Declare the parent as a reference to another `GcpFolder` and the chart builds the tree in order; place a project inside with `GcpProject`'s `folderId`.
 
 ## What Gets Created
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **Folder** -- the `folder` under the organization or inside another folder, with its display name, its destroy guard (`deletionProtection`, on by default), and any create-time tags
+- **Folder** — the `folder` under the organization or inside another folder, with its display name, its destroy guard (`deletionProtection`, on by default), and any create-time tags
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **GCP Provider Connection** -- an active connection in the Connect module with credentials that can create folders in the target organization. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **GCP Provider Connection** — an active connection in the Connect module with credentials that can create folders in the target organization. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
 
 ### GCP Organization
 
-- **A Google Cloud Organization** -- folders exist only inside an organization; accounts without one cannot create folders.
+- **A Google Cloud Organization** — folders exist only inside an organization; accounts without one cannot create folders.
 - **IAM**: the deploying identity needs `roles/resourcemanager.folderAdmin` (or `folderCreator` plus `folderEditor`) on the parent organization or folder. Folder-level roles are granted at the organization or on the parent folder, never on a project.
-- **Display names are unique among siblings** -- two folders under the same parent cannot share a display name, and a deleted folder's name stays reserved for 30 days.
+- **Display names are unique among siblings** — two folders under the same parent cannot share a display name, and a deleted folder's name stays reserved for 30 days.
 
 ## Deploy
 
@@ -53,7 +53,7 @@ This creates a top-level folder named `production` directly under the organizati
 
 ### InfraChart
 
-When deploying as part of a multi-resource environment, a nested folder references its parent folder via ValueFromRef, and projects, policies, and tag bindings reference the folder's `folder_id`:
+When deploying as part of a multi-resource environment, a nested folder references its parent folder, and projects, policies, and tag bindings reference the folder's `folder_id`:
 
 ```yaml
 spec:
@@ -72,25 +72,25 @@ The InfraPipeline deploys the parent folder first, then this one, then every `Gc
 
 These are the most important decisions when configuring a folder. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Parent** -- exactly one of `organizationId` (a top-level folder) or `folderId` (nested; a reference to another `GcpFolder`). Changing the parent MOVES the folder in place with everything inside it -- nothing is recreated, but every IAM grant and organization policy inherited from the old parent stops applying and the new parent's start at once.
+**Parent** — exactly one of `organizationId` (a top-level folder) or `folderId` (nested; a reference to another `GcpFolder`). Changing the parent MOVES the folder in place with everything inside it — nothing is recreated, but every IAM grant and organization policy inherited from the old parent stops applying and the new parent's start at once.
 
-**Destroy guard** -- `deletionProtection` defaults to true: a destroy fails until it is set to false and applied first. Deleting a folder is a hierarchy-wide act; the guard keeps a just-emptied folder from disappearing on one accidental destroy. `ABANDON` bypasses the guard; `PREVENT` overrides both.
+**Destroy guard** — `deletionProtection` defaults to true: a destroy fails until it is set to false and applied first. Deleting a folder is a hierarchy-wide act; the guard keeps a just-emptied folder from disappearing on one accidental destroy. `ABANDON` bypasses the guard; `PREVENT` overrides both.
 
-**Create-time tags** -- `tags` (`tagKeys/{id}` -> `tagValues/{id}`) bind at creation and RECREATE the folder when changed, which Google refuses for a non-empty folder. Use them only when an organization policy conditioned on the tag must govern the folder from its first second; otherwise bind tags after creation with `GcpTagBinding`.
+**Create-time tags** — `tags` (`tagKeys/{id}` -> `tagValues/{id}`) bind at creation and RECREATE the folder when changed, which Google refuses for a non-empty folder. Use them only when an organization policy conditioned on the tag must govern the folder from its first second; otherwise bind tags after creation with `GcpTagBinding`.
 
-**Deletion policy** -- `DELETE` (default) soft-deletes the folder for 30 days (Google refuses while it still holds projects or folders); `PREVENT` fails the destroy -- the guard for the folders a landing zone is built on; `ABANDON` leaves the folder and everything in it unmanaged.
+**Deletion policy** — `DELETE` (default) soft-deletes the folder for 30 days (Google refuses while it still holds projects or folders); `PREVENT` fails the destroy — the guard for the folders a landing zone is built on; `ABANDON` leaves the folder and everything in it unmanaged.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **GcpFolder** (optional) | `parent.folderId` | `status.outputs.folder_id` |
+| **GCP Folder** (optional) | `parent.folderId` | `status.outputs.folder_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -103,14 +103,14 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Environment folder** -- a top-level folder per environment under the organization, `PREVENT` on destroy. Start from the **Environment Folder** preset.
+**Environment folder** — a top-level folder per environment under the organization, `PREVENT` on destroy. Start from the **Environment Folder** preset.
 
-**Nested team folder** -- a folder inside another folder by reference, building the `environments/production/payments` tree. Start from the **Nested Team Folder** preset.
+**Nested team folder** — a folder inside another folder by reference, building the `environments/production/payments` tree. Start from the **Nested Team Folder** preset.
 
-**Tagged at create** -- a folder that carries a tag from its first second so a tag-conditioned organization policy governs it immediately. Start from the **Tagged At Create** preset.
+**Tagged at create** — a folder that carries a tag from its first second so a tag-conditioned organization policy governs it immediately. Start from the **Tagged At Create** preset.
 
 ## Works With
 
-- [**GCP Project**](/infra-catalog/gcp-project) -- projects placed inside the folder by reference (`folderId`)
-- [**GCP Organization Policy**](/infra-catalog/gcp-org-policy) -- guardrails scoped to the folder and inherited by everything beneath it
-- [**GCP Tag Binding**](/infra-catalog/gcp-tag-binding) -- tags on the folder after creation
+- [**GCP Project**](/infra-catalog/gcp-project) — projects placed inside the folder by reference (`folderId`)
+- [**GCP Organization Policy**](/infra-catalog/gcp-org-policy) — guardrails scoped to the folder and inherited by everything beneath it
+- [**GCP Tag Binding**](/infra-catalog/gcp-tag-binding) — tags on the folder after creation

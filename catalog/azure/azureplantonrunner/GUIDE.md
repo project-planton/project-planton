@@ -90,8 +90,8 @@ manageable; measured creates ~36-61s). Two operational consequences:
   problem. Check the reference with
   `docker buildx imagetools inspect <image>` before touching anything
   else.
-- The default `image_repository` resolves the official image's
-  `latest` tag, which every runner release moves. If you override it
+- The default `image_repository` resolves the `latest` tag of
+  Planton's image, which every runner release moves. If you override it
   to a mirror, keeping the mirror's tags populated -- for BOTH
   platforms -- becomes your responsibility, and this create-time
   validation is where a stale mirror announces itself.

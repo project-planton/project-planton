@@ -6,7 +6,6 @@ import (
 	"path/filepath"
 	"sort"
 	"strings"
-	"unicode"
 
 	"sigs.k8s.io/yaml"
 
@@ -17,7 +16,7 @@ import (
 // Catalog entries are the bundle's display-and-deploy-coordinates cargo: one
 // document per user-facing kind (entries/<provider>/<kind>.yaml) carrying the
 // kind's title, description, URL slug, logo, contract links, and the
-// official IaC module directories the release ships for it. Every field is a
+// platform IaC module directories the release ships for it. Every field is a
 // projection of the release's own tree -- the catalog page's H1 and intro,
 // the iac/ directories that actually exist -- authored once beside the
 // kind and never restated by hand, so consumers render and deploy the
@@ -67,7 +66,7 @@ type CatalogEntry struct {
 	LogoUrl string `json:"logoUrl"`
 	// WebLinks point at the kind's versioned API contract.
 	WebLinks CatalogEntryWebLinks `json:"webLinks"`
-	// IacModules names the official module directories the release ships.
+	// IacModules names the platform module directories the release ships.
 	IacModules CatalogEntryIacModules `json:"iacModules"`
 	// CostSummary is the kind's cost anatomy at a glance, projected
 	// from its cost profile and generated preset estimates (the costs/ and
@@ -80,7 +79,7 @@ type CatalogEntry struct {
 	ControlSummary *CatalogEntryControlSummary `json:"controlSummary,omitempty"`
 	// PermissionsProvenance says how the kind's permission manifest
 	// (the permissions/ cargo) was established: "derived" (static analysis
-	// of the official modules), "proven" (observed from live provisioning),
+	// of the platform modules), "proven" (observed from live provisioning),
 	// or "mixed". Presence signals a downloadable least-privilege manifest
 	// exists; the value carries the trust distinction. Absent when the
 	// kind ships no fact-sheets.
@@ -113,7 +112,7 @@ type CatalogEntryCostSummary struct {
 // gate guarantees every catalog control is examined, so these counts always
 // sum to the catalog's size and "examined" is never in question.
 type CatalogEntryControlSummary struct {
-	// EnforcedByDefault counts controls the official modules (or the
+	// EnforcedByDefault counts controls the platform modules (or the
 	// provider) enforce on every deployment.
 	EnforcedByDefault int `json:"enforcedByDefault"`
 	// Configurable counts controls exposed as spec choices.
@@ -139,7 +138,7 @@ type CatalogEntryContractLinks struct {
 	Outputs  string `json:"outputs"`
 }
 
-// CatalogEntryIacModules names the official module directories the release
+// CatalogEntryIacModules names the platform module directories the release
 // ships for a kind. An engine whose directory is absent from the tree
 // stays empty here, and deploy paths refuse that engine for the kind --
 // presence is truth from the release's own tree, never an assumption. A
@@ -257,7 +256,7 @@ func buildCatalogEntry(kindName, providerDir, kindDir, versionDir, title, descri
 		Kind:        kindName,
 		Title:       title,
 		Description: description,
-		Slug:        entrySlug(kindName, providerDir),
+		Slug:        catalogkindreflect.SlugOf(kindName, providerDir),
 		LogoUrl:     fmt.Sprintf("%s/%s/%s/logo.svg", logoBaseURL, providerDir, kindDir),
 	}
 
@@ -314,38 +313,6 @@ func readCatalogPage(path, kindName string) (title, description string) {
 		break
 	}
 	return title, description
-}
-
-// entrySlug derives a kind's URL slug: the provider directory name kept
-// as one atomic word, then the kind name's remaining words kebab-cased
-// (DigitalOceanDroplet -> digitalocean-droplet, AwsS3Bucket -> aws-s3-bucket).
-// A kind whose name does not start with its provider kebabs whole. One rule
-// for every kind -- uniqueness is gated at conformance.
-func entrySlug(kindName, providerDir string) string {
-	if rest, ok := strings.CutPrefix(strings.ToLower(kindName), providerDir); ok && rest != "" {
-		return providerDir + "-" + kebabCase(kindName[len(kindName)-len(rest):])
-	}
-	return kebabCase(kindName)
-}
-
-// kebabCase converts a CamelCase name (S3Bucket) to kebab (s3-bucket): a
-// hyphen lands before every uppercase rune that starts a new word -- after a
-// lowercase or digit, or before an Upper->lower transition inside an acronym
-// run.
-func kebabCase(kindName string) string {
-	runes := []rune(kindName)
-	var b strings.Builder
-	for i, r := range runes {
-		if i > 0 && unicode.IsUpper(r) {
-			prev := runes[i-1]
-			nextLower := i+1 < len(runes) && unicode.IsLower(runes[i+1])
-			if unicode.IsLower(prev) || unicode.IsDigit(prev) || (unicode.IsUpper(prev) && nextLower) {
-				b.WriteRune('-')
-			}
-		}
-		b.WriteRune(unicode.ToLower(r))
-	}
-	return b.String()
 }
 
 // parseCatalogEntries decodes and shape-checks every entry document in the

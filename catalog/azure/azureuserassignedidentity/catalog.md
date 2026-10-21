@@ -6,22 +6,22 @@ Deploys an Azure user-assigned managed identity: a standalone Entra ID identity 
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **User-Assigned Managed Identity** -- an Entra ID identity in the specified region and resource group, independent of the resources it is assigned to
-- **Optional regional isolation** -- when `isolationScope: REGIONAL` is set, token issuance for the identity is restricted to its own region (a data-residency / blast-radius control)
-- **Azure Tags** -- your governance tags merged over the Planton-derived resource tags (organization, environment, resource ID); a user tag with the same key wins
+- **User-Assigned Managed Identity** — an Entra ID identity in the specified region and resource group, independent of the resources it is assigned to
+- **Optional regional isolation** — when `isolationScope: REGIONAL` is set, token issuance for the identity is restricted to its own region (a data-residency / blast-radius control)
+- **Azure Tags** — your governance tags merged over the Planton-derived resource tags (organization, environment, resource ID); a user tag with the same key wins
 
-The identity is deliberately just the identity. What it may DO is granted through **AzureRoleAssignment** resources referencing its `principal_id` output; who may ACT AS it from outside Azure is declared through **AzureFederatedIdentityCredential** resources referencing its `identity_id` output. Keeping the three concerns as separate composable nodes means grants and trust rules are individually reviewable and removable without touching the identity itself.
+The identity is deliberately just the identity. What it may DO is granted through **Azure Role Assignment** resources referencing its `principal_id` output; who may ACT AS it from outside Azure is declared through **Azure Federated Identity Credential** resources referencing its `identity_id` output. Keeping the three concerns as separate composable nodes means grants and trust rules are individually reviewable and removable without touching the identity itself.
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **Azure Provider Connection** -- an active connection in the Connect module with credentials for the target Azure subscription. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
+- **Azure Provider Connection** — an active connection in the Connect module with credentials for the target Azure subscription. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
 
 ### Azure Subscription
 
-- **An Azure Resource Group** where the managed identity will be created. Provide the name directly or reference an AzureResourceGroup Infra Component via ValueFromRef.
+- **An Azure Resource Group** where the managed identity will be created. Provide the name directly or reference an Azure Resource Group Infra Component.
 
 ## Deploy
 
@@ -51,11 +51,11 @@ spec:
 planton apply -f identity.yaml
 ```
 
-This creates a user-assigned managed identity with NO permissions -- a freshly-created identity can do nothing until AzureRoleAssignment resources grant it access. An Infra Job tracks the provisioning in real time.
+This creates a user-assigned managed identity with NO permissions — a freshly-created identity can do nothing until Azure Role Assignment resources grant it access. An Infra Job tracks the provisioning in real time.
 
 ### InfraChart
 
-When deploying as part of a multi-resource environment, use ValueFromRef to wire the identity's resource group, then compose the grant and trust nodes against its outputs:
+When deploying as part of a multi-resource environment, use references to wire the identity's resource group, then compose the grant and trust nodes against its outputs:
 
 ```yaml
 # The identity
@@ -89,28 +89,28 @@ The InfraPipeline resolves the dependency graph, deploys the resource group and 
 
 These are the most important decisions when configuring a user-assigned managed identity. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Durable naming** -- Changing the name replaces the identity, and with it the PRINCIPAL -- silently invalidating every role assignment and federated credential written against it. Name identities after the workload or duty they represent (`ci-deployer`, `payments-api`), not after any single consumer, because grants outlive consumers.
+**Durable naming** — Changing the name replaces the identity, and with it the PRINCIPAL — silently invalidating every role assignment and federated credential written against it. Name identities after the workload or duty they represent (`ci-deployer`, `payments-api`), not after any single consumer, because grants outlive consumers.
 
-**Isolation scope** -- By default an identity is usable by resources in any region (its own region only anchors the ARM resource). `REGIONAL` restricts token issuance to the identity's own region -- a data-residency control some regulated environments require. Most deployments leave it unset; it updates in place, so isolation can be adopted later.
+**Isolation scope** — By default an identity is usable by resources in any region (its own region only anchors the ARM resource). `REGIONAL` restricts token issuance to the identity's own region — a data-residency control some regulated environments require. Most deployments leave it unset; it updates in place, so isolation can be adopted later.
 
-**Identity sharing** -- Unlike system-assigned identities (tied to a single resource), user-assigned identities can be attached to multiple Azure resources. Create one identity per logical application or duty, not one per resource, to keep permission auditing to one principal.
+**Identity sharing** — Unlike system-assigned identities (tied to a single resource), user-assigned identities can be attached to multiple Azure resources. Create one identity per logical application or duty, not one per resource, to keep permission auditing to one principal.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AzureResourceGroup** | `resourceGroup` | `status.outputs.resource_group_name` |
+| **Azure Resource Group** | `resourceGroup` | `status.outputs.resource_group_name` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
-| `identity_id` | Azure Resource Manager ID of the managed identity | AKS kubelet identity, VM/Function/Container App identity blocks, AzureFederatedIdentityCredential parent |
-| `principal_id` | Entra ID service principal object ID | AzureRoleAssignment grants, Key Vault access policies |
+| `identity_id` | Azure Resource Manager ID of the managed identity | AKS kubelet identity, VM/Function/Container App identity blocks, Azure Federated Identity Credential parent |
+| `principal_id` | Entra ID service principal object ID | Azure Role Assignment grants, Key Vault access policies |
 | `client_id` | Client ID (application ID) for SDK authentication | Application environment variable (AZURE_CLIENT_ID) |
 | `tenant_id` | Entra ID tenant ID | Cross-tenant authentication, SDK configuration |
 
@@ -118,12 +118,12 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**The identity/grant/trust triad** -- One AzureUserAssignedIdentity, one or more AzureRoleAssignment resources granting it exactly what it needs, and (for keyless CI or AKS workload identity) AzureFederatedIdentityCredential resources declaring who may act as it. Each node is individually reviewable and removable.
+**The identity/grant/trust triad** — One Azure User Assigned Identity, one or more Azure Role Assignment resources granting it exactly what it needs, and (for keyless CI or AKS workload identity) Azure Federated Identity Credential resources declaring who may act as it. Each node is individually reviewable and removable.
 
-**Keyless CI deployment** -- An identity named for the pipeline (`ci-deployer`), a federated credential trusting the repository's OIDC token, and role assignments scoped to exactly the resources the pipeline deploys. No stored service-principal secret anywhere. Start from the **CI Deployer Identity** preset.
+**Keyless CI deployment** — An identity named for the pipeline (`ci-deployer`), a federated credential trusting the repository's OIDC token, and role assignments scoped to exactly the resources the pipeline deploys. No stored service-principal secret anywhere. Start from the **CI Deployer Identity** preset.
 
 ## Works With
 
-- [**Azure Resource Group**](/infra-catalog/azure-resource-group) -- provides the resource group where the managed identity is created
-- [**Azure Role Assignment**](/infra-catalog/azure-role-assignment) -- grants the identity permissions by targeting its `principal_id` output
-- [**Azure Federated Identity Credential**](/infra-catalog/azure-federated-identity-credential) -- declares keyless trust rules on the identity's `identity_id` output
+- [**Azure Resource Group**](/infra-catalog/azure-resource-group) — provides the resource group where the managed identity is created
+- [**Azure Role Assignment**](/infra-catalog/azure-role-assignment) — grants the identity permissions by targeting its `principal_id` output
+- [**Azure Federated Identity Credential**](/infra-catalog/azure-federated-identity-credential) — declares keyless trust rules on the identity's `identity_id` output

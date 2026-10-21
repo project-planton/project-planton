@@ -1,5 +1,5 @@
 # Least-privilege permissions the IaC runner's AWS principal needs to
-# provision, update, and destroy this component with the official modules.
+# provision, update, and destroy this component with the platform modules.
 # Every entry is `derived` (static analysis of the module sources, cited in
 # notes) until the live capture lane upgrades it to `proven`. Schema:
 # iac/catalogkindpermissions/v1.
@@ -21,6 +21,8 @@ spec:
         resources:
           - arn:aws:ec2:*:*:launch-template/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_launch_template with update_default_version = true -- creation of the template and its first version; every spec change producing a new immutable version (CreateLaunchTemplateVersion) which ModifyLaunchTemplate promotes to $Default; tagging of the template resource; and deletion. All five template actions authorize on the launch-template ARN format in the EC2 service reference, so one resource pattern covers the full lifecycle. CreateTags/DeleteTags are scoped to the same format (EC2 tag actions authorize on the tagged resource's ARN).
       - sid: DescribeLaunchTemplates
         actions:
@@ -30,4 +32,6 @@ spec:
         resources:
           - "*"
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Read-side of aws_launch_template during plan/refresh (the provider reads the template, its default version's full data, and tags). EC2 Describe APIs support no resource-level scoping (empty Resources lists in the service reference), so the wildcard is the narrowest possible scope.

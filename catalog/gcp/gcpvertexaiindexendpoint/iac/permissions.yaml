@@ -1,5 +1,5 @@
 # Least-privilege permissions the IaC runner's GCP principal needs to
-# provision, update, and destroy this component with the official modules.
+# provision, update, and destroy this component with the platform modules.
 # Every entry is `derived` (static analysis of the module sources, cited in
 # notes) until the live capture lane upgrades it to `proven`. Schema:
 # iac/catalogkindpermissions/v1.
@@ -16,6 +16,8 @@ spec:
           - serviceusage.services.get
           - serviceusage.services.list
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers google_project_service enabling aiplatform.googleapis.com on the target project. disable_on_destroy is false in the module, so the disable permission is never needed.
       - purpose: ManageIndexEndpoint
         permissions:
@@ -24,4 +26,6 @@ spec:
           - aiplatform.indexEndpoints.update
           - aiplatform.indexEndpoints.delete
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers google_vertex_ai_index_endpoint -- create, read/refresh, in-place PATCHes (display name, description, labels; every connectivity choice is ForceNew), and destroy. GCP defines NO aiplatform.operations.get permission (verified against IAM's testable-permissions inventory, which carries only aiplatform.operations.list) -- polling the long-running operations each mutation returns needs no grant beyond these endpoint permissions, because no such permission exists to grant.

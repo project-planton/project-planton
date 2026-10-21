@@ -59,7 +59,7 @@ This creates a Fargate-ready cluster with enhanced Container Insights. An Infra 
 
 ### InfraChart
 
-When wiring EC2 capacity or encrypted exec sessions, use ValueFromRef to reference resources deployed in the same InfraPipeline:
+When wiring EC2 capacity or encrypted exec sessions, use references to reference resources deployed in the same InfraPipeline:
 
 ```yaml
 spec:
@@ -101,25 +101,25 @@ These are the most important decisions when configuring an ECS cluster. Explore 
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AwsAutoScalingGroup** (per EC2 provider) | `ec2CapacityProviders[].autoScalingGroupArn` | `status.outputs.autoscaling_group_arn` |
-| **AwsIamRole** (per managed-instances provider) | `managedInstancesCapacityProviders[].infrastructureRoleArn` | `status.outputs.role_arn` |
-| **AwsIamInstanceProfile** (per managed-instances provider) | `managedInstancesCapacityProviders[].instanceLaunchTemplate.ec2InstanceProfileArn` | `status.outputs.instance_profile_arn` |
-| **AwsSubnet** (per managed-instances provider) | `managedInstancesCapacityProviders[].instanceLaunchTemplate.networkConfiguration.subnets[]` | `status.outputs.subnet_id` |
-| **AwsSecurityGroup** (per managed-instances provider — AWS requires at least one; there is no VPC-default fall-back on this path) | `managedInstancesCapacityProviders[].instanceLaunchTemplate.networkConfiguration.securityGroups[]` | `status.outputs.security_group_id` |
-| **AwsKmsKey** (optional) | `executeCommandConfiguration.kmsKeyId` | `status.outputs.key_arn` |
-| **AwsKmsKey** (optional) | `managedStorageConfiguration.fargateEphemeralStorageKmsKeyId` | `status.outputs.key_arn` |
-| **AwsKmsKey** (optional) | `managedStorageConfiguration.kmsKeyId` | `status.outputs.key_arn` |
+| **AWS Auto Scaling Group** (per EC2 provider) | `ec2CapacityProviders[].autoScalingGroupArn` | `status.outputs.autoscaling_group_arn` |
+| **AWS IAM Role** (per managed-instances provider) | `managedInstancesCapacityProviders[].infrastructureRoleArn` | `status.outputs.role_arn` |
+| **AWS IAM Instance Profile** (per managed-instances provider) | `managedInstancesCapacityProviders[].instanceLaunchTemplate.ec2InstanceProfileArn` | `status.outputs.instance_profile_arn` |
+| **AWS Subnet** (per managed-instances provider) | `managedInstancesCapacityProviders[].instanceLaunchTemplate.networkConfiguration.subnets[]` | `status.outputs.subnet_id` |
+| **AWS Security Group** (per managed-instances provider — AWS requires at least one; there is no VPC-default fall-back on this path) | `managedInstancesCapacityProviders[].instanceLaunchTemplate.networkConfiguration.securityGroups[]` | `status.outputs.security_group_id` |
+| **AWS KMS Key** (optional) | `executeCommandConfiguration.kmsKeyId` | `status.outputs.key_arn` |
+| **AWS KMS Key** (optional) | `managedStorageConfiguration.fargateEphemeralStorageKmsKeyId` | `status.outputs.key_arn` |
+| **AWS KMS Key** (optional) | `managedStorageConfiguration.kmsKeyId` | `status.outputs.key_arn` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
 | `cluster_name` | Name of the ECS cluster | The AWS CLI and the ECS agent's `ECS_CLUSTER` setting |
-| `cluster_arn` | ARN of the cluster | The join key — an AwsEcsService's `clusterArn` references this |
+| `cluster_arn` | ARN of the cluster | The join key — an AWS ECS Service's `clusterArn` references this |
 | `capacity_provider_names` | Every provider associated with the cluster (built-ins + folded names) | The vocabulary services can use in a capacity provider strategy |
 | `capacity_provider_arns` | ARNs of the folded capacity providers (empty for Fargate-only clusters) | IAM policies, verification |
 

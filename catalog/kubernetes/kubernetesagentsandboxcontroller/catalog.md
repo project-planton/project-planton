@@ -108,19 +108,19 @@ These are the decisions that matter most. Explore the full field reference in th
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **KubernetesNamespace** | `namespace` | `spec.name` |
-| **KubernetesCertificate** | `router.tls.certificateSecret` | `status.outputs.secret_name` |
-| **KubernetesCertificate** | `controller.metrics.tls.certificateSecret` | `status.outputs.secret_name` |
-| **KubernetesSecret** | `router.authorization.scopedToken.verificationKeys.secret` | `status.outputs.secret_name` |
-| **KubernetesSecret** | `router.tls.clientCa.secret` | `status.outputs.secret_name` |
-| **KubernetesSecret** | `router.telemetry.headers.secret` | `status.outputs.secret_name` |
-| **KubernetesSecret** | `controller.tracing.headers.secret` | `status.outputs.secret_name` |
+| **Kubernetes Namespace** | `namespace` | `spec.name` |
+| **Cert Manager Certificate** | `router.tls.certificateSecret` | `status.outputs.secret_name` |
+| **Cert Manager Certificate** | `controller.metrics.tls.certificateSecret` | `status.outputs.secret_name` |
+| **Kubernetes Secret** | `router.authorization.scopedToken.verificationKeys.secret` | `status.outputs.secret_name` |
+| **Kubernetes Secret** | `router.tls.clientCa.secret` | `status.outputs.secret_name` |
+| **Kubernetes Secret** | `router.telemetry.headers.secret` | `status.outputs.secret_name` |
+| **Kubernetes Secret** | `controller.tracing.headers.secret` | `status.outputs.secret_name` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

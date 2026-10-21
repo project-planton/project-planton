@@ -1,5 +1,5 @@
 # Least-privilege permissions the IaC runner's AWS principal needs to
-# provision, update, and destroy this component with the official modules.
+# provision, update, and destroy this component with the platform modules.
 # Every entry is `derived` (static analysis of the module sources, cited in
 # notes) until the live capture lane upgrades it to `proven`. Schema:
 # iac/catalogkindpermissions/v1.
@@ -23,6 +23,8 @@ spec:
           - arn:aws:eks:*:*:nodegroup/*/*/*
           - arn:aws:eks:*:*:cluster/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_eks_node_group -- the module's only resource. CreateNodegroup authorizes against the cluster ARN; config updates carry scaling, labels, taints, repair, and update settings; version updates roll AMIs.
       - sid: PassNodeRole
         actions:
@@ -31,6 +33,8 @@ spec:
         resources:
           - arn:aws:iam::*:role/*
         provenance: derived
+        reach: target
+        privilege: uses_identity
         notes: EKS attaches the referenced node role (node_role_arn) to the group's instances; creating the group passes it, and the provider reads it back. Narrow to the actual role ARN in a hardened deployment.
       - sid: DescribeCapacityContext
         actions:
@@ -42,6 +46,8 @@ spec:
         resources:
           - "*"
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Validates the referenced subnets, the optional launch template (id and version), and the optional SSH key pair. EC2 Describe APIs support no resource-level scoping, so the wildcard is the narrowest possible scope.
       - sid: ReadManagedAutoScalingGroup
         actions:
@@ -49,6 +55,8 @@ spec:
         resources:
           - "*"
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: The managed group's underlying Auto Scaling group (including its warm pool) is service-managed; the provider reads it to expose the group resources in state. Auto Scaling Describe APIs support no resource-level scoping.
       - sid: CreateEksNodegroupServiceLinkedRole
         actions:
@@ -56,4 +64,6 @@ spec:
         resources:
           - arn:aws:iam::*:role/aws-service-role/eks-nodegroup.amazonaws.com/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: The first managed node group in an account creates the EKS nodegroup service-linked role automatically; scoped to exactly that role path.

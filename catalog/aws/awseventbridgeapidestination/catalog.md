@@ -66,7 +66,7 @@ This creates an api-key connection (the key lands in the AWS-owned secret, never
 
 ### InfraChart
 
-When several destinations share one connection in a chart, keep the connection in one owning instance and bind destination-only instances to it via ValueFromRef:
+When several destinations share one connection in a chart, keep the connection in one owning instance and bind destination-only instances to it by reference:
 
 ```yaml
 spec:
@@ -106,14 +106,14 @@ These are the most important decisions when configuring an API destination. Expl
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AwsEventBridgeApiDestination** | `destination.connectionArn` | `status.outputs.connection_arn` |
-| **AwsKmsKey** | `connection.kmsKeyIdentifier` | `status.outputs.key_arn` |
+| **AWS EventBridge API Destination** | `destination.connectionArn` | `status.outputs.connection_arn` |
+| **AWS KMS Key** | `connection.kmsKeyIdentifier` | `status.outputs.key_arn` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

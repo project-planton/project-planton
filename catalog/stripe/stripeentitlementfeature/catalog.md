@@ -1,20 +1,20 @@
 # Stripe Entitlement Feature
 
-Declares one capability a customer can be entitled to -- API access, single sign-on, extra seats -- identified by a lookup key your application checks. Products grant features, and Stripe tells your application which features each subscribed customer holds. One Infra Component per feature.
+Declares one capability a customer can be entitled to — API access, single sign-on, extra seats — identified by a lookup key your application checks. Products grant features, and Stripe tells your application which features each subscribed customer holds. One Infra Component per feature.
 
 ## What Gets Created
 
 When you deploy this Infra Component, the OpenTofu module creates one entitlement feature in the Stripe account your Stripe connection's key belongs to:
 
-- **The lookup key** -- the name your code checks a customer's active entitlements for
-- **The name** -- your team's label in the Dashboard
+- **The lookup key** — the name your code checks a customer's active entitlements for
+- **The name** — your team's label in the Dashboard
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **Stripe Provider Connection** -- an active connection with a restricted key and its mode (test or live). A key of the other mode is refused before anything runs.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline credential authentication.
+- **Stripe Provider Connection** — an active connection with a restricted key and its mode (test or live). A key of the other mode is refused before anything runs.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline credential authentication.
 
 ### Stripe Account
 
@@ -52,11 +52,11 @@ An Infra Job tracks the change in real time.
 
 These are the decisions that matter. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Choose the lookup key once** -- your code checks it, and changing it replaces the feature.
+**Choose the lookup key once** — your code checks it, and changing it replaces the feature.
 
-**Grant it from products** -- a Stripe Product lists the features its purchase grants; the feature itself grants nothing.
+**Grant it from products** — a Stripe Product lists the features its purchase grants; the feature itself grants nothing.
 
-**Destroy archives** -- Stripe keeps the feature, archived, and it can no longer be attached to new products.
+**Destroy archives** — Stripe keeps the feature, archived, and it can no longer be attached to new products.
 
 ## Outputs and Dependencies
 
@@ -78,10 +78,10 @@ After provisioning, `status.outputs` contains:
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**API access** -- the capability to call your API. Start from the **API Access** preset.
+**API access** — the capability to call your API. Start from the **API Access** preset.
 
-**Seat management** -- the capability to invite teammates. Start from the **Seat Management** preset.
+**Seat management** — the capability to invite teammates. Start from the **Seat Management** preset.
 
 ## Works With
 
-- [**Stripe Product**](/infra-catalog/stripe-product) -- grants the feature to everyone who buys it.
+- [**Stripe Product**](/infra-catalog/stripe-product) — grants the feature to everyone who buys it.

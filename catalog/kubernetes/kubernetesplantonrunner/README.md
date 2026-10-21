@@ -12,7 +12,7 @@ services, internal endpoints, the cluster itself. Running the runner in
 the cluster makes those targets deployable and operable with zero
 inbound exposure: the runner only ever dials OUT to the control plane.
 
-The module installs the official `planton-runner` Helm chart (OCI,
+The module installs Planton's `planton-runner` Helm chart (OCI,
 ghcr.io/plantonhq/charts) as a real Helm release, so the deployed runner
 is byte-identical to a hand-installed one. The chart carries the
 load-bearing mechanics the module deliberately does not re-model:

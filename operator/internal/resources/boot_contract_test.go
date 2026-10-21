@@ -136,7 +136,6 @@ func fullControlPlaneConfig() ControlPlaneConfig {
 	cfg.Neo4j = &neo4j
 	cfg.Runner = &RunnerBinding{
 		CloudOpsSecretName: "planton-runner-cloudops",
-		Provisioner:        "tofu",
 		DirectDialHost:     "planton-runner.default.svc.cluster.local",
 		// Builds on: the build-routing seed's names render only then.
 		BuildEnabled: true,

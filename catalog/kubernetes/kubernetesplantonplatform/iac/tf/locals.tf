@@ -342,11 +342,10 @@ locals {
   }
   bootstrap_body = {
     for k, v in {
-      organization   = length(local.bootstrap_org) > 0 ? local.bootstrap_org : null
-      environment    = length(local.bootstrap_env) > 0 ? local.bootstrap_env : null
-      admins         = length(try(var.spec.bootstrap.admins, [])) > 0 ? var.spec.bootstrap.admins : null
-      iacProvisioner = try(var.spec.bootstrap.iac_provisioner, "") != "" ? var.spec.bootstrap.iac_provisioner : null
-      secretBackend  = local.bootstrap_secret_backend
+      organization  = length(local.bootstrap_org) > 0 ? local.bootstrap_org : null
+      environment   = length(local.bootstrap_env) > 0 ? local.bootstrap_env : null
+      admins        = length(try(var.spec.bootstrap.admins, [])) > 0 ? var.spec.bootstrap.admins : null
+      secretBackend = local.bootstrap_secret_backend
     } : k => v if v != null
   }
 

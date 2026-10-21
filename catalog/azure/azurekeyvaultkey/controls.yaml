@@ -1,7 +1,7 @@
 # Control profile: this component's posture against every control in the
 # central catalog (catalog/_compliance/controls-catalog.yaml). Every control
 # is examined; not_applicable states why. Evidence is verifiable against the
-# spec contract and the official modules. Schema:
+# spec contract and the platform modules. Schema:
 # compliance/catalogkindcontrolprofile/v1.
 apiVersion: compliance.planton.dev/v1
 kind: CatalogKindControlProfile
@@ -61,7 +61,7 @@ spec:
       status: enforced_by_default
       evidence:
         type: provider_default
-        reference: "Soft delete is always on vault-wide and covers every key: a deleted key stays recoverable for the vault's retention window (7-90 days, default 90), and the official modules auto-recover a name-colliding create against a soft-deleted key rather than failing."
+        reference: "Soft delete is always on vault-wide and covers every key: a deleted key stays recoverable for the vault's retention window (7-90 days, default 90), and the platform modules auto-recover a name-colliding create against a soft-deleted key rather than failing."
       notes: "Deletion-recovery, not escrow: HSM key material is unexportable by design, so the recoverable thing is the vault's own copy. Version history additionally preserves every rotation's predecessor -- old ciphertext stays unwrappable by its original version."
     - control_id: backup-retention-policy
       status: not_applicable

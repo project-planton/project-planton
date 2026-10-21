@@ -103,21 +103,21 @@ While a Service is live, the Infra Components its latest run into an environment
 
 A Service's configuration is what runs in your cloud, so taking a resource out of it takes the resource out of the cloud. When a run no longer declares a resource the Service deployed to an environment, the run removes it at the very end, after everything it declares has applied and the rollout has verified. The run lists its removals from the moment it starts, under **No Longer Declared**, so you see what it will remove before it does.
 
-- **Destroyed** is the default for a resource that holds no data. A push that removes a queue's manifest destroys the queue.
+- **Destroyed** is the default, for a database as for a queue. A push that removes a queue's manifest destroys the queue.
 - **Kept** (named by its provider: Kept in AWS) applies to a resource marked `planton.dev/keep-on-provider: "true"`: the Service lets go of it and it keeps running, findable and adoptable. Mark it and deploy before removing it.
 - **Left in Place** applies when something stops the destroy: `planton.dev/prevent-destroy`, the resource's own deletion protection, something else still reading it, or a kept resource living inside it. The run says why and how to clear it, and the next run tries again.
 
-A resource that holds data, such as a database, is never destroyed by a push alone. The rest of the environment deploys, then the run asks: destroy it (type its name), or keep it. In a protected environment the approver sees every removal at the gate and can keep any of them. If a removal was a mistake, such as a renamed resource, restore the name and push: the newer run takes over and nothing is removed.
+A push is the declaration itself, as `terraform apply` is: in an unprotected environment it removes what the Service no longer declares without asking, a database too. To keep something running, mark it keep-on-provider and deploy before removing it. In a protected environment the approver sees every removal at the gate, and approving decides them all: each is destroyed unless kept. A removal that appears after the approval asks on its own. If a removal waiting at a gate was a mistake, such as a renamed resource, restore the name and push: the newer run takes over and nothing is removed.
 
 A failed deploy removes nothing, and a removal that fails never fails the deployment: the environment reads "1 removal failed" and the next run tries again. Removing a whole environment from the Service is different: its resources keep running.
 
-Promote, roll back, redeploy and deploy follow the same rule, because each applies a configuration: a rollback destroys what was added after the deployment it restores. Each takes `--dry-run`, which prints what the run would apply and remove without starting it, and the console's confirms show the same answer before you click.
+Promote, roll back, redeploy and deploy follow the same rule, because each applies a configuration: a rollback destroys what was added after the deployment it restores. Each reads its dry run first: at a terminal it says what it removes and asks, `--yes` answers ahead, and without a terminal it refuses and prints the same command with `--yes` added. A deploy from the Service's own CI is a push, and prints what it removes, then starts. Into a protected environment the approver decides removals at the gate, so the command asks nothing more. Each takes `--dry-run`, which prints what the run would apply and remove without starting it, and the console's confirms show the same answer before you click.
 
 ```bash
 # What would rolling prod back do? Nothing starts
 planton service rollback my-service --env prod --dry-run
 
-# Answer a run's question about a database it no longer declares
+# Answer a removal that appeared after a protected gate's approval
 planton service removal destroy my-service 131 prod AwsRdsInstance/orders-db
 planton service removal keep my-service 131 prod AwsRdsInstance/orders-db
 ```

@@ -605,8 +605,51 @@ func checkAws(t *testing.T, aws *permissionsv1.AwsPermissions) {
 			}
 		}
 		checkProvenance(t, "aws "+sid, statement.GetProvenance(), statement.GetNotes())
+		checkReachAndPrivilege(t, "aws "+sid, statement.GetReach(), statement.GetPrivilege())
+		// AWS Organizations answers only in the organization's management
+		// account: a statement reaching it is the organization's, and one
+		// that is not cannot hold its actions.
+		touchesOrganizations := false
+		for _, action := range statement.GetActions() {
+			if strings.HasPrefix(strings.ToLower(action), "organizations:") {
+				touchesOrganizations = true
+			}
+		}
+		switch {
+		case touchesOrganizations && statement.GetReach() != permissionsv1.PermissionReach_organization:
+			t.Errorf("aws %s: holds organizations: actions but reach is %s -- AWS Organizations answers only in the management account, so the statement's reach is organization", sid, statement.GetReach())
+		case !touchesOrganizations && statement.GetReach() == permissionsv1.PermissionReach_organization:
+			t.Errorf("aws %s: reach is organization but no action is an organizations: action -- an account's own statements reach the account (target)", sid)
+		case statement.GetReach() == permissionsv1.PermissionReach_billing_account:
+			t.Errorf("aws %s: reach billing_account is a GCP scope; an AWS statement reaches the account or the organization", sid)
+		}
 	}
 }
+
+// checkReachAndPrivilege refuses an entry that leaves either fact unset:
+// every reader renders, grants and checks permissions by them, so an
+// unspecified value would be a guess made downstream. Whether each value
+// is the RIGHT one is the inventory gate's (pkg/iac/actioninventory),
+// which reads the provider's own scope inventory and the authored
+// privileged-permission list.
+func checkReachAndPrivilege(t *testing.T, where string, reach permissionsv1.PermissionReach, privilege permissionsv1.PermissionPrivilege) {
+	t.Helper()
+	if reach == permissionsv1.PermissionReach_permission_reach_unspecified {
+		t.Errorf("%s: reach is unspecified -- say where the permissions are granted (target, organization, billing_account)", where)
+	}
+	checkPrivilege(t, where, privilege)
+}
+
+func checkPrivilege(t *testing.T, where string, privilege permissionsv1.PermissionPrivilege) {
+	t.Helper()
+	if privilege == permissionsv1.PermissionPrivilege_permission_privilege_unspecified {
+		t.Errorf("%s: privilege is unspecified -- say what the permissions let the principal do (ordinary, uses_identity, grants_access)", where)
+	}
+}
+
+// basicGcpRoles are the roles a manifest may never name in a custom role's
+// place: each holds thousands of permissions across every service.
+var basicGcpRoles = map[string]bool{"roles/owner": true, "roles/editor": true, "roles/viewer": true}
 
 func checkGcp(t *testing.T, gcp *permissionsv1.GcpPermissions) {
 	t.Helper()
@@ -629,6 +672,15 @@ func checkGcp(t *testing.T, gcp *permissionsv1.GcpPermissions) {
 			}
 		}
 		checkProvenance(t, "gcp "+group.GetPurpose(), group.GetProvenance(), group.GetNotes())
+		checkReachAndPrivilege(t, "gcp "+group.GetPurpose(), group.GetReach(), group.GetPrivilege())
+		if role := group.GetPredefinedRole(); role != "" {
+			if !strings.HasPrefix(role, "roles/") {
+				t.Errorf("gcp %s: predefined_role %q is not a predefined role name (roles/<name>)", group.GetPurpose(), role)
+			}
+			if basicGcpRoles[role] {
+				t.Errorf("gcp %s: predefined_role %q is a basic role -- never Owner, Editor or Viewer in a custom role's place", group.GetPurpose(), role)
+			}
+		}
 	}
 }
 
@@ -653,6 +705,7 @@ func checkAzure(t *testing.T, azure *permissionsv1.AzurePermissions) {
 			}
 		}
 		checkProvenance(t, "azure "+group.GetPurpose(), group.GetProvenance(), group.GetNotes())
+		checkPrivilege(t, "azure "+group.GetPurpose(), group.GetPrivilege())
 	}
 }
 
@@ -967,6 +1020,110 @@ func TestApiEnablingGroupsDeclareServiceList(t *testing.T) {
 			}
 		}
 	}
+}
+
+// gcpOperatingServices are the services a connection's setup itself turns
+// on in the connection's project -- IAM, Resource Manager and Service
+// Usage, which Planton needs to operate the connection at all. Every other
+// service a kind touches is turned on by a kind's own deployment.
+var gcpOperatingServices = map[string]bool{
+	"iam":             true,
+	"iamcredentials":  true,
+	"resourcemanager": true,
+	"serviceusage":    true,
+	"sts":             true,
+}
+
+// TestGcpKindsOwnTheirApis is the gate behind "every kind turns on what it
+// needs at first deploy": a connection's setup turns on only the operating
+// services, so a kind touching any other service must turn its API on
+// itself (serviceusage.services.enable), name in api_enabled_by kinds that
+// do and that touch the same service, or -- for a kind whose resources
+// live in no project -- name the API among caller_project_services, which
+// the connection turns on in its own identity's project. A kind doing none
+// of these would deploy only where someone happened to turn the API on.
+func TestGcpKindsOwnTheirApis(t *testing.T) {
+	root := repoRoot(t)
+	if _, err := os.Stat(filepath.Join(root, "catalog")); err != nil {
+		t.Skip("catalog source tree not present (bazel sandbox); runs under go test and the lint.catalog-data lane")
+	}
+	discovered, err := Discover(root)
+	if err != nil {
+		t.Fatalf("discovering permissions manifests: %v", err)
+	}
+	type kindApis struct {
+		services map[string]bool
+		enables  bool
+	}
+	byKind := map[string]kindApis{}
+	gcpSections := map[string]*permissionsv1.GcpPermissions{}
+	for _, kindDir := range discovered["gcp"] {
+		manifest, err := Load(root, "gcp", kindDir)
+		if err != nil {
+			t.Fatalf("%s permissions manifest: %v", kindDir, err)
+		}
+		gcp := manifest.GetSpec().GetGcp()
+		gcpSections[kindDir] = gcp
+		apis := kindApis{services: map[string]bool{}}
+		for _, group := range gcp.GetGroups() {
+			for _, permission := range group.GetPermissions() {
+				apis.enables = apis.enables || permission == serviceUsageEnable
+				if service, _, found := strings.Cut(permission, "."); found && !gcpOperatingServices[service] {
+					apis.services[service] = true
+				}
+			}
+		}
+		byKind[kindDir] = apis
+	}
+	for kindDir, gcp := range gcpSections {
+		apis := byKind[kindDir]
+		if len(gcp.GetCallerProjectServices()) > 0 {
+			for _, service := range gcp.GetCallerProjectServices() {
+				if !strings.HasSuffix(service, ".googleapis.com") {
+					t.Errorf("%s caller_project_services entry %q is not a Google API name (<name>.googleapis.com)", kindDir, service)
+				}
+			}
+			continue
+		}
+		if apis.enables || len(apis.services) == 0 {
+			if len(gcp.GetApiEnabledBy()) > 0 {
+				t.Errorf("%s names api_enabled_by but turns its own APIs on or touches only operating services -- the field is for a kind that relies on another", kindDir)
+			}
+			continue
+		}
+		if len(gcp.GetApiEnabledBy()) == 0 {
+			t.Errorf("%s touches %v but turns on no API and names no kind that does -- add serviceusage.services.enable with its module's API enablement, api_enabled_by, or caller_project_services", kindDir, sortedSet(apis.services))
+			continue
+		}
+		covered := map[string]bool{}
+		for _, owner := range gcp.GetApiEnabledBy() {
+			ownerApis, ok := byKind[strings.ToLower(owner)]
+			if !ok {
+				t.Errorf("%s api_enabled_by names %q, which is no GCP kind with a permissions manifest", kindDir, owner)
+				continue
+			}
+			if !ownerApis.enables {
+				t.Errorf("%s api_enabled_by names %s, which turns on no API itself", kindDir, owner)
+			}
+			for service := range ownerApis.services {
+				covered[service] = true
+			}
+		}
+		for service := range apis.services {
+			if !covered[service] {
+				t.Errorf("%s touches service %q but none of api_enabled_by %v does -- name the kind that turns that service's API on", kindDir, service, gcp.GetApiEnabledBy())
+			}
+		}
+	}
+}
+
+func sortedSet(set map[string]bool) []string {
+	values := make([]string, 0, len(set))
+	for value := range set {
+		values = append(values, value)
+	}
+	sort.Strings(values)
+	return values
 }
 
 // kindProjection returns the custom resource group and kind a

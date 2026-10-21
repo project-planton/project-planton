@@ -1,5 +1,5 @@
 # Least-privilege permissions the IaC runner's AWS principal needs to
-# provision, update, and destroy this component with the official modules.
+# provision, update, and destroy this component with the platform modules.
 # Every entry is `derived` (static analysis of the module sources, cited in
 # notes) until the live capture lane upgrades it to `proven`. Schema:
 # iac/catalogkindpermissions/v1.
@@ -25,4 +25,6 @@ spec:
         resources:
           - arn:aws:iam::*:policy/*
         provenance: derived
+        reach: target
+        privilege: grants_access
         notes: Covers aws_iam_policy / iam.Policy, the only resource either module manages. Creation carries name, path, description, document, and tags; document updates run CreatePolicyVersion (set-as-default) with ListPolicyVersions + DeletePolicyVersion pruning the oldest non-default version against AWS's five-version cap; deletion sweeps remaining non-default versions before DeletePolicy. Get/List actions are the read-side during plan/refresh. Every policy API authorizes on the policy ARN alone -- IAM ARNs carry no region, and policy/* spans custom paths because '*' matches path separators.

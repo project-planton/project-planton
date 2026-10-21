@@ -55,7 +55,7 @@ This asserts the team domain (`acme.cloudflareaccess.com`), the login page's dis
 
 ### InfraChart
 
-For a zone-scoped organization whose zone is deployed in the same InfraPipeline, wire `zoneId` with ValueFromRef:
+For a zone-scoped organization whose zone is deployed in the same InfraPipeline, wire `zoneId` with references:
 
 ```yaml
 spec:
@@ -92,13 +92,13 @@ These are the most important decisions when configuring the Zero Trust organizat
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **CloudflareDnsZone** (zone-scoped organizations) | `zoneId` | `status.outputs.zone_id` |
+| **Cloudflare DNS Zone** (zone-scoped organizations) | `zoneId` | `status.outputs.zone_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

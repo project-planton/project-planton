@@ -15,7 +15,7 @@ import (
 	permissionsv1 "github.com/plantonhq/planton/iac/catalogkindpermissions/v1"
 )
 
-// This file reads an official Pulumi module's Go source for the Kubernetes
+// This file reads a platform Pulumi module's Go source for the Kubernetes
 // objects it creates, so the conformance gate can hold the kind's
 // manifest to what the provider reads while it waits for them
 // (pulumikubernetes.go). It reads constructor calls, not names that happen

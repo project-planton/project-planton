@@ -1,6 +1,6 @@
 # Cloudflare Zero Trust Access Service Token
 
-Deploys an Access service token: a machine credential — a client-ID / client-secret pair that non-human clients present in the `CF-Access-Client-ID` / `CF-Access-Client-Secret` request headers to pass through Access-protected applications without an identity-provider login. The secret is returned only at creation and at each rotation, never on reads; capture it into a secret store at deploy or a lost secret means rotating. Rotation is first-class: the token ID and client ID survive it, so Access policies keep matching.
+Deploys an Access service token: a machine credential — a client-ID / client-secret pair that non-human clients present in the CF-Access-Client-ID / CF-Access-Client-Secret request headers to pass through Access-protected applications without an identity-provider login. The secret is returned only at creation and at each rotation, never on reads; capture it into a secret store at deploy or a lost secret means rotating. Rotation is first-class: the token ID and client ID survive it, so Access policies keep matching.
 
 ## What Gets Created
 
@@ -18,7 +18,7 @@ When you deploy this Infra Component, the IaC module provisions:
 
 ### Cloudflare Account
 
-- **Zero Trust enabled on the account** — the organization (team name) must already exist (a CloudflareZeroTrustOrganization Infra Component) or every Access create fails at the API.
+- **Zero Trust enabled on the account** — the organization (team name) must already exist (a Cloudflare Zero Trust Organization Infra Component) or every Access create fails at the API.
 - **A secret store ready to receive the credential** — `status.outputs.client_secret` cannot be recovered from Cloudflare later; capturing it is part of the deploy, not an afterthought.
 
 ## Deploy
@@ -51,7 +51,7 @@ This creates an account-scoped token with Cloudflare's one-year default duration
 
 ### InfraChart
 
-For a zone-scoped token whose zone is deployed in the same InfraPipeline, wire `zoneId` with ValueFromRef:
+For a zone-scoped token whose zone is deployed in the same InfraPipeline, wire `zoneId` with references:
 
 ```yaml
 spec:
@@ -83,13 +83,13 @@ These are the most important decisions when configuring a service token. Explore
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **CloudflareDnsZone** (zone-scoped tokens) | `zoneId` | `status.outputs.zone_id` |
+| **Cloudflare DNS Zone** (zone-scoped tokens) | `zoneId` | `status.outputs.zone_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

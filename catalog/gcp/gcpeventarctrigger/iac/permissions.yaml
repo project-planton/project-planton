@@ -1,5 +1,5 @@
 # Least-privilege permissions the IaC runner's GCP principal needs to
-# provision, update, and destroy this component with the official modules.
+# provision, update, and destroy this component with the platform modules.
 # Every entry is `derived` (static analysis of the module sources, cited in
 # notes) until the live capture lane upgrades it to `proven`. Schema:
 # iac/catalogkindpermissions/v1.
@@ -16,6 +16,8 @@ spec:
           - serviceusage.services.get
           - serviceusage.services.list
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers google_project_service enabling eventarc.googleapis.com on the target project. disable_on_destroy is false in both modules, so the disable permission is never needed.
       - purpose: ManageTrigger
         permissions:
@@ -25,6 +27,8 @@ spec:
           - eventarc.triggers.delete
           - eventarc.operations.get
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: "Covers google_eventarc_trigger -- create, read/refresh, in-place updates (criteria, destination, retry, labels), and destroy. Eventarc mutations return long-running operations the provider polls, authorized as eventarc.operations.get (shared by the channel groups below). The committed action-inventory snapshot (pkg/iac/actioninventory/gcp.yaml) carries the eventarc service prefix and lists every eventarc.* permission in this manifest; the list was also verified live against Google's Eventarc access-control documentation (https://cloud.google.com/eventarc/standard/docs/access-control). The kind's READMEs previously recommended roles/eventarc.admin \"(or narrower)\" -- this manifest is the narrower truth: exactly the families the modules touch, none of the publish/IAM-policy/messageBus permissions the admin role also carries. The modules' google_client_config lookups read provider configuration and make no permission-bearing API call."
       - purpose: ManagePartnerChannel
         permissions:
@@ -33,6 +37,8 @@ spec:
           - eventarc.channels.update
           - eventarc.channels.delete
         provenance: derived
+        reach: target
+        privilege: ordinary
         condition:
           spec_field_set: partner_channel
         notes: Covers google_eventarc_channel, created when partner_channel arms a SaaS-partner event source -- the channel is created alongside the trigger and wired to it.
@@ -41,6 +47,8 @@ spec:
           - eventarc.googleChannelConfigs.get
           - eventarc.googleChannelConfigs.update
         provenance: derived
+        reach: target
+        privilege: ordinary
         condition:
           spec_field_set: google_channel_crypto_key
         notes: Covers google_eventarc_google_channel_config, managed when google_channel_crypto_key is set. The googleChannelConfig is a per-project-per-location SINGLETON that always exists in GCP -- consistently, Google publishes ONLY get and update for the family (no create or delete exist in the inventory), and the provider's "delete" of the resource is a state-only no-op.
@@ -48,6 +56,8 @@ spec:
         permissions:
           - iam.serviceAccounts.actAs
         provenance: derived
+        reach: target
+        privilege: uses_identity
         condition:
           spec_field_set: service_account
         notes: Both presets name the trigger's identity in service_account, and audit-log triggers and workflow destinations cannot omit it -- Google's Eventarc API reference states the iam.serviceAccounts.actAs permission must be granted on the service account to allow a principal to attach it to a trigger.

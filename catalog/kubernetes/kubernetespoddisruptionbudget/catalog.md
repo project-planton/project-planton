@@ -6,15 +6,15 @@ Deploys a Kubernetes PodDisruptionBudget — insurance against maintenance. The 
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **Kubernetes PodDisruptionBudget** -- a policy/v1 budget in the specified namespace carrying the pod selector, exactly one availability bound (min available OR max unavailable), and the unhealthy-pod eviction policy
-- **Kubernetes Labels** -- resource metadata labels (resource name, kind, organization, environment) applied automatically for tracking
+- **Kubernetes PodDisruptionBudget** — a policy/v1 budget in the specified namespace carrying the pod selector, exactly one availability bound (min available OR max unavailable), and the unhealthy-pod eviction policy
+- **Kubernetes Labels** — resource metadata labels (resource name, kind, organization, environment) applied automatically for tracking
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **Kubernetes Provider Connection** -- an active connection in the Connect module with kubeconfig credentials for the target cluster. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline kubeconfig authentication.
+- **Kubernetes Provider Connection** — an active connection in the Connect module with kubeconfig credentials for the target cluster. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline kubeconfig authentication.
 
 ### Kubernetes Cluster
 
@@ -56,7 +56,7 @@ This lets cluster maintenance move at most ONE `checkout` pod at a time — drai
 
 ### InfraChart
 
-When deploying as part of a multi-resource environment, use ValueFromRef to place the budget in a namespace managed alongside it:
+When deploying as part of a multi-resource environment, use references to place the budget in a namespace managed alongside it:
 
 ```yaml
 spec:
@@ -78,25 +78,25 @@ The InfraPipeline creates the namespace first, then the budget inside it — the
 
 These are the most important decisions when configuring a Kubernetes PodDisruptionBudget. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Selection by the label contract** -- Every Planton workload stamps the `app` label (set to its name) on its pods, so `matchLabels: {app: checkout}` protects exactly that workload. An EMPTY selector protects ALL pods in the namespace — legal, explicit, and rarely what you want.
+**Selection by the label contract** — Every Planton workload stamps the `app` label (set to its name) on its pods, so `matchLabels: {app: checkout}` protects exactly that workload. An EMPTY selector protects ALL pods in the namespace — legal, explicit, and rarely what you want.
 
-**Exactly one bound** -- `maxUnavailable` (preferred for workloads that scale — it tracks replica count) or `minAvailable` (an absolute floor that goes stale as replicas change). The API rejects both together, and a budget with neither protects nothing.
+**Exactly one bound** — `maxUnavailable` (preferred for workloads that scale — it tracks replica count) or `minAvailable` (an absolute floor that goes stale as replicas change). The API rejects both together, and a budget with neither protects nothing.
 
-**The unsatisfiable-budget trap** -- `maxUnavailable: "0"` or `minAvailable: "100%"` blocks ALL voluntary evictions including node drains; a single-replica workload behind such a budget wedges every cluster upgrade until someone relaxes it.
+**The unsatisfiable-budget trap** — `maxUnavailable: "0"` or `minAvailable: "100%"` blocks ALL voluntary evictions including node drains; a single-replica workload behind such a budget wedges every cluster upgrade until someone relaxes it.
 
-**The crash-loop wedge** -- A budget counts HEALTHY (Ready) pods. Under the conservative default, a crash-looping app can block drains forever; **Always Allow** lets not-ready pods be evicted regardless — the practical choice for workloads that can crash-loop.
+**The crash-loop wedge** — A budget counts HEALTHY (Ready) pods. Under the conservative default, a crash-looping app can block drains forever; **Always Allow** lets not-ready pods be evicted regardless — the practical choice for workloads that can crash-loop.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **KubernetesNamespace** (optional) | `namespace` | `spec.name` |
+| **Kubernetes Namespace** (optional) | `namespace` | `spec.name` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -107,13 +107,13 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Rolling-maintenance contract** -- One workload, one pod movable at a time. Start from the **Protect Workload** preset.
+**Rolling-maintenance contract** — One workload, one pod movable at a time. Start from the **Protect Workload** preset.
 
-**Percentage tier** -- At most 25% of a scaled fleet down at once. Start from the **Tier Percentage** preset.
+**Percentage tier** — At most 25% of a scaled fleet down at once. Start from the **Tier Percentage** preset.
 
-**Crash-loop tolerant** -- Always Allow eviction of not-ready pods so a broken app never wedges upgrades. Start from the **Crashloop Tolerant** preset.
+**Crash-loop tolerant** — Always Allow eviction of not-ready pods so a broken app never wedges upgrades. Start from the **Crashloop Tolerant** preset.
 
 ## Works With
 
-- [**Kubernetes Namespace**](/infra-catalog/kubernetes-namespace) -- reference the namespace so Infra Charts create it and this budget in dependency order
-- [**Kubernetes Deployment**](/infra-catalog/kubernetes-deployment) -- its built-in disruption-budget block covers its own pods; this standalone kind covers operator-managed replicas and everything else, matched via their `app` label
+- [**Kubernetes Namespace**](/infra-catalog/kubernetes-namespace) — reference the namespace so Infra Charts create it and this budget in dependency order
+- [**Kubernetes Deployment**](/infra-catalog/kubernetes-deployment) — its built-in disruption-budget block covers its own pods; this standalone kind covers operator-managed replicas and everything else, matched via their `app` label

@@ -1,5 +1,5 @@
 # Least-privilege permissions the IaC runner's GCP principal needs to
-# provision, update, and destroy this component with the official modules.
+# provision, update, and destroy this component with the platform modules.
 # Every entry is `derived` (static analysis of the module sources, cited in
 # notes) until the live capture lane upgrades it to `proven`. Schema:
 # iac/catalogkindpermissions/v1.
@@ -16,6 +16,8 @@ spec:
           - serviceusage.services.get
           - serviceusage.services.list
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers google_project_service enabling aiplatform.googleapis.com on the target project. disable_on_destroy is false in the module, so the disable permission is never needed.
       - purpose: ManageRuntime
         permissions:
@@ -25,12 +27,16 @@ spec:
           - aiplatform.notebookRuntimeTemplates.apply
           - aiplatform.notebookRuntimeTemplates.get
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers google_colab_runtime (Pulumi colab.Runtime) -- created through notebookRuntimes.assign from the template (which needs apply on it), read on every refresh, deleted through a long-running operation the provider polls.
       - purpose: StartAndStopRuntime
         permissions:
           - aiplatform.notebookRuntimes.start
           - aiplatform.notebookRuntimes.update
         provenance: derived
+        reach: target
+        privilege: ordinary
         condition:
           spec_field_set: desired_state
         notes: The client-side desired_state control calls start or stop to match on every apply. GCP defines no aiplatform.notebookRuntimes.stop permission -- roles/aiplatform.colabEnterpriseAdmin carries start, update, and upgrade but no stop -- so the stop call is listed as update, the runtime's in-place permission; the live capture lane confirms which permission Google checks.
@@ -38,6 +44,8 @@ spec:
         permissions:
           - aiplatform.notebookRuntimes.upgrade
         provenance: derived
+        reach: target
+        privilege: ordinary
         condition:
           spec_field_set: auto_upgrade
         notes: auto_upgrade calls upgrade when Google reports the runtime upgradable.

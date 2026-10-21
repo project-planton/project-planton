@@ -17,6 +17,7 @@ The usual way to deploy from CI is an API key saved as a repository secret. A ke
 - GitHub mints a fresh token for every run, naming the repository, branch or tag, and environment it ran for.
 - Planton accepts the token only when a trust names exactly that repository and the token was requested for this Planton, its **audience**. The same workflow copied into another repository is refused.
 - The credential Planton hands back expires in minutes, and can only register and deploy the service whose declared repository matches the token. It can never approve anything.
+- A deploy made with it is the service's own CI, so it runs like a push: it prints what it removes from the environment, then starts. A protected environment's approver still decides those removals at its gate.
 
 ## Trust a Repository
 

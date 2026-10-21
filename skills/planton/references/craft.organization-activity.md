@@ -17,8 +17,10 @@ reads and your answer:
 A failure is not an approval. Read means this authenticated account inspected
 that failure; it means neither fixed nor acknowledged by the team. A newer
 failure can be Unread again. Listing, investigating, and summarizing never
-mark anything Read. Never approve, reject, retry, cancel, or deploy as a side
-effect of reviewing.
+mark anything Read. Reading never approves: never approve, reject, retry,
+cancel, or deploy as a side effect of reviewing. A decision you carry out is
+the person's (their stated decision, or their word to carry on without
+asking), never on a run they started themselves.
 
 ## Establish One Scope and a Working Instrument
 
@@ -110,6 +112,8 @@ is new or idle. Scope and access can change between reads. Never combine
 cached cards across an account/instance change or use a broader account to
 work around a refusal. Where the API combines absent and inaccessible
 records, say unavailable rather than guessing which it was.
+
+Each card names its audience. Most cards reach whoever may read the card's target. Grants, revocations and role changes reach the people who manage access at that scope. Arrivals ("Sam joined") reach the organization's readers: people whose access reaches the whole organization. Someone seated only on some environments is a member of the organization, and opens it, but is not one of its readers. Their feed holds the cards about what their environments hold, and no arrivals. So a short feed for such a person describes their reach, not a quiet organization. Their decisions still come from the queues above, which list every gate they may decide.
 
 ## Review the Actual Change
 

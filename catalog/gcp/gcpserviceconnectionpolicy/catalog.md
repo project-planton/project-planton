@@ -19,7 +19,7 @@ When you deploy this Infra Component, the IaC module provisions:
 
 ### GCP Project
 
-- **A VPC network** for the `network` field — the consumer network the automation is authorized to connect into (a GcpVpcNetwork reference or a literal `projects/{project}/global/networks/{name}` path).
+- **A VPC network** for the `network` field — the consumer network the automation is authorized to connect into (a GCP VPC Network reference or a literal `projects/{project}/global/networks/{name}` path).
 - **At least one subnet in the policy's region** for `pscConfig.subnetworks` — regular-purpose subnets work; no special PSC purpose is needed (unlike PSC NAT subnets for published services).
 - **The producer's published service class name** for `serviceClass` — Google publishes one identifier per service (`gcp-memorystore` for Memorystore for Valkey, `gcp-memorystore-redis` for Redis Cluster); third-party producers publish their own.
 
@@ -58,7 +58,7 @@ This authorizes Memorystore for Valkey to place PSC endpoints in `prod-subnet` �
 
 ### InfraChart
 
-When the network and subnets are deployed in the same chart, wire the policy to them with ValueFromRef:
+When the network and subnets are deployed in the same chart, wire the policy to them with references:
 
 ```yaml
 spec:
@@ -99,15 +99,15 @@ These are the most important decisions when configuring a service connection pol
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **GcpProject** (optional) | `projectId` | `status.outputs.project_id` |
-| **GcpVpcNetwork** | `network` | `status.outputs.network_id` |
-| **GcpSubnetwork** (per entry) | `pscConfig.subnetworks` | `status.outputs.subnetwork_self_link` |
+| **GCP Project** (optional) | `projectId` | `status.outputs.project_id` |
+| **GCP VPC Network** | `network` | `status.outputs.network_id` |
+| **GCP Subnetwork** (per entry) | `pscConfig.subnetworks` | `status.outputs.subnetwork_self_link` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

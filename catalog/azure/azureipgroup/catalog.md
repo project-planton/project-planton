@@ -6,8 +6,8 @@ Deploys an Azure IP Group — a named SET of IP addresses and CIDR ranges that A
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **IP Group** -- the named address set with its entries (single IPs and CIDR blocks, up to 5,000 per group)
-- **Azure Tags** -- resource metadata tags (organization, environment, resource kind, resource ID) applied automatically and merged with the user tags
+- **IP Group** — the named address set with its entries (single IPs and CIDR blocks, up to 5,000 per group)
+- **Azure Tags** — resource metadata tags (organization, environment, resource kind, resource ID) applied automatically and merged with the user tags
 
 The rules that reference the group are NOT created here — they live on firewall policies and rule collection groups, each with its own lifecycle. An **empty group is legal**: a placeholder anchor rules can reference before the address plan is final.
 
@@ -15,12 +15,12 @@ The rules that reference the group are NOT created here — they live on firewal
 
 ### Planton Setup
 
-- **Azure Provider Connection** -- an active connection in the Connect module with credentials for the target Azure subscription. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
+- **Azure Provider Connection** — an active connection in the Connect module with credentials for the target Azure subscription. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
 
 ### Azure Subscription
 
-- **An Azure Resource Group** where the group will be created. Provide the name directly or reference an AzureResourceGroup Infra Component via ValueFromRef.
+- **An Azure Resource Group** where the group will be created. Provide the name directly or reference an Azure Resource Group Infra Component.
 - **An address-set plan by INTENT**: one group per policy meaning ("branch-offices", "on-prem-datacenter", "blocked-scanners") — the names become the vocabulary your firewall rules read as.
 
 ## Deploy
@@ -56,11 +56,11 @@ spec:
 planton apply -f ip-group.yaml
 ```
 
-This creates the `branch-offices` group with two trusted ranges -- every firewall rule referencing it matches them, and a new branch joins by adding one address here, with no policy edit. An Infra Job tracks the provisioning in real time.
+This creates the `branch-offices` group with two trusted ranges — every firewall rule referencing it matches them, and a new branch joins by adding one address here, with no policy edit. An Infra Job tracks the provisioning in real time.
 
 ### InfraChart
 
-When deploying as part of a multi-resource environment, use ValueFromRef to wire the group to its dependencies:
+When deploying as part of a multi-resource environment, use references to wire the group to its dependencies:
 
 ```yaml
 spec:
@@ -77,23 +77,23 @@ The InfraPipeline resolves the dependency graph, deploys the resource group firs
 
 These are the most important decisions when configuring an IP Group. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Addresses** -- `cidrs` accepts single addresses ("203.0.113.7") and CIDR blocks ("10.10.0.0/16"), up to 5,000 entries per group. Entries update in place — the group's designed day-two operation. An **empty list is valid**: create the anchor now, land the address plan later; until then rules referencing it match nothing.
+**Addresses** — `cidrs` accepts single addresses ("203.0.113.7") and CIDR blocks ("10.10.0.0/16"), up to 5,000 entries per group. Entries update in place — the group's designed day-two operation. An **empty list is valid**: create the anchor now, land the address plan later; until then rules referencing it match nothing.
 
-**Name** -- the address set's INTENT ("branch-offices", "on-prem-ranges", "blocked-scanners"), unique within the resource group, up to 80 characters following ARM's Microsoft.Network naming contract. Renaming replaces the group, and every referencing rule must be re-pointed.
+**Name** — the address set's INTENT ("branch-offices", "on-prem-ranges", "blocked-scanners"), unique within the resource group, up to 80 characters following ARM's Microsoft.Network naming contract. Renaming replaces the group, and every referencing rule must be re-pointed.
 
-**Region** -- the group is a regional resource, but firewall policies in ANY region can reference it — one set can serve every regional firewall. Azure caps sharing at 100 firewall policies per group.
+**Region** — the group is a regional resource, but firewall policies in ANY region can reference it — one set can serve every regional firewall. Azure caps sharing at 100 firewall policies per group.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AzureResourceGroup** | `resourceGroup` | `status.outputs.resource_group_name` |
+| **Azure Resource Group** | `resourceGroup` | `status.outputs.resource_group_name` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -104,13 +104,13 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Branch offices** -- the trusted branch egress ranges every allow-rule references; a new branch is one address added here. Start from the **Branch-Office Address Set** preset.
+**Branch offices** — the trusted branch egress ranges every allow-rule references; a new branch is one address added here. Start from the **Branch-Office Address Set** preset.
 
-**On-premises datacenter** -- the ExpressRoute/VPN-reachable ranges rules treat as internal — the hybrid-network trust anchor. Start from the **On-Premises Datacenter Ranges** preset.
+**On-premises datacenter** — the ExpressRoute/VPN-reachable ranges rules treat as internal — the hybrid-network trust anchor. Start from the **On-Premises Datacenter Ranges** preset.
 
 ## Works With
 
-- [**Azure Resource Group**](/infra-catalog/azure-resource-group) -- provides the resource group where the IP Group is created
-- [**Azure Firewall**](/infra-catalog/azure-firewall) -- the enforcement point whose policies reference this group's address set
-- [**Azure Firewall Policy**](/infra-catalog/azure-firewall-policy) -- carries the rule collections whose rules reference this group by `ip_group_id`
-- [**Azure Route Table**](/infra-catalog/azure-route-table) -- the complementary steering layer that sends traffic through the firewall these rules run on
+- [**Azure Resource Group**](/infra-catalog/azure-resource-group) — provides the resource group where the IP Group is created
+- [**Azure Firewall**](/infra-catalog/azure-firewall) — the enforcement point whose policies reference this group's address set
+- [**Azure Firewall Policy**](/infra-catalog/azure-firewall-policy) — carries the rule collections whose rules reference this group by `ip_group_id`
+- [**Azure Route Table**](/infra-catalog/azure-route-table) — the complementary steering layer that sends traffic through the firewall these rules run on

@@ -312,6 +312,12 @@ The kind's authored data files -- `cost.yaml`, `controls.yaml`,
 go test ./pkg/finops/... ./pkg/compliance/... ./pkg/iac/permissions/... ./pkg/iac/actioninventory/
 ```
 
+The gate also derives every permission entry's `reach` and `privilege` from
+the providers' own inventories and the authored privileged-permission list,
+holds GCP `predefined_role` to the groups a custom role cannot carry, and
+refuses a GCP kind whose APIs nobody turns on -- a wrong value there is a
+gate failure, not a judgment call.
+
 Beyond the gate, audit the JUDGMENT the gate cannot check: do the cost drivers
 name the fields that actually dominate the bill, does every control posture's
 evidence hold against the current spec and modules, and do the derived

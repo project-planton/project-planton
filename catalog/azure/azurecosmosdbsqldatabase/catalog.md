@@ -1,24 +1,24 @@
 # Azure Cosmos DB SQL Database
 
-Deploys a SQL (NoSQL) API database inside an Azure Cosmos DB account — the namespace containers live in and the boundary for SHARED throughput. Databases are many-per-account with independent lifecycles, which is why they are a first-class kind referencing the account rather than a list folded into the account's spec. Containers are their own kind (AzureCosmosdbSqlContainer) referencing this database's `sql_database_id` output.
+Deploys a SQL (NoSQL) API database inside an Azure Cosmos DB account — the namespace containers live in and the boundary for SHARED throughput. Databases are many-per-account with independent lifecycles, which is why they are a first-class kind referencing the account rather than a list folded into the account's spec. Containers are their own kind (Azure Cosmos DB SQL Container) referencing this database's `sql_database_id` output.
 
 ## What Gets Created
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **Cosmos DB SQL Database** -- a named database inside the referenced Cosmos DB account (which must speak the SQL/NoSQL API)
-- **Shared Throughput** (optional) -- fixed RU/s or an autoscale ceiling that every container in the database shares, when either is declared; omit both to let each container bring its own dedicated throughput (or on serverless accounts, where provisioned throughput is rejected)
+- **Cosmos DB SQL Database** — a named database inside the referenced Cosmos DB account (which must speak the SQL/NoSQL API)
+- **Shared Throughput** (optional) — fixed RU/s or an autoscale ceiling that every container in the database shares, when either is declared; omit both to let each container bring its own dedicated throughput (or on serverless accounts, where provisioned throughput is rejected)
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **Azure Provider Connection** -- an active connection in the Connect module with credentials for the target Azure subscription. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
+- **Azure Provider Connection** — an active connection in the Connect module with credentials for the target Azure subscription. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
 
 ### Azure Subscription
 
-- **A Cosmos DB account** speaking the SQL (NoSQL) API. Reference an AzureCosmosdbAccount Infra Component via ValueFromRef, or provide the account's ARM ID directly.
+- **A Cosmos DB account** speaking the SQL (NoSQL) API. Reference an Azure Cosmos DB Account Infra Component, or provide the account's ARM ID directly.
 
 ## Deploy
 
@@ -60,29 +60,29 @@ When deploying as part of a multi-resource environment, the account, database, a
 
 These are the most important decisions when configuring a SQL database. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Throughput model** -- The single real decision. Leave both fields unset (the production norm) and each container provisions its own dedicated throughput; set `throughput` for a fixed shared budget (minimum 400 RU/s, increments of 100); or set `autoscaleMaxThroughput` (minimum 1000 RU/s, increments of 1000) and Azure floats the shared budget between 10% and 100% of it. The two are mutually exclusive. On serverless accounts (the ENABLE_SERVERLESS capability) neither may be set — Azure rejects provisioned throughput at apply.
+**Throughput model** — The single real decision. Leave both fields unset (the production norm) and each container provisions its own dedicated throughput; set `throughput` for a fixed shared budget (minimum 400 RU/s, increments of 100); or set `autoscaleMaxThroughput` (minimum 1000 RU/s, increments of 1000) and Azure floats the shared budget between 10% and 100% of it. The two are mutually exclusive. On serverless accounts (the ENABLE_SERVERLESS capability) neither may be set — Azure rejects provisioned throughput at apply.
 
-**Database name** -- Unique within the account, 1-255 characters (Azure's only constraint). Changing the name replaces the database AND everything in it.
+**Database name** — Unique within the account, 1-255 characters (Azure's only constraint). Changing the name replaces the database AND everything in it.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| AzureCosmosdbAccount | `cosmosdbAccountId` | `status.outputs.cosmosdb_account_id` |
+| Azure Cosmos DB Account | `cosmosdbAccountId` | `status.outputs.cosmosdb_account_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
-| `sql_database_id` | The ARM ID of the database | AzureCosmosdbSqlContainer `sqlDatabaseId` |
+| `sql_database_id` | The ARM ID of the database | Azure Cosmos DB SQL Container `sqlDatabaseId` |
 | `sql_database_name` | The database's name | Application configuration |
 | `cosmosdb_account_name` | The parent account's name | Connection string composition |
 
-There are deliberately no endpoint or credential outputs here: connectivity and keys live on the account (AzureCosmosdbAccount's outputs); the database is addressed inside that connection by name.
+There are deliberately no endpoint or credential outputs here: connectivity and keys live on the account (Azure Cosmos DB Account's outputs); the database is addressed inside that connection by name.
 
 ## Common Patterns
 

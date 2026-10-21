@@ -1,24 +1,24 @@
 # GCP Cloud Build Worker Pool
 
-Gives your builds their own machines. A private worker pool runs Cloud Build jobs on dedicated workers in one region, so builds can reach private package indexes, internal artifact stores, databases they migrate, and GKE control planes on private endpoints -- and so a team can choose bigger machines or nested virtualization. Many triggers and Cloud Deploy targets can share one pool.
+Gives your builds their own machines. A private worker pool runs Cloud Build jobs on dedicated workers in one region, so builds can reach private package indexes, internal artifact stores, databases they migrate, and GKE control planes on private endpoints — and so a team can choose bigger machines or nested virtualization. Many triggers and Cloud Deploy targets can share one pool.
 
 ## What Gets Created
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **API enablement** -- the Cloud Build API on the pool's project
-- **Worker pool** -- the private pool, optionally peered into a VPC network or attached through Private Service Connect
+- **API enablement** — the Cloud Build API on the pool's project
+- **Worker pool** — the private pool, optionally peered into a VPC network or attached through Private Service Connect
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **GCP Provider Connection** -- an active connection in the Connect module with permission to manage Cloud Build worker pools in the target project. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
+- **GCP Provider Connection** — an active connection in the Connect module with permission to manage Cloud Build worker pools in the target project. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
 
 ### GCP Account
 
-- **A VPC with private services access** -- only for a peered pool: the network needs a Service Networking connection before the pool can peer into it.
+- **A VPC with private services access** — only for a peered pool: the network needs a Service Networking connection before the pool can peer into it.
 
 ## Deploy
 
@@ -60,24 +60,24 @@ Reference a project's `status.outputs.project_id` from `projectId`, and a VPC ne
 
 These are the most important decisions when configuring a worker pool. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Region** -- builds that use the pool run in its region, and a trigger naming the pool must be in the same region.
+**Region** — builds that use the pool run in its region, and a trigger naming the pool must be in the same region.
 
-**Networking** -- peer the workers into your VPC, attach them through Private Service Connect, or neither (public egress on Google's network). The choice is fixed at creation.
+**Networking** — peer the workers into your VPC, attach them through Private Service Connect, or neither (public egress on Google's network). The choice is fixed at creation.
 
-**Machines** -- the machine type sets the per-minute build rate; the disk size and nested virtualization serve heavy image builds and emulator tests.
+**Machines** — the machine type sets the per-minute build rate; the disk size and nested virtualization serve heavy image builds and emulator tests.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **GcpProject** | `projectId` | `status.outputs.project_id` |
-| **GcpVpcNetwork** | `networkConfig.peeredNetwork` | `status.outputs.network_self_link` |
+| **GCP Project** | `projectId` | `status.outputs.project_id` |
+| **GCP VPC Network** | `networkConfig.peeredNetwork` | `status.outputs.network_self_link` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -90,13 +90,13 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Default private pool** -- dedicated machines with public egress. Start from the **Default Private Pool** preset.
+**Default private pool** — dedicated machines with public egress. Start from the **Default Private Pool** preset.
 
-**Pool inside your VPC** -- workers peered into a network, without public IPs. Start from the **Peered Private Pool** preset.
+**Pool inside your VPC** — workers peered into a network, without public IPs. Start from the **Peered Private Pool** preset.
 
 ## Works With
 
-- [**GCP Cloud Build Trigger**](/infra-catalog/gcp-cloud-build-trigger) -- builds that run on the pool
-- [**GCP Deploy Target**](/infra-catalog/gcp-deploy-target) -- Cloud Deploy render and deploy jobs that run on the pool
-- [**GCP VPC Network**](/infra-catalog/gcp-vpc-network) -- the network a peered pool joins
-- [**GCP Service Networking Connection**](/infra-catalog/gcp-service-networking-connection) -- private services access the peering needs
+- [**GCP Cloud Build Trigger**](/infra-catalog/gcp-cloud-build-trigger) — builds that run on the pool
+- [**GCP Deploy Target**](/infra-catalog/gcp-deploy-target) — Cloud Deploy render and deploy jobs that run on the pool
+- [**GCP VPC Network**](/infra-catalog/gcp-vpc-network) — the network a peered pool joins
+- [**GCP Service Networking Connection**](/infra-catalog/gcp-service-networking-connection) — private services access the peering needs

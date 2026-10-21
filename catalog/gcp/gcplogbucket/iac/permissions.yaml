@@ -1,5 +1,5 @@
 # Least-privilege permissions the IaC runner's GCP principal needs to
-# provision, update, and destroy this component with the official modules.
+# provision, update, and destroy this component with the platform modules.
 # Every entry is `derived` (static analysis of the module sources, cited in
 # notes) until the live capture lane upgrades it to `proven`. Schema:
 # iac/catalogkindpermissions/v1.
@@ -16,6 +16,8 @@ spec:
           - serviceusage.services.get
           - serviceusage.services.list
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers google_project_service (Terraform) / projects.Service (Pulumi) enabling logging.googleapis.com -- created only on the PROJECT-scope path; folder/organization/billing buckets are not project resources, so no API enablement happens there. The Terraform module pins disable_on_destroy=false and the Pulumi module leaves the field unset -- the provider's own reference states false OR UNSET leaves the service enabled on destroy (at the pinned release), so neither engine calls the disable path and no disable permission is needed.
       - purpose: ManageLogBucket
         permissions:
@@ -24,6 +26,8 @@ spec:
           - logging.buckets.update
           - logging.buckets.delete
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: "Covers all four scope variants of the bucket config resource (google_logging_{project|folder|organization|billing_account}_bucket_config) -- create, read/refresh, in-place updates (retention, description, analytics, index configs), and destroy. Adoption is provider truth: a bucket_id matching an existing bucket (including _Default) is adopted and patched under these same permissions. The grant must live at the bucket's SCOPE -- roles/logging.configWriter (which bundles these) on the project for project buckets, or on the folder/organization/billing account for the adopt-only scopes; a project-level grant does not reach a folder bucket."
       - purpose: ManageLogViews
         permissions:
@@ -32,6 +36,8 @@ spec:
           - logging.views.update
           - logging.views.delete
         provenance: derived
+        reach: target
+        privilege: ordinary
         condition:
           spec_field_set: log_views
         notes: Covers google_logging_log_view (Terraform) / logging.LogView (Pulumi), one per log_views entry -- filter and description update in place; a view_id change replaces the view.
@@ -42,6 +48,8 @@ spec:
           - logging.links.delete
           - logging.operations.get
         provenance: derived
+        reach: target
+        privilege: ordinary
         condition:
           spec_field_set: linked_bigquery_dataset
         notes: Covers google_logging_linked_dataset (Terraform) / logging.LinkedDataset (Pulumi). Links are create-time-only (no update permission exists or is needed -- any change replaces the link), and link create/delete are long-running operations the provider polls with logging.operations.get.
@@ -50,6 +58,8 @@ spec:
           - logging.settings.get
           - logging.settings.update
         provenance: derived
+        reach: target
+        privilege: ordinary
         condition:
           spec_field_set: scope_settings
         notes: Covers google_logging_{folder|organization}_settings -- the scope-level singleton is adopted on create, patched in place (default-sink disable, default CMEK, default storage location), and left standing on destroy (the API has no delete). scope_settings applies only to a folder- or organization-scoped bucket, and the grant must live at that scope.

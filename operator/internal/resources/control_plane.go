@@ -45,7 +45,7 @@ const (
 	controlPlaneTerminationGracePeriodSeconds = 60
 
 	// controlPlaneIacModulesVersionEnv is the control plane's per-install
-	// OVERRIDE of the release its Infra Jobs download official IaC modules
+	// OVERRIDE of the release its Infra Jobs download platform IaC modules
 	// from. Rendered only when the platform resource declares
 	// spec.controlPlane.iacModulesVersion; absent otherwise, because the
 	// control plane resolves modules at its own catalog release -- the pin
@@ -96,7 +96,7 @@ type ControlPlaneConfig struct {
 	Resources corev1.ResourceRequirements
 
 	// IacModulesVersion is the CR's spec.controlPlane.iacModulesVersion:
-	// the release the control plane downloads official IaC modules from
+	// the release the control plane downloads platform IaC modules from
 	// INSTEAD of its own catalog release. Empty -- the shape every plain
 	// install has -- renders nothing, and the control plane uses its pin.
 	IacModulesVersion string
@@ -336,9 +336,6 @@ type RunnerBinding struct {
 	// SAME key the runner consumes so the two sides cannot disagree.
 	CloudOpsSecretName string
 
-	// Provisioner is the org's default IaC provisioner ("tofu"/"terraform").
-	Provisioner string
-
 	// DirectDialHost is the runner Service DNS name CloudOps dials directly
 	// for live cloud operations (RUNNER_DIRECT_HOST).
 	DirectDialHost string
@@ -563,10 +560,13 @@ func ControlPlaneServiceFQDN(crName, namespace string) string {
 	return fmt.Sprintf("%s.%s.svc.cluster.local", ControlPlaneServiceName(crName), namespace)
 }
 
-// ControlPlaneRelayInternalBaseURL returns the in-cluster base URL for the
-// storage relay: the control plane's Service on the browser-API port, where
-// the relay endpoint is mounted alongside gRPC-Web.
-func ControlPlaneRelayInternalBaseURL(crName, namespace string) string {
+// ControlPlaneBrowserAPIInternalOrigin returns the control plane's browser-API
+// door as seen from inside the cluster: its Service on the gRPC-Web port,
+// where the storage relay and the console-facing gRPC-Web API are served
+// side by side. Anything in the cluster that talks to that door -- the
+// storage relay's own address, the console's server -- uses this one origin,
+// so the in-cluster spelling of the door lives in one place.
+func ControlPlaneBrowserAPIInternalOrigin(crName, namespace string) string {
 	return fmt.Sprintf("http://%s:%d", ControlPlaneServiceFQDN(crName, namespace), controlPlaneGrpcWebPort)
 }
 
@@ -994,7 +994,7 @@ func controlPlaneEnvVars(cfg ControlPlaneConfig) []corev1.EnvVar {
 		{Name: "TEKTON_SERVICE_PIPELINE_DISK_SIZE", Value: "5Gi"},
 
 		// ── misc ──
-		// No module version here: the control plane downloads official IaC
+		// No module version here: the control plane downloads the platform IaC
 		// modules at its own catalog release, exactly as it seeds charts from
 		// it (below). The per-install override is appended after this block,
 		// by presence.
@@ -1062,7 +1062,6 @@ func controlPlaneEnvVars(cfg ControlPlaneConfig) []corev1.EnvVar {
 		envs = append(envs,
 			corev1.EnvVar{Name: "PLANTON_BOOTSTRAP_RUNNER_SLUG", Value: RunnerSlug(cfg.CRName)},
 			corev1.EnvVar{Name: "PLANTON_BOOTSTRAP_RUNNER_NAMESPACE", Value: cfg.Namespace},
-			corev1.EnvVar{Name: "PLANTON_BOOTSTRAP_RUNNER_PROVISIONER", Value: cfg.Runner.Provisioner},
 			// The badge-verification arm: enabled with the CR namespace as
 			// the one trusted namespace and the shared audience convention.
 			// The kubernetes-auth boot probe verifies the TokenReview grant
@@ -1124,7 +1123,7 @@ func controlPlaneEnvVars(cfg ControlPlaneConfig) []corev1.EnvVar {
 }
 
 // iacModulesVersionEnvVars renders the module-release override by presence:
-// nothing for the plain install (the control plane resolves official modules
+// nothing for the plain install (the control plane resolves platform modules
 // at its own catalog release), the one variable when the platform resource
 // declares spec.controlPlane.iacModulesVersion. The override exists for a
 // retracted artifact set -- an install must be able to route around one

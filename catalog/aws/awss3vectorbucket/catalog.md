@@ -21,7 +21,7 @@ When you deploy this Infra Component, the IaC module provisions:
 ### AWS Account
 
 - **Your embedding model's output dimension** — not an AWS resource but the one fact you must have first: the index `dimension` must equal it exactly and can never change.
-- **A KMS key** (only for `aws:kms` encryption) — reference an AwsKmsKey Infra Component or pass a literal key ARN. Encryption is fixed for life of the bucket.
+- **A KMS key** (only for `aws:kms` encryption) — reference an AWS KMS Key Infra Component or pass a literal key ARN. Encryption is fixed for life of the bucket.
 
 ## Deploy
 
@@ -59,7 +59,7 @@ This creates a vector bucket with one 1024-dimension cosine index whose chunk te
 
 ### InfraChart
 
-When the bucket deploys alongside its encryption key in one chart, wire the key reference via ValueFromRef:
+When the bucket deploys alongside its encryption key in one chart, wire the key reference:
 
 ```yaml
 spec:
@@ -97,14 +97,14 @@ These are the most important decisions when configuring a vector bucket. Explore
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AwsKmsKey** (optional) | `encryption.kmsKeyArn` | `status.outputs.key_arn` |
-| **AwsKmsKey** (optional, per index) | `indexes[].encryption.kmsKeyArn` | `status.outputs.key_arn` |
+| **AWS KMS Key** (optional) | `encryption.kmsKeyArn` | `status.outputs.key_arn` |
+| **AWS KMS Key** (optional, per index) | `indexes[].encryption.kmsKeyArn` | `status.outputs.key_arn` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -115,7 +115,7 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Bedrock knowledge base backend** — one index sized for the chosen embedding model, with chunk text and source URI kept non-filterable, consumed by an AwsBedrockKnowledgeBase through the `index_arns` output. This is the pay-per-query RAG shape: no vector database cluster to run, at the cost of AWS-defined query semantics. Start from the **Bedrock Knowledge Base Backend** preset.
+**Bedrock knowledge base backend** — one index sized for the chosen embedding model, with chunk text and source URI kept non-filterable, consumed by an AWS Bedrock Knowledge Base through the `index_arns` output. This is the pay-per-query RAG shape: no vector database cluster to run, at the cost of AWS-defined query semantics. Start from the **Bedrock Knowledge Base Backend** preset.
 
 **One encrypted bucket, several models** — a KMS-encrypted bucket holding one index per embedding model (full-size document embeddings and compact code embeddings, say), because different dimensions are always different indexes. The key is chosen once, for life of the bucket. Start from the **Encrypted Multi-Index Store** preset.
 

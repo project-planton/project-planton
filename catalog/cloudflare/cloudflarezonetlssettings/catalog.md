@@ -22,10 +22,10 @@ When you deploy this Infra Component, the IaC module provisions:
 
 ### Cloudflare Account
 
-- **A zone on the account** — `zoneId` names the zone; reference a CloudflareDnsZone Infra Component or pass the zone ID from the dashboard.
+- **A zone on the account** — `zoneId` names the zone; reference a Cloudflare DNS Zone Infra Component or pass the zone ID from the dashboard.
 - **Advanced Certificate Manager** (required for Total TLS and per-hostname overrides) — without the zone's ACM subscription the API refuses these surfaces with 401 code 1450 (measured live).
 - **An ACTIVE zone for `autoOriginTlsKex`** — the automatic key-exchange setting is refused on zones still pending activation.
-- **An mTLS certificate** (only for per-certificate CA associations) — `caHostnameAssociations[].mtlsCertificateId` references a CloudflareMtlsCertificate Infra Component or a literal certificate ID.
+- **An mTLS certificate** (only for per-certificate CA associations) — `caHostnameAssociations[].mtlsCertificateId` references a Cloudflare mTLS Certificate Infra Component or a literal certificate ID.
 
 ## Deploy
 
@@ -59,7 +59,7 @@ This enables Total TLS — every proxied hostname in the zone gets its own certi
 
 ### InfraChart
 
-When the zone and an mTLS certificate are deployed in the same InfraPipeline, wire the references with ValueFromRef:
+When the zone and an mTLS certificate are deployed in the same InfraPipeline, wire the references:
 
 ```yaml
 spec:
@@ -87,7 +87,7 @@ The InfraPipeline resolves the dependency graph, deploys the zone and the certif
 
 These are the most important decisions when configuring a zone's TLS settings. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Universal SSL is the one switch that can cause an outage** — `universalSslEnabled: false` stops issuance, and any proxied hostname not covered by another certificate (dedicated, custom, or Total TLS) becomes unreachable over HTTPS: browsers show certificate errors, with no partial degradation. Disable it only as a step in a planned migration, after confirming every proxied hostname has other coverage — typically a CloudflareCertificatePack ordered first. And because the setting has no delete, disabling it and then destroying the resource leaves the zone disabled until something re-enables it.
+**Universal SSL is the one switch that can cause an outage** — `universalSslEnabled: false` stops issuance, and any proxied hostname not covered by another certificate (dedicated, custom, or Total TLS) becomes unreachable over HTTPS: browsers show certificate errors, with no partial degradation. Disable it only as a step in a planned migration, after confirming every proxied hostname has other coverage — typically a Cloudflare Certificate Pack ordered first. And because the setting has no delete, disabling it and then destroying the resource leaves the zone disabled until something re-enables it.
 
 **Know your destroy class before you destroy** — the six surfaces split four-and-two. `universalSslEnabled`, `totalTls`, `autoOriginTlsKex`, and `caHostnameAssociations` have no delete: destroy drops them from state and the zone keeps the last-applied values, so write the value you want to leave behind before destroying. `hostnameSettings` and `originTlsComplianceModes` have real deletes: destroy is a real revert — do not destroy a resource carrying a compliance requirement you still need.
 
@@ -97,20 +97,20 @@ These are the most important decisions when configuring a zone's TLS settings. E
 
 **Compliance modes are an open vocabulary** — `originTlsComplianceModes` passes any string through to the API deliberately, so a new Cloudflare mode works the day it ships. Cloudflare documents `fips` and `pqh` (post-quantum hybrid) today. The cost: a typo also passes through, and Cloudflare's API — not manifest validation — is what rejects it. Check the apply output.
 
-**The zone-wide layer lives elsewhere** — zone-wide TLS knobs (minimum TLS version for the whole zone, Always Use HTTPS, the zone cipher list) belong to CloudflareZoneSettings; this kind is the issuance and per-hostname layer. Per-hostname overrides here apply only to hostnames in this zone — SaaS vanity hostnames are CloudflareCustomHostname territory.
+**The zone-wide layer lives elsewhere** — zone-wide TLS knobs (minimum TLS version for the whole zone, Always Use HTTPS, the zone cipher list) belong to Cloudflare Zone Settings; this kind is the issuance and per-hostname layer. Per-hostname overrides here apply only to hostnames in this zone — SaaS vanity hostnames are Cloudflare Custom Hostname territory.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **CloudflareDnsZone** | `zoneId` | `status.outputs.zone_id` |
-| **CloudflareMtlsCertificate** (optional, per row) | `caHostnameAssociations[].mtlsCertificateId` | `status.outputs.certificate_id` |
+| **Cloudflare DNS Zone** | `zoneId` | `status.outputs.zone_id` |
+| **Cloudflare mTLS Certificate** (optional, per row) | `caHostnameAssociations[].mtlsCertificateId` | `status.outputs.certificate_id` |
 
 ### What This Kind Provides
 
-This kind has no consumable outputs of its own: TLS settings are a zone-scoped singleton with no resource ID, so `status.outputs` only echoes the input `zone_id` back for reference. Downstream resources that need the zone should reference the CloudflareDnsZone directly.
+This kind has no consumable outputs of its own: TLS settings are a zone-scoped singleton with no resource ID, so `status.outputs` only echoes the input `zone_id` back for reference. Downstream resources that need the zone should reference the Cloudflare DNS Zone directly.
 
 ## Common Patterns
 

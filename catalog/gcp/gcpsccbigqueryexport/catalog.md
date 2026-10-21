@@ -6,15 +6,15 @@ Keeps a live copy of your Security Command Center findings in BigQuery, for a pr
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **API enablement** -- `securitycenter.googleapis.com` on a project export's project
-- **BigQuery export** -- the scope's `securitycenter.V2*SccBigQueryExport`
+- **API enablement** — `securitycenter.googleapis.com` on a project export's project
+- **BigQuery export** — the scope's `securitycenter.V2*SccBigQueryExport`
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **GCP Provider Connection** -- an active connection in the Connect module with Security Command Center BigQuery-export admin permissions at the scope. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
+- **GCP Provider Connection** — an active connection in the Connect module with Security Command Center BigQuery-export admin permissions at the scope. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
 
 ## Deploy
 
@@ -54,25 +54,25 @@ Reference a `GcpBigQueryDataset` from `dataset` and grant the export's `status.o
 
 These are the most important decisions when configuring an export. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Dataset** -- where the findings table lives; the export's principal needs write access there.
+**Dataset** — where the findings table lives; the export's principal needs write access there.
 
-**Filter** -- which findings are exported; empty exports everything.
+**Filter** — which findings are exported; empty exports everything.
 
-**Scope** -- a project, a folder, or the organization.
+**Scope** — a project, a folder, or the organization.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **GcpProject** | `scope.projectId` | `status.outputs.project_id` |
-| **GcpFolder** | `scope.folderId` | `status.outputs.folder_id` |
-| **GcpBigQueryDataset** | `dataset` | `status.outputs.self_link` |
+| **GCP Project** | `scope.projectId` | `status.outputs.project_id` |
+| **GCP Folder** | `scope.folderId` | `status.outputs.folder_id` |
+| **GCP BigQuery Dataset** | `dataset` | `status.outputs.self_link` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -83,12 +83,12 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Project active findings** -- active, unmuted findings of one project. Start from the **Project Active Findings** preset.
+**Project active findings** — active, unmuted findings of one project. Start from the **Project Active Findings** preset.
 
-**Organization findings history** -- every finding in the organization into the security data lake. Start from the **Organization Findings History** preset.
+**Organization findings history** — every finding in the organization into the security data lake. Start from the **Organization Findings History** preset.
 
 ## Works With
 
-- [**GCP BigQuery Dataset**](/infra-catalog/gcp-bigquery-dataset) -- the destination
-- [**GCP SCC Notification Config**](/infra-catalog/gcp-scc-notification-config) -- real-time findings to Pub/Sub
-- [**GCP SCC Mute Config**](/infra-catalog/gcp-scc-mute-config) -- keep accepted findings out
+- [**GCP BigQuery Dataset**](/infra-catalog/gcp-bigquery-dataset) — the destination
+- [**GCP SCC Notification Config**](/infra-catalog/gcp-scc-notification-config) — real-time findings to Pub/Sub
+- [**GCP SCC Mute Config**](/infra-catalog/gcp-scc-mute-config) — keep accepted findings out

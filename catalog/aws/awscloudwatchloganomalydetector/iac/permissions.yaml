@@ -1,5 +1,5 @@
 # Least-privilege permissions the IaC runner's AWS principal needs to
-# provision, update, and destroy this component with the official modules.
+# provision, update, and destroy this component with the platform modules.
 # Every entry is `derived` (static analysis of the module sources, cited in
 # notes) until the live capture lane upgrades it to `proven`. Schema:
 # iac/catalogkindpermissions/v1.
@@ -16,6 +16,8 @@ spec:
         resources:
           - arn:aws:logs:*:*:log-group:*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_cloudwatch_log_anomaly_detector / cloudwatch.LogAnomalyDetector at create. The service reference scopes creation to the LOG-GROUP ARNs the detector will train over (not a detector ARN, which does not exist yet), so a hardened deployment can pin the exact groups in log_group_arns. Tag-on-create rides this call (the API accepts tags; aws:RequestTag / aws:TagKeys condition keys apply). When kms_key_id is set the runner only passes the ARN -- CloudWatch Logs uses the key through its own service principal, and the key policy permitting logs.<region>.amazonaws.com is the referenced AwsKmsKey's contract, so no kms grants belong here.
       - sid: OperateDetector
         actions:
@@ -25,6 +27,8 @@ spec:
         resources:
           - arn:aws:logs:*:*:anomaly-detector:*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: GetLogAnomalyDetector serves every plan/refresh (it carries enabled, frequency, filter, and visibility for drift detection); UpdateLogAnomalyDetector reconciles in-place changes (enabled, evaluation_frequency, filter_pattern, anomaly_visibility_time -- everything except kms_key_id, which replaces); DeleteLogAnomalyDetector destroys. All three take resource-level scoping on the anomaly-detector ARN per the service reference. Caution the profile teaches -- the provider maps an AccessDeniedException on the Get to "detector deleted" and drops it from state, so a permissions regression on this statement masquerades as deletion.
       - sid: TagDetector
         actions:
@@ -34,4 +38,6 @@ spec:
         resources:
           - arn:aws:logs:*:*:anomaly-detector:*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Both modules tag (tags = local.aws_tags / the Pulumi tag map), so tag reconciliation and the tag read on every refresh run against the detector ARN. The service reference scopes all three actions to the anomaly-detector ARN format (they also accept log-group, delivery, and destination ARNs, none of which this component tags).

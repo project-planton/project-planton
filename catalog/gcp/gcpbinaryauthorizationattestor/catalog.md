@@ -6,17 +6,17 @@ Declares a trusted signer for container images. Your build or QA pipeline signs 
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **API enablement** -- `binaryauthorization.googleapis.com` and `containeranalysis.googleapis.com`
-- **Note** -- the attestor's own `containeranalysis.Note`, when `note` is set
-- **Attestor** -- one `binaryauthorization.Attestor`
-- **Note grant** -- read access to the note for the attestor's service account, when `note` is set
+- **API enablement** — `binaryauthorization.googleapis.com` and `containeranalysis.googleapis.com`
+- **Note** — the attestor's own `containeranalysis.Note`, when `note` is set
+- **Attestor** — one `binaryauthorization.Attestor`
+- **Note grant** — read access to the note for the attestor's service account, when `note` is set
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **GCP Provider Connection** -- an active connection in the Connect module with Binary Authorization attestor and Artifact Analysis note admin permissions on the project. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
+- **GCP Provider Connection** — an active connection in the Connect module with Binary Authorization attestor and Artifact Analysis note admin permissions on the project. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
 
 ## Deploy
 
@@ -61,24 +61,24 @@ Reference a `GcpKmsKey` (purpose `ASYMMETRIC_SIGN`) from `pkixPublicKey.kmsKeyVe
 
 These are the most important decisions when configuring an attestor. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**The note** -- create the attestor's own note (recommended), or reference one that exists.
+**The note** — create the attestor's own note (recommended), or reference one that exists.
 
-**The keys** -- a Cloud KMS key version (the private key never leaves KMS), a PEM with its algorithm, or a PGP key.
+**The keys** — a Cloud KMS key version (the private key never leaves KMS), a PEM with its algorithm, or a PGP key.
 
-**Who uses it** -- policies in this project, or in others with the verifier grant.
+**Who uses it** — policies in this project, or in others with the verifier grant.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **GcpProject** | `projectId` | `status.outputs.project_id` |
-| **GcpKmsKey** | `attestationAuthorityNote.publicKeys[].pkixPublicKey.kmsKeyVersion` | `status.outputs.initial_version_name` |
+| **GCP Project** | `projectId` | `status.outputs.project_id` |
+| **GCP KMS Key** | `attestationAuthorityNote.publicKeys[].pkixPublicKey.kmsKeyVersion` | `status.outputs.initial_version_name` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -91,11 +91,11 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Cloud KMS signer** -- an attestor verifying a KMS signing key. Start from the **Cloud KMS Signer** preset.
+**Cloud KMS signer** — an attestor verifying a KMS signing key. Start from the **Cloud KMS Signer** preset.
 
-**Existing note with a PEM key** -- an attestor over a note a security team already owns. Start from the **Existing Note With PEM Key** preset.
+**Existing note with a PEM key** — an attestor over a note a security team already owns. Start from the **Existing Note With PEM Key** preset.
 
 ## Works With
 
-- [**GCP Binary Authorization Policy**](/infra-catalog/gcp-binary-authorization-policy) -- requires the attestor
-- [**GCP KMS Key**](/infra-catalog/gcp-kms-key) -- the signing key
+- [**GCP Binary Authorization Policy**](/infra-catalog/gcp-binary-authorization-policy) — requires the attestor
+- [**GCP KMS Key**](/infra-catalog/gcp-kms-key) — the signing key

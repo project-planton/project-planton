@@ -74,7 +74,7 @@ func BuildTerraformDownloadURL(kindDir, releaseVersion string) string {
 }
 
 // BuildModuleManifestURL constructs the R2 download URL for a release's module
-// manifest: every official module's published artifact checksums and digest
+// manifest: every platform module's published artifact checksums and digest
 // (see package modulemanifest). The release publishes it once, after every
 // module artifact under the tag is uploaded, so its presence means the
 // release's modules are complete.

@@ -72,7 +72,7 @@ This creates a rule group with one owned blocklist whose matches answer with a C
 
 ### InfraChart
 
-When the firewall deploys alongside the VPC it filters in one chart, wire the VPC reference via ValueFromRef:
+When the firewall deploys alongside the VPC it filters in one chart, wire the VPC reference:
 
 ```yaml
 spec:
@@ -120,15 +120,15 @@ These are the most important decisions when configuring a DNS Firewall rule grou
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AwsVpc** | `vpcAssociations[].vpcId` | `status.outputs.vpc_id` |
+| **AWS VPC** | `vpcAssociations[].vpcId` | `status.outputs.vpc_id` |
 
 Rules can also reference an external or AWS-managed domain list, but those travel as literal `rslvr-fdl-...` IDs in `domainListId`, not as typed references.
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

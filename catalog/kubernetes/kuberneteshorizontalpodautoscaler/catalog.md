@@ -6,19 +6,19 @@ Deploys a Kubernetes HorizontalPodAutoscaler carrying the full autoscaling/v2 su
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **Kubernetes HorizontalPodAutoscaler** -- an autoscaling/v2 HPA in the specified namespace targeting the scale workload, with the replica bounds, metric list, and optional behavior tuning
-- **Kubernetes Labels** -- resource metadata labels (resource name, kind, organization, environment) applied automatically for tracking
+- **Kubernetes HorizontalPodAutoscaler** — an autoscaling/v2 HPA in the specified namespace targeting the scale workload, with the replica bounds, metric list, and optional behavior tuning
+- **Kubernetes Labels** — resource metadata labels (resource name, kind, organization, environment) applied automatically for tracking
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **Kubernetes Provider Connection** -- an active connection in the Connect module with kubeconfig credentials for the target cluster. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline kubeconfig authentication.
+- **Kubernetes Provider Connection** — an active connection in the Connect module with kubeconfig credentials for the target cluster. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline kubeconfig authentication.
 
 ### Kubernetes Cluster
 
-- **A metrics source per family** -- CPU/memory metrics need metrics-server (deploy the Kubernetes MetricsServer component); pods/object metrics need a custom-metrics adapter (prometheus-adapter); external metrics need an external-metrics adapter (KEDA builds on this path).
+- **A metrics source per family** — CPU/memory metrics need metrics-server (deploy the Kubernetes MetricsServer component); pods/object metrics need a custom-metrics adapter (prometheus-adapter); external metrics need an external-metrics adapter (KEDA builds on this path).
 - The target workload must live in the SAME namespace and expose the scale subresource. Never combine with the workload's own built-in autoscaling.
 
 ## Deploy
@@ -88,30 +88,30 @@ The InfraPipeline deploys the namespace and the Deployment first, then creates t
 
 These are the most important decisions when configuring a Kubernetes HorizontalPodAutoscaler. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**One controller per replica count** -- Once this HPA governs the target, the workload's own `replicas` is advisory. Pointing this AND the workload's built-in autoscaling at the same target flaps the fleet.
+**One controller per replica count** — Once this HPA governs the target, the workload's own `replicas` is advisory. Pointing this AND the workload's built-in autoscaling at the same target flaps the fleet.
 
-**The ceiling is the capacity conversation** -- `maxReplicas` is required and deliberate: an autoscaler without a ceiling is a blank check to the metric driving it. The floor (default 1) is what survives quiet hours.
+**The ceiling is the capacity conversation** — `maxReplicas` is required and deliberate: an autoscaler without a ceiling is a blank check to the metric driving it. The floor (default 1) is what survives quiet hours.
 
-**Metrics OR toward scale-out** -- Each configured metric proposes a replica count and the HIGHEST wins. With no metrics, Kubernetes applies its default: 80% average CPU utilization (pods must declare CPU requests — utilization measures against them).
+**Metrics OR toward scale-out** — Each configured metric proposes a replica count and the HIGHEST wins. With no metrics, Kubernetes applies its default: 80% average CPU utilization (pods must declare CPU requests — utilization measures against them).
 
-**Pick the honest signal** -- CPU falls when load falls (the reliable driver); memory rarely does. Container-resource metrics isolate the app container from sidecars; external metrics ("30 queue messages per pod") are the honest signal for workers.
+**Pick the honest signal** — CPU falls when load falls (the reliable driver); memory rarely does. Container-resource metrics isolate the app container from sidecars; external metrics ("30 queue messages per pod") are the honest signal for workers.
 
-**Behavior is the flap damper** -- Defaults scale up fast and down conservatively (300-second stabilization). Tune per direction: lengthen the scale-down window for spiky traffic, add a percent policy to bleed capacity gradually, or DISABLE scale-down during an incident.
+**Behavior is the flap damper** — Defaults scale up fast and down conservatively (300-second stabilization). Tune per direction: lengthen the scale-down window for spiky traffic, add a percent policy to bleed capacity gradually, or DISABLE scale-down during an incident.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **KubernetesNamespace** | `namespace` | `spec.name` |
-| **KubernetesDeployment** | `scaleTarget.name` | `status.outputs.deployment_name` |
+| **Kubernetes Namespace** | `namespace` | `spec.name` |
+| **Kubernetes Deployment** | `scaleTarget.name` | `status.outputs.deployment_name` |
 
 The namespace must be the target's own (omitted means the cluster's `default` namespace); other scale-target kinds are referenced by their exported name output explicitly.
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -125,17 +125,17 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**CPU workhorse** -- 60% utilization between sane bounds. Start from the **CPU Autoscale** preset.
+**CPU workhorse** — 60% utilization between sane bounds. Start from the **CPU Autoscale** preset.
 
-**Sidecar-proof scaling** -- Measure only the app container. Start from the **Container Isolated** preset.
+**Sidecar-proof scaling** — Measure only the app container. Start from the **Container Isolated** preset.
 
-**Queue-driven workers** -- One pod per N ready messages via an external metric. Start from the **Queue Driven** preset.
+**Queue-driven workers** — One pod per N ready messages via an external metric. Start from the **Queue Driven** preset.
 
-**Tuned velocity** -- Longer scale-down stabilization with gradual percent bleed. Start from the **Behavior Tuned** preset.
+**Tuned velocity** — Longer scale-down stabilization with gradual percent bleed. Start from the **Behavior Tuned** preset.
 
 ## Works With
 
-- [**Kubernetes Deployment**](/infra-catalog/kubernetes-deployment) -- the default scale target, referenced declaratively by its exported name.
-- [**Metrics Server**](/infra-catalog/kubernetes-metrics-server) -- the prerequisite for CPU/memory metrics.
-- [**KEDA**](/infra-catalog/kubernetes-keda) -- event-driven scale-to-zero semantics built on the external-metrics path this HPA consumes.
-- [**Kubernetes PodDisruptionBudget**](/infra-catalog/kubernetes-pod-disruption-budget) -- bounds how fast maintenance may shrink what this autoscaler grew.
+- [**Kubernetes Deployment**](/infra-catalog/kubernetes-deployment) — the default scale target, referenced declaratively by its exported name.
+- [**Metrics Server**](/infra-catalog/kubernetes-metrics-server) — the prerequisite for CPU/memory metrics.
+- [**KEDA**](/infra-catalog/kubernetes-keda) — event-driven scale-to-zero semantics built on the external-metrics path this HPA consumes.
+- [**Kubernetes PodDisruptionBudget**](/infra-catalog/kubernetes-pod-disruption-budget) — bounds how fast maintenance may shrink what this autoscaler grew.

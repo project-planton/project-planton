@@ -57,7 +57,7 @@ This creates one code interpreter whose sandbox has no network access and no AWS
 
 ### InfraChart
 
-When a recorded browser deploys alongside its recordings bucket in one chart, wire the bucket reference via ValueFromRef:
+When a recorded browser deploys alongside its recordings bucket in one chart, wire the bucket reference:
 
 ```yaml
 spec:
@@ -104,17 +104,17 @@ These are the most important decisions when configuring a tools bundle. Explore 
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AwsIamRole** | `browsers[].executionRoleArn`, `codeInterpreters[].executionRoleArn` | `status.outputs.role_arn` |
-| **AwsS3Bucket** | `browsers[].recording.s3Location.bucket`, `browsers[].enterprisePolicies[].s3.bucket` | `status.outputs.bucket_id` |
-| **AwsSecretsManagerSecret** | `browsers[].certificates[].secretArn`, `codeInterpreters[].certificates[].secretArn` | `status.outputs.secret_arn` |
-| **AwsSubnet** | `network.vpcConfig.subnets` (browsers and interpreters) | `status.outputs.subnet_id` |
-| **AwsSecurityGroup** | `network.vpcConfig.securityGroups` (browsers and interpreters) | `status.outputs.security_group_id` |
+| **AWS IAM Role** | `browsers[].executionRoleArn`, `codeInterpreters[].executionRoleArn` | `status.outputs.role_arn` |
+| **AWS S3 Bucket** | `browsers[].recording.s3Location.bucket`, `browsers[].enterprisePolicies[].s3.bucket` | `status.outputs.bucket_id` |
+| **AWS Secrets Manager Secret** | `browsers[].certificates[].secretArn`, `codeInterpreters[].certificates[].secretArn` | `status.outputs.secret_arn` |
+| **AWS Subnet** | `network.vpcConfig.subnets` (browsers and interpreters) | `status.outputs.subnet_id` |
+| **AWS Security Group** | `network.vpcConfig.securityGroups` (browsers and interpreters) | `status.outputs.security_group_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

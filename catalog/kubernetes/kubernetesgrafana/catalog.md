@@ -1,6 +1,6 @@
 # Grafana
 
-Deploys Grafana — the observability dashboard — from the official `grafana` Helm chart. Standalone Grafana is the **composition hub**: point it at any mix of datasources — a KubernetesKubePrometheusStack, external Prometheus or Mimir, Loki, Tempo, ClickHouse, Postgres — and run it independently of any one of them. If all you need is dashboards for ONE kube-prometheus-stack, that stack's bundled Grafana (on by default there) is the simpler path; this kind is for the Grafana that outlives and spans its datasources.
+Deploys Grafana — the observability dashboard — from the official grafana Helm chart. Standalone Grafana is the **composition hub**: point it at any mix of datasources — a kube-prometheus-stack, external Prometheus or Mimir, Loki, Tempo, ClickHouse, Postgres — and run it independently of any one of them. If all you need is dashboards for ONE kube-prometheus-stack, that stack's bundled Grafana (on by default there) is the simpler path; this kind is for the Grafana that outlives and spans its datasources.
 
 Everything that matters is provisioned as code: `datasources` and `communityDashboards` render Grafana's provisioning files, present from first boot and re-rendered on every restart. The one genuinely stateful thing — dashboards built by hand in the UI, users, preferences — lives in an embedded SQLite database on local disk, and where THAT lives is the central decision this spec asks you to make.
 
@@ -106,18 +106,18 @@ These are the most important decisions when configuring a Grafana instance. Expl
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **KubernetesNamespace** | `namespace` | `spec.name` |
-| **KubernetesStorageClass** | `storage.storageClass` | `status.outputs.storage_class_name` |
-| **KubernetesPostgres** | `database.host` | `status.outputs.kube_endpoint` |
-| **KubernetesKubePrometheusStack** | `datasources[].url` | `status.outputs.prometheus_endpoint` |
+| **Kubernetes Namespace** | `namespace` | `spec.name` |
+| **Kubernetes StorageClass** | `storage.storageClass` | `status.outputs.storage_class_name` |
+| **PostgreSQL** | `database.host` | `status.outputs.kube_endpoint` |
+| **kube-prometheus-stack** | `datasources[].url` | `status.outputs.prometheus_endpoint` |
 
-Secret references (`adminSecret`, `database.passwordSecret`, datasource basic-auth, `smtp.credentialsSecretName`) name existing Kubernetes Secrets directly — they are plain names, not ValueFromRef foreign keys.
+Secret references (`adminSecret`, `database.passwordSecret`, datasource basic-auth, `smtp.credentialsSecretName`) name existing Kubernetes Secrets directly — they are plain names, not references foreign keys.
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

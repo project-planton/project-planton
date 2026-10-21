@@ -4,7 +4,7 @@ import "strings"
 
 // What Pulumi's Kubernetes provider reads while it waits.
 //
-// The provider the official Pulumi modules run (pulumi-kubernetes, pinned
+// The provider the platform Pulumi modules run (pulumi-kubernetes, pinned
 // through this module's go.mod at sdk/v4 v4.33.0; the SDK asks the engine
 // for the provider plugin of its own version) does not return when the API
 // server accepts an object. It waits -- for a Deployment to roll out, a
@@ -38,7 +38,7 @@ import "strings"
 // therefore namespaced -- a Role in that namespace carries them -- and a
 // cluster-scoped object's (a Namespace, a ClusterRole) are cluster-wide.
 //
-// The table models exactly the kinds the official modules construct through
+// The table models exactly the kinds the platform modules construct through
 // the SDK's typed constructors; a constructor it does not know fails the
 // conformance gate rather than passing unread. Line numbers cite
 // github.com/pulumi/pulumi-kubernetes at tag v4.33.0, provider/pkg/await/
@@ -69,7 +69,7 @@ type KubernetesRead struct {
 	Source string
 }
 
-// PulumiKubernetesKind is one Kubernetes kind an official module creates
+// PulumiKubernetesKind is one Kubernetes kind a platform module creates
 // through the SDK's typed constructor, and what the provider reads while it
 // waits for one.
 type PulumiKubernetesKind struct {
@@ -149,7 +149,7 @@ func sdkKind(pkg, kind, group, resource string, clusterScoped bool, awaitReads .
 }
 
 // PulumiKubernetesKinds is the table, one row per typed constructor the
-// official modules use (plus Pod, which the provider awaits and a module
+// platform modules use (plus Pod, which the provider awaits and a module
 // may create directly).
 var PulumiKubernetesKinds = []PulumiKubernetesKind{
 	// deployment.go:164-201 subscribes deployments, replicasets, pods and
@@ -212,7 +212,7 @@ var PulumiKubernetesKinds = []PulumiKubernetesKind{
 	// get on the kind itself is already a Self read.
 	sdkKind("core/v1", "ResourceQuota", "", "resourcequotas", false, warningEvents),
 	// A Secret is awaited only when it is a service-account-token Secret
-	// (awaiters.go:431-462), by get on itself; the official modules create
+	// (awaiters.go:431-462), by get on itself; the platform modules create
 	// Opaque and dockerconfigjson Secrets, and get is a Self read anyway.
 	sdkKind("core/v1", "Secret", "", "secrets", false),
 	// A ServiceAccount is not awaited on Kubernetes 1.24 and later

@@ -55,7 +55,7 @@ This creates a multi-region store (the AWS default) ingesting all management eve
 
 ### InfraChart
 
-When the store deploys alongside its encryption key in one chart, wire the key reference via ValueFromRef:
+When the store deploys alongside its encryption key in one chart, wire the key reference:
 
 ```yaml
 spec:
@@ -94,13 +94,13 @@ These are the most important decisions when configuring an event data store. Exp
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AwsKmsKey** | `kmsKeyId` | `status.outputs.key_arn` |
+| **AWS KMS Key** | `kmsKeyId` | `status.outputs.key_arn` |
 
 ### What This Kind Provides
 
-The single output, `event_data_store_arn`, is an identity echo rather than a composition input — no catalog kind consumes it via ValueFromRef. It is the provider's import ID and what `aws cloudtrail start-query` SQL addresses in its FROM clause; the store's real product is query results in the Lake editor, not wiring for downstream resources.
+The single output, `event_data_store_arn`, is an identity echo rather than a composition input — no catalog kind references it. It is the provider's import ID and what `aws cloudtrail start-query` SQL addresses in its FROM clause; the store's real product is query results in the Lake editor, not wiring for downstream resources.
 
 ## Common Patterns
 

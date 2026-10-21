@@ -1,23 +1,23 @@
 # Azure AI Foundry Project
 
-Creates an Azure AI Foundry project -- the workspace one AI team works in, created inside an AzureAiFoundry hub and inheriting its security, storage, and network posture. The project carries only its own identity, naming, and description; the hub linkage is fixed at creation, and the project deploys into the hub's resource group (there is no resource-group field here).
+Creates an Azure AI Foundry project — the workspace one AI team works in, created inside an Azure AI Foundry Hub hub and inheriting its security, storage, and network posture. The project carries only its own identity, naming, and description; the hub linkage is fixed at creation, and the project deploys into the hub's resource group (there is no resource-group field here).
 
 ## What Gets Created
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **AI Foundry Project** -- ARM-wise an ML workspace of kind "Project" (`Microsoft.MachineLearningServices/workspaces`), linked to its hub and placed in the hub's resource group
+- **AI Foundry Project** — ARM-wise an ML workspace of kind "Project" (`Microsoft.MachineLearningServices/workspaces`), linked to its hub and placed in the hub's resource group
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **Azure Provider Connection** -- an active connection in the Connect module with credentials for the target Azure subscription.
-- **An AzureAiFoundry hub** -- the project is created inside it (the linkage is fixed at creation).
+- **Azure Provider Connection** — an active connection in the Connect module with credentials for the target Azure subscription.
+- **An Azure AI Foundry Hub hub** — the project is created inside it (the linkage is fixed at creation).
 
 ### Azure Subscription
 
-- **No resource group needed** -- the project deploys into the HUB's resource group; the provider derives it from the hub reference.
+- **No resource group needed** — the project deploys into the HUB's resource group; the provider derives it from the hub reference.
 
 ## Deploy
 
@@ -55,7 +55,7 @@ This creates a project with its own system-assigned identity inside the referenc
 
 ### InfraChart
 
-In an AI-platform chart the order is: hub → **projects** (one per team). Wire the hub with ValueFromRef so the InfraPipeline deploys it first:
+In an AI-platform chart the order is: hub → **projects** (one per team). Wire the hub with references so the InfraPipeline deploys it first:
 
 ```yaml
 spec:
@@ -72,25 +72,25 @@ The InfraPipeline resolves the dependency graph, provisions the hub first, then 
 
 These are the most important decisions when configuring the project. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**The hub linkage** -- `aiServicesHubId` is fixed at creation; a project cannot move between hubs. The project's region is its own field but typically matches the hub's.
+**The hub linkage** — `aiServicesHubId` is fixed at creation; a project cannot move between hubs. The project's region is its own field but typically matches the hub's.
 
-**Identity** -- `SYSTEM_ASSIGNED` gives the team its own grantable identity. `primaryUserAssignedIdentity` is only legal alongside the identity block (validated at manifest time -- the provider's own pairing).
+**Identity** — `SYSTEM_ASSIGNED` gives the team its own grantable identity. `primaryUserAssignedIdentity` is only legal alongside the identity block (validated at manifest time — the provider's own pairing).
 
-**Everything else is inherited** -- vault, storage, insights, registry, network isolation, and encryption all come from the hub; a project manifest stays a few lines by design.
+**Everything else is inherited** — vault, storage, insights, registry, network isolation, and encryption all come from the hub; a project manifest stays a few lines by design.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AzureAiFoundry** | `aiServicesHubId` | `status.outputs.ai_foundry_id` |
-| **AzureUserAssignedIdentity** | `identity.identityIds[]` | `status.outputs.identity_id` |
-| **AzureUserAssignedIdentity** | `primaryUserAssignedIdentity` | `status.outputs.identity_id` |
+| **Azure AI Foundry Hub** | `aiServicesHubId` | `status.outputs.ai_foundry_id` |
+| **Azure User Assigned Identity** | `identity.identityIds[]` | `status.outputs.identity_id` |
+| **Azure User Assigned Identity** | `primaryUserAssignedIdentity` | `status.outputs.identity_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -103,13 +103,13 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**One project per team** -- the standard shape: each team gets a project with a system-assigned identity, so data grants are scoped per team while the hub carries the shared posture. Start from the **Team Foundry Project** preset.
+**One project per team** — the standard shape: each team gets a project with a system-assigned identity, so data grants are scoped per team while the hub carries the shared posture. Start from the **Team Foundry Project** preset.
 
-**Bring-your-own identity** -- `USER_ASSIGNED` with `primaryUserAssignedIdentity` when the team's storage and data grants must exist BEFORE the project does; the trade is that you now own the identity's lifecycle and rotation.
+**Bring-your-own identity** — `USER_ASSIGNED` with `primaryUserAssignedIdentity` when the team's storage and data grants must exist BEFORE the project does; the trade is that you now own the identity's lifecycle and rotation.
 
 ## Works With
 
-- [**Azure AI Foundry Hub**](/infra-catalog/azure-ai-foundry) -- the hub this project lives in
-- [**Azure Cognitive Account**](/infra-catalog/azure-cognitive-account) -- the Azure OpenAI models the team's agents call
-- [**Azure AI Search Service**](/infra-catalog/azure-search-service) -- retrieval for the team's RAG applications
-- [**Azure User Assigned Identity**](/infra-catalog/azure-user-assigned-identity) -- bring-your-own identity for pre-composed grants
+- [**Azure AI Foundry Hub**](/infra-catalog/azure-ai-foundry) — the hub this project lives in
+- [**Azure Cognitive Account**](/infra-catalog/azure-cognitive-account) — the Azure OpenAI models the team's agents call
+- [**Azure AI Search Service**](/infra-catalog/azure-search-service) — retrieval for the team's RAG applications
+- [**Azure User Assigned Identity**](/infra-catalog/azure-user-assigned-identity) — bring-your-own identity for pre-composed grants

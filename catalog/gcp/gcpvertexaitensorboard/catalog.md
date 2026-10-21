@@ -1,25 +1,25 @@
 # GCP Vertex AI TensorBoard
 
-Gives a team one managed TensorBoard that every Vertex AI training job, pipeline, and experiment streams its metrics into -- loss curves, accuracy, histograms, images -- and keeps them after the jobs finish, so a new run is compared against last month's without anyone keeping a laptop open. Declare the TensorBoard, and optionally the experiments and runs that should exist before the first job logs, and point training jobs at it by name.
+Gives a team one managed TensorBoard that every Vertex AI training job, pipeline, and experiment streams its metrics into — loss curves, accuracy, histograms, images — and keeps them after the jobs finish, so a new run is compared against last month's without anyone keeping a laptop open. Declare the TensorBoard, and optionally the experiments and runs that should exist before the first job logs, and point training jobs at it by name.
 
 ## What Gets Created
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **API enablement** -- `aiplatform.googleapis.com` on the project
-- **TensorBoard** -- a `vertex.AiTensorboard` with optional CMEK
-- **Experiments and runs** -- one `vertex.AiTensorboardExperiment` per declared experiment and one `vertex.AiTensorboardRun` per declared run
+- **API enablement** — `aiplatform.googleapis.com` on the project
+- **TensorBoard** — a `vertex.AiTensorboard` with optional CMEK
+- **Experiments and runs** — one `vertex.AiTensorboardExperiment` per declared experiment and one `vertex.AiTensorboardRun` per declared run
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **GCP Provider Connection** -- an active connection in the Connect module with Vertex AI admin permissions on the project. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
+- **GCP Provider Connection** — an active connection in the Connect module with Vertex AI admin permissions on the project. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
 
 ### Optional Dependencies
 
-- **GcpKmsKey** -- for customer-managed encryption, referenced by `kmsKeyName`.
+- **GCP KMS Key** — for customer-managed encryption, referenced by `kmsKeyName`.
 
 ## Deploy
 
@@ -61,24 +61,24 @@ When deploying as part of a multi-resource environment, pass the TensorBoard's `
 
 These are the most important decisions when configuring a TensorBoard. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**One TensorBoard per team, not per job** -- training jobs attach by name and add their own experiments and runs. A shared TensorBoard is what makes runs comparable over time.
+**One TensorBoard per team, not per job** — training jobs attach by name and add their own experiments and runs. A shared TensorBoard is what makes runs comparable over time.
 
-**Declare experiments only when they must exist first** -- the Vertex AI SDK and training jobs create experiments and runs as they log. Declare the ones a dashboard, an evaluation pipeline, or a baseline comparison points at by id.
+**Declare experiments only when they must exist first** — the Vertex AI SDK and training jobs create experiments and runs as they log. Declare the ones a dashboard, an evaluation pipeline, or a baseline comparison points at by id.
 
-**Encryption and history** -- `kmsKeyName` is fixed at creation. A destroy under `DELETE` removes every logged series, including the ones jobs created; `PREVENT` protects history the team relies on.
+**Encryption and history** — `kmsKeyName` is fixed at creation. A destroy under `DELETE` removes every logged series, including the ones jobs created; `PREVENT` protects history the team relies on.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **GcpProject** | `projectId` | `status.outputs.project_id` |
-| **GcpKmsKey** | `kmsKeyName` | `status.outputs.key_id` |
+| **GCP Project** | `projectId` | `status.outputs.project_id` |
+| **GCP KMS Key** | `kmsKeyName` | `status.outputs.key_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -93,13 +93,13 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Team TensorBoard** -- one shared TensorBoard with no declared experiments; jobs create their own. Start from the **Team TensorBoard** preset.
+**Team TensorBoard** — one shared TensorBoard with no declared experiments; jobs create their own. Start from the **Team TensorBoard** preset.
 
-**Encrypted with experiments** -- a CMEK TensorBoard with the team's standing experiments and baseline runs declared, protected by `PREVENT`. Start from the **Encrypted With Experiments** preset.
+**Encrypted with experiments** — a CMEK TensorBoard with the team's standing experiments and baseline runs declared, protected by `PREVENT`. Start from the **Encrypted With Experiments** preset.
 
 ## Works With
 
-- [**GCP KMS Key**](/infra-catalog/gcp-kms-key) -- customer-managed encryption
-- [**GCP Vertex AI Persistent Resource**](/infra-catalog/gcp-vertex-ai-persistent-resource) -- warm training capacity for the jobs that log here
-- [**GCP Vertex AI Dataset**](/infra-catalog/gcp-vertex-ai-dataset) -- the training data those jobs read
-- [**GCP GCS Bucket**](/infra-catalog/gcp-gcs-bucket) -- the staging bucket training jobs use beside the TensorBoard
+- [**GCP KMS Key**](/infra-catalog/gcp-kms-key) — customer-managed encryption
+- [**GCP Vertex AI Persistent Resource**](/infra-catalog/gcp-vertex-ai-persistent-resource) — warm training capacity for the jobs that log here
+- [**GCP Vertex AI Dataset**](/infra-catalog/gcp-vertex-ai-dataset) — the training data those jobs read
+- [**GCP GCS Bucket**](/infra-catalog/gcp-gcs-bucket) — the staging bucket training jobs use beside the TensorBoard

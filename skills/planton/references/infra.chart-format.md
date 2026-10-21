@@ -2,7 +2,7 @@
 
 The exact shape of the three chart components. The public chart catalog at
 [github.com/plantonhq/planton/tree/main/charts](https://github.com/plantonhq/planton/tree/main/charts)
-is the reference fleet -- when in doubt, read how an official chart does it.
+is the reference fleet -- when in doubt, read how a platform chart does it.
 
 ## Chart.yaml
 
@@ -15,8 +15,6 @@ kind: InfraChart
 metadata:
   name: EKS Environment            # human-readable display name
 spec:
-  selector:
-    kind: organization             # REQUIRED: organization | platform
   description: Configurable EKS environment with custom VPC, Route 53,
     autoscaled managed node group and toggleable Kubernetes add-ons.
   iconUrl: https://downloads.planton.ai/catalog/logos/{provider}/{kind}/logo.svg   # optional
@@ -26,13 +24,13 @@ spec:
 ```
 
 Required for composition: `apiVersion`, `kind`, `metadata.name`,
-`spec.selector`, `spec.description`. Everything else is catalog polish.
+`spec.description`. Everything else is catalog polish.
 
-`spec.selector.kind` declares the chart's ownership scope and the build
-rejects a chart without it. Use `organization` while composing (the concrete
-org is bound at publish time via `planton chart publish --org <org>`); use
-`platform` only for charts destined for the official catalog (platform
-operators only).
+Chart.yaml names no owner. A chart belongs to the organization that
+publishes it: `planton chart publish` records the organization in your CLI
+context (or the one `--org <org>` names) in the chart's `metadata.org`. The
+platform charts are the ones with no organization; they come only from
+Planton's open-source release.
 
 `planton explain infra-chart` renders the InfraChart schema itself —
 including which spec fields the tooling assembles from the chart directory

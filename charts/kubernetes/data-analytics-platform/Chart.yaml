@@ -3,8 +3,6 @@ kind: InfraChart
 metadata:
   name: Kubernetes Data Analytics Platform
 spec:
-  selector:
-    kind: platform
   description: >-
     The complete modern data stack on your own cluster in one deploy —
     Airflow schedules it, Spark crunches it, Trino queries it, Superset

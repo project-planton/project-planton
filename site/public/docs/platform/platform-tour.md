@@ -144,11 +144,12 @@ Subscription and usage management. Contains two sub-pages:
 
 ### Settings
 
-Organization-wide configuration with three tabs:
+Organization-wide configuration:
 
 - **General** — organization name, description, contact email, and logo
 - **Manage Members** — invite new members via email, view current members and their roles, manage pending invitations
 - **Teams** — create teams, add members to teams, and manage team-level permissions
+- **Custom Domain** — serve the organization's console at your own address, such as `planton.acme.com`, on the Team plan ([Custom Domain](/docs/teams-and-access/custom-domain))
 
 <!-- SCREENSHOT: Settings page
   Page: /orgs/{org}/settings

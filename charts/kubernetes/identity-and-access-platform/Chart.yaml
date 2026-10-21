@@ -3,8 +3,6 @@ kind: InfraChart
 metadata:
   name: Kubernetes Identity and Access Platform
 spec:
-  selector:
-    kind: platform
   description: >-
     The self-hosted security triad in one deploy — Keycloak for identity
     (OIDC single sign-on), OpenFGA for fine-grained authorization, and

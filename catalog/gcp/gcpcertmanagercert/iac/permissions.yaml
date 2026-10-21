@@ -1,5 +1,5 @@
 # Least-privilege permissions the IaC runner's GCP principal needs to
-# provision, update, and destroy this component with the official modules.
+# provision, update, and destroy this component with the platform modules.
 # Every entry is `derived` (static analysis of the module sources, cited in
 # notes) until the live capture lane upgrades it to `proven`. Schema:
 # iac/catalogkindpermissions/v1.
@@ -16,6 +16,8 @@ spec:
           - serviceusage.services.get
           - serviceusage.services.list
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers google_project_service enabling certificatemanager.googleapis.com on the target project. disable_on_destroy is false in the module, so the disable permission is never needed.
       - purpose: ManageCertificate
         permissions:
@@ -25,4 +27,6 @@ spec:
           - certificatemanager.certs.delete
           - certificatemanager.operations.get
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers google_certificate_manager_certificate for both arms -- create, read/refresh, in-place updates (description, labels, self-managed PEM rotation), and destroy. Certificate Manager mutations return long-running operations the provider polls under certificatemanager.operations.get. All five permissions verified present in IAM's testable-permissions inventory.

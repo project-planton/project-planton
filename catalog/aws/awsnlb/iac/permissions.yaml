@@ -1,5 +1,5 @@
 # Least-privilege permissions the IaC runner's AWS principal needs to
-# provision, update, and destroy this component with the official modules.
+# provision, update, and destroy this component with the platform modules.
 # Every entry is `derived` (static analysis of the module sources, cited in
 # notes) until the live capture lane upgrades it to `proven`. Schema:
 # iac/catalogkindpermissions/v1.
@@ -24,6 +24,8 @@ spec:
         resources:
           - arn:aws:elasticloadbalancing:*:*:loadbalancer/net/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_lb with load_balancer_type "network" -- creation with subnet mappings (including Elastic IP allocation ids), attribute updates (cross-zone distribution, deletion protection, zonal shift, IPv6 source-NAT prefix, logging attributes), capacity reservation, and tagging. Every action authorizes on the loadbalancer/net/ ARN format per the service reference; the module touches no other load balancer type.
       - sid: DescribeLoadBalancers
         actions:
@@ -34,6 +36,8 @@ spec:
         resources:
           - "*"
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Read-side of aws_lb during plan/refresh. Elastic Load Balancing Describe APIs support no resource-level scoping (empty Resources lists in the service reference), so the wildcard is the narrowest possible scope.
       - sid: ManageDnsAliases
         actions:
@@ -44,4 +48,6 @@ spec:
           - arn:aws:route53:::hostedzone/*
           - arn:aws:route53:::change/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_route53_record -- the optional alias records created when spec.dns is enabled. GetChange polls propagation status on the change id.

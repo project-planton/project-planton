@@ -1,6 +1,6 @@
 # Altinity ClickHouse Operator
 
-Installs the Altinity ClickHouse Operator — the Apache-2.0 operator for running ClickHouse (the columnar OLAP database) on Kubernetes — from the official `altinity-clickhouse-operator` Helm chart. The operator reconciles `ClickHouseInstallation` and `ClickHouseKeeperInstallation` custom resources (declared with **ClickHouse**) into running clusters with generated server configuration, rolling restarts, and per-host StatefulSets. This component installs and configures the engine; ClickHouse clusters themselves are declared with ClickHouse resources — one per cluster — which this operator reconciles.
+Installs the Altinity ClickHouse Operator — the Apache-2.0 operator for running ClickHouse (the columnar OLAP database) on Kubernetes — from the official altinity-clickhouse-operator Helm chart. The operator reconciles `ClickHouseInstallation` and `ClickHouseKeeperInstallation` custom resources (declared with **ClickHouse**) into running clusters with generated server configuration, rolling restarts, and per-host StatefulSets. This component installs and configures the engine; ClickHouse clusters themselves are declared with ClickHouse resources — one per cluster — which this operator reconciles.
 
 ## What Gets Created
 
@@ -93,13 +93,13 @@ These are the most important decisions when configuring the Altinity ClickHouse 
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **KubernetesNamespace** | `namespace` | `spec.name` |
+| **Kubernetes Namespace** | `namespace` | `spec.name` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

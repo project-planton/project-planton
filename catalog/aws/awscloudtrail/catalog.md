@@ -66,7 +66,7 @@ This creates a multi-region trail recording all management events with hourly di
 
 ### InfraChart
 
-When the trail deploys alongside its delivery bucket in one chart, wire the bucket reference via ValueFromRef:
+When the trail deploys alongside its delivery bucket in one chart, wire the bucket reference:
 
 ```yaml
 spec:
@@ -102,17 +102,17 @@ These are the most important decisions when configuring a trail. Explore the ful
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AwsS3Bucket** | `s3BucketName` | `status.outputs.bucket_id` |
-| **AwsKmsKey** | `kmsKeyId` | `status.outputs.key_arn` |
-| **AwsSnsTopic** | `snsTopicName` | `status.outputs.topic_name` |
-| **AwsCloudwatchLogGroup** | `cloudwatchLogs.logGroupArn` | `status.outputs.log_group_arn` |
-| **AwsIamRole** | `cloudwatchLogs.roleArn` | `status.outputs.role_arn` |
+| **AWS S3 Bucket** | `s3BucketName` | `status.outputs.bucket_id` |
+| **AWS KMS Key** | `kmsKeyId` | `status.outputs.key_arn` |
+| **AWS SNS Topic** | `snsTopicName` | `status.outputs.topic_name` |
+| **AWS CloudWatch Log Group** | `cloudwatchLogs.logGroupArn` | `status.outputs.log_group_arn` |
+| **AWS IAM Role** | `cloudwatchLogs.roleArn` | `status.outputs.role_arn` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

@@ -262,9 +262,6 @@ func platformSpecBody(locals *Locals) map[string]interface{} {
 			}
 			bootstrap["admins"] = admins
 		}
-		if b.IacProvisioner != nil && b.GetIacProvisioner() != "" {
-			bootstrap["iacProvisioner"] = b.GetIacProvisioner()
-		}
 		if sb := b.GetSecretBackend(); sb != nil {
 			secretBackend := map[string]interface{}{
 				"type": sb.GetType(),

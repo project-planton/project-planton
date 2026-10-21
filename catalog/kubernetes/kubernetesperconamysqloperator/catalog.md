@@ -1,24 +1,24 @@
 # Percona Operator for MySQL
 
-Installs the Percona Operator for MySQL — based on Percona XtraDB Cluster — on any Kubernetes cluster from the official `pxc-operator` Helm chart. The operator reconciles `PerconaXtraDBCluster` custom resources into highly available MySQL clusters: Galera synchronous multi-primary replication with automated failover, HAProxy or ProxySQL query routing, scheduled XtraBackup backups with point-in-time recovery, and TLS. This component installs and configures the ENGINE; the databases themselves are declared with `KubernetesMysql` Infra Components — one per MySQL cluster — which this operator reconciles.
+Installs the Percona Operator for MySQL — based on Percona XtraDB Cluster — on any Kubernetes cluster from the official pxc-operator Helm chart. The operator reconciles `PerconaXtraDBCluster` custom resources into highly available MySQL clusters: Galera synchronous multi-primary replication with automated failover, HAProxy or ProxySQL query routing, scheduled XtraBackup backups with point-in-time recovery, and TLS. This component installs and configures the ENGINE; the databases themselves are declared with `KubernetesMysql` Infra Components — one per MySQL cluster — which this operator reconciles.
 
 ## What Gets Created
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **Kubernetes Namespace** -- created only when `createNamespace` is `true`; otherwise deploys into an existing namespace
-- **Helm Release** -- installs the `pxc-operator` chart, which creates:
+- **Kubernetes Namespace** — created only when `createNamespace` is `true`; otherwise deploys into an existing namespace
+- **Helm Release** — installs the `pxc-operator` chart, which creates:
   - Deployment running the operator controller (replicas beyond one are leader-elected warm standbys)
   - RBAC scoped to the watch posture: namespace-scoped Roles by default, ClusterRoles for a cluster-wide operator
-  - Custom Resource Definitions for `PerconaXtraDBCluster`, `PerconaXtraDBClusterBackup`, and `PerconaXtraDBClusterRestore` -- installed on first install, never upgraded or deleted by Helm
-- **Kubernetes Labels** -- resource metadata labels (resource name, kind, organization, environment) applied automatically for tracking
+  - Custom Resource Definitions for `PerconaXtraDBCluster`, `PerconaXtraDBClusterBackup`, and `PerconaXtraDBClusterRestore` — installed on first install, never upgraded or deleted by Helm
+- **Kubernetes Labels** — resource metadata labels (resource name, kind, organization, environment) applied automatically for tracking
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **Kubernetes Provider Connection** -- an active connection in the Connect module with kubeconfig credentials for the target Kubernetes cluster. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline kubeconfig authentication.
+- **Kubernetes Provider Connection** — an active connection in the Connect module with kubeconfig credentials for the target Kubernetes cluster. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline kubeconfig authentication.
 
 ### Kubernetes Cluster
 
@@ -59,7 +59,7 @@ This installs the operator into the `mysql-prod` namespace, watching that namesp
 
 ### InfraChart
 
-When deploying as part of a multi-resource environment, use ValueFromRef to wire the operator to a namespace managed by another Infra Component:
+When deploying as part of a multi-resource environment, use references to wire the operator to a namespace managed by another Infra Component:
 
 ```yaml
 spec:
@@ -77,27 +77,27 @@ The InfraPipeline deploys the namespace first, then installs the operator into i
 
 These are the most important decisions when configuring the operator. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Watch scope** -- By default the operator watches ITS OWN namespace only (the upstream posture: databases live beside their operator). Set `watch.clusterWide: true` for one operator managing databases in every namespace, or `watch.namespaces` for a fenced set — the two are mutually exclusive. A `KubernetesMysql` declared in a namespace the operator does not watch is silently never reconciled: it stays Pending forever with no error anywhere.
+**Watch scope** — By default the operator watches ITS OWN namespace only (the upstream posture: databases live beside their operator). Set `watch.clusterWide: true` for one operator managing databases in every namespace, or `watch.namespaces` for a fenced set — the two are mutually exclusive. A `KubernetesMysql` declared in a namespace the operator does not watch is silently never reconciled: it stays Pending forever with no error anywhere.
 
-**Chart version** -- Chart and operator versions move together for this chart; the chart pin governs. Pin deliberately: editing the pin re-runs the release with the new chart, which IS the upgrade. Helm never upgrades the CRDs it installed — apply a new release's CRDs yourself when its release notes call for it.
+**Chart version** — Chart and operator versions move together for this chart; the chart pin governs. Pin deliberately: editing the pin re-runs the release with the new chart, which IS the upgrade. Helm never upgrades the CRDs it installed — apply a new release's CRDs yourself when its release notes call for it.
 
-**Reconcile throughput** -- `maxConcurrentReconciles` (chart default 1) is the throughput dial: how many database clusters reconcile in parallel. `replicas` adds leader-elected warm standbys for the operator itself — faster operator failover, zero extra throughput.
+**Reconcile throughput** — `maxConcurrentReconciles` (chart default 1) is the throughput dial: how many database clusters reconcile in parallel. `replicas` adds leader-elected warm standbys for the operator itself — faster operator failover, zero extra throughput.
 
-**Backup engine** -- `s3WorkersLimit` (chart default 10) sizes the S3 upload/delete worker pool shared by EVERY database's backups; `xtrabackupSidecar` runs XtraBackup inside the database pods instead of separate jobs.
+**Backup engine** — `s3WorkersLimit` (chart default 10) sizes the S3 upload/delete worker pool shared by EVERY database's backups; `xtrabackupSidecar` runs XtraBackup inside the database pods instead of separate jobs.
 
-**Leader election** -- On by default (`leaderElection.enabled` unset means enabled). The lease/renew/retry durations (defaults 60s/40s/10s) trade operator-failover speed against API-server traffic.
+**Leader election** — On by default (`leaderElection.enabled` unset means enabled). The lease/renew/retry durations (defaults 60s/40s/10s) trade operator-failover speed against API-server traffic.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **KubernetesNamespace** | `namespace` | `spec.name` |
+| **Kubernetes Namespace** | `namespace` | `spec.name` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -110,11 +110,11 @@ The operator has no per-database surface of its own: each MySQL cluster is a `Ku
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Operator beside its databases** -- The upstream default: install the operator into the namespace where its `KubernetesMysql` clusters will live, keeping the own-namespace watch scope. Strongest per-team isolation. Start from the **Standard** preset.
+**Operator beside its databases** — The upstream default: install the operator into the namespace where its `KubernetesMysql` clusters will live, keeping the own-namespace watch scope. Strongest per-team isolation. Start from the **Standard** preset.
 
-**One cluster-wide engine** -- A single operator in a platform namespace with `watch.clusterWide: true`, serving every team's databases. Raise `maxConcurrentReconciles` for fleets.
+**One cluster-wide engine** — A single operator in a platform namespace with `watch.clusterWide: true`, serving every team's databases. Raise `maxConcurrentReconciles` for fleets.
 
 ## Works With
 
-- [**Kubernetes Namespace**](/infra-catalog/kubernetes-namespace) -- provides the namespace for the operator deployment
-- [**MySQL**](/infra-catalog/kubernetes-mysql) -- the databases this operator reconciles, one Infra Component per MySQL cluster
+- [**Kubernetes Namespace**](/infra-catalog/kubernetes-namespace) — provides the namespace for the operator deployment
+- [**MySQL**](/infra-catalog/kubernetes-mysql) — the databases this operator reconciles, one Infra Component per MySQL cluster

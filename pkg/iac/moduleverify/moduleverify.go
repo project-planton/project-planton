@@ -6,7 +6,7 @@
 // the module that deploys a catalog kind.
 //
 // The checks are anchored to the kind's schema (through the same generator
-// and transformer machinery the deploy path uses), never to the official
+// and transformer machinery the deploy path uses), never to the platform
 // module's exact text: a customized module is allowed to diverge in
 // everything except the surfaces the platform feeds and reads. Severity
 // follows what actually breaks a deployment — a mismatch that fails every

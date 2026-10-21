@@ -78,7 +78,7 @@ This creates a running pipe that drains order-typed messages from the intake que
 
 ### InfraChart
 
-When the pipe deploys alongside its queues and role in one chart, wire all three edges via ValueFromRef — and note that `source`, `target`, and `enrichment` carry no default kind, so each valueFrom states its kind explicitly:
+When the pipe deploys alongside its queues and role in one chart, wire all three edges by reference — and note that `source`, `target`, and `enrichment` carry no default kind, so each valueFrom states its kind explicitly:
 
 ```yaml
 spec:
@@ -126,20 +126,20 @@ These are the most important decisions when configuring a pipe. Explore the full
 
 `source`, `target`, and `enrichment` range over many services, so they carry no default kind — a valueFrom on them states its kind explicitly. The common wirings:
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AwsIamRole** | `roleArn` | `status.outputs.role_arn` |
-| **AwsSqsQueue** | `source` / `target` | `status.outputs.queue_arn` |
-| **AwsLambda** | `target` / `enrichment` | `status.outputs.function_arn` |
-| **AwsDynamodb** | `source` | `status.outputs.stream_arn` |
-| **AwsKinesisStream** | `source` / `target` | `status.outputs.stream_arn` |
-| **AwsSqsQueue** | `sourceParameters.kinesis.deadLetterQueueArn` | `status.outputs.queue_arn` |
-| **AwsKmsKey** | `kmsKeyIdentifier` | `status.outputs.key_arn` |
-| **AwsCloudwatchLogGroup** | `logConfiguration.cloudwatchLogs.logGroupArn` | `status.outputs.log_group_arn` |
+| **AWS IAM Role** | `roleArn` | `status.outputs.role_arn` |
+| **AWS SQS Queue** | `source` / `target` | `status.outputs.queue_arn` |
+| **AWS Lambda** | `target` / `enrichment` | `status.outputs.function_arn` |
+| **AWS DynamoDB** | `source` | `status.outputs.stream_arn` |
+| **AWS Kinesis Data Stream** | `source` / `target` | `status.outputs.stream_arn` |
+| **AWS SQS Queue** | `sourceParameters.kinesis.deadLetterQueueArn` | `status.outputs.queue_arn` |
+| **AWS KMS Key** | `kmsKeyIdentifier` | `status.outputs.key_arn` |
+| **AWS CloudWatch Log Group** | `logConfiguration.cloudwatchLogs.logGroupArn` | `status.outputs.log_group_arn` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

@@ -64,7 +64,7 @@ This creates the registry entry and registers the ECR image as version 1, aliase
 
 ### InfraChart
 
-When the image deploys alongside its ECR-pull role in one chart, wire the role reference via ValueFromRef:
+When the image deploys alongside its ECR-pull role in one chart, wire the role reference:
 
 ```yaml
 spec:
@@ -99,13 +99,13 @@ These are the most important decisions when configuring a SageMaker image. Explo
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AwsIamRole** | `roleArn` | `status.outputs.role_arn` |
+| **AWS IAM Role** | `roleArn` | `status.outputs.role_arn` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

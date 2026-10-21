@@ -1,6 +1,6 @@
 # Ingress NGINX
 
-Installs the ingress-nginx controller — the cluster's HTTP and HTTPS entry point — from the official `ingress-nginx` Helm chart. The controller watches Ingress resources of its IngressClass and programs an embedded NGINX to route external traffic to Services. This component installs the CONTROLLER only: routing rules are separate first-class KubernetesIngress resources that name this controller's published class, and TLS certificates come from cert-manager through each Ingress's TLS secret or cluster-wide through the default certificate this spec can reference.
+Installs the ingress-nginx controller — the cluster's HTTP and HTTPS entry point — from the official ingress-nginx Helm chart. The controller watches Ingress resources of its IngressClass and programs an embedded NGINX to route external traffic to Services. This component installs the CONTROLLER only: routing rules are separate first-class Kubernetes Ingress resources that name this controller's published class, and TLS certificates come from cert-manager through each Ingress's TLS secret or cluster-wide through the default certificate this spec can reference.
 
 ## What Gets Created
 
@@ -9,7 +9,7 @@ When you deploy this Infra Component, the IaC module provisions:
 - **Kubernetes Namespace** — created only when `createNamespace` is true; otherwise deploys into an existing namespace
 - **Helm Release** — the official `ingress-nginx` chart (release named `metadata.name`; controller resources are named `<release>-controller`), creating:
   - The controller workload — a Deployment by default, or a DaemonSet when `controllerKind: daemon_set` (the bare-metal/edge pattern), with the declared replicas, resources, node selector, and tolerations
-  - The **IngressClass** this controller owns — the name KubernetesIngress resources reference to be served by this instance
+  - The **IngressClass** this controller owns — the name Kubernetes Ingress resources reference to be served by this instance
   - The controller **Service** — the traffic entry point (LoadBalancer by default; NodePort or ClusterIP per `service.type`), shaped entirely by `service.annotations`
   - A second **internal Service** — only when `service.internal.enabled` is true (the single-controller dual-LB pattern)
   - The **admission webhook** with its certgen bootstrap Job — enabled by chart default; rejects broken Ingress objects at apply time
@@ -108,20 +108,20 @@ These are the most important decisions when configuring an ingress-nginx control
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **KubernetesNamespace** | `namespace` | `spec.name` |
-| **KubernetesCertificate** | `defaultTlsCertificate.secretName` | `status.outputs.secret_name` |
+| **Kubernetes Namespace** | `namespace` | `spec.name` |
+| **Cert Manager Certificate** | `defaultTlsCertificate.secretName` | `status.outputs.secret_name` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
 | `namespace` | Namespace the controller runs in | Locating the controller for diagnostics |
 | `release_name` | Helm release name (= metadata.name; controller resources are `<release>-controller`) | Helm management and debugging |
-| `ingress_class_name` | The IngressClass this controller owns | A KubernetesIngress's `ingressClassName` |
+| `ingress_class_name` | The IngressClass this controller owns | A Kubernetes Ingress's `ingressClassName` |
 | `controller_service_name` | The controller's external Service — the traffic entry point | DNS records and exposure composition |
 | `internal_service_name` | The second internal Service — populated only when `service.internal.enabled` is true | Private DNS for the internal entry |
 | `load_balancer_ip` | The provisioned LB address, on providers exposing an IP (GCP/Azure) | DNS A records |

@@ -1,5 +1,5 @@
 # Least-privilege permissions the IaC runner's GCP principal needs to
-# provision, update, and destroy this component with the official modules.
+# provision, update, and destroy this component with the platform modules.
 # Every entry is `derived` (static analysis of the module sources, cited in
 # notes) until the live capture lane upgrades it to `proven`. Schema:
 # iac/catalogkindpermissions/v1.
@@ -16,6 +16,8 @@ spec:
           - serviceusage.services.get
           - serviceusage.services.list
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers google_project_service enabling aiplatform.googleapis.com on the target project. disable_on_destroy is false in the module, so the disable permission is never needed.
       - purpose: DeployModelGardenModel
         permissions:
@@ -28,4 +30,6 @@ spec:
           - aiplatform.models.get
           - aiplatform.models.delete
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers google_vertex_ai_endpoint_with_model_garden_deployment (Pulumi vertex.AiEndpointWithModelGardenDeployment) -- the one-step deploy uploads a Model, creates an Endpoint, and deploys to it; read/refresh reads the endpoint and its deployed models; destroy under deletion_policy DELETE undeploys, then deletes the endpoint and the model (ABANDON and PREVENT call no API). Model Garden publisher models are public catalog entries -- GCP defines no aiplatform.publisherModels permission, so resolving the entry needs no grant. GCP defines no aiplatform.operations.get permission; polling the long-running operations needs nothing beyond these. roles/aiplatform.admin contains them all.

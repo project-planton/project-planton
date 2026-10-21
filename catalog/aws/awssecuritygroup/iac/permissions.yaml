@@ -1,5 +1,5 @@
 # Least-privilege permissions the IaC runner's AWS principal needs to
-# provision, update, and destroy this component with the official modules.
+# provision, update, and destroy this component with the platform modules.
 # Every entry is `derived` (static analysis of the module sources, cited in
 # notes) until the live capture lane upgrades it to `proven`. Schema:
 # iac/catalogkindpermissions/v1.
@@ -26,6 +26,8 @@ spec:
           - arn:aws:ec2:*:*:security-group/*
           - arn:aws:ec2:*:*:vpc/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_security_group / ec2.SecurityGroup with its rules INLINE (the modules never emit standalone rule resources). The service reference authorizes CreateSecurityGroup on BOTH the security-group and vpc ARN formats (an under-scoped create denies provisioning). Rule reconciliation runs the Authorize/Revoke pairs -- including revoking the allow-all egress rule AWS adds to every new group when the spec's egress is empty -- and description-only edits use the UpdateSecurityGroupRuleDescriptions actions. revoke_rules_on_delete additionally revokes rules in OTHER groups that reference this one, which the security-group wildcard covers.
       - sid: ShareGroupAcrossVpcs
         actions:
@@ -35,6 +37,8 @@ spec:
           - arn:aws:ec2:*:*:security-group/*
           - arn:aws:ec2:*:*:vpc/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_vpc_security_group_vpc_association / vpc.SecurityGroupVpcAssociation -- sharing the group into each additional_vpc_ids entry and unsharing when entries are removed. The association pair authorizes on both the security-group and the target vpc ARN formats.
       - sid: DescribeSecurityGroups
         actions:
@@ -43,4 +47,6 @@ spec:
         resources:
           - "*"
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Read-side during plan/refresh for the group with its inline rules and for the multi-VPC association state. EC2 Describe APIs support no resource-level scoping (empty Resources lists in the service reference), so the wildcard is the narrowest possible scope.

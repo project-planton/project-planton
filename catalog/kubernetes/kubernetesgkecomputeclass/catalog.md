@@ -6,20 +6,20 @@ Declares a GKE ComputeClass: an ordered list of the machines GKE may create node
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **A ComputeClass** -- one cluster-scoped object GKE's cluster autoscaler reads whenever pods that select it are pending; with node pool auto-creation on, GKE creates and removes node pools for its rules.
-- **Kubernetes Labels** -- your own labels on the object, with resource metadata labels (resource name, kind, organization, environment) applied automatically on top.
+- **A ComputeClass** — one cluster-scoped object GKE's cluster autoscaler reads whenever pods that select it are pending; with node pool auto-creation on, GKE creates and removes node pools for its rules.
+- **Kubernetes Labels** — your own labels on the object, with resource metadata labels (resource name, kind, organization, environment) applied automatically on top.
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **Kubernetes Provider Connection** -- the GKE cluster's connection. A **GKE Cluster** deployed through Planton publishes one; map it as the default for your environment, or name it with the `planton.dev/connection` annotation.
+- **Kubernetes Provider Connection** — the GKE cluster's connection. A **GKE Cluster** deployed through Planton publishes one; map it as the default for your environment, or name it with the `planton.dev/connection` annotation.
 
 ### Kubernetes Cluster
 
-- **A GKE cluster** -- Standard or Autopilot. GKE serves the ComputeClass definition itself; there is nothing to install.
-- **The default compute class switch** -- for a class named `default`, turn on `clusterAutoscaling.defaultComputeClassEnabled` on the **GKE Cluster**.
-- **GKE 1.33.3-gke.1136000 or later** -- for node pool auto-creation without cluster-level node auto-provisioning. Individual fields name the version that introduced them.
+- **A GKE cluster** — Standard or Autopilot. GKE serves the ComputeClass definition itself; there is nothing to install.
+- **The default compute class switch** — for a class named `default`, turn on `clusterAutoscaling.defaultComputeClassEnabled` on the **GKE Cluster**.
+- **GKE 1.33.3-gke.1136000 or later** — for node pool auto-creation without cluster-level node auto-provisioning. Individual fields name the version that introduced them.
 
 ## Deploy
 
@@ -101,16 +101,16 @@ These are the most important decisions when configuring a class. Explore the ful
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **GcpGkeNodePool** | `priorities[].nodepools[]` | `status.outputs.node_pool_name` |
-| **GcpServiceAccount** | `nodePoolConfig.serviceAccount` | `status.outputs.email` |
-| **GcpKmsKey** | `priorities[].storage.bootDiskKMSKey` | `status.outputs.key_id` |
-| **GcpProject** | `priorities[].reservations.specific[].project`, `priorities[].storage.secondaryBootDisks[].project` | `status.outputs.project_id` |
+| **GCP GKE Node Pool** | `priorities[].nodepools[]` | `status.outputs.node_pool_name` |
+| **GCP Service Account** | `nodePoolConfig.serviceAccount` | `status.outputs.email` |
+| **GCP KMS Key** | `priorities[].storage.bootDiskKMSKey` | `status.outputs.key_id` |
+| **GCP Project** | `priorities[].reservations.specific[].project`, `priorities[].storage.secondaryBootDisks[].project` | `status.outputs.project_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|-----------------------|
@@ -120,16 +120,16 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Survive a machine-type stockout** -- a cluster default that falls back across four families of the same size. Start from the **Stockout-Resilient Default** preset.
+**Survive a machine-type stockout** — a cluster default that falls back across four families of the same size. Start from the **Stockout-Resilient Default** preset.
 
-**Run cheap first** -- Spot across several families, on-demand only when Spot runs out, back to Spot when it returns. Start from the **Spot First, On-Demand Fallback** preset.
+**Run cheap first** — Spot across several families, on-demand only when Spot runs out, back to Spot when it returns. Start from the **Spot First, On-Demand Fallback** preset.
 
-**Serve models on GPUs** -- Spot L4s first, on-demand L4s next, never a CPU-only node. Start from the **GPU L4 With Fallback** preset.
+**Serve models on GPUs** — Spot L4s first, on-demand L4s next, never a CPU-only node. Start from the **GPU L4 With Fallback** preset.
 
-**Spend reservations before buying** -- a named reservation, then any matching one, then on-demand. Start from the **Reservation First** preset.
+**Spend reservations before buying** — a named reservation, then any matching one, then on-demand. Start from the **Reservation First** preset.
 
 ## Works With
 
-- [**GKE Cluster**](/infra-catalog/gcp-gke-cluster) -- the cluster the class lives in; its default compute class switch makes a `default` class cluster-wide.
-- [**GKE Node Pool**](/infra-catalog/gcp-gke-node-pool) -- fixed pools a `nodepools` rule uses before GKE creates new ones.
-- [**Service Account**](/infra-catalog/gcp-service-account) -- the least-privilege identity the class's nodes run as.
+- [**GKE Cluster**](/infra-catalog/gcp-gke-cluster) — the cluster the class lives in; its default compute class switch makes a `default` class cluster-wide.
+- [**GKE Node Pool**](/infra-catalog/gcp-gke-node-pool) — fixed pools a `nodepools` rule uses before GKE creates new ones.
+- [**Service Account**](/infra-catalog/gcp-service-account) — the least-privilege identity the class's nodes run as.

@@ -1,5 +1,5 @@
 # Least-privilege permissions the IaC runner's AWS principal needs to
-# provision, update, and destroy this component with the official modules.
+# provision, update, and destroy this component with the platform modules.
 # Every entry is `derived` (static analysis of the module sources, cited in
 # notes) until the live capture lane upgrades it to `proven`. Schema:
 # iac/catalogkindpermissions/v1.
@@ -22,6 +22,8 @@ spec:
           - arn:aws:fsx:*:*:storage-virtual-machine/*/*
           - arn:aws:fsx:*:*:file-system/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_fsx_ontap_storage_virtual_machine -- creation under the parent file system (name, root volume security style, vsadmin password, Active Directory join), in-place updates (password and the entire AD block), tagging, and deletion. The service reference authorizes CreateStorageVirtualMachine on BOTH the storage-virtual-machine and file-system ARN formats (an under-scoped create denies provisioning).
       - sid: DescribeStorageVirtualMachines
         actions:
@@ -29,4 +31,6 @@ spec:
         resources:
           - "*"
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Read-side of aws_fsx_ontap_storage_virtual_machine during plan/refresh. FSx Describe APIs support no resource-level scoping (empty Resources lists in the service reference), so the wildcard is the narrowest possible scope.

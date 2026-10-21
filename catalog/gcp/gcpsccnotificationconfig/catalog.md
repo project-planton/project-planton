@@ -6,15 +6,15 @@ Sends Security Command Center findings to Pub/Sub the moment they appear or chan
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **API enablement** -- `securitycenter.googleapis.com` on a project config's project
-- **Notification config** -- the scope's `securitycenter.V2*NotificationConfig`
+- **API enablement** — `securitycenter.googleapis.com` on a project config's project
+- **Notification config** — the scope's `securitycenter.V2*NotificationConfig`
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **GCP Provider Connection** -- an active connection in the Connect module with Security Command Center notification-config admin permissions at the scope. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
+- **GCP Provider Connection** — an active connection in the Connect module with Security Command Center notification-config admin permissions at the scope. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
 
 ## Deploy
 
@@ -54,25 +54,25 @@ Reference a `GcpPubSubTopic` from `pubsubTopic` and grant the config's publisher
 
 These are the most important decisions when configuring notifications. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Scope** -- a project, a folder (every project beneath it), or the organization.
+**Scope** — a project, a folder (every project beneath it), or the organization.
 
-**Filter** -- which finding events are streamed; empty streams everything.
+**Filter** — which finding events are streamed; empty streams everything.
 
-**Topic** -- where the findings go; the config's service account needs publish rights there.
+**Topic** — where the findings go; the config's service account needs publish rights there.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **GcpProject** | `scope.projectId` | `status.outputs.project_id` |
-| **GcpFolder** | `scope.folderId` | `status.outputs.folder_id` |
-| **GcpPubSubTopic** | `pubsubTopic` | `status.outputs.topic_id` |
+| **GCP Project** | `scope.projectId` | `status.outputs.project_id` |
+| **GCP Folder** | `scope.folderId` | `status.outputs.folder_id` |
+| **GCP Pub/Sub Topic** | `pubsubTopic` | `status.outputs.topic_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -84,12 +84,12 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Project high findings** -- active high and critical findings of one project to a topic. Start from the **Project High Findings** preset.
+**Project high findings** — active high and critical findings of one project to a topic. Start from the **Project High Findings** preset.
 
-**Organization critical findings** -- every critical finding in the organization to the SOC's topic. Start from the **Organization Critical Findings** preset.
+**Organization critical findings** — every critical finding in the organization to the SOC's topic. Start from the **Organization Critical Findings** preset.
 
 ## Works With
 
-- [**GCP Pub/Sub Topic**](/infra-catalog/gcp-pub-sub-topic) -- the destination
-- [**GCP SCC Mute Config**](/infra-catalog/gcp-scc-mute-config) -- silence accepted findings first
-- [**GCP SCC BigQuery Export**](/infra-catalog/gcp-scc-bigquery-export) -- the findings history
+- [**GCP Pub/Sub Topic**](/infra-catalog/gcp-pub-sub-topic) — the destination
+- [**GCP SCC Mute Config**](/infra-catalog/gcp-scc-mute-config) — silence accepted findings first
+- [**GCP SCC BigQuery Export**](/infra-catalog/gcp-scc-bigquery-export) — the findings history

@@ -1,6 +1,6 @@
 # GCP Service Networking Connection
 
-Establishes private services access — the VPC peering between your network and a Google managed-services producer that lets Cloud SQL, AlloyDB, Memorystore (PRIVATE_SERVICE_ACCESS mode), and Filestore hand out private IPs from ranges you reserved inside your VPC. The connection composes two first-class resources: the VPC network being peered and one or more INTERNAL `VPC_PEERING` address ranges (GcpGlobalAddress) the producer carves service subnets from. One connection exists per (network, service) pair — capacity grows by appending ranges to this resource, never by adding a second connection.
+Establishes private services access — the VPC peering between your network and a Google managed-services producer that lets Cloud SQL, AlloyDB, Memorystore (PRIVATE_SERVICE_ACCESS mode), and Filestore hand out private IPs from ranges you reserved inside your VPC. The connection composes two first-class resources: the VPC network being peered and one or more INTERNAL `VPC_PEERING` address ranges (GCP Global Address) the producer carves service subnets from. One connection exists per (network, service) pair — capacity grows by appending ranges to this resource, never by adding a second connection.
 
 ## What Gets Created
 
@@ -19,8 +19,8 @@ When you deploy this Infra Component, the IaC module provisions:
 
 ### GCP Project
 
-- **A VPC network** for the `network` field — the consumer VPC to peer (a GcpVpcNetwork reference, a network name, or a full self-link).
-- **At least one reserved peering range** for `reservedPeeringRanges` — a GcpGlobalAddress with `addressType: INTERNAL` and purpose `VPC_PEERING`, referenced by NAME (not self-link or CIDR). A /16 is the common default — producers cannot use space that is too fragmented, and a too-small range surfaces later as instance-creation failures, not at connection time.
+- **A VPC network** for the `network` field — the consumer VPC to peer (a GCP VPC Network reference, a network name, or a full self-link).
+- **At least one reserved peering range** for `reservedPeeringRanges` — a GCP Global Address with `addressType: INTERNAL` and purpose `VPC_PEERING`, referenced by NAME (not self-link or CIDR). A /16 is the common default — producers cannot use space that is too fragmented, and a too-small range surfaces later as instance-creation failures, not at connection time.
 
 ## Deploy
 
@@ -54,7 +54,7 @@ This peers `prod-vpc` with `servicenetworking.googleapis.com` (the default produ
 
 ### InfraChart
 
-When the VPC and reserved range are deployed in the same chart, wire the connection to them with ValueFromRef:
+When the VPC and reserved range are deployed in the same chart, wire the connection to them with references:
 
 ```yaml
 spec:
@@ -90,15 +90,15 @@ These are the most important decisions when configuring a service networking con
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **GcpProject** (optional) | `projectId` | `status.outputs.project_id` |
-| **GcpVpcNetwork** | `network` | `status.outputs.network_self_link` |
-| **GcpGlobalAddress** (per entry) | `reservedPeeringRanges` | `status.outputs.name` |
+| **GCP Project** (optional) | `projectId` | `status.outputs.project_id` |
+| **GCP VPC Network** | `network` | `status.outputs.network_self_link` |
+| **GCP Global Address** (per entry) | `reservedPeeringRanges` | `status.outputs.name` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

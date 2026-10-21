@@ -6,23 +6,23 @@ Deploys a cross-region failover group pairing an Azure SQL logical server (the p
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **SQL Failover Group** -- created ON the primary server, spanning the partner server(s), with the group name becoming the listener DNS prefix (`{name}.database.windows.net`)
-- **Database Replication** -- a maintained replica of every listed database on every partner server
-- **Failover Policy** -- automatic (Azure promotes the partner after the grace window) or manual (an operator decides), plus the read-only listener's failover behavior
-- **Azure Tags** -- resource metadata tags applied to the group
+- **SQL Failover Group** — created ON the primary server, spanning the partner server(s), with the group name becoming the listener DNS prefix (`{name}.database.windows.net`)
+- **Database Replication** — a maintained replica of every listed database on every partner server
+- **Failover Policy** — automatic (Azure promotes the partner after the grace window) or manual (an operator decides), plus the read-only listener's failover behavior
+- **Azure Tags** — resource metadata tags applied to the group
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **Azure Provider Connection** -- an active connection in the Connect module with credentials for the target Azure subscription.
-- **Two AzureMssqlServers** -- the primary and the partner, usually in different regions (Azure's paired-region guidance applies). Both referenced through their `server_id` outputs.
-- **AzureMssqlDatabases** (optional at creation) -- the databases that replicate, referenced through their `database_id` outputs. An empty group is legal; membership edits in place.
+- **Azure Provider Connection** — an active connection in the Connect module with credentials for the target Azure subscription.
+- **Two AzureMssqlServers** — the primary and the partner, usually in different regions (Azure's paired-region guidance applies). Both referenced through their `server_id` outputs.
+- **AzureMssqlDatabases** (optional at creation) — the databases that replicate, referenced through their `database_id` outputs. An empty group is legal; membership edits in place.
 
 ### Azure Subscription
 
-- **Keep both servers' postures in sync** -- the partner is a full logical server with its own authentication and firewall; a failed-over application hits ITS door.
-- **Data-loss planning** -- automatic failover loses whatever replication lag exists when the grace window (≥ 60 minutes) expires; manual failover keeps that acceptance with your operators.
+- **Keep both servers' postures in sync** — the partner is a full logical server with its own authentication and firewall; a failed-over application hits ITS door.
+- **Data-loss planning** — automatic failover loses whatever replication lag exists when the grace window (≥ 60 minutes) expires; manual failover keeps that acceptance with your operators.
 
 ## Deploy
 
@@ -101,27 +101,27 @@ The InfraPipeline deploys the servers first, then the databases, then the group,
 
 These are the most important decisions when configuring a failover group. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**The name is the listener** -- `name` becomes the DNS prefix applications connect to. Point every connection string at the listener, never a server directly. Fixed at creation.
+**The name is the listener** — `name` becomes the DNS prefix applications connect to. Point every connection string at the listener, never a server directly. Fixed at creation.
 
-**Failover mode** -- `readWriteEndpointFailoverPolicy.mode`: AUTOMATIC requires `graceMinutes` ≥ 60 (the data-loss dial — Azure waits it out before promoting, and whatever replication lag exists is lost); MANUAL forbids the grace window and keeps the decision with your operators.
+**Failover mode** — `readWriteEndpointFailoverPolicy.mode`: AUTOMATIC requires `graceMinutes` ≥ 60 (the data-loss dial — Azure waits it out before promoting, and whatever replication lag exists is lost); MANUAL forbids the grace window and keeps the decision with your operators.
 
-**Read-only listener failover** -- `readonlyEndpointFailoverPolicyEnabled` decides whether read-intent traffic follows a failover (sharing the surviving server) or goes dark until failback (Azure's default).
+**Read-only listener failover** — `readonlyEndpointFailoverPolicyEnabled` decides whether read-intent traffic follows a failover (sharing the surviving server) or goes dark until failback (Azure's default).
 
-**Membership** -- `databaseIds` lists exactly what replicates; nothing joins implicitly. Replicas bill at the partner's rates, and pooled databases need a matching pool on the partner.
+**Membership** — `databaseIds` lists exactly what replicates; nothing joins implicitly. Replicas bill at the partner's rates, and pooled databases need a matching pool on the partner.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AzureMssqlServer** | `serverId` (primary) | `status.outputs.server_id` |
-| **AzureMssqlServer** | `partnerServers[].serverId` | `status.outputs.server_id` |
-| **AzureMssqlDatabase** | `databaseIds` | `status.outputs.database_id` |
+| **Azure MSSQL Server** | `serverId` (primary) | `status.outputs.server_id` |
+| **Azure MSSQL Server** | `partnerServers[].serverId` | `status.outputs.server_id` |
+| **Azure MSSQL Database** | `databaseIds` | `status.outputs.database_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -134,11 +134,11 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Automatic failover** -- The hands-off DR posture: Azure promotes the partner after the grace window. Start from the **Automatic Failover Group** preset.
+**Automatic failover** — The hands-off DR posture: Azure promotes the partner after the grace window. Start from the **Automatic Failover Group** preset.
 
-**Manual failover** -- Tier-1 estates with a runbook: a human confirms the region is really gone before accepting the lag loss. Start from the **Manual Failover Group** preset.
+**Manual failover** — Tier-1 estates with a runbook: a human confirms the region is really gone before accepting the lag loss. Start from the **Manual Failover Group** preset.
 
 ## Works With
 
-- [**Azure MSSQL Server**](/infra-catalog/azure-mssql-server) -- the primary and every partner
-- [**Azure MSSQL Database**](/infra-catalog/azure-mssql-database) -- the databases that replicate through the group
+- [**Azure MSSQL Server**](/infra-catalog/azure-mssql-server) — the primary and every partner
+- [**Azure MSSQL Database**](/infra-catalog/azure-mssql-database) — the databases that replicate through the group

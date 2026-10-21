@@ -1,13 +1,13 @@
 # Agent Substrate Worker Pool
 
-Declares an Agent Substrate WorkerPool: the worker pods agents run in, many actors to a worker, sized, placed and isolated as one pool. Substrate places each actor a product creates or resumes on a worker with room for it, in the pool its template selects, and takes the actor's share back when it is suspended into storage, so a pool serves many more actors than it runs at once. The spec is faithful to the upstream `ate.dev/v1alpha1` WorkerPool (pinned to Agent Substrate v0.5.0) -- this is the capacity and the boundary an agent runtime is built from, one pool per tenant if you want.
+Declares an Agent Substrate WorkerPool: the worker pods agents run in, many actors to a worker, sized, placed and isolated as one pool. Substrate places each actor a product creates or resumes on a worker with room for it, in the pool its template selects, and takes the actor's share back when it is suspended into storage, so a pool serves many more actors than it runs at once. The spec is faithful to the upstream `ate.dev/v1alpha1` WorkerPool (pinned to Agent Substrate v0.5.0) — this is the capacity and the boundary an agent runtime is built from, one pool per tenant if you want.
 
 ## What Gets Created
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **A WorkerPool** -- one namespaced object naming its size, its worker image, its worker pods' placement and resources, and its sandbox class.
-- **Kubernetes Labels** -- your own labels on the object, with resource metadata labels (resource name, kind, organization, environment) applied automatically on top.
+- **A WorkerPool** — one namespaced object naming its size, its worker image, its worker pods' placement and resources, and its sandbox class.
+- **Kubernetes Labels** — your own labels on the object, with resource metadata labels (resource name, kind, organization, environment) applied automatically on top.
 
 Substrate's controller then runs the pool: a Deployment of the same name with one pod per worker, and a NetworkPolicy that lets only Substrate's router reach the workers.
 
@@ -15,14 +15,14 @@ Substrate's controller then runs the pool: a Deployment of the same name with on
 
 ### Planton Setup
 
-- **Kubernetes Provider Connection** -- an active connection in the Connect module with kubeconfig credentials for the target cluster. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline kubeconfig authentication.
+- **Kubernetes Provider Connection** — an active connection in the Connect module with kubeconfig credentials for the target cluster. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline kubeconfig authentication.
 
 ### Kubernetes Cluster
 
-- **Agent Substrate installed** -- the definition, the controller that runs the pool, the node agent on every node and the API server the workers register with.
-- **Target namespace exists, with no Pod Security enforcement** -- workers run as root with the capabilities gVisor and microVM need.
-- **KVM-capable nodes for a microVM pool** -- nested virtualization on cloud VMs.
+- **Agent Substrate installed** — the definition, the controller that runs the pool, the node agent on every node and the API server the workers register with.
+- **Target namespace exists, with no Pod Security enforcement** — workers run as root with the capabilities gVisor and microVM need.
+- **KVM-capable nodes for a microVM pool** — nested virtualization on cloud VMs.
 
 ## Deploy
 
@@ -116,17 +116,17 @@ These are the most important decisions when configuring a worker pool. Explore t
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **KubernetesNamespace** | `namespace` | `spec.name` |
-| **KubernetesAgentSubstrate** | `workerImage` | `status.outputs.gvisor_worker_image` (or `microvm_worker_image`) |
-| **KubernetesAgentSubstrateSandboxConfig** | `sandboxClasses[].configRef.name` | `status.outputs.sandbox_config_name` |
-| **KubernetesServiceAccount** | `template.serviceAccountName` | `status.outputs.service_account_name` |
-| **KubernetesPriorityClass** | `template.priorityClassName` | `status.outputs.priority_class_name` |
+| **Kubernetes Namespace** | `namespace` | `spec.name` |
+| **Agent Substrate** | `workerImage` | `status.outputs.gvisor_worker_image` (or `microvm_worker_image`) |
+| **Agent Substrate Sandbox Config** | `sandboxClasses[].configRef.name` | `status.outputs.sandbox_config_name` |
+| **Kubernetes ServiceAccount** | `template.serviceAccountName` | `status.outputs.service_account_name` |
+| **Kubernetes PriorityClass** | `template.priorityClassName` | `status.outputs.priority_class_name` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|-----------------------|
@@ -137,15 +137,15 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**A shared gVisor pool** -- a few workers on any nodes, on the class default. Start from the **gVisor Worker Pool** preset.
+**A shared gVisor pool** — a few workers on any nodes, on the class default. Start from the **gVisor Worker Pool** preset.
 
-**A pool per tenant** -- the tenant's own labels, namespace and tainted nodes. Start from the **Dedicated Tenant Pool** preset.
+**A pool per tenant** — the tenant's own labels, namespace and tainted nodes. Start from the **Dedicated Tenant Pool** preset.
 
-**MicroVM isolation** -- each actor in its own virtual machine, on KVM nodes. Start from the **MicroVM Worker Pool** preset.
+**MicroVM isolation** — each actor in its own virtual machine, on KVM nodes. Start from the **MicroVM Worker Pool** preset.
 
 ## Works With
 
-- [**Agent Substrate**](/infra-catalog/kubernetes-agent-substrate) -- the control plane the workers register with, and the worker images.
-- [**Agent Substrate Sandbox Config**](/infra-catalog/kubernetes-agent-substrate-sandbox-config) -- the runtime the pool runs.
-- [**Kubernetes Namespace**](/infra-catalog/kubernetes-namespace) -- a namespace per pool or per tenant.
-- [**Kubernetes Priority Class**](/infra-catalog/kubernetes-priority-class) -- the workers' scheduling priority.
+- [**Agent Substrate**](/infra-catalog/kubernetes-agent-substrate) — the control plane the workers register with, and the worker images.
+- [**Agent Substrate Sandbox Config**](/infra-catalog/kubernetes-agent-substrate-sandbox-config) — the runtime the pool runs.
+- [**Kubernetes Namespace**](/infra-catalog/kubernetes-namespace) — a namespace per pool or per tenant.
+- [**Kubernetes Priority Class**](/infra-catalog/kubernetes-priority-class) — the workers' scheduling priority.

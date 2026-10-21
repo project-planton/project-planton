@@ -1,5 +1,5 @@
 # Least-privilege permissions the IaC runner's GCP principal needs to
-# provision, update, and destroy this component with the official modules.
+# provision, update, and destroy this component with the platform modules.
 # Every entry is `derived` (static analysis of the module sources, cited in
 # notes) until the live capture lane upgrades it to `proven`. Schema:
 # iac/catalogkindpermissions/v1.
@@ -16,6 +16,8 @@ spec:
           - serviceusage.services.get
           - serviceusage.services.list
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers the google_project_service resource enabling file.googleapis.com (disable_on_destroy is false, so the disable permission is never needed).
       - purpose: ManageInstance
         permissions:
@@ -25,4 +27,6 @@ spec:
           - file.instances.delete
           - file.operations.get
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers google_filestore_instance -- create, read/refresh, in-place updates (capacity growth, export options, performance config, labels), and destroy. Instance mutations are long-running operations the provider polls as file.operations.get; Filestore's permission prefix is "file" (the API's service name), not "filestore", and all five are real dotted permissions in IAM's testable-permissions inventory.

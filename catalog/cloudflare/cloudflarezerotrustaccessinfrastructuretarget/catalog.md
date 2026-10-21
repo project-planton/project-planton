@@ -17,9 +17,9 @@ When you deploy this Infra Component, the IaC module provisions:
 
 ### Cloudflare Account
 
-- **Zero Trust enabled on the account** — the organization (team name) onboarding step must be done (a CloudflareZeroTrustOrganization Infra Component).
-- **A tunnel path to the server** (for live SSH brokering) — a CloudflareZeroTrustTunnel whose CloudflareZeroTrustTunnelRoute covers the target's address, in the same virtual network. Registration alone does not make the target reachable.
-- **A virtual network** (only for overlapping CIDRs) — a CloudflareZeroTrustTunnelVirtualNetwork per network segment when two sites reuse the same private ranges.
+- **Zero Trust enabled on the account** — the organization (team name) onboarding step must be done (a Cloudflare Zero Trust Organization Infra Component).
+- **A tunnel path to the server** (for live SSH brokering) — a Cloudflare Zero Trust Tunnel whose Cloudflare Zero Trust Tunnel Route covers the target's address, in the same virtual network. Registration alone does not make the target reachable.
+- **A virtual network** (only for overlapping CIDRs) — a Cloudflare Zero Trust Tunnel Virtual Network per network segment when two sites reuse the same private ranges.
 
 ## Deploy
 
@@ -54,7 +54,7 @@ This registers `prod-db-1` at `10.0.10.5` in the account's default virtual netwo
 
 ### InfraChart
 
-When the virtual network is deployed in the same InfraPipeline, wire `virtualNetworkId` with ValueFromRef:
+When the virtual network is deployed in the same InfraPipeline, wire `virtualNetworkId` with references:
 
 ```yaml
 spec:
@@ -78,7 +78,7 @@ These are the most important decisions when configuring an infrastructure target
 
 **The hostname is the permission scheme** — infrastructure applications grant access by hostname pattern (`prod-db-*`), so a target named casually (`box7`) either falls outside every pattern and is unreachable, or inside the wrong one and is over-granted. Decide the naming scheme first — environment-role-index (`prod-db-1`) works — and register every target inside it. Hostnames allow letters, digits, dashes, and periods, up to 255 characters, starting and ending alphanumeric.
 
-**The default virtual network is a real choice** — omitting `virtualNetworkId` places the address in the account's default virtual network: fine for a flat estate, wrong for overlapping CIDRs. If two datacenters both use 10.0.10.0/24, each needs its own CloudflareZeroTrustTunnelVirtualNetwork, and every target must say which one it means. An omitted virtual network never drifts the plan — silence is stable, but it is still a choice.
+**The default virtual network is a real choice** — omitting `virtualNetworkId` places the address in the account's default virtual network: fine for a flat estate, wrong for overlapping CIDRs. If two datacenters both use 10.0.10.0/24, each needs its own Cloudflare Zero Trust Tunnel Virtual Network, and every target must say which one it means. An omitted virtual network never drifts the plan — silence is stable, but it is still a choice.
 
 **Inventory, not connectivity** — registering a target does not make it reachable. SSH sessions ride the account's tunnels, and a tunnel must route the target's network in the same virtual network. Register the target, route its network, then point an infrastructure application at it — three resources, one path.
 
@@ -88,13 +88,13 @@ These are the most important decisions when configuring an infrastructure target
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **CloudflareZeroTrustTunnelVirtualNetwork** (optional, per family) | `ip.ipv4.virtualNetworkId` / `ip.ipv6.virtualNetworkId` | `status.outputs.virtual_network_id` |
+| **Cloudflare Zero Trust Tunnel Virtual Network** (optional, per family) | `ip.ipv4.virtualNetworkId` / `ip.ipv6.virtualNetworkId` | `status.outputs.virtual_network_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

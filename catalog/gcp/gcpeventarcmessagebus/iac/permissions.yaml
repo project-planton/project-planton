@@ -1,5 +1,5 @@
 # Least-privilege permissions the IaC runner's GCP principal needs to
-# provision, update, and destroy this component with the official modules.
+# provision, update, and destroy this component with the platform modules.
 # Every entry is `derived` (static analysis of the module sources, cited in
 # notes) until the live capture lane upgrades it to `proven`. Schema:
 # iac/catalogkindpermissions/v1.
@@ -16,6 +16,8 @@ spec:
           - serviceusage.services.get
           - serviceusage.services.list
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers google_project_service enabling eventarc.googleapis.com on the target project. disable_on_destroy is false in both modules, so the disable permission is never needed.
       - purpose: ManageMessageBus
         permissions:
@@ -25,6 +27,8 @@ spec:
           - eventarc.messageBuses.delete
           - eventarc.operations.get
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers google_eventarc_message_bus -- create, read/refresh, in-place updates (display name, labels, logging, CMEK), and destroy. Eventarc mutations return long-running operations the provider polls, authorized as eventarc.operations.get (shared by every group below). The committed action-inventory snapshot (pkg/iac/actioninventory/gcp.yaml) carries the eventarc service prefix and lists every eventarc.* permission in this manifest; the list was also verified live against Google's Eventarc access-control documentation (https://cloud.google.com/eventarc/standard/docs/access-control, whose role tables publish the full permission inventory for the Advanced resources too). The kind's READMEs previously recommended roles/eventarc.admin -- that role carries the full eventarc.* family including publish, IAM-policy, and channel permissions the deployer never exercises; this manifest is the least-privilege equivalent for what the modules actually do.
       - purpose: ManageGoogleApiSources
         permissions:
@@ -33,6 +37,8 @@ spec:
           - eventarc.googleApiSources.update
           - eventarc.googleApiSources.delete
         provenance: derived
+        reach: target
+        privilege: ordinary
         condition:
           spec_field_set: google_api_sources
         notes: Covers google_eventarc_google_api_source, created once per google_api_sources entry (the 02-audit-fan-out preset declares sources).
@@ -43,6 +49,8 @@ spec:
           - eventarc.pipelines.update
           - eventarc.pipelines.delete
         provenance: derived
+        reach: target
+        privilege: ordinary
         condition:
           spec_field_set: pipelines
         notes: Covers google_eventarc_pipeline, created once per pipelines entry. A pipeline's authentication service account needs the EVENTARC SERVICE AGENT (not the deployer) to hold roles/iam.serviceAccountTokenCreator on it -- a prerequisite grant outside this module; Google documents no deployer-side actAs check for pipeline creation, so none is claimed here.
@@ -53,6 +61,8 @@ spec:
           - eventarc.enrollments.update
           - eventarc.enrollments.delete
         provenance: derived
+        reach: target
+        privilege: ordinary
         condition:
           spec_field_set: enrollments
         notes: Covers google_eventarc_enrollment, created once per enrollments entry and wired to the sibling bus and pipeline by resource reference.

@@ -11,6 +11,8 @@ spec:
         resources:
           - "*"
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: NON-SCOPABLE per the service reference (the CA's ARN does not exist until the call returns), so the wildcard is the narrowest possible scope. One aws_acmpca_certificate_authority per manifest.
       - sid: ManageCertificateAuthority
         actions:
@@ -23,6 +25,8 @@ spec:
         resources:
           - arn:aws:acm-pca:*:*:certificate-authority/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: DescribeCertificateAuthority serves every plan/refresh; UpdateCertificateAuthority applies revocation-configuration and enabled/disabled changes; DeleteCertificateAuthority tears down (setting the permanent_deletion_time_in_days restore window). The CA is tagged (tags = local.aws_tags), so all three tag actions ride the same ARN scope.
       - sid: ActivateAndIssue
         actions:
@@ -34,6 +38,8 @@ spec:
         resources:
           - arn:aws:acm-pca:*:*:certificate-authority/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: The composed activation dance -- a ROOT CA self-signs (CSR from the CA, IssueCertificate with the root template against the SAME CA, GetCertificate, ImportCertificateAuthorityCertificate); a SUBORDINATE issues from the PARENT CA named in subordinate_activation, which is why the scope stays at certificate-authority/* rather than a single CA. The same actions serve issued_certificates entries (aws_acmpca_certificate for_each).
       - sid: AcmRenewalPermission
         actions:
@@ -43,6 +49,8 @@ spec:
         resources:
           - arn:aws:acm-pca:*:*:certificate-authority/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Exercised only when acm_renewal_permission is true -- aws_acmpca_permission grants acm.amazonaws.com the IssueCertificate/GetCertificate/ListPermissions set so ACM-requested certificates auto-renew.
       - sid: ResourcePolicy
         actions:
@@ -52,4 +60,6 @@ spec:
         resources:
           - arn:aws:acm-pca:*:*:certificate-authority/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Exercised only when the policy field is set -- aws_acmpca_policy manages the CA's resource policy for cross-account/organization issuance grants.

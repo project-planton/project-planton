@@ -1,24 +1,24 @@
 # GCP Redis Cluster
 
-Memorystore for Redis Cluster -- Google's fully managed, sharded Redis. Your keyspace is spread across shards, read replicas serve reads and take over on failure, and the cluster grows or shrinks in place without downtime. Clients reach it over Private Service Connect: name a consumer network and Google places the endpoints, or build your own endpoints against the service attachments the cluster publishes. It is the cache and session store for a service that has outgrown one Redis node, and the data structure server for leaderboards, rate limiters, and queues at scale.
+Memorystore for Redis Cluster — Google's fully managed, sharded Redis. Your keyspace is spread across shards, read replicas serve reads and take over on failure, and the cluster grows or shrinks in place without downtime. Clients reach it over Private Service Connect: name a consumer network and Google places the endpoints, or build your own endpoints against the service attachments the cluster publishes. It is the cache and session store for a service that has outgrown one Redis node, and the data structure server for leaderboards, rate limiters, and queues at scale.
 
 ## What Gets Created
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **Redis Cluster** -- a `redis.Cluster` in the chosen region with the declared shards and replicas on the chosen node type, authentication and TLS modes, persistence, backups, maintenance window, zone distribution, optional customer-managed encryption, and Private Service Connect configuration
-- **API enablement** -- the Memorystore for Redis and Network Connectivity APIs on the project, never disabled on destroy
+- **Redis Cluster** — a `redis.Cluster` in the chosen region with the declared shards and replicas on the chosen node type, authentication and TLS modes, persistence, backups, maintenance window, zone distribution, optional customer-managed encryption, and Private Service Connect configuration
+- **API enablement** — the Memorystore for Redis and Network Connectivity APIs on the project, never disabled on destroy
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **GCP Provider Connection** -- an active connection in the Connect module with `roles/redis.admin` on the project. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
+- **GCP Provider Connection** — an active connection in the Connect module with `roles/redis.admin` on the project. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
 
 ### GCP Networks
 
-- **A service connection policy** -- a `GcpServiceConnectionPolicy` with `serviceClass: gcp-memorystore-redis` on the consumer network in the cluster's region, deployed before the cluster when `pscConfigs` is set. Its subnets supply the endpoint addresses.
+- **A service connection policy** — a `GcpServiceConnectionPolicy` with `serviceClass: gcp-memorystore-redis` on the consumer network in the cluster's region, deployed before the cluster when `pscConfigs` is set. Its subnets supply the endpoint addresses.
 
 ## Deploy
 
@@ -72,30 +72,30 @@ When deploying as part of a multi-resource environment, wire `pscConfigs[].netwo
 
 These are the most important decisions when configuring a cluster. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Size** -- `shardCount` splits the keyspace; `replicaCount` (0-5) adds per-shard replicas for reads and failover; `nodeType` fixes each node's memory and hourly rate. All three resize in place.
+**Size** — `shardCount` splits the keyspace; `replicaCount` (0-5) adds per-shard replicas for reads and failover; `nodeType` fixes each node's memory and hourly rate. All three resize in place.
 
-**Connectivity** -- `pscConfigs` names one consumer network and Google places the endpoints (a `GcpServiceConnectionPolicy` for `gcp-memorystore-redis` must exist there first). Leave it empty to publish service attachments only and register hand-built endpoints through `GcpRedisClusterEndpointSet` -- the multi-VPC pattern.
+**Connectivity** — `pscConfigs` names one consumer network and Google places the endpoints (a `GcpServiceConnectionPolicy` for `gcp-memorystore-redis` must exist there first). Leave it empty to publish service attachments only and register hand-built endpoints through `GcpRedisClusterEndpointSet` — the multi-VPC pattern.
 
-**Security** -- `authorizationMode: AUTH_MODE_IAM_AUTH` puts the data plane under IAM; `transitEncryptionMode: TRANSIT_ENCRYPTION_MODE_SERVER_AUTHENTICATION` turns on TLS; `kmsKey` brings your own key for data at rest. The first two are immutable.
+**Security** — `authorizationMode: AUTH_MODE_IAM_AUTH` puts the data plane under IAM; `transitEncryptionMode: TRANSIT_ENCRYPTION_MODE_SERVER_AUTHENTICATION` turns on TLS; `kmsKey` brings your own key for data at rest. The first two are immutable.
 
-**Durability** -- `persistenceConfig` (RDB snapshots or AOF log) makes data survive restarts; `automatedBackupConfig` takes daily backups with a retention you choose; `crossClusterReplicationConfig` replicates to another region.
+**Durability** — `persistenceConfig` (RDB snapshots or AOF log) makes data survive restarts; `automatedBackupConfig` takes daily backups with a retention you choose; `crossClusterReplicationConfig` replicates to another region.
 
-**Destroy semantics** -- `deletionProtectionEnabled` (default `true`) blocks destroys until flipped; `deletionPolicy: PREVENT` is a second guard.
+**Destroy semantics** — `deletionProtectionEnabled` (default `true`) blocks destroys until flipped; `deletionPolicy: PREVENT` is a second guard.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **GcpProject** | `projectId` | `status.outputs.project_id` |
-| **GcpVpcNetwork** | `pscConfigs[].network` | `status.outputs.network_id` |
-| **GcpKmsKey** | `kmsKey` | `status.outputs.key_id` |
-| **GcpRedisCluster** | `crossClusterReplicationConfig.primaryCluster.cluster`, `secondaryClusters[].cluster` | `status.outputs.name` |
+| **GCP Project** | `projectId` | `status.outputs.project_id` |
+| **GCP VPC Network** | `pscConfigs[].network` | `status.outputs.network_id` |
+| **GCP KMS Key** | `kmsKey` | `status.outputs.key_id` |
+| **GCP Redis Cluster** | `crossClusterReplicationConfig.primaryCluster.cluster`, `secondaryClusters[].cluster` | `status.outputs.name` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -110,16 +110,16 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Development cache** -- One nano shard, no replicas, deletion protection off. Start from the **Development Cache** preset.
+**Development cache** — One nano shard, no replicas, deletion protection off. Start from the **Development Cache** preset.
 
-**Production cache** -- Multi-zone shards with replicas, TLS, IAM auth, AOF persistence, daily backups, a maintenance window. Start from the **Production Cache** preset.
+**Production cache** — Multi-zone shards with replicas, TLS, IAM auth, AOF persistence, daily backups, a maintenance window. Start from the **Production Cache** preset.
 
-**Cross-region secondary** -- A read-only replica cluster in another region for disaster recovery. Start from the **Cross-Region Secondary** preset.
+**Cross-region secondary** — A read-only replica cluster in another region for disaster recovery. Start from the **Cross-Region Secondary** preset.
 
 ## Works With
 
-- [**GCP Service Connection Policy**](/infra-catalog/gcp-service-connection-policy) -- the automation policy Google-placed endpoints need
-- [**GCP Redis Cluster Endpoint Set**](/infra-catalog/gcp-redis-cluster-endpoint-set) -- registers consumer-built PSC connections
-- [**GCP VPC Network**](/infra-catalog/gcp-vpc-network) -- the consumer network
-- [**GCP KMS Key**](/infra-catalog/gcp-kms-key) -- customer-managed encryption at rest
-- [**GCP Cloud Run Worker Pool**](/infra-catalog/gcp-cloud-run-worker-pool) -- a typical client, reaching the cluster over direct VPC egress
+- [**GCP Service Connection Policy**](/infra-catalog/gcp-service-connection-policy) — the automation policy Google-placed endpoints need
+- [**GCP Redis Cluster Endpoint Set**](/infra-catalog/gcp-redis-cluster-endpoint-set) — registers consumer-built PSC connections
+- [**GCP VPC Network**](/infra-catalog/gcp-vpc-network) — the consumer network
+- [**GCP KMS Key**](/infra-catalog/gcp-kms-key) — customer-managed encryption at rest
+- [**GCP Cloud Run Worker Pool**](/infra-catalog/gcp-cloud-run-worker-pool) — a typical client, reaching the cluster over direct VPC egress

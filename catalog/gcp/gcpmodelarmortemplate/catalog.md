@@ -6,15 +6,15 @@ Puts a safety screen in front of your AI application. A Model Armor template is 
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **API enablement** -- `modelarmor.googleapis.com` on the project
-- **Template** -- a `modelarmor.Template` with the filters, optional metadata, and labels
+- **API enablement** — `modelarmor.googleapis.com` on the project
+- **Template** — a `modelarmor.Template` with the filters, optional metadata, and labels
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **GCP Provider Connection** -- an active connection in the Connect module with Model Armor admin permissions on the project. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
+- **GCP Provider Connection** — an active connection in the Connect module with Model Armor admin permissions on the project. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
 
 ## Deploy
 
@@ -59,25 +59,25 @@ Reference the template's `name` output from a `GcpVertexAiSearchEngine` assistan
 
 These are the most important decisions when configuring a template. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Which checks run** -- each filter under `filterConfig` is off until you set it. Prompt injection and jailbreak detection is the one almost every AI app needs; add the content filters for user-facing chat, sensitive-data detection when prompts may carry personal data, and URL checks when responses include links.
+**Which checks run** — each filter under `filterConfig` is off until you set it. Prompt injection and jailbreak detection is the one almost every AI app needs; add the content filters for user-facing chat, sensitive-data detection when prompts may carry personal data, and URL checks when responses include links.
 
-**How strict each check is** -- `LOW_AND_ABOVE` catches the most and flags the most false positives; `HIGH` flags only clear cases. `MEDIUM_AND_ABOVE` is the balanced start.
+**How strict each check is** — `LOW_AND_ABOVE` catches the most and flags the most false positives; `HIGH` flags only clear cases. `MEDIUM_AND_ABOVE` is the balanced start.
 
-**Report or block** -- `templateMetadata.enforcementType` decides whether a hit is only reported (`INSPECT_ONLY`) or blocked (`INSPECT_AND_BLOCK`). Start by reporting, then block once the thresholds are tuned.
+**Report or block** — `templateMetadata.enforcementType` decides whether a hit is only reported (`INSPECT_ONLY`) or blocked (`INSPECT_AND_BLOCK`). Start by reporting, then block once the thresholds are tuned.
 
-**Where prompts are screened** -- the template's `location` is where your traffic is inspected. Pick it for your data-residency rules.
+**Where prompts are screened** — the template's `location` is where your traffic is inspected. Pick it for your data-residency rules.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **GcpProject** | `projectId` | `status.outputs.project_id` |
+| **GCP Project** | `projectId` | `status.outputs.project_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -89,12 +89,12 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Prompt guard** -- injection, jailbreak, and malicious-URL detection in report-only mode, the first template for any AI app. Start from the **Prompt Guard** preset.
+**Prompt guard** — injection, jailbreak, and malicious-URL detection in report-only mode, the first template for any AI app. Start from the **Prompt Guard** preset.
 
-**Strict customer-facing screen** -- every content filter, sensitive-data redaction through your own templates, and blocking with a custom message. Start from the **Strict Customer Chat** preset.
+**Strict customer-facing screen** — every content filter, sensitive-data redaction through your own templates, and blocking with a custom message. Start from the **Strict Customer Chat** preset.
 
 ## Works With
 
-- [**GCP Model Armor Floor Setting**](/infra-catalog/gcp-model-armor-floor-setting) -- the minimum every template must meet, and enforcement on Vertex AI traffic
-- [**GCP Vertex AI Search Engine**](/infra-catalog/gcp-vertex-ai-search-engine) -- assistants screen prompts and responses through templates
-- [**GCP Vertex AI Agent Engine**](/infra-catalog/gcp-vertex-ai-agent-engine) -- agents that screen their input
+- [**GCP Model Armor Floor Setting**](/infra-catalog/gcp-model-armor-floor-setting) — the minimum every template must meet, and enforcement on Vertex AI traffic
+- [**GCP Vertex AI Search Engine**](/infra-catalog/gcp-vertex-ai-search-engine) — assistants screen prompts and responses through templates
+- [**GCP Vertex AI Agent Engine**](/infra-catalog/gcp-vertex-ai-agent-engine) — agents that screen their input

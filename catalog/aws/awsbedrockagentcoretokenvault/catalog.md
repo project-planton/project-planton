@@ -53,7 +53,7 @@ This points the region's default token vault at your KMS key — every credentia
 
 ### InfraChart
 
-When the vault setting deploys alongside the key it adopts in one chart, wire the key reference via ValueFromRef:
+When the vault setting deploys alongside the key it adopts in one chart, wire the key reference:
 
 ```yaml
 spec:
@@ -90,13 +90,13 @@ These are the most important decisions when configuring the token vault. Explore
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AwsKmsKey** | `kmsKeyArn` | `status.outputs.key_arn` |
+| **AWS KMS Key** | `kmsKeyArn` | `status.outputs.key_arn` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

@@ -1,6 +1,6 @@
 # Grafana Tempo
 
-Deploys Grafana Tempo — cost-efficient distributed tracing — from the official `tempo` Helm chart. Tempo stores whole traces in object storage and needs no expensive index (you retrieve by trace ID or TraceQL), so it scales to high span volumes cheaply. It is the traces half of a complete observability stack alongside metrics (Prometheus) and logs (Loki).
+Deploys Grafana Tempo — cost-efficient distributed tracing — from the official tempo Helm chart. Tempo stores whole traces in object storage and needs no expensive index (you retrieve by trace ID or TraceQL), so it scales to high span volumes cheaply. It is the traces half of a complete observability stack alongside metrics (Prometheus) and logs (Loki).
 
 The grain is deliberate: **this kind is the single-binary Tempo** — one StatefulSet, production-capable with an object-storage backend; the `tempo-distributed` microservices chart is deliberately not modeled. Spans arrive over OTLP (from applications or an OpenTelemetry collector at the exported ingest endpoints) and Grafana reads them back (a datasource of type `tempo` at the exported HTTP endpoint). Everything stays ClusterIP; external reachability composes from ingress and Gateway API kinds over the exported Service handle.
 
@@ -94,17 +94,17 @@ These are the most important decisions when configuring a Tempo installation. Ex
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |---|---|---|
 | Kubernetes Namespace | `spec.namespace` | `spec.name` |
 | Kubernetes StorageClass | `spec.storageClass` | `metadata.name` |
 | kube-prometheus-stack | `spec.metricsGenerator.remoteWriteUrl` | `status.outputs.prometheus_endpoint` |
 
-Object-storage credentials (`spec.storage.s3.credentials`, `spec.storage.gcs.serviceAccountKeySecret`, `spec.storage.azure.accountKeySecret`) and `spec.imagePullSecrets` name existing Secrets by name + key — references to material that already lives in the cluster, needed only when ambient keyless identity is unavailable.
+Object-storage credentials (`spec.storage.s3.credentials`, `spec.storage.gcs.serviceAccountKeySecret`, `spec.storage.azure.accountKeySecret`) and `spec.imagePullSecrets` name existing Secrets by name + key — References to material that already lives in the cluster, needed only when ambient keyless identity is unavailable.
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

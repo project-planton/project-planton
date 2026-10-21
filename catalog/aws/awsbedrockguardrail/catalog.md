@@ -63,7 +63,7 @@ This creates a guardrail that blocks hate content at high strength, masks email 
 
 ### InfraChart
 
-When the guardrail deploys alongside its KMS key in one chart, wire the reference via ValueFromRef:
+When the guardrail deploys alongside its KMS key in one chart, wire the reference:
 
 ```yaml
 spec:
@@ -108,17 +108,17 @@ These are the most important decisions when configuring a guardrail. Explore the
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AwsKmsKey** | `kmsKeyArn` | `status.outputs.key_arn` |
+| **AWS KMS Key** | `kmsKeyArn` | `status.outputs.key_arn` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
-| `guardrail_id` | The unique guardrail identifier | An AwsBedrockAgent's `guardrail.guardrailId`; a flow node's guardrail reference — always paired with a version |
+| `guardrail_id` | The unique guardrail identifier | An AWS Bedrock Agent's `guardrail.guardrailId`; a flow node's guardrail reference — always paired with a version |
 | `guardrail_arn` | The guardrail's ARN | IAM policies and cross-account references |
 | `version_numbers` | AWS-assigned version numbers keyed by each `versions` entry's name | The version a production consumer pins alongside `guardrail_id` |
 

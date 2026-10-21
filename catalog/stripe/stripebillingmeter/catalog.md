@@ -1,20 +1,20 @@
 # Stripe Billing Meter
 
-Declares a usage meter -- API requests summed per customer, the latest seat count -- that a metered price bills, with alerts when a customer's usage crosses a threshold. One Infra Component per meter.
+Declares a usage meter — API requests summed per customer, the latest seat count — that a metered price bills, with alerts when a customer's usage crosses a threshold. One Infra Component per meter.
 
 ## What Gets Created
 
 When you deploy this Infra Component, the OpenTofu module creates, in the Stripe account your Stripe connection's key belongs to:
 
-- **The meter** -- the event name your application sends, and how events add up per customer
-- **Its alerts** -- one per declared threshold, each sending `billing.alert.triggered` when a customer reaches it
+- **The meter** — the event name your application sends, and how events add up per customer
+- **Its alerts** — one per declared threshold, each sending `billing.alert.triggered` when a customer reaches it
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **Stripe Provider Connection** -- an active connection with a restricted key and its mode (test or live). A key of the other mode is refused before anything runs.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline credential authentication.
+- **Stripe Provider Connection** — an active connection with a restricted key and its mode (test or live). A key of the other mode is refused before anything runs.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline credential authentication.
 
 ### Stripe Account
 
@@ -55,11 +55,11 @@ An Infra Job tracks the change in real time.
 
 These are the decisions that matter. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Only the display name changes in place** -- any other change creates a new meter, and every metered price on it is replaced with it.
+**Only the display name changes in place** — any other change creates a new meter, and every metered price on it is replaced with it.
 
-**Alerts are forgotten** -- a changed, removed or destroyed alert stays active in Stripe until you archive it.
+**Alerts are forgotten** — a changed, removed or destroyed alert stays active in Stripe until you archive it.
 
-**Destroy deactivates** -- the meter stops accepting events; Stripe keeps it.
+**Destroy deactivates** — the meter stops accepting events; Stripe keeps it.
 
 ## Outputs and Dependencies
 
@@ -82,11 +82,11 @@ After provisioning, `status.outputs` contains:
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Requests with an alert** -- a summed meter that warns at a threshold. Start from the **API Requests With an Alert** preset.
+**Requests with an alert** — a summed meter that warns at a threshold. Start from the **API Requests With an Alert** preset.
 
-**Seats** -- the latest seat count, for per-seat usage billing. Start from the **Active Seats** preset.
+**Seats** — the latest seat count, for per-seat usage billing. Start from the **Active Seats** preset.
 
-**Price and application in one chart** -- a metered Stripe Price names the meter, and your application's deployment reads its event name, both by reference. The meter deploys first, and the name your application sends and the name the meter counts can't drift:
+**Price and application in one chart** — a metered Stripe Price names the meter, and your application's deployment reads its event name, both by reference. The meter deploys first, and the name your application sends and the name the meter counts can't drift:
 
 ```yaml
 # StripePrice
@@ -115,5 +115,5 @@ spec:
 
 ## Works With
 
-- [**Stripe Price**](/infra-catalog/stripe-price) -- a metered price bills what the meter counts.
-- [**Kubernetes Deployment**](/infra-catalog/kubernetes-deployment) -- your application reads the event name by reference.
+- [**Stripe Price**](/infra-catalog/stripe-price) — a metered price bills what the meter counts.
+- [**Kubernetes Deployment**](/infra-catalog/kubernetes-deployment) — your application reads the event name by reference.

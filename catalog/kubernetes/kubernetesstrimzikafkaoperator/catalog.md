@@ -1,6 +1,6 @@
 # Strimzi Kafka Operator
 
-Installs the Strimzi cluster operator — the CNCF project that runs Apache Kafka on Kubernetes — from the official `strimzi-kafka-operator` Helm chart. The operator is the ENGINE: it reconciles `Kafka` custom resources (declared with Apache Kafka) into KRaft-mode Kafka clusters, and its per-cluster entity operators reconcile `KafkaTopic` / `KafkaUser` resources into real topics and authenticated users. This component installs and configures the operator itself; Kafka clusters, topics, and users are declared as their own first-class Infra Components.
+Installs the Strimzi cluster operator — the CNCF project that runs Apache Kafka on Kubernetes — from the official strimzi-kafka-operator Helm chart. The operator is the ENGINE: it reconciles `Kafka` custom resources (declared with Apache Kafka) into KRaft-mode Kafka clusters, and its per-cluster entity operators reconcile `KafkaTopic` / `KafkaUser` resources into real topics and authenticated users. This component installs and configures the operator itself; Kafka clusters, topics, and users are declared as their own first-class Infra Components.
 
 ## What Gets Created
 
@@ -89,13 +89,13 @@ These are the most important decisions when configuring the operator. Explore th
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
 | Kubernetes Namespace | `spec.namespace` | `spec.name` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

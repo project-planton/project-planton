@@ -1,6 +1,6 @@
 # kube-prometheus-stack
 
-Deploys kube-prometheus-stack — the industry-standard cluster monitoring bundle — from the official `kube-prometheus-stack` Helm chart. One resource is the whole observability plane: the **Prometheus Operator** (the controller), an HA-capable **Prometheus** server on persistent volumes, an **Alertmanager**, the **kube-state-metrics** and **node-exporter** metric sources, the chart's curated Kubernetes alerting/recording rules, and a **bundled Grafana** pre-loaded with the matching dashboards.
+Deploys kube-prometheus-stack — the industry-standard cluster monitoring bundle — from the official kube-prometheus-stack Helm chart. One resource is the whole observability plane: the **Prometheus Operator** (the controller), an HA-capable **Prometheus** server on persistent volumes, an **Alertmanager**, the **kube-state-metrics** and **node-exporter** metric sources, the chart's curated Kubernetes alerting/recording rules, and a **bundled Grafana** pre-loaded with the matching dashboards.
 
 The grain is deliberate: **one stack per cluster is the norm**. The chart installs the `monitoring.coreos.com` CRDs (ServiceMonitor, PodMonitor, PrometheusRule, Prometheus, Alertmanager, ...), which are cluster-scoped singletons — a second stack on the same cluster must set `skipCrds` and fence its discovery, an advanced posture, never the default. Every UI stays ClusterIP; external reachability composes from ingress and Gateway API kinds over the exported service handles.
 
@@ -79,7 +79,7 @@ These are the most important decisions when configuring a kube-prometheus-stack 
 
 **On managed clouds, disable the scrapers that can never succeed** — on EKS/GKE/AKS the controller-manager, etcd, and scheduler run on provider machines the cluster network can never reach; leaving their scrapers on produces permanently-down targets and alerts that can never recover (kube-proxy's metrics port is often localhost-bound too). Disable them via `controlPlaneScrapers` and pair each with its rule group in `defaultRules.disabledGroups`, so the alert set stays truthful. The **Managed cloud preset** carries the exact set.
 
-**Tune one curated alert without losing its group** — `defaultRules.disabledAlerts` leaves single alerts out and `defaultRules.alertOverrides` changes a kept alert's hold (`for`) or `severity`. Node pools that autoscale are the common case: the two overcommit alerts count today's nodes and fire on every burst the autoscaler absorbs, so the presets turn them off. For an alert that misreads work your cluster does on purpose (CI build pods, busy build machines), replace it: disable it here and declare the same alert name in a **KubernetesPrometheusRule** that leaves that work out. A name that matches no rule is skipped silently, so read the loaded rules back after a change.
+**Tune one curated alert without losing its group** — `defaultRules.disabledAlerts` leaves single alerts out and `defaultRules.alertOverrides` changes a kept alert's hold (`for`) or `severity`. Node pools that autoscale are the common case: the two overcommit alerts count today's nodes and fire on every burst the autoscaler absorbs, so the presets turn them off. For an alert that misreads work your cluster does on purpose (CI build pods, busy build machines), replace it: disable it here and declare the same alert name in a **Prometheus Rule** that leaves that work out. A name that matches no rule is skipped silently, so read the loaded rules back after a change.
 
 **Alertmanager's default notifies NOBODY — declare `notifications`** — with nothing declared, everything routes to a `"null"` receiver: alerts are visible in the UIs and APIs but reach no one. `alertmanager.notifications` types the delivery: Discord, Pushover and webhook receivers, a routing tree with label matchers, and a **heartbeat** that posts the always-firing Watchdog alert to an outside dead-man's-switch monitor every minute, so a dead Alertmanager or cluster is noticed. Every credential is a managed-secret reference the module mounts from its own Secret; nothing lands in chart values. Messages lead with environment and component and never render a namespace, pod or description, so no alert names a customer. `configYaml` remains for integrations not typed yet (never inline a credential there). Mind the routing trap: the root receiver only takes alerts no child route claims.
 
@@ -87,9 +87,9 @@ These are the most important decisions when configuring a kube-prometheus-stack 
 
 **Prometheus replicas duplicate, they never shard** — each replica scrapes and stores the FULL target set independently; 2 is the HA pair, and queries against the Service may see either replica. Deduplicated long-term storage is the Thanos surface, reached through `helmValues`. Retention is dual-bounded: `retention` (default 10d) by age and `retentionSize` by disk — size the latter BELOW the volume, because a full volume crash-loops instead of trimming.
 
-**The bundled Grafana is the stack's dashboard console, not your fleet Grafana** — it arrives pre-wired with a datasource for this Prometheus and the curated dashboard set, with admin credentials generated once and exported. For a standalone, multi-datasource Grafana, disable it here and deploy **KubernetesGrafana** instead, pointed at this stack's exported Prometheus endpoint. Give the bundled one a `storage` block if people build dashboards by hand — the ephemeral default loses them with the pod.
+**The bundled Grafana is the stack's dashboard console, not your fleet Grafana** — it arrives pre-wired with a datasource for this Prometheus and the curated dashboard set, with admin credentials generated once and exported. For a standalone, multi-datasource Grafana, disable it here and deploy **Grafana** instead, pointed at this stack's exported Prometheus endpoint. Give the bundled one a `storage` block if people build dashboards by hand — the ephemeral default loses them with the pod.
 
-**Nothing is exposed by default** — Prometheus, Alertmanager, and Grafana stay ClusterIP. Expose them by composing first-class kinds (KubernetesIngress, the Gateway API kinds) over the exported service handles; the stack never opens its own doors.
+**Nothing is exposed by default** — Prometheus, Alertmanager, and Grafana stay ClusterIP. Expose them by composing first-class kinds (Kubernetes Ingress, the Gateway API kinds) over the exported service handles; the stack never opens its own doors.
 
 **`helmValues` merges last** — the escape hatch for chart surface beyond the typed fields (Thanos sidecar/ruler, windows monitoring, scrape classes, per-component securityContexts). Anything here silently overrides the typed fields on every deploy; never put secrets in it, and leave `fullnameOverride` alone — the naming contract the outputs derive from depends on it.
 
@@ -97,18 +97,18 @@ These are the most important decisions when configuring a kube-prometheus-stack 
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **KubernetesNamespace** | `namespace` | `spec.name` |
-| **KubernetesStorageClass** | `prometheus.storageClass` | `metadata.name` |
-| **KubernetesStorageClass** | `alertmanager.storageClass` | `metadata.name` |
-| **KubernetesStorageClass** | `grafana.storage.storageClass` | `metadata.name` |
+| **Kubernetes Namespace** | `namespace` | `spec.name` |
+| **Kubernetes StorageClass** | `prometheus.storageClass` | `metadata.name` |
+| **Kubernetes StorageClass** | `alertmanager.storageClass` | `metadata.name` |
+| **Kubernetes StorageClass** | `grafana.storage.storageClass` | `metadata.name` |
 
 The stack's secret inputs — the bring-your-own Grafana `adminSecret`, remote-write basic-auth/bearer-token/SigV4 Secrets, and `imagePullSecrets` — are plain Secret name + key selectors resolved in the installation namespace, not typed references.
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

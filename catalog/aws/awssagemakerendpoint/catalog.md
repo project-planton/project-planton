@@ -60,7 +60,7 @@ This creates a serverless endpoint serving the referenced model at up to 20 conc
 
 ### InfraChart
 
-When the endpoint deploys alongside its model in one chart, wire the model reference via ValueFromRef:
+When the endpoint deploys alongside its model in one chart, wire the model reference:
 
 ```yaml
 spec:
@@ -101,16 +101,16 @@ These are the most important decisions when configuring an endpoint. Explore the
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AwsSagemakerModel** | `productionVariants[].model`, `shadowVariants[].model` | `status.outputs.model_name` |
-| **AwsIamRole** | `executionRoleArn` | `status.outputs.role_arn` |
-| **AwsKmsKey** | `kmsKeyArn` (also under `dataCapture`, `asyncInference`, `coreDump`) | `status.outputs.key_arn` |
-| **AwsSnsTopic** | `asyncInference.successTopicArn`, `asyncInference.errorTopicArn` | `status.outputs.topic_arn` |
+| **AWS SageMaker Model** | `productionVariants[].model`, `shadowVariants[].model` | `status.outputs.model_name` |
+| **AWS IAM Role** | `executionRoleArn` | `status.outputs.role_arn` |
+| **AWS KMS Key** | `kmsKeyArn` (also under `dataCapture`, `asyncInference`, `coreDump`) | `status.outputs.key_arn` |
+| **AWS SNS Topic** | `asyncInference.successTopicArn`, `asyncInference.errorTopicArn` | `status.outputs.topic_arn` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

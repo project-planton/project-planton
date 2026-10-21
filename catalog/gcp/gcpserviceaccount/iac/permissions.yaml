@@ -1,5 +1,5 @@
 # Least-privilege permissions the IaC runner's GCP principal needs to
-# provision, update, and destroy this component with the official modules.
+# provision, update, and destroy this component with the platform modules.
 # Every entry is `derived` (static analysis of the module sources, cited in
 # notes) until the live capture lane upgrades it to `proven`. Schema:
 # iac/catalogkindpermissions/v1.
@@ -19,6 +19,8 @@ spec:
           - iam.serviceAccounts.disable
           - iam.serviceAccounts.enable
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers google_service_account (Pulumi serviceaccount.Account) -- create, read/refresh, in-place updates (display_name, description), and destroy. disable and enable are needed because GCP flips the disabled flag via dedicated Enable/Disable API calls rather than the regular update mask (both modules document this), so any spec that toggles disabled exercises them. The create_ignore_already_exists adoption path reads the existing account under the same get. All six live inside roles/iam.serviceAccountAdmin, whose contents were verified live -- note that role does NOT include key permissions (next group).
       - purpose: ManageUserManagedKey
         permissions:
@@ -26,6 +28,8 @@ spec:
           - iam.serviceAccountKeys.get
           - iam.serviceAccountKeys.delete
         provenance: derived
+        reach: target
+        privilege: grants_access
         condition:
           spec_field_set: user_managed_key
         notes: Covers google_service_account_key (Pulumi serviceaccount.Key), created when user_managed_key is present -- keyless is the default. Both flows use the same permissions (generate returns the private key once; upload sends public_key_data), and a keepers-triggered rotation is a delete plus create. These are the heart of roles/iam.serviceAccountKeyAdmin (verified live) -- a deliberately separate role from serviceAccountAdmin, so key-capable deployers are an explicit grant.
@@ -34,6 +38,8 @@ spec:
           - resourcemanager.projects.getIamPolicy
           - resourcemanager.projects.setIamPolicy
         provenance: derived
+        reach: target
+        privilege: grants_access
         condition:
           spec_field_set: project_iam_roles
         notes: Covers google_project_iam_member's read-modify-write of the project allow policy, one additive (role, member) grant per listed role, on the account's home project. The pair lives inside roles/resourcemanager.projectIamAdmin (verified live).
@@ -42,6 +48,8 @@ spec:
           - resourcemanager.organizations.getIamPolicy
           - resourcemanager.organizations.setIamPolicy
         provenance: derived
+        reach: organization
+        privilege: grants_access
         condition:
           spec_field_set: org_iam_roles
         notes: Covers google_organization_iam_member's read-modify-write of the organization allow policy, one additive grant per role in org_iam_roles, on the organization named by org_id. The pair authorizes on the ORGANIZATION itself and is the heart of roles/resourcemanager.organizationAdmin; grant it to the deploying principal on the org.

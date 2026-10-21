@@ -1,4 +1,4 @@
-# Least-privilege permissions for the official kuberneteslangfuse modules
+# Least-privilege permissions for the platform kuberneteslangfuse modules
 # (iac/tf and iac/pulumi -- behaviorally equivalent). Derived from the
 # resources the modules create directly plus everything the pinned Langfuse
 # chart (2.1.5) renders inside the Helm release. Schema:

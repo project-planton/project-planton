@@ -67,7 +67,7 @@ What you create in each cloud:
 
 The steps are the same on every cloud:
 
-1. **Create the connection in the console.** The subject is assigned when the connection is created, so the connection comes first. It stores no credential and can do nothing until your cloud trusts it.
+1. **Create the connection in the console.** On AWS and Azure the subject is assigned when the connection is created, so the connection comes first; it stores no credential and can do nothing until your cloud trusts it. On Google Cloud the console builds the trust first and creates the connection once the trust admits it.
 2. **Copy the script the console shows.** Every Planton value is already filled in: the issuer and the subject come from the connection you just created.
 3. **Run it in your cloud's shell**, or let Planton run the same setup for you with a one-click consent where the console offers one (Google Cloud and Azure).
 4. **Click Verify.** The console runs the real token exchange and shows what Planton presented next to what your cloud granted.
@@ -204,52 +204,58 @@ A second connection in the same account, for example `acme-aws-staging`, gets it
 
 ### What You Need
 
-- Your project's number (shown on the Google Cloud console home page) and its project ID.
-- A service account for Planton to act as. The script creates it if it does not exist, for example `planton-provisioner@acme-prod.iam.gserviceaccount.com`.
-- A shell with `gcloud` signed in, with permission to create workload identity pools and providers, service accounts, and IAM bindings in the project. The console suggests Cloud Shell. For the one-click option, a Google account that administers the project.
+- Your project's ID, for example `acme-prod`. Planton looks up the project number itself.
+- A shell with `gcloud` signed in, with permission to turn on APIs, create workload identity pools and providers, service accounts, and IAM bindings in the project (Cloud Shell works). For the one-click option, a Google account that administers the project.
 
 ### Steps in the Console
 
 1. Open **Connections** and click the **GCP** card under Infrastructure.
 2. **Name** the connection, for example `acme-gcp-prod`.
 3. Choose **OIDC (Keyless)**.
-4. **Federation Config**: with **Guide me** selected, enter the **GCP Project Number** (`123456789012`), keep the **Workload Identity Pool ID** (`planton`), and keep the proposed **OIDC Provider ID** (`planton-acme-gcp-prod`, derived from the connection's slug). Enter the **Service Account Email**. The console composes the audience from these values and shows it on **Review & Launch** as **Audience (Workload Identity provider)**: `//iam.googleapis.com/projects/123456789012/locations/global/workloadIdentityPools/planton/providers/planton-acme-gcp-prod`.
-5. **Home Project** (optional): the project the connection is labelled by. It does not fill the script's `PROJECT_ID`; set that line to the project that holds the pool.
-6. **Deployment Roles**: select the services you deploy. Each one adds roles the setup grants to the service account; Cloud Storage, for example, grants `roles/storage.admin`.
-7. **Review & Launch**: click **Create connection**. The console then shows the federated subject, the audience, and the service account.
-8. Set up the trust in one of two ways:
-   - **Set it up for me**: sign in with a Google account that administers the project. Planton uses the one-time consent to create the same pool, provider, service account, binding, and role grants as the script, then discards the token. No refresh token is minted and nothing about your Google access is stored.
-   - **Prefer to review and run it yourself? Show the script**: copy the script below and run it.
-9. Click **Verify connection**. New trust in Google IAM can take a couple of minutes to propagate. Once Verify passes, click **Next**, then **Create** on **Review & Create**: the connection already exists, so this opens it. You can also finish first and run the setup later from the connection's page.
+4. **Project**: enter the **Project ID** (`acme-prod`). The console suggests the **Service Account** `planton-provisioner@acme-prod.iam.gserviceaccount.com`, which the setup creates if it does not exist; you can name an existing one instead. If you already run a workload identity pool, click **Already have a Workload Identity provider?** and paste its full resource name.
+5. **Deployment Roles**: select the services you deploy. Each one adds roles the setup grants to the service account; Cloud Storage, for example, grants `roles/storage.admin`.
+6. **Set Up**: build the trust in your project in one of two ways:
+   - **Set It Up for Me**: sign in with a Google account that administers the project. Planton uses the one-time consent to turn on the APIs the trust needs and create the pool, the provider, the service account, the binding and the role grants, then discards the token. No refresh token is minted and nothing about your Google access is stored.
+   - **Prefer to review and run it yourself? Show the script**: run the script below, then paste the line it prints into **The Line the Script Printed**.
 
-<!-- SCREENSHOT: Google Cloud keyless setup - after the connection is created
-  Page: /orgs/{org}/connections (GCP connect wizard, Review & Launch step)
-  Action: Choose OIDC (Keyless), complete Federation Config and Deployment Roles, click Create connection, expand Show the script
-  Focus: The federated subject and audience, the Set it up for me button, the expanded gcloud script, and the Verify connection panel
-  Alt: Google Cloud keyless connection wizard showing the federated subject, the one-click setup button, the gcloud setup script, and the Verify connection button
+   If a Google Cloud connection with the same name already exists, the console says so here, before anything is built, and offers **Change the Name**.
+7. **Review & Create**: click **Create**. The connection is created with the provider the trust admits.
+8. The next screen runs the connection's first **Verify**. New trust can take a couple of minutes to propagate inside Google; if Verify reports the trust is not accepted yet, wait and verify again.
+
+<!-- SCREENSHOT: Google Cloud keyless setup - the Set Up step
+  Page: /orgs/{org}/connections (GCP connect wizard, Set Up step)
+  Action: Choose OIDC (Keyless), enter the project ID, choose Deployment Roles, open Show the script
+  Focus: Set It Up for Me in the footer, the expanded gcloud script, and the paste-back field
+  Alt: Google Cloud keyless connection wizard showing the one-click setup in the footer and the gcloud setup script with its paste-back field
 -->
 
 ### The Script the Console Gives You
 
-For `acme-gcp-prod` with Cloud Storage selected. Replace `<your-project-id>` on the `PROJECT_ID` line with your project ID (`acme-prod` here). That is the only edit the script needs.
+For `acme-gcp-prod` in project `acme-prod` with Cloud Storage selected. Every value is filled in; run it as it is.
 
 ```bash
 #!/usr/bin/env bash
 # Workload Identity Federation trust for your Planton GCP connection.
-# Values from the connection are baked in verbatim -- do not edit them;
-# the audience and subject must match byte-for-byte.
+# Every value is filled in from Planton -- do not edit them; the subject
+# and the issuer must match byte-for-byte.
 # Safe to run again: it adopts what exists and creates what is missing.
 set -euo pipefail
 
-PROJECT_ID="<your-project-id>"  # your GCP project id (project number 123456789012 is already baked into the audience)
+PROJECT_ID="acme-prod"
+PROJECT_NUMBER="$(gcloud projects describe "$PROJECT_ID" --format='value(projectNumber)')"
 SA_EMAIL="planton-provisioner@acme-prod.iam.gserviceaccount.com"
+AUDIENCE="//iam.googleapis.com/projects/$PROJECT_NUMBER/locations/global/workloadIdentityPools/planton/providers/planton-acme-gcp-prod"
 
-# 1/4 Workload Identity Pool -- shared by every Planton connection in this
+# 1/5 The APIs the trust needs: IAM, IAM Service Account Credentials and
+# Security Token Service (turning on an API that is on changes nothing)
+gcloud services enable iam.googleapis.com iamcredentials.googleapis.com sts.googleapis.com --project="$PROJECT_ID"
+
+# 2/5 Workload Identity Pool -- shared by every Planton connection in this
 # project, so it is adopted when it already exists.
 if POOL_STATE="$(gcloud iam workload-identity-pools describe planton \
     --project="$PROJECT_ID" --location=global --format='value(state)' 2>/dev/null)"; then
   if [ "$POOL_STATE" != "ACTIVE" ]; then
-    echo "Workload Identity Pool planton already exists but is $POOL_STATE -- undelete it, or use a different pool id in the connection's audience." >&2
+    echo "Workload Identity Pool planton already exists but is $POOL_STATE -- undelete it first." >&2
     exit 1
   fi
   echo "Workload Identity Pool already exists: planton"
@@ -260,7 +266,7 @@ else
     --description="External identities minted by the Planton OIDC issuer."
 fi
 
-# 2/4 This connection's own OIDC provider, trusting the Planton issuer; the
+# 3/5 This connection's own OIDC provider, trusting the Planton issuer; the
 # attribute condition pins this exact connection's subject -- no other token
 # is accepted. An existing provider is kept only when it already trusts
 # exactly this connection.
@@ -268,7 +274,7 @@ if PROVIDER_TRUST="$(gcloud iam workload-identity-pools providers describe plant
     --project="$PROJECT_ID" --location=global --workload-identity-pool=planton \
     --format='value(state,oidc.issuerUri,attributeCondition)' 2>/dev/null)"; then
   if [ "$PROVIDER_TRUST" != "$(printf 'ACTIVE\t%s\t%s' "https://planton.ai" "assertion.sub == 'planton:v1:org:acme:conn:acme-gcp-prod:provider:gcp'")" ]; then
-    echo "OIDC provider planton-acme-gcp-prod already exists but trusts a different issuer or subject, or is deleted. Each connection needs its own provider -- use a different provider id in the connection's audience." >&2
+    echo "OIDC provider planton-acme-gcp-prod already exists but trusts a different issuer or subject, or is deleted. Each connection needs its own provider." >&2
     exit 1
   fi
   echo "OIDC provider already trusts this connection: planton-acme-gcp-prod"
@@ -278,12 +284,12 @@ else
     --workload-identity-pool=planton \
     --display-name="Planton OIDC" \
     --issuer-uri="https://planton.ai" \
-    --allowed-audiences="//iam.googleapis.com/projects/123456789012/locations/global/workloadIdentityPools/planton/providers/planton-acme-gcp-prod" \
+    --allowed-audiences="$AUDIENCE" \
     --attribute-mapping="google.subject=assertion.sub" \
     --attribute-condition="assertion.sub == 'planton:v1:org:acme:conn:acme-gcp-prod:provider:gcp'"
 fi
 
-# 3/4 Provisioner service account (adopted when it already exists)
+# 4/5 Provisioner service account (adopted when it already exists)
 if gcloud iam service-accounts describe "$SA_EMAIL" --project="$PROJECT_ID" >/dev/null 2>&1; then
   echo "Service account already exists: $SA_EMAIL"
 else
@@ -292,37 +298,40 @@ else
     --display-name="Planton Provisioner"
 fi
 
-# 4/4 Let this connection's federated identity impersonate the service account
+# 5/5 Let this connection's federated identity impersonate the service account
 # (adding a binding that already exists changes nothing)
 gcloud iam service-accounts add-iam-policy-binding "$SA_EMAIL" \
   --project="$PROJECT_ID" \
-  --member="principal://iam.googleapis.com/projects/123456789012/locations/global/workloadIdentityPools/planton/subject/planton:v1:org:acme:conn:acme-gcp-prod:provider:gcp" \
+  --member="principal://iam.googleapis.com/projects/$PROJECT_NUMBER/locations/global/workloadIdentityPools/planton/subject/planton:v1:org:acme:conn:acme-gcp-prod:provider:gcp" \
   --role="roles/iam.workloadIdentityUser"
 
-# Grant deployment roles (from this connection's selected capabilities;
-# the one-click setup grants exactly the same set)
+# Grant deployment roles (from the capabilities you chose; the one-click
+# setup grants exactly the same set)
 gcloud projects add-iam-policy-binding "$PROJECT_ID" \
-  --member="serviceAccount:$SA_EMAIL" --role="roles/storage.admin"
+  --member="serviceAccount:$SA_EMAIL" --role="roles/storage.admin" --condition=None >/dev/null
+
+echo
+echo "Trust ready. Paste this line into Planton:"
+echo "$AUDIENCE"
 ```
 
-The script does four things, then grants the deployment roles:
+The script turns on the APIs the trust needs, then ensures each part of the trust:
 
-1. **Ensures the workload identity pool** `planton`. If the pool exists and is active, the script reuses it. If it exists in any other state (for example, deleted), the script stops and says so.
-2. **Creates this connection's own OIDC provider** in the pool. The provider trusts `https://planton.ai`, accepts only the audience above, and its attribute condition accepts only this connection's subject.
-3. **Ensures the service account**, creating it only if it does not exist. If you entered a service account whose email is not in the standard `<name>@<project-id>.iam.gserviceaccount.com` form, the console leaves this step out and uses your existing account.
-4. **Lets this connection's subject impersonate the service account** by granting `roles/iam.workloadIdentityUser` to that one subject.
+1. **Turns on IAM, IAM Service Account Credentials and Security Token Service** in the project. Every token exchange at deploy time needs the last two.
+2. **Ensures the workload identity pool** `planton`. If the pool exists and is active, the script reuses it. If it exists in any other state (for example, deleted), the script stops and says so.
+3. **Creates this connection's own OIDC provider** in the pool. The provider trusts `https://planton.ai`, accepts only this connection's audience, and its attribute condition accepts only this connection's subject.
+4. **Ensures the service account**, creating it only if it does not exist. If you named a service account whose email is not in the standard `<name>@<project-id>.iam.gserviceaccount.com` form, the script uses your existing account.
+5. **Lets this connection's subject impersonate the service account** by granting `roles/iam.workloadIdentityUser` to that one subject.
+
+It ends by printing the provider's full name, the line you paste back into the console.
 
 ### Running It Again, and a Second Connection
 
-Running the script again ends in the same state: the pool, the provider, and the service account are kept when they already match, and adding an IAM binding that already exists changes nothing.
+Running the script again ends in the same state: the APIs, the pool, the provider and the service account are kept when they already match, and adding an IAM binding that already exists changes nothing.
 
-A second connection in the same project, for example `acme-gcp-staging`, reuses the `planton` pool and gets its own provider, `planton-acme-gcp-staging`. Each provider accepts one connection's subject, so each connection needs a different provider ID. If a provider with the proposed ID already exists and trusts a different issuer or subject, or was deleted, the script stops with this message instead of changing it:
+A second connection in the same project, for example `acme-gcp-staging`, reuses the `planton` pool and gets its own provider, `planton-acme-gcp-staging`, named by Planton from the connection's name. If a provider with that name already exists and trusts a different issuer or subject, or was deleted, the script stops instead of changing it.
 
-```text
-OIDC provider planton-acme-gcp-staging already exists but trusts a different issuer or subject, or is deleted. Each connection needs its own provider -- use a different provider id in the connection's audience.
-```
-
-Google limits provider IDs to 32 characters. For a long connection slug, the console shortens the proposed ID and appends a short hash of the slug, so two long slugs still get two different providers.
+Google limits provider IDs to 32 characters. For a long connection name, Planton shortens the provider ID and appends a short hash of the name, so two long names still get two different providers.
 
 ## Azure
 
@@ -339,18 +348,18 @@ Azure's setup has two parts. The connection needs the app registration's client 
 1. Open **Connections** and click the **Azure** card under Infrastructure.
 2. **Name** the connection, for example `acme-azure-prod`.
 3. Choose **OIDC (Keyless)**.
-4. **App Registration**: enter the **Tenant ID**, the **Subscription ID**, and the **Client ID**. **Client ID** is a secret picker: pick the secret that holds the app's client ID, or choose **Create Secret** and paste the client ID as its value. No client secret is collected. If you don't have an app registration yet, expand **Need an app registration?** and either click **Set it up for me** (one Microsoft consent; Planton creates the app registration, its service principal, and the role assignment, and fills in the fields) or show the first script below, run it, and paste the three values it prints.
-5. **Review & Launch**: click **Create connection**. The console shows the federated subject, the audience (`api://AzureADTokenExchange`), and the app registration.
+4. **App Registration**: enter the **Subscription ID**. If you don't have an app registration yet, expand **Need an App Registration?** and either click **Set It Up for Me** (one Microsoft consent; Planton creates the app registration, its service principal, and the role assignment, and fills in the fields) or click **Prefer to Run It Yourself? Show the Script**, run the first script below, and paste the values it prints. Then enter the **Tenant ID** and the **Client ID**. **Client ID** is a secret picker: pick the secret that holds the app's client ID, or create one with the client ID as its value. No client secret is collected.
+5. **Create & Trust**: click **Create Connection**. The console confirms **Connection Created** and shows the connection's **Trusted Subject**. If an Azure connection with the same name already exists, the console says so here and offers **Change the Name**.
 6. Add the federated credential in one of two ways:
-   - **Add the credential for me**: Planton adds the credential through a Microsoft sign-in. If you used **Set it up for me** in the previous step, it reuses that consent, with no second consent screen.
-   - **Prefer to review and run it yourself? Show the command**: copy the second script below and run it.
-7. Click **Verify connection**. A new federated credential takes a few minutes to propagate. If Verify reports no matching credential right after you add it, wait and verify again. Once Verify passes, click **Next**, then **Create** on **Review & Create**: the connection already exists, so this opens it.
+   - **Add the Credential for Me**: Planton adds the credential through a brief Microsoft sign-in, then discards its access. If you used **Set It Up for Me** in the previous step, the sign-in can close by itself, with no second consent screen.
+   - **Prefer to Run It Yourself? Show the Command**: run the second script below.
+7. Click **Verify Connection**. A new federated credential takes a few minutes to propagate. If Verify reports no matching credential right after you add it, wait and verify again. Once Verify passes, click **Next**, then **Open Connection** on **Review & Finish**.
 
 <!-- SCREENSHOT: Azure keyless setup - after the connection is created
-  Page: /orgs/{org}/connections (Azure connect wizard, Review & Launch step)
-  Action: Choose OIDC (Keyless), fill App Registration, click Create connection, expand Show the command
-  Focus: The federated subject, the constant audience, the Add the credential for me button, the expanded az script, and the Verify connection panel
-  Alt: Azure keyless connection wizard showing the federated subject, the one-click button, the federated credential script, and the Verify connection button
+  Page: /orgs/{org}/connections (Azure connect wizard, Create & Trust step)
+  Action: Choose OIDC (Keyless), fill App Registration, click Create Connection, expand Show the Command
+  Focus: The Connection Created notice with the trusted subject, the Add the Credential for Me action, the expanded az command, and the Verify Connection panel
+  Alt: Azure keyless connection wizard showing the trusted subject, the one-click credential action, the federated credential command, and the Verify Connection button
 -->
 
 ### The Scripts the Console Gives You
@@ -439,7 +448,7 @@ Both scripts find the app registration by its display name. If you bring your ow
 
 The first script reuses an app registration and service principal that already exist. The second script names the credential after the connection, `planton-conn-<connection slug>`. Running it again keeps a credential that already trusts this connection. If a credential with that name pins a different issuer or subject, the script stops and asks you to remove or rename it, rather than taking that trust away from whatever it belongs to.
 
-A second connection, for example `acme-azure-staging`, can use the same app registration: enter the same client ID and, under **Need an app registration?**, set **App registration display name** to that app's name (the credential script finds the app by it), skip the first script, and run the second connection's credential script, which adds `planton-conn-acme-azure-staging` beside the first credential.
+A second connection, for example `acme-azure-staging`, can use the same app registration: enter the same client ID and, under **Need an App Registration?**, set **App Registration Display Name** to that app's name (the credential script finds the app by it), skip the first script, and run the second connection's credential script, which adds `planton-conn-acme-azure-staging` beside the first credential.
 
 ## Details
 

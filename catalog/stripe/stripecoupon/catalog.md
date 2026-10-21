@@ -1,21 +1,21 @@
 # Stripe Coupon
 
-Declares a discount -- 25% off for three months, 10 dollars off a first order, a free month forever -- that customers redeem with a promotion code or your application applies. One Infra Component per coupon.
+Declares a discount — 25% off for three months, 10 dollars off a first order, a free month forever — that customers redeem with a promotion code or your application applies. One Infra Component per coupon.
 
 ## What Gets Created
 
 When you deploy this Infra Component, the OpenTofu module creates one coupon in the Stripe account your Stripe connection's key belongs to:
 
-- **The discount** -- a percentage, or an amount in one or more currencies
-- **How long it lasts** -- the first invoice, some months, or every invoice
-- **Its limits** -- how many redemptions, until when, and on which products
+- **The discount** — a percentage, or an amount in one or more currencies
+- **How long it lasts** — the first invoice, some months, or every invoice
+- **Its limits** — how many redemptions, until when, and on which products
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **Stripe Provider Connection** -- an active connection with a restricted key and its mode (test or live). A key of the other mode is refused before anything runs.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline credential authentication.
+- **Stripe Provider Connection** — an active connection with a restricted key and its mode (test or live). A key of the other mode is refused before anything runs.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline credential authentication.
 
 ### Stripe Account
 
@@ -54,7 +54,7 @@ An Infra Job tracks the change in real time.
 
 ### InfraChart
 
-When the coupon and the products it discounts deploy together, name each product with ValueFromRef:
+When the coupon and the products it discounts deploy together, name each product with references:
 
 ```yaml
 spec:
@@ -71,11 +71,11 @@ The InfraPipeline deploys the product first, then this coupon, then any promotio
 
 These are the decisions that matter. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**A discount change is a new coupon** -- Stripe never changes a coupon's discount, duration or limits. Planton deletes the old coupon and creates the new one; its promotion codes are replaced with it.
+**A discount change is a new coupon** — Stripe never changes a coupon's discount, duration or limits. Planton deletes the old coupon and creates the new one; its promotion codes are replaced with it.
 
-**Destroy deletes** -- customers who already applied the coupon keep their discount; nobody new can redeem it.
+**Destroy deletes** — customers who already applied the coupon keep their discount; nobody new can redeem it.
 
-**Pick one discount** -- a percentage, or an amount with its currency.
+**Pick one discount** — a percentage, or an amount with its currency.
 
 ## Outputs and Dependencies
 
@@ -98,12 +98,12 @@ After provisioning, `status.outputs` contains:
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Launch discount** -- a percentage off one plan for three months. Start from the **25% Off for Three Months** preset.
+**Launch discount** — a percentage off one plan for three months. Start from the **25% Off for Three Months** preset.
 
-**First-order credit** -- a fixed amount off once, in several currencies. Start from the **Ten Off Once** preset.
+**First-order credit** — a fixed amount off once, in several currencies. Start from the **Ten Off Once** preset.
 
 ## Works With
 
-- [**Stripe Promotion Code**](/infra-catalog/stripe-promotion-code) -- the code customers type to redeem the coupon.
-- [**Stripe Product**](/infra-catalog/stripe-product) -- the products the coupon discounts.
-- [**Stripe Payment Link**](/infra-catalog/stripe-payment-link) -- a hosted page that accepts promotion codes.
+- [**Stripe Promotion Code**](/infra-catalog/stripe-promotion-code) — the code customers type to redeem the coupon.
+- [**Stripe Product**](/infra-catalog/stripe-product) — the products the coupon discounts.
+- [**Stripe Payment Link**](/infra-catalog/stripe-payment-link) — a hosted page that accepts promotion codes.

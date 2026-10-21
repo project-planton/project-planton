@@ -76,7 +76,7 @@ This creates a REGIONAL REST API with a Lambda-proxied `POST /orders` requiring 
 
 ### InfraChart
 
-When the API deploys alongside its Lambda backend in one chart, wire the invoke ARN via ValueFromRef:
+When the API deploys alongside its Lambda backend in one chart, wire the invoke ARN by reference:
 
 ```yaml
 spec:
@@ -119,18 +119,18 @@ These are the most important decisions when configuring a REST API. Explore the 
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AwsLambda** | `routes[].integration.uri`, `authorizers[].lambdaInvokeUri` | `status.outputs.invoke_arn` |
-| **AwsIamRole** | `routes[].integration.credentialsArn`, `authorizers[].credentialsArn` | `status.outputs.role_arn` |
-| **AwsRestApiVpcLink** | `routes[].integration.vpcLinkId` | `status.outputs.vpc_link_id` |
-| **AwsCognitoUserPool** | `authorizers[].providerArns` | `status.outputs.user_pool_arn` |
-| **AwsVpcEndpoint** | `endpointConfiguration.vpcEndpointIds` | `status.outputs.vpc_endpoint_id` |
-| **AwsCloudwatchLogGroup** | `stage.accessLog.destinationArn` | `status.outputs.log_group_arn` |
+| **AWS Lambda** | `routes[].integration.uri`, `authorizers[].lambdaInvokeUri` | `status.outputs.invoke_arn` |
+| **AWS IAM Role** | `routes[].integration.credentialsArn`, `authorizers[].credentialsArn` | `status.outputs.role_arn` |
+| **AWS REST API VPC Link** | `routes[].integration.vpcLinkId` | `status.outputs.vpc_link_id` |
+| **AWS Cognito User Pool** | `authorizers[].providerArns` | `status.outputs.user_pool_arn` |
+| **AWS VPC Endpoint** | `endpointConfiguration.vpcEndpointIds` | `status.outputs.vpc_endpoint_id` |
+| **AWS CloudWatch Log Group** | `stage.accessLog.destinationArn` | `status.outputs.log_group_arn` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

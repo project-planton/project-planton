@@ -18,7 +18,7 @@ When you deploy this Infra Component, the IaC module provisions:
 ### AWS Account
 
 - **Managed nodes** — instances running the SSM agent with an instance profile that grants SSM access. The association itself deploys fine before any exist; tag-based targets pick up matching instances on the next interval.
-- **A customer document** (only when `documentName` references your own) — an AwsSsmDocument the association runs instead of an AWS-managed one.
+- **A customer document** (only when `documentName` references your own) — an AWS SSM Document the association runs instead of an AWS-managed one.
 - **An output bucket** (only for `outputLocation`) — an S3 bucket to receive command output.
 
 ## Deploy
@@ -64,7 +64,7 @@ This binds AWS's own `AWS-RunPatchBaseline` document to every instance tagged `e
 
 ### InfraChart
 
-When the association runs a customer document deployed in the same chart, wire the document reference via ValueFromRef:
+When the association runs a customer document deployed in the same chart, wire the document reference:
 
 ```yaml
 spec:
@@ -105,14 +105,14 @@ These are the most important decisions when configuring an association. Explore 
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AwsSsmDocument** | `documentName` | `status.outputs.document_name` |
-| **AwsS3Bucket** | `outputLocation.s3BucketName` | `status.outputs.bucket_id` |
+| **AWS SSM Document** | `documentName` | `status.outputs.document_name` |
+| **AWS S3 Bucket** | `outputLocation.s3BucketName` | `status.outputs.bucket_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -127,7 +127,7 @@ Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
 **Tagged patch visibility first** — Bind `AWS-RunPatchBaseline` with `Operation: Scan` to tagged instances before automating any installs: know what is missing, at what severity, with zero change risk. New instances join coverage by carrying the tag — no association edit. Start from the **Tagged Patch Scan** preset.
 
-**Your runbook on a schedule** — Reference your own AwsSsmDocument and let `$DEFAULT` version tracking do the releases: the document component publishes a new default version, and the association runs it on the next interval with no edit. The trade is that a bad document release propagates fleet-wide on schedule — pin `documentVersion` to a number when rollouts must be deliberate. Start from the **Custom Document Schedule** preset.
+**Your runbook on a schedule** — Reference your own AWS SSM Document and let `$DEFAULT` version tracking do the releases: the document component publishes a new default version, and the association runs it on the next interval with no edit. The trade is that a bad document release propagates fleet-wide on schedule — pin `documentVersion` to a number when rollouts must be deliberate. Start from the **Custom Document Schedule** preset.
 
 **Change Calendar gating** — `calendarNames` makes the association run only when every named calendar is open. This is the clean way to encode freeze windows (quarter-close, launch weeks) without editing schedules: the calendar owns the freeze, the association keeps its cadence.
 

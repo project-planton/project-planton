@@ -1,24 +1,24 @@
 # GCP BigQuery Capacity Commitment
 
-Buys BigQuery capacity at a discount for a one- or three-year term, pooled across every reservation in an administration project -- the finance team's lever on the BigQuery bill, declared as its own block because it outlives any single reservation.
+Buys BigQuery capacity at a discount for a one- or three-year term, pooled across every reservation in an administration project — the finance team's lever on the BigQuery bill, declared as its own block because it outlives any single reservation.
 
 ## What Gets Created
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **API enablement** -- `bigqueryreservation.googleapis.com` on the admin project (never disabled on destroy)
-- **Capacity commitment** -- a `bigquery_capacity_commitment`
+- **API enablement** — `bigqueryreservation.googleapis.com` on the admin project (never disabled on destroy)
+- **Capacity commitment** — a `bigquery_capacity_commitment`
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **GCP Provider Connection** -- an active connection in the Connect module with BigQuery resource admin permissions (`roles/bigquery.resourceAdmin`) on the project. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
+- **GCP Provider Connection** — an active connection in the Connect module with BigQuery resource admin permissions (`roles/bigquery.resourceAdmin`) on the project. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
 
 ### Optional Dependencies
 
-- **`GcpBigQueryReservation`** -- reservations in the same admin project and location draw on the committed slots.
+- **`GcpBigQueryReservation`** — reservations in the same admin project and location draw on the committed slots.
 
 ## Deploy
 
@@ -60,23 +60,23 @@ Declare commitments in the same admin project and location as the `GcpBigQueryRe
 
 These are the most important decisions when configuring this component. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Slots and term** -- `slotCount` and `plan` are what you buy; `ANNUAL` and `THREE_YEAR` are the editions-era plans.
+**Slots and term** — `slotCount` and `plan` are what you buy; `ANNUAL` and `THREE_YEAR` are the editions-era plans.
 
-**Renewal** -- `renewalPlan` decides what happens at the end of the term; changing it extends the commitment.
+**Renewal** — `renewalPlan` decides what happens at the end of the term; changing it extends the commitment.
 
-**Destroy** -- `ABANDON` is the honest setting -- Google will not delete a commitment before its term ends.
+**Destroy** — `ABANDON` is the honest setting — Google will not delete a commitment before its term ends.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **GcpProject** | `projectId` | `status.outputs.project_id` |
+| **GCP Project** | `projectId` | `status.outputs.project_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|-----------------------|
@@ -87,10 +87,10 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Annual commitment** -- 100 Enterprise slots for a year, renewing annually. Start from the **Annual Enterprise Commitment** preset.
+**Annual commitment** — 100 Enterprise slots for a year, renewing annually. Start from the **Annual Enterprise Commitment** preset.
 
-**Long-term commitment** -- Enterprise Plus slots for three years, guarded to one admin project per organization. Start from the **Three-Year Commitment** preset.
+**Long-term commitment** — Enterprise Plus slots for three years, guarded to one admin project per organization. Start from the **Three-Year Commitment** preset.
 
 ## Works With
 
-- [**GCP BigQuery Reservation**](/infra-catalog/gcp-bigquery-reservation) -- the capacity the commitment discounts
+- [**GCP BigQuery Reservation**](/infra-catalog/gcp-bigquery-reservation) — the capacity the commitment discounts

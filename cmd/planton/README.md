@@ -78,7 +78,7 @@ cmd/planton/
 │   │   └── README.md            # OpenTofu commands docs
 │   ├── module.go                # module command group (customization)
 │   ├── module/
-│   │   ├── eject.go             # module eject (copy an official module out)
+│   │   ├── eject.go             # module eject (copy a platform module out)
 │   │   └── verify.go            # module verify (prove contract conformance)
 │   ├── load_manifest.go         # load-manifest command
 │   ├── validate_manifest.go     # validate command

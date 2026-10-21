@@ -1,13 +1,13 @@
 # Agent Sandbox Warm Pool
 
-Declares an agent-sandbox SandboxWarmPool: a number of sandboxes, built from one template, kept running and ready so a claim gets one in the time it takes to hand it over instead of the time it takes to start a pod. The agent-sandbox controller keeps the pool filled, gives a ready member to each claim, and replaces what it hands out. The spec is faithful to the upstream `extensions.agents.x-k8s.io/v1beta1` SandboxWarmPool (pinned to agent-sandbox v1.0.7) -- this is what a product claims from, and the dial that sets how many idle sandboxes you pay for.
+Declares an agent-sandbox SandboxWarmPool: a number of sandboxes, built from one template, kept running and ready so a claim gets one in the time it takes to hand it over instead of the time it takes to start a pod. The agent-sandbox controller keeps the pool filled, gives a ready member to each claim, and replaces what it hands out. The spec is faithful to the upstream `extensions.agents.x-k8s.io/v1beta1` SandboxWarmPool (pinned to agent-sandbox v1.0.7) — this is what a product claims from, and the dial that sets how many idle sandboxes you pay for.
 
 ## What Gets Created
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **A SandboxWarmPool** -- one namespaced object naming its template, its size and how stale members are replaced.
-- **Kubernetes Labels** -- your own labels on the object, with resource metadata labels (resource name, kind, organization, environment) applied automatically on top.
+- **A SandboxWarmPool** — one namespaced object naming its template, its size and how stale members are replaced.
+- **Kubernetes Labels** — your own labels on the object, with resource metadata labels (resource name, kind, organization, environment) applied automatically on top.
 
 The controller then keeps the pool's members: Sandboxes named `<pool>-<random>`, each running the template's pod and owning its volume claims, until a claim takes one.
 
@@ -15,14 +15,14 @@ The controller then keeps the pool's members: Sandboxes named `<pool>-<random>`,
 
 ### Planton Setup
 
-- **Kubernetes Provider Connection** -- an active connection in the Connect module with kubeconfig credentials for the target cluster. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline kubeconfig authentication.
+- **Kubernetes Provider Connection** — an active connection in the Connect module with kubeconfig credentials for the target cluster. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline kubeconfig authentication.
 
 ### Kubernetes Cluster
 
-- **Agent Sandbox Controller installed, with extensions on** -- it installs the SandboxWarmPool definition and the controller that fills the pool.
-- **An Agent Sandbox Template in the same namespace** -- the blueprint every member is built from.
-- **Target namespace exists** -- reference an existing one or create it first.
+- **Agent Sandbox Controller installed, with extensions on** — it installs the SandboxWarmPool definition and the controller that fills the pool.
+- **An Agent Sandbox Template in the same namespace** — the blueprint every member is built from.
+- **Target namespace exists** — reference an existing one or create it first.
 
 ## Deploy
 
@@ -93,14 +93,14 @@ These are the most important decisions when configuring a warm pool. Explore the
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **KubernetesNamespace** | `namespace` | `spec.name` |
-| **KubernetesAgentSandboxTemplate** | `sandboxTemplateRef.name` | `status.outputs.sandbox_template_name` |
+| **Kubernetes Namespace** | `namespace` | `spec.name` |
+| **Agent Sandbox Template** | `sandboxTemplateRef.name` | `status.outputs.sandbox_template_name` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|-----------------------|
@@ -111,15 +111,15 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Always a few ready** -- three members, replaced as they are claimed, so claims always bind warm. Start from the **Steady Warm Pool** preset.
+**Always a few ready** — three members, replaced as they are claimed, so claims always bind warm. Start from the **Steady Warm Pool** preset.
 
-**Sized by demand** -- an autoscaler owns the pool's size through its scale endpoint. Start from the **Autoscaled Warm Pool** preset.
+**Sized by demand** — an autoscaler owns the pool's size through its scale endpoint. Start from the **Autoscaled Warm Pool** preset.
 
-**Every claim on the newest template** -- stale members replaced at once on a template change. Start from the **Recreate-Rolled Warm Pool** preset.
+**Every claim on the newest template** — stale members replaced at once on a template change. Start from the **Recreate-Rolled Warm Pool** preset.
 
 ## Works With
 
-- [**Agent Sandbox Template**](/infra-catalog/kubernetes-agent-sandbox-template) -- the blueprint every member is built from.
-- [**Agent Sandbox Claim**](/infra-catalog/kubernetes-agent-sandbox-claim) -- takes a ready member from the pool.
-- [**Agent Sandbox Controller**](/infra-catalog/kubernetes-agent-sandbox-controller) -- fills the pool and binds claims to its members.
-- [**Kubernetes Horizontal Pod Autoscaler**](/infra-catalog/kubernetes-horizontal-pod-autoscaler) -- scales the pool through its scale endpoint.
+- [**Agent Sandbox Template**](/infra-catalog/kubernetes-agent-sandbox-template) — the blueprint every member is built from.
+- [**Agent Sandbox Claim**](/infra-catalog/kubernetes-agent-sandbox-claim) — takes a ready member from the pool.
+- [**Agent Sandbox Controller**](/infra-catalog/kubernetes-agent-sandbox-controller) — fills the pool and binds claims to its members.
+- [**Kubernetes Horizontal Pod Autoscaler**](/infra-catalog/kubernetes-horizontal-pod-autoscaler) — scales the pool through its scale endpoint.

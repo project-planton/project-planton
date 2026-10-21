@@ -1,30 +1,30 @@
 # Kubernetes Planton Runner
 
-Deploys a standing Planton runner appliance on a Kubernetes cluster -- an always-on, outbound-only worker that receives deploy operations from the control plane and executes them from inside the cluster's network. The module installs the official `planton-runner` chart (OCI, ghcr.io/plantonhq/charts) as a real Helm release, so the deployed runner is byte-identical to a hand-installed one. Enrollment is token-first: the runner joins with a token, registers itself, and receives its own individually revocable identity.
+Deploys a standing Planton runner appliance on a Kubernetes cluster — an always-on, outbound-only worker that receives deploy operations from the control plane and executes them from inside the cluster's network. The module installs Planton's `planton-runner` chart (OCI, ghcr.io/plantonhq/charts) as a real Helm release, so the deployed runner is byte-identical to a hand-installed one. Enrollment is token-first: the runner joins with a token, registers itself, and receives its own individually revocable identity.
 
 ## What Gets Created
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **Kubernetes Namespace** -- created only when `createNamespace` is `true` (with the standard Planton governance labels) and deleted with the resource; otherwise the runner installs into an existing namespace
-- **Runner token Secret** -- the `<name>-token` Opaque Secret holding the runner token, created before the release; the chart reads it by name (its existingSecret form), so the token never rides rendered chart values
-- **Helm Release** -- the `planton-runner` chart, pinned to `chartVersion` (default 0.11.0), rendering:
-  - The runner Deployment at exactly 1 replica with a Recreate strategy -- two live pods under one runner name would revoke each other's keys
-  - The ephemeral identity volume the runner persists its minted identity into -- container restarts reuse it; pod recreation re-joins with the token
+- **Kubernetes Namespace** — created only when `createNamespace` is `true` (with the standard Planton governance labels) and deleted with the resource; otherwise the runner installs into an existing namespace
+- **Runner token Secret** — the `<name>-token` Opaque Secret holding the runner token, created before the release; the chart reads it by name (its existingSecret form), so the token never rides rendered chart values
+- **Helm Release** — the `planton-runner` chart, pinned to `chartVersion` (default 0.11.0), rendering:
+  - The runner Deployment at exactly 1 replica with a Recreate strategy — two live pods under one runner name would revoke each other's keys
+  - The ephemeral identity volume the runner persists its minted identity into — container restarts reuse it; pod recreation re-joins with the token
   - The runner's health endpoints
-- **Kubernetes Labels** -- resource metadata labels (resource name, kind, organization, environment) applied to the module-created namespace and Secret
+- **Kubernetes Labels** — resource metadata labels (resource name, kind, organization, environment) applied to the module-created namespace and Secret
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **Kubernetes Provider Connection** -- the credential used to install the release into the target cluster. Required.
-- **Runner token** -- nothing to create by hand: the platform mints a runner token and writes it at exactly the managed-secret reference the manifest declares, before the infrastructure applies. Choose a secret slug and reference it as `$secret/<slug>` in the `token` field; never inline plaintext. (Self-service alternative: `planton runner token create`, or the console under Organization Settings → Runner Tokens.)
+- **Kubernetes Provider Connection** — the credential used to install the release into the target cluster. Required.
+- **Runner token** — nothing to create by hand: the platform mints a runner token and writes it at exactly the managed-secret reference the manifest declares, before the infrastructure applies. Choose a secret slug and reference it as `$secret/<slug>` in the `token` field; never inline plaintext. (Self-service alternative: `planton runner token create`, or the console under Organization Settings → Runner Tokens.)
 
 ### Kubernetes Cluster
 
-- **The namespace** -- must already exist when `createNamespace` is `false`; set it `true` to have the module own the namespace's lifecycle.
-- **Tekton Pipelines (only for the build worker)** -- required when `build.enabled` is `true`; the runner then executes container-image build pipelines through Tekton on this cluster.
+- **The namespace** — must already exist when `createNamespace` is `false`; set it `true` to have the module own the namespace's lifecycle.
+- **Tekton Pipelines (only for the build worker)** — required when `build.enabled` is `true`; the runner then executes container-image build pipelines through Tekton on this cluster.
 
 ## Deploy
 
@@ -54,11 +54,11 @@ spec:
 planton apply -f runner.yaml
 ```
 
-This minimal manifest installs chart version 0.11.0 tracking the latest runner release from the official image repository, at the chart's own default sizing (requests 100m/2Gi, limits 1/2Gi). The runner registers itself as `prod-cluster-runner` (`<env>-<metadata.name>`) the moment it joins, and `planton runner list` shows it. An Infra Job tracks the provisioning in real time.
+This minimal manifest installs chart version 0.11.0 tracking the latest runner release from Planton's image repository, at the chart's own default sizing (requests 100m/2Gi, limits 1/2Gi). The runner registers itself as `prod-cluster-runner` (`<env>-<metadata.name>`) the moment it joins, and `planton runner list` shows it. An Infra Job tracks the provisioning in real time.
 
 ### InfraChart
 
-When deploying as part of a multi-resource environment, use ValueFromRef to wire the runner to a namespace managed by another Infra Component:
+When deploying as part of a multi-resource environment, use references to wire the runner to a namespace managed by another Infra Component:
 
 ```yaml
 spec:
@@ -77,31 +77,31 @@ The InfraPipeline deploys the namespace first, then installs the runner into it.
 
 These are the most important decisions when configuring the runner. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Token** -- `token` authorizes the runner to JOIN and is never its identity: the runner registers itself on first boot and receives its own individually revocable identity, and revoking the token never touches runners it already admitted. The module stores it in the `<name>-token` Secret; it never appears in rendered chart values.
+**Token** — `token` authorizes the runner to JOIN and is never its identity: the runner registers itself on first boot and receives its own individually revocable identity, and revoking the token never touches runners it already admitted. The module stores it in the `<name>-token` Secret; it never appears in rendered chart values.
 
-**Runner name** -- leave `runnerName` unset: it defaults to `<env>-<metadata.name>` (`metadata.name` outside an environment), the same derivation the platform uses for records that reference this runner. Re-deploying with the same name and the same token re-admits the runner (lost-disk recovery); set it explicitly only when deliberately adopting an existing enrollment.
+**Runner name** — leave `runnerName` unset: it defaults to `<env>-<metadata.name>` (`metadata.name` outside an environment), the same derivation the platform uses for records that reference this runner. Re-deploying with the same name and the same token re-admits the runner (lost-disk recovery); set it explicitly only when deliberately adopting an existing enrollment.
 
-**Control-plane endpoint** -- `controlPlaneEndpoint` (host:port) is only for self-hosted control planes; leave it unset for Planton's hosted endpoint. It is the one bootstrap coordinate the join cannot deliver -- everything else arrives in the join response, so the runner self-configures its execution mode on arrival and no mode knob exists.
+**Control-plane endpoint** — `controlPlaneEndpoint` (host:port) is only for self-hosted control planes; leave it unset for Planton's hosted endpoint. It is the one bootstrap coordinate the join cannot deliver — everything else arrives in the join response, so the runner self-configures its execution mode on arrival and no mode knob exists.
 
-**Chart version** -- empty `chartVersion` installs the pinned default (0.11.0), the version this catalog release was validated against; it hands the runner `build.scheduling`, and its build Role grants what the build path uses (watch on PipelineRuns and TaskRuns, patch on PipelineRuns so a cancel stops the run's pods, and create/update/patch on ConfigMaps, without which every in-cluster build fails at provisioning), and since 0.5.0 the pod is probed over gRPC on the runner's port, the contract every execution mode serves, so a runner enrolled with a tunnel-less (self-hosted) instance stands Ready. Versions below 0.4.0 predate token enrollment and are refused loudly -- older charts would silently ignore the enrollment values and the runner would deploy with no way to join.
+**Chart version** — empty `chartVersion` installs the pinned default (0.11.0), the version this catalog release was validated against; it hands the runner `build.scheduling`, and its build Role grants what the build path uses (watch on PipelineRuns and TaskRuns, patch on PipelineRuns so a cancel stops the run's pods, and create/update/patch on ConfigMaps, without which every in-cluster build fails at provisioning), and since 0.5.0 the pod is probed over gRPC on the runner's port, the contract every execution mode serves, so a runner enrolled with a tunnel-less (self-hosted) instance stands Ready. Versions below 0.4.0 predate token enrollment and are refused loudly — older charts would silently ignore the enrollment values and the runner would deploy with no way to join.
 
-**Sizing** -- when `resources` is omitted, the chart's own defaults apply (requests 100m/2Gi, limits 1/2Gi). The runner starts an IaC operation only when it fits under its memory limit -- its own memory plus 768Mi for every operation started in the last three minutes, within nine tenths of the limit -- and queues the rest: 2Gi starts two at once, 4Gi four, and more as operations settle below their charge. To run more at once, raise the memory limit before CPU, with the memory request equal to it so the node reserves what the runner counts on.
+**Sizing** — when `resources` is omitted, the chart's own defaults apply (requests 100m/2Gi, limits 1/2Gi). The runner starts an IaC operation only when it fits under its memory limit — its own memory plus 768Mi for every operation started in the last three minutes, within nine tenths of the limit — and queues the rest: 2Gi starts two at once, 4Gi four, and more as operations settle below their charge. To run more at once, raise the memory limit before CPU, with the memory request equal to it so the node reserves what the runner counts on.
 
-**Build worker** -- `build.enabled: true` registers the runner as a build worker executing container-image build pipelines through Tekton (Tekton Pipelines must be installed); `build.tektonNamespace` defaults to the runner's own namespace. `build.scheduling` (a node selector and tolerations) names the nodes every build pod may use; pointed at a dedicated, tainted build pool, a burst of builds queues on that pool and never starves the cluster's other workloads.
+**Build worker** — `build.enabled: true` registers the runner as a build worker executing container-image build pipelines through Tekton (Tekton Pipelines must be installed); `build.tektonNamespace` defaults to the runner's own namespace. `build.scheduling` (a node selector and tolerations) names the nodes every build pod may use; pointed at a dedicated, tainted build pool, a burst of builds queues on that pool and never starves the cluster's other workloads.
 
-**Escape hatch** -- `helmValues` merges raw values YAML over what the spec renders (Helm `-f` semantics), for chart knobs the spec does not model (nodeSelector, tolerations, extra env). The enrollment block is re-pinned after the merge and cannot be overridden -- the token never rides rendered values.
+**Escape hatch** — `helmValues` merges raw values YAML over what the spec renders (Helm `-f` semantics), for chart knobs the spec does not model (nodeSelector, tolerations, extra env). The enrollment block is re-pinned after the merge and cannot be overridden — the token never rides rendered values.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **KubernetesNamespace** | `namespace` | `spec.name` |
+| **Kubernetes Namespace** | `namespace` | `spec.name` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -114,12 +114,12 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Standard in-cluster runner** -- two decisions (a namespace and a token reference) make a cluster's private targets deployable: the runner dials out to the control plane, receives deploy operations, and executes them from inside the network with zero inbound exposure. Start from the **Cluster Runner** preset.
+**Standard in-cluster runner** — two decisions (a namespace and a token reference) make a cluster's private targets deployable: the runner dials out to the control plane, receives deploy operations, and executes them from inside the network with zero inbound exposure. Start from the **Cluster Runner** preset.
 
-**Deploys plus image builds** -- the same runner additionally registered as a build worker: container-image build pipelines execute through Tekton on this cluster, without shipping build context out of the network. Tekton Pipelines is a prerequisite the module does not install. Start from the **Build Runner (Deploys + Image Builds)** preset.
+**Deploys plus image builds** — the same runner additionally registered as a build worker: container-image build pipelines execute through Tekton on this cluster, without shipping build context out of the network. Tekton Pipelines is a prerequisite the module does not install. Start from the **Build Runner (Deploys + Image Builds)** preset.
 
-**Enrolling against your own control plane** -- one `controlPlaneEndpoint` (host:port, no scheme) plus a token minted by YOUR instance is the entire difference from the standard shape -- a token minted by one control plane is meaningless to another. Start from the **Self-Hosted Control Plane** preset.
+**Enrolling against your own control plane** — one `controlPlaneEndpoint` (host:port, no scheme) plus a token minted by YOUR instance is the entire difference from the standard shape — a token minted by one control plane is meaningless to another. Start from the **Self-Hosted Control Plane** preset.
 
 ## Works With
 
-- [**Kubernetes Namespace**](/infra-catalog/kubernetes-namespace) -- own the runner's namespace as a first-class resource and wire it through ValueFromRef
+- [**Kubernetes Namespace**](/infra-catalog/kubernetes-namespace) — own the runner's namespace as a first-class resource and wire it by reference

@@ -138,15 +138,21 @@ func ConsoleDeployment(cfg ConsoleConfig) *appsv1.Deployment {
 	// in-cluster fallback only covers the transient window before the
 	// front-door URL resolves, and carries the same prefix because the
 	// control plane serves its door under it everywhere.
-	apiOrigin := fmt.Sprintf("http://%s:%d",
-		ControlPlaneServiceFQDN(cfg.CRName, cfg.Namespace), controlPlaneGrpcWebPort)
+	internalAPIEndpoint := APIURL(ControlPlaneBrowserAPIInternalOrigin(cfg.CRName, cfg.Namespace))
+	apiEndpoint := internalAPIEndpoint
 	if cfg.PublicURL != "" {
-		apiOrigin = cfg.PublicURL
+		apiEndpoint = APIURL(cfg.PublicURL)
 	}
-	apiEndpoint := APIURL(apiOrigin)
 
 	envVars := []corev1.EnvVar{
 		{Name: "API_ENDPOINT", Value: apiEndpoint},
+		// The same door as the console's own server reaches it: always the
+		// in-cluster address, even when a public URL is set, because a
+		// public name need not resolve or hairpin from inside the cluster
+		// (the same split horizon as IAM_ISSUER_URL / IAM_ISSUER_INTERNAL_URL).
+		// The console's server reads what it draws before anyone signs in
+		// -- the installation's logo -- over it.
+		{Name: "API_INTERNAL_ENDPOINT", Value: internalAPIEndpoint},
 		// The deployment shape, the same declared fact the control plane
 		// boots with. The console publishes it in its device discovery
 		// document so a CLI or desktop pointed at this instance learns what

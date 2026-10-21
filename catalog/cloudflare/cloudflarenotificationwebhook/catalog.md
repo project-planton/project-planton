@@ -6,19 +6,19 @@ Registers a webhook destination for Cloudflare alerting: the HTTPS endpoint — 
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **Webhook Destination** -- one `cloudflare_notification_policy_webhooks` in the account's destinations list, with the optional shared secret attached when one is provided
+- **Webhook Destination** — one `cloudflare_notification_policy_webhooks` in the account's destinations list, with the optional shared secret attached when one is provided
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **Cloudflare Provider Connection** -- an active connection in the Connect module with a Cloudflare API token that has Notifications Write on the account. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline API token authentication.
+- **Cloudflare Provider Connection** — an active connection in the Connect module with a Cloudflare API token that has Notifications Write on the account. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline API token authentication.
 
 ### Cloudflare Account
 
-- **A live HTTPS endpoint** -- a vendor incoming-webhook URL (Slack, Google Chat, Discord) or your own receiver. Cloudflare accepts an unreachable or wrong URL at registration; delivery is only proven when an alert actually fires.
-- **The vendor API key** (only for Datadog, Splunk, and Opsgenie destinations) -- it travels in the `secret` field, which is why that field is sensitive regardless of destination kind. Keep it in a managed secret and reference it.
+- **A live HTTPS endpoint** — a vendor incoming-webhook URL (Slack, Google Chat, Discord) or your own receiver. Cloudflare accepts an unreachable or wrong URL at registration; delivery is only proven when an alert actually fires.
+- **The vendor API key** (only for Datadog, Splunk, and Opsgenie destinations) — it travels in the `secret` field, which is why that field is sensitive regardless of destination kind. Keep it in a managed secret and reference it.
 
 ## Deploy
 
@@ -71,7 +71,7 @@ This kind has no foreign key dependencies. The endpoint URL is a literal, and th
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -82,13 +82,13 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Slack channel** -- A Slack incoming-webhook URL registered with no secret; the URL itself is the credential Slack issues. Cloudflare detects `slack` and formats messages for the channel. Start from the **Slack channel** preset.
+**Slack channel** — A Slack incoming-webhook URL registered with no secret; the URL itself is the credential Slack issues. Cloudflare detects `slack` and formats messages for the channel. Start from the **Slack channel** preset.
 
-**Generic receiver with a shared secret** -- Alerts POSTed to a service you run, with a shared secret your receiver checks so it can reject anything that did not come from Cloudflare. Cloudflare classifies it as `generic` and sends the standard payload. Start from the **Generic receiver with a shared secret** preset.
+**Generic receiver with a shared secret** — Alerts POSTed to a service you run, with a shared secret your receiver checks so it can reject anything that did not come from Cloudflare. Cloudflare classifies it as `generic` and sends the standard payload. Start from the **Generic receiver with a shared secret** preset.
 
-**One destination, many policies** -- Register the channel once and point every relevant notification policy's `webhookIds` at the same `webhook_id` via ValueFromRef — which is also why the delete ordering above deserves respect.
+**One destination, many policies** — Register the channel once and point every relevant notification policy's `webhookIds` at the same `webhook_id` by reference — which is also why the delete ordering above deserves respect.
 
 ## Works With
 
-- [**Cloudflare Notification Policy**](/infra-catalog/cloudflare-notification-policy) -- the alert rules that deliver to this destination; they consume `webhook_id` via ValueFromRef.
-- [**Cloudflare Logpush Job**](/infra-catalog/cloudflare-logpush-job) -- the record-level counterpart: continuous log delivery where this kind carries discrete alert events.
+- [**Cloudflare Notification Policy**](/infra-catalog/cloudflare-notification-policy) — the alert rules that deliver to this destination; they consume `webhook_id` by reference.
+- [**Cloudflare Logpush Job**](/infra-catalog/cloudflare-logpush-job) — the record-level counterpart: continuous log delivery where this kind carries discrete alert events.

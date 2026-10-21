@@ -6,19 +6,19 @@ Provisions a Cloudflare Turnstile widget: a privacy-preserving CAPTCHA alternati
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **Turnstile Widget** -- a configured widget scoped to your account and domains
-- **Site key and secret key** -- exported as outputs (the secret is sensitive)
+- **Turnstile Widget** — a configured widget scoped to your account and domains
+- **Site key and secret key** — exported as outputs (the secret is sensitive)
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **Cloudflare Provider Connection** -- an active connection in the Connect module with a Cloudflare API token that has Turnstile edit access. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline API token authentication.
+- **Cloudflare Provider Connection** — an active connection in the Connect module with a Cloudflare API token that has Turnstile edit access. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline API token authentication.
 
 ### Cloudflare Account
 
-- **An account** -- the widget is created under an existing Cloudflare account (selected from the connection's accounts).
+- **An account** — the widget is created under an existing Cloudflare account (selected from the connection's accounts).
 
 ## Deploy
 
@@ -56,25 +56,25 @@ This creates a managed-mode widget for the listed domains. An Infra Job tracks t
 
 These are the most important decisions when configuring a Turnstile widget. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Domains (`domains`)** -- The hostnames allowed to serve the widget. Tokens are only issued on listed domains, so a forgotten domain silently breaks the form served there; include `localhost` for local development.
+**Domains (`domains`)** — The hostnames allowed to serve the widget. Tokens are only issued on listed domains, so a forgotten domain silently breaks the form served there; include `localhost` for local development.
 
-**Mode (`mode`)** -- `managed` (Cloudflare picks the challenge -- recommended), `non-interactive` (visible but never interactive), or `invisible` (no UI). The lower-friction modes trade challenge strength for UX, so pair them with server-side verification you actually enforce.
+**Mode (`mode`)** — `managed` (Cloudflare picks the challenge — recommended), `non-interactive` (visible but never interactive), or `invisible` (no UI). The lower-friction modes trade challenge strength for UX, so pair them with server-side verification you actually enforce.
 
-**Clearance Level (`clearanceLevel`)** -- Optional; the clearance granted on a Cloudflare-proxied site (`no_clearance`, `jschallenge`, `managed`, `interactive`). Setting a clearance lets a passed widget also satisfy the zone's challenge rules, so visitors are not challenged twice.
+**Clearance Level (`clearanceLevel`)** — Optional; the clearance granted on a Cloudflare-proxied site (`no_clearance`, `jschallenge`, `managed`, `interactive`). Setting a clearance lets a passed widget also satisfy the zone's challenge rules, so visitors are not challenged twice.
 
-**Region (`region`)** -- `world` (default) or `china`. **Immutable** -- changing it replaces the widget, which issues new site and secret keys that every embedding page and verifying backend must pick up.
+**Region (`region`)** — `world` (default) or `china`. **Immutable** — changing it replaces the widget, which issues new site and secret keys that every embedding page and verifying backend must pick up.
 
-**Enterprise flags (`botFightMode`, `ephemeralId`, `offlabel`)** -- All three require a Cloudflare Enterprise plan; enabling them on a non-Enterprise account fails the deployment.
+**Enterprise flags (`botFightMode`, `ephemeralId`, `offlabel`)** — All three require a Cloudflare Enterprise plan; enabling them on a non-Enterprise account fails the deployment.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-This kind has no foreign key dependencies -- the widget is account-scoped, and its served domains travel as plain strings.
+This kind has no foreign key dependencies — the widget is account-scoped, and its served domains travel as plain strings.
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -87,10 +87,10 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Managed challenge** -- the recommended default; Cloudflare adapts the challenge to risk. Start from the **Managed Widget** preset.
+**Managed challenge** — the recommended default; Cloudflare adapts the challenge to risk. Start from the **Managed Widget** preset.
 
-**Invisible widget** -- zero visible UI for low-friction flows, paired with server-side verification. Start from the **Invisible Widget** preset.
+**Invisible widget** — zero visible UI for low-friction flows, paired with server-side verification. Start from the **Invisible Widget** preset.
 
 ## Works With
 
-- [**Cloudflare Worker**](/infra-catalog/cloudflare-worker) -- verifies Turnstile tokens server-side by referencing the widget's `secret` output as a secret binding
+- [**Cloudflare Worker**](/infra-catalog/cloudflare-worker) — verifies Turnstile tokens server-side by referencing the widget's `secret` output as a secret binding

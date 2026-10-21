@@ -1,5 +1,5 @@
 # Least-privilege permissions the IaC runner's GCP principal needs to
-# provision, update, and destroy this component with the official modules.
+# provision, update, and destroy this component with the platform modules.
 # Every entry is `derived` (static analysis of the module sources, cited in
 # notes) until the live capture lane upgrades it to `proven`. Schema:
 # iac/catalogkindpermissions/v1.
@@ -16,6 +16,8 @@ spec:
           - serviceusage.services.get
           - serviceusage.services.list
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers google_project_service enabling firestore.googleapis.com on the target project. disable_on_destroy is false in both modules, so the disable permission is never needed.
       - purpose: ManageDatabase
         permissions:
@@ -27,11 +29,15 @@ spec:
           - datastore.locations.list
           - datastore.operations.get
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers google_firestore_database -- create with location, type, edition, PITR, and CMEK; getMetadata for read/refresh (Firestore's read-database permission is getMetadata, NOT datastore.databases.get, which authorizes transactions); update for the mutable fields (PITR, delete protection, concurrency, access modes); delete on destroy once delete_protection_state allows it. Google's Firestore IAM reference marks the locations permissions "Required to create a new database", and create/update return long-running operations the provider polls via datastore.operations.get. The committed action-inventory snapshot (pkg/iac/actioninventory/gcp.yaml) carries the datastore service prefix and lists every permission here; the list was also verified against Google's Firestore IAM reference (cloud.google.com/firestore/docs/security/iam) live.
       - purpose: BindResourceManagerTags
         permissions:
           - datastore.databases.createTagBinding
         provenance: derived
+        reach: target
+        privilege: ordinary
         condition:
           spec_field_set: resource_manager_tags
         notes: Google's Firestore IAM reference lists createTagBinding as the additional permission a create request with tags needs (listTagBindings/listEffectiveTags only matter for verifying bindings, which the modules never do). Verified against the same live reference; the committed inventory snapshot carries the datastore service prefix and lists this permission.

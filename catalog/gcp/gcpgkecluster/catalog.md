@@ -26,7 +26,7 @@ On Standard clusters the default node pool is removed at create time — every n
 
 ### GCP Project
 
-- **A VPC network and subnetwork** — an explicit network is required (clusters on the auto-created `default` network do not compose into reviewable infrastructure). For production, plan two secondary ranges on the subnetwork — one for Pods, one for Services. Reference `GcpVpcNetwork` and `GcpSubnetwork` Infra Components via ValueFromRef.
+- **A VPC network and subnetwork** — an explicit network is required (clusters on the auto-created `default` network do not compose into reviewable infrastructure). For production, plan two secondary ranges on the subnetwork — one for Pods, one for Services. Reference `GcpVpcNetwork` and `GcpSubnetwork` Infra Components.
 - **Cloud NAT for private nodes** — private nodes cannot pull images from registries outside Google without it. Compose a `GcpRouterNat` on the same network.
 - **For peering-based private clusters only** — a `/28` CIDR block (`privateCluster.masterIpv4CidrBlock`) that does not overlap any VPC range. PSC-based clusters (the modern default) need none.
 
@@ -82,7 +82,7 @@ This creates a regional private cluster on Dataplane V2 with named secondary ran
 
 ### InfraChart
 
-When deploying as part of a multi-resource environment, use ValueFromRef to wire the cluster to infrastructure deployed in the same InfraPipeline:
+When deploying as part of a multi-resource environment, use references to wire the cluster to infrastructure deployed in the same InfraPipeline:
 
 ```yaml
 spec:
@@ -145,21 +145,21 @@ These are the most important decisions when configuring a GKE cluster. Explore t
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **GcpProject** | `projectId` | `status.outputs.project_id` |
-| **GcpVpcNetwork** | `network` | `status.outputs.network_self_link` |
-| **GcpSubnetwork** | `subnetwork` | `status.outputs.subnetwork_self_link` |
-| **GcpSubnetwork** | `ipAllocation.clusterSecondaryRangeName` / `servicesSecondaryRangeName` | `status.outputs.secondary_ranges.[*].range_name` |
-| **GcpSubnetwork** | `privateCluster.privateEndpointSubnetwork` | `status.outputs.subnetwork_self_link` |
-| **GcpKmsKey** | `databaseEncryption.keyName`, NAP `bootDiskKmsKey` | `status.outputs.key_id` |
-| **GcpServiceAccount** | NAP `autoProvisioningDefaults.serviceAccount` | `status.outputs.email` |
-| **GcpPubSubTopic** | `notificationPubsub.topic` | `status.outputs.topic_id` |
-| **GcpBigQueryDataset** | `resourceUsageExport.bigqueryDatasetId` | `status.outputs.dataset_id` |
+| **GCP Project** | `projectId` | `status.outputs.project_id` |
+| **GCP VPC Network** | `network` | `status.outputs.network_self_link` |
+| **GCP Subnetwork** | `subnetwork` | `status.outputs.subnetwork_self_link` |
+| **GCP Subnetwork** | `ipAllocation.clusterSecondaryRangeName` / `servicesSecondaryRangeName` | `status.outputs.secondary_ranges.[*].range_name` |
+| **GCP Subnetwork** | `privateCluster.privateEndpointSubnetwork` | `status.outputs.subnetwork_self_link` |
+| **GCP KMS Key** | `databaseEncryption.keyName`, NAP `bootDiskKmsKey` | `status.outputs.key_id` |
+| **GCP Service Account** | NAP `autoProvisioningDefaults.serviceAccount` | `status.outputs.email` |
+| **GCP Pub/Sub Topic** | `notificationPubsub.topic` | `status.outputs.topic_id` |
+| **GCP BigQuery Dataset** | `resourceUsageExport.bigqueryDatasetId` | `status.outputs.dataset_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

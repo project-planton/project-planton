@@ -6,19 +6,19 @@ Deploys one secret inside the account-level Cloudflare Secrets Store, readable b
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **Store Secret** -- one `cloudflare_secrets_store_secret` inside the referenced store, with the value marked sensitive in state and the declared scopes controlling which Cloudflare surfaces may read it
+- **Store Secret** — one `cloudflare_secrets_store_secret` inside the referenced store, with the value marked sensitive in state and the declared scopes controlling which Cloudflare surfaces may read it
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **Cloudflare Provider Connection** -- an active connection in the Connect module with a Cloudflare API token that has Secrets Store Edit on the account. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline API token authentication.
+- **Cloudflare Provider Connection** — an active connection in the Connect module with a Cloudflare API token that has Secrets Store Edit on the account. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline API token authentication.
 
 ### Cloudflare Account
 
-- **The account Secrets Store** -- a Cloudflare Secrets Store (one per account) must exist; wire `storeId` to it by reference or paste the store ID directly.
-- **The secret value in a managed secret** -- `value` takes a reference the platform resolves just-in-time at deploy. Since Cloudflare never returns the value, whatever holds the source copy is the only recoverable record of it.
+- **The account Secrets Store** — a Cloudflare Secrets Store (one per account) must exist; wire `storeId` to it by reference or paste the store ID directly.
+- **The secret value in a managed secret** — `value` takes a reference the platform resolves just-in-time at deploy. Since Cloudflare never returns the value, whatever holds the source copy is the only recoverable record of it.
 
 ## Deploy
 
@@ -88,13 +88,13 @@ These are the most important decisions when configuring a store secret. Explore 
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **CloudflareSecretsStore** | `storeId` | `status.outputs.store_id` |
+| **Cloudflare Secrets Store** | `storeId` | `status.outputs.store_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -107,14 +107,14 @@ The secret's value is deliberately absent from the outputs — Cloudflare never 
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Shared provider API key** -- An AI provider's key stored once and readable by both Workers and the AI Gateway — the classic Bring-Your-Own-Keys shape. The value arrives as a managed-secret reference and rotates in one place for every consumer. Start from the **Shared provider API key** preset.
+**Shared provider API key** — An AI provider's key stored once and readable by both Workers and the AI Gateway — the classic Bring-Your-Own-Keys shape. The value arrives as a managed-secret reference and rotates in one place for every consumer. Start from the **Shared provider API key** preset.
 
-**Worker-only credential** -- A signing key or upstream token scoped `[workers]`, so nothing outside the Workers runtime can read it. The narrowest scope that works is the right one.
+**Worker-only credential** — A signing key or upstream token scoped `[workers]`, so nothing outside the Workers runtime can read it. The narrowest scope that works is the right one.
 
-**Rotation without redeploys** -- Update the managed secret, re-apply, and every consumer reads the new value on its next access. The manifest never changes shape — only the resolved value does.
+**Rotation without redeploys** — Update the managed secret, re-apply, and every consumer reads the new value on its next access. The manifest never changes shape — only the resolved value does.
 
 ## Works With
 
-- [**Cloudflare Secrets Store**](/infra-catalog/cloudflare-secrets-store) -- the one-per-account vault this secret lives in; wire `storeId` via ValueFromRef.
-- [**Cloudflare Worker**](/infra-catalog/cloudflare-worker) -- secrets-store bindings that read the secret at runtime.
-- [**Cloudflare AI Gateway**](/infra-catalog/cloudflare-ai-gateway) -- BYO-keys authentication backed by secrets like this one.
+- [**Cloudflare Secrets Store**](/infra-catalog/cloudflare-secrets-store) — the one-per-account vault this secret lives in; wire `storeId` by reference.
+- [**Cloudflare Worker**](/infra-catalog/cloudflare-worker) — secrets-store bindings that read the secret at runtime.
+- [**Cloudflare AI Gateway**](/infra-catalog/cloudflare-ai-gateway) — BYO-keys authentication backed by secrets like this one.

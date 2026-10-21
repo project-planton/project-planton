@@ -1,13 +1,13 @@
 # Kubernetes Gateway
 
-Creates a namespaced Kubernetes Gateway API `Gateway` -- an instance of traffic-handling infrastructure that binds a set of **listeners** (logical endpoints with a port, protocol, and optional TLS) to addresses, programmed by the controller behind a `GatewayClass`. The Gateway is the role-oriented successor to Ingress: platform teams own the `GatewayClass`, infrastructure teams own the `Gateway`, and application teams attach `Routes` (HTTP/gRPC/TLS/TCP) to its listeners. This kind mirrors the upstream Gateway API v1 `Gateway` spec with full fidelity while adding proto validation, typed SDKs, and InfraChart composability.
+Creates a namespaced Kubernetes Gateway API Gateway — an instance of traffic-handling infrastructure that binds a set of listeners (logical endpoints with a port, protocol, and optional TLS) to addresses, programmed by the controller behind a GatewayClass. The Gateway is the role-oriented successor to Ingress: platform teams own the `GatewayClass`, infrastructure teams own the `Gateway`, and application teams attach `Routes` (HTTP/gRPC/TLS/TCP) to its listeners. This kind mirrors the upstream Gateway API v1 `Gateway` spec with full fidelity while adding proto validation, typed SDKs, and InfraChart composability.
 
 ## What Gets Created
 
 When you deploy this Infra Component, the IaC module provisions:
 
 - **A namespaced Gateway** named after `metadata.name` in `spec.namespace`, attached to the `spec.gatewayClassName` GatewayClass, with the listeners (and any requested addresses, infrastructure attributes, and gateway-wide TLS) you configure.
-- **Kubernetes Labels** -- resource metadata labels (resource name, kind, organization, environment) applied automatically for tracking.
+- **Kubernetes Labels** — resource metadata labels (resource name, kind, organization, environment) applied automatically for tracking.
 
 The controller behind the GatewayClass reconciles the Gateway asynchronously: it assigns addresses and reports per-listener conditions in the Gateway's status, which you observe with `kubectl` (these controller-managed values are intentionally not stored as outputs).
 
@@ -15,15 +15,15 @@ The controller behind the GatewayClass reconciles the Gateway asynchronously: it
 
 ### Planton Setup
 
-- **Kubernetes Provider Connection** -- an active connection in the Connect module with kubeconfig credentials for the target cluster. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline kubeconfig authentication.
+- **Kubernetes Provider Connection** — an active connection in the Connect module with kubeconfig credentials for the target cluster. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline kubeconfig authentication.
 
 ### Kubernetes Cluster
 
-- **Gateway API CRDs installed** -- deploy the `KubernetesGatewayApiCrds` component first. Gateway is a Gateway API type and will not register without the CRDs.
-- **A controller-backed GatewayClass exists** -- `spec.gatewayClassName` must resolve to a `KubernetesGatewayClass` whose controller (Istio, Envoy Gateway, NGINX, ...) is installed and running.
-- **The target namespace exists** -- `spec.namespace` should resolve to a real `KubernetesNamespace`.
-- **Referenced TLS Secrets exist** -- for HTTPS/TLS listeners in `Terminate` mode, the `certificateRefs` Secrets must exist in the Gateway's namespace (or be authorized cross-namespace by a `KubernetesReferenceGrant`). They are commonly produced by a cert-manager `KubernetesCertificate`.
+- **Gateway API CRDs installed** — deploy the `KubernetesGatewayApiCrds` component first. Gateway is a Gateway API type and will not register without the CRDs.
+- **A controller-backed GatewayClass exists** — `spec.gatewayClassName` must resolve to a `KubernetesGatewayClass` whose controller (Istio, Envoy Gateway, NGINX, ...) is installed and running.
+- **The target namespace exists** — `spec.namespace` should resolve to a real `KubernetesNamespace`.
+- **Referenced TLS Secrets exist** — for HTTPS/TLS listeners in `Terminate` mode, the `certificateRefs` Secrets must exist in the Gateway's namespace (or be authorized cross-namespace by a `KubernetesReferenceGrant`). They are commonly produced by a cert-manager `KubernetesCertificate`.
 
 ## Deploy
 
@@ -107,30 +107,30 @@ The InfraPipeline deploys the namespace, the GatewayClass, and the certificate f
 
 These are the most important decisions when configuring a Gateway. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Namespace** -- The `namespace` field is where the Gateway runs. It is **immutable**: Routes and TLS Secrets in this namespace attach without a `ReferenceGrant`; those elsewhere require one. Reference an existing `KubernetesNamespace` or type the name directly.
+**Namespace** — The `namespace` field is where the Gateway runs. It is **immutable**: Routes and TLS Secrets in this namespace attach without a `ReferenceGrant`; those elsewhere require one. Reference an existing `KubernetesNamespace` or type the name directly.
 
-**Gateway Class** -- The `gatewayClassName` field selects the `GatewayClass`, and therefore the controller that programs the Gateway. It is **immutable** (a Gateway cannot switch controllers in place) and is a foreign key to a `KubernetesGatewayClass` output, so the class is deployed before the Gateway.
+**Gateway Class** — The `gatewayClassName` field selects the `GatewayClass`, and therefore the controller that programs the Gateway. It is **immutable** (a Gateway cannot switch controllers in place) and is a foreign key to a `KubernetesGatewayClass` output, so the class is deployed before the Gateway.
 
-**Listeners** -- One or more `listeners` (1-64). Each is a `name` + `port` + `protocol` (HTTP, HTTPS, TLS, TCP, UDP, or a domain-prefixed custom protocol), with an optional virtual `hostname`. HTTPS listeners may only TERMINATE (`mode` unset or `Terminate`, with `certificateRefs` or `options` required); a TLS-protocol listener must declare its mode explicitly (`Terminate` or `Passthrough`); HTTP/TCP/UDP listeners must carry no `tls` block at all -- the spec enforces each of these at authoring time. Each `certificateRefs` entry's `name` is a value-or-reference object (`value:` for a literal Secret name, `valueFrom:` against a KubernetesCertificate's `status.outputs.secret_name`), never a bare string. Any listener may restrict attachment via **allowedRoutes** (namespaces `from` All/Selector/Same + a label selector, and the allowed Route `kinds`).
+**Listeners** — One or more `listeners` (1-64). Each is a `name` + `port` + `protocol` (HTTP, HTTPS, TLS, TCP, UDP, or a domain-prefixed custom protocol), with an optional virtual `hostname`. HTTPS listeners may only TERMINATE (`mode` unset or `Terminate`, with `certificateRefs` or `options` required); a TLS-protocol listener must declare its mode explicitly (`Terminate` or `Passthrough`); HTTP/TCP/UDP listeners must carry no `tls` block at all — the spec enforces each of these at authoring time. Each `certificateRefs` entry's `name` is a value-or-reference object (`value:` for a literal Secret name, `valueFrom:` against a Cert Manager Certificate's `status.outputs.secret_name`), never a bare string. Any listener may restrict attachment via **allowedRoutes** (namespaces `from` All/Selector/Same + a label selector, and the allowed Route `kinds`).
 
-**Addresses** -- Optional requested addresses (`type` IPAddress/Hostname/NamedAddress + `value`, up to 16). When omitted, the controller assigns addresses; set them to pin a reserved static IP or hostname.
+**Addresses** — Optional requested addresses (`type` IPAddress/Hostname/NamedAddress + `value`, up to 16). When omitted, the controller assigns addresses; set them to pin a reserved static IP or hostname.
 
-**Infrastructure** -- Optional `labels` and `annotations` (up to 8 each) propagated to the resources the controller creates -- the standard way to tune cloud load-balancer behavior -- plus an optional per-Gateway `parametersRef`.
+**Infrastructure** — Optional `labels` and `annotations` (up to 8 each) propagated to the resources the controller creates — the standard way to tune cloud load-balancer behavior — plus an optional per-Gateway `parametersRef`.
 
-**Allowed Listeners** -- Optional ListenerSet attachment policy (`from` All/Selector/Same/None). Defaults to None: a Gateway must opt in before any Listener Set can merge additional listeners into it — leave it at None unless you deliberately delegate listener management.
+**Allowed Listeners** — Optional ListenerSet attachment policy (`from` All/Selector/Same/None). Defaults to None: a Gateway must opt in before any Listener Set can merge additional listeners into it — leave it at None unless you deliberately delegate listener management.
 
-**Gateway TLS** -- Optional gateway-wide TLS: **frontend** client-certificate validation (mTLS), with a default and optional per-port overrides, and a **backend** client certificate the Gateway presents to upstreams. Per-listener HTTPS termination is configured on each listener instead.
+**Gateway TLS** — Optional gateway-wide TLS: **frontend** client-certificate validation (mTLS), with a default and optional per-port overrides, and a **backend** client certificate the Gateway presents to upstreams. Per-listener HTTPS termination is configured on each listener instead.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **KubernetesNamespace** | `namespace` | `spec.name` |
-| **KubernetesGatewayClass** | `gatewayClassName` | `status.outputs.gateway_class_name` |
-| **KubernetesSecret** | `listeners[].tls.certificateRefs[].name`, `tls.backend.clientCertificateRef.name` | `status.outputs.secret_name` |
-| **KubernetesConfigMap** | `tls.frontend` CA bundle `caCertificateRefs[].name` | `status.outputs.configmap_name` |
+| **Kubernetes Namespace** | `namespace` | `spec.name` |
+| **Kubernetes GatewayClass** | `gatewayClassName` | `status.outputs.gateway_class_name` |
+| **Kubernetes Secret** | `listeners[].tls.certificateRefs[].name`, `tls.backend.clientCertificateRef.name` | `status.outputs.secret_name` |
+| **Kubernetes ConfigMap** | `tls.frontend` CA bundle `caCertificateRefs[].name` | `status.outputs.configmap_name` |
 
 Certificate Secrets are typically produced by a **Cert Manager Certificate** — reference its `status.outputs.secret_name` instead of the Secret directly. Literal names cover material created outside Planton; cross-namespace references require a ReferenceGrant.
 
@@ -148,21 +148,21 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**HTTPS with TLS termination** -- A single HTTPS listener on 443 that terminates TLS using a Secret from cert-manager, accepting same-namespace `HTTPRoute`s. Start from the **HTTPS Gateway with TLS Termination** preset.
+**HTTPS with TLS termination** — A single HTTPS listener on 443 that terminates TLS using a Secret from cert-manager, accepting same-namespace `HTTPRoute`s. Start from the **HTTPS Gateway with TLS Termination** preset.
 
-**Multi-protocol Gateway** -- An HTTP listener (often redirecting to HTTPS) alongside an HTTPS listener, sharing the Gateway's address. Start from the **Multi-Protocol Gateway** preset.
+**Multi-protocol Gateway** — An HTTP listener (often redirecting to HTTPS) alongside an HTTPS listener, sharing the Gateway's address. Start from the **Multi-Protocol Gateway** preset.
 
-**TLS passthrough** -- A TLS listener in `Passthrough` mode that forwards the encrypted stream to a TLS Route without decrypting at the Gateway; `certificateRefs` are ignored in this mode.
+**TLS passthrough** — A TLS listener in `Passthrough` mode that forwards the encrypted stream to a TLS Route without decrypting at the Gateway; `certificateRefs` are ignored in this mode.
 
 ## Works With
 
-- [**Kubernetes Gateway API CRDs**](/infra-catalog/kubernetes-gateway-api-crds) -- installs the Gateway API CRDs (prerequisite, install first)
-- [**Kubernetes GatewayClass**](/infra-catalog/kubernetes-gateway-class) -- the class (`gatewayClassName`) that selects the controller (install first)
-- [**Kubernetes Namespace**](/infra-catalog/kubernetes-namespace) -- the namespace the Gateway runs in
-- [**Cert Manager Certificate**](/infra-catalog/kubernetes-certificate) -- commonly produces the TLS Secrets referenced by HTTPS listeners
-- [**Kubernetes ReferenceGrant**](/infra-catalog/kubernetes-reference-grant) -- authorizes cross-namespace TLS Secret / CA references from this Gateway
-- [**Kubernetes HTTPRoute**](/infra-catalog/kubernetes-http-route) -- the most common Route kind attaching to HTTP/HTTPS listeners
-- [**Kubernetes GRPCRoute**](/infra-catalog/kubernetes-grpc-route) -- gRPC traffic attaching to HTTPS listeners
-- [**Kubernetes TLSRoute**](/infra-catalog/kubernetes-tls-route) -- the Route kind behind Passthrough TLS listeners
-- [**Kubernetes TCPRoute**](/infra-catalog/kubernetes-tcp-route) -- raw TCP forwarding from TCP listeners
-- [**Kubernetes ListenerSet**](/infra-catalog/kubernetes-listener-set) -- merges additional listeners into this Gateway when `allowedListeners` opts in
+- [**Kubernetes Gateway API CRDs**](/infra-catalog/kubernetes-gateway-api-crds) — installs the Gateway API CRDs (prerequisite, install first)
+- [**Kubernetes GatewayClass**](/infra-catalog/kubernetes-gateway-class) — the class (`gatewayClassName`) that selects the controller (install first)
+- [**Kubernetes Namespace**](/infra-catalog/kubernetes-namespace) — the namespace the Gateway runs in
+- [**Cert Manager Certificate**](/infra-catalog/kubernetes-certificate) — commonly produces the TLS Secrets referenced by HTTPS listeners
+- [**Kubernetes ReferenceGrant**](/infra-catalog/kubernetes-reference-grant) — authorizes cross-namespace TLS Secret / CA references from this Gateway
+- [**Kubernetes HTTPRoute**](/infra-catalog/kubernetes-http-route) — the most common Route kind attaching to HTTP/HTTPS listeners
+- [**Kubernetes GRPCRoute**](/infra-catalog/kubernetes-grpc-route) — gRPC traffic attaching to HTTPS listeners
+- [**Kubernetes TLSRoute**](/infra-catalog/kubernetes-tls-route) — the Route kind behind Passthrough TLS listeners
+- [**Kubernetes TCPRoute**](/infra-catalog/kubernetes-tcp-route) — raw TCP forwarding from TCP listeners
+- [**Kubernetes ListenerSet**](/infra-catalog/kubernetes-listener-set) — merges additional listeners into this Gateway when `allowedListeners` opts in

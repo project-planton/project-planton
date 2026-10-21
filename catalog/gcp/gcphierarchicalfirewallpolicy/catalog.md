@@ -1,24 +1,24 @@
 # GCP Hierarchical Firewall Policy
 
-Creates a hierarchical firewall policy: an ordered set of firewall rules that lives on the organization or a folder and is enforced on every VPC network beneath the node it is associated with -- in every project, present and future -- before any network-level policy or legacy VPC firewall rule gets a say. It is the tool a platform team uses to state the rules nobody in the organization may undo ("no SSH from the internet", "deny known-malicious sources", "allow the health-check ranges") and to delegate everything else downward with `goto_next`. Rules key on the modern matching surface the legacy VPC firewall never had: secure tags, address groups, domain names, threat-intelligence lists, geography, and Cloud NGFW security profile groups with TLS inspection.
+Creates a hierarchical firewall policy: an ordered set of firewall rules that lives on the organization or a folder and is enforced on every VPC network beneath the node it is associated with — in every project, present and future — before any network-level policy or legacy VPC firewall rule gets a say. It is the tool a platform team uses to state the rules nobody in the organization may undo ("no SSH from the internet", "deny known-malicious sources", "allow the health-check ranges") and to delegate everything else downward with `goto_next`. Rules key on the modern matching surface the legacy VPC firewall never had: secure tags, address groups, domain names, threat-intelligence lists, geography, and Cloud NGFW security profile groups with TLS inspection.
 
 ## What Gets Created
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **Firewall policy** -- the `compute_firewall_policy` container on the organization or folder, named by Google with a server-assigned numeric ID
-- **Rules** -- one `compute_firewall_policy_rule` per `rules` entry, keyed by priority
-- **Associations** -- one `compute_firewall_policy_association` per `associations` entry, attaching the policy to the organization or a folder
+- **Firewall policy** — the `compute_firewall_policy` container on the organization or folder, named by Google with a server-assigned numeric ID
+- **Rules** — one `compute_firewall_policy_rule` per `rules` entry, keyed by priority
+- **Associations** — one `compute_firewall_policy_association` per `associations` entry, attaching the policy to the organization or a folder
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **GCP Provider Connection** -- an active connection in the Connect module whose identity holds `roles/compute.orgFirewallPolicyAdmin` on the organization (or on the folder the policy lives under and every folder it is associated with). Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **GCP Provider Connection** — an active connection in the Connect module whose identity holds `roles/compute.orgFirewallPolicyAdmin` on the organization (or on the folder the policy lives under and every folder it is associated with). Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
 
 ### GCP Organization
 
-- **A Google Cloud Organization** -- hierarchical policies do not exist in a project-only account. Have the numeric organization ID (`gcloud organizations list`), or declare the folder with `GcpFolder` and reference its `folder_id` output.
+- **A Google Cloud Organization** — hierarchical policies do not exist in a project-only account. Have the numeric organization ID (`gcloud organizations list`), or declare the folder with `GcpFolder` and reference its `folder_id` output.
 - **Secure tags** for tag-keyed rules are `GcpTagValue` resources under a `GcpTagKey` with `purpose: GCE_FIREWALL`; reference the value's `name` output.
 
 ## Deploy
@@ -71,11 +71,11 @@ spec:
 planton apply -f org-baseline.yaml
 ```
 
-This creates a policy under the organization with two rules -- a logged deny of SSH from anywhere, then a delegation of everything else -- and enforces it on the whole organization, guarded against accidental destroy. An Infra Job tracks the provisioning in real time.
+This creates a policy under the organization with two rules — a logged deny of SSH from anywhere, then a delegation of everything else — and enforces it on the whole organization, guarded against accidental destroy. An Infra Job tracks the provisioning in real time.
 
 ### InfraChart
 
-When deploying as part of a landing zone, the policy references its `GcpFolder` via ValueFromRef and its rules reference the `GcpTagValue` and `GcpVpcNetwork` blocks the chart declares:
+When deploying as part of a landing zone, the policy references its `GcpFolder` and its rules reference the `GcpTagValue` and `GcpVpcNetwork` blocks the chart declares:
 
 ```yaml
 spec:
@@ -112,38 +112,38 @@ spec:
             fieldPath: status.outputs.folder_id
 ```
 
-The InfraPipeline deploys the folder and the tag values, then the policy, and destroys the policy before them -- the order Google requires.
+The InfraPipeline deploys the folder and the tag values, then the policy, and destroys the policy before them — the order Google requires.
 
 ## Key Configuration
 
 These are the most important decisions when configuring a hierarchical policy. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Parent versus associations** -- `parent` is where the policy lives (IAM, quota); `associations` is where it is enforced. Usually the same node, but one policy can be enforced on several folders. A node carries one hierarchical policy at a time.
+**Parent versus associations** — `parent` is where the policy lives (IAM, quota); `associations` is where it is enforced. Usually the same node, but one policy can be enforced on several folders. A node carries one hierarchical policy at a time.
 
-**Priority is identity** -- Google keys rules by priority; renumbering recreates the rule. Leave gaps (1000, 2000, ...) so a rule can be slotted in later. Priorities 2147483646 and 2147483647 are Google's implied `goto_next` rules.
+**Priority is identity** — Google keys rules by priority; renumbering recreates the rule. Leave gaps (1000, 2000, ...) so a rule can be slotted in later. Priorities 2147483646 and 2147483647 are Google's implied `goto_next` rules.
 
-**`goto_next` is the delegation lever** -- an organization policy that ends every decision with `allow` or `deny` leaves the projects nothing to decide. The everyday shape is a few non-negotiable denies (and allows for Google's health-check and IAP ranges), then `goto_next` for the rest.
+**`goto_next` is the delegation lever** — an organization policy that ends every decision with `allow` or `deny` leaves the projects nothing to decide. The everyday shape is a few non-negotiable denies (and allows for Google's health-check and IAP ranges), then `goto_next` for the rest.
 
-**Direction decides which match fields matter** -- on `INGRESS`, the `src*` fields describe where traffic comes from; on `EGRESS`, the `dest*` fields describe where it goes. Secure tags and networks exist only on the VPC side, so `srcSecureTags` and `srcNetworks` are meaningful on ingress rules only.
+**Direction decides which match fields matter** — on `INGRESS`, the `src*` fields describe where traffic comes from; on `EGRESS`, the `dest*` fields describe where it goes. Secure tags and networks exist only on the VPC side, so `srcSecureTags` and `srcNetworks` are meaningful on ingress rules only.
 
-**Targets narrow the rule** -- `targetResources` (networks), `targetSecureTags`, or `targetServiceAccounts` restrict which VMs the rule applies to; empty means every VM beneath the association. Tags and service accounts cannot be combined on one rule.
+**Targets narrow the rule** — `targetResources` (networks), `targetSecureTags`, or `targetServiceAccounts` restrict which VMs the rule applies to; empty means every VM beneath the association. Tags and service accounts cannot be combined on one rule.
 
-**Deletion policy** -- `DELETE` (default) detaches, removes, and deletes; `PREVENT` fails the destroy, the guard for an organization's baseline; `ABANDON` leaves everything live and enforcing.
+**Deletion policy** — `DELETE` (default) detaches, removes, and deletes; `PREVENT` fails the destroy, the guard for an organization's baseline; `ABANDON` leaves everything live and enforcing.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **GcpFolder** | `parent.folderId`, `associations[].target.folderId` | `status.outputs.folder_id` |
-| **GcpVpcNetwork** | `rules[].targetResources[]`, `rules[].match.srcNetworks[]` | `status.outputs.network_self_link` |
-| **GcpTagValue** | `rules[].targetSecureTags[]`, `rules[].match.srcSecureTags[]` | `status.outputs.name` |
-| **GcpServiceAccount** | `rules[].targetServiceAccounts[]` | `status.outputs.email` |
+| **GCP Folder** | `parent.folderId`, `associations[].target.folderId` | `status.outputs.folder_id` |
+| **GCP VPC Network** | `rules[].targetResources[]`, `rules[].match.srcNetworks[]` | `status.outputs.network_self_link` |
+| **GCP Tag Value** | `rules[].targetSecureTags[]`, `rules[].match.srcSecureTags[]` | `status.outputs.name` |
+| **GCP Service Account** | `rules[].targetServiceAccounts[]` | `status.outputs.email` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -158,16 +158,16 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Organization baseline** -- a logged deny of SSH from the internet and `goto_next` for the rest, enforced on the organization. Start from the **Org Deny SSH From Internet** preset.
+**Organization baseline** — a logged deny of SSH from the internet and `goto_next` for the rest, enforced on the organization. Start from the **Org Deny SSH From Internet** preset.
 
-**Folder allow-list with delegation** -- allow intra-VPC traffic and Google's health-check ranges, delegate everything else, enforced on one folder by reference. Start from the **Folder Allow Internal Goto Next** preset.
+**Folder allow-list with delegation** — allow intra-VPC traffic and Google's health-check ranges, delegate everything else, enforced on one folder by reference. Start from the **Folder Allow Internal Goto Next** preset.
 
-**Threat intelligence and geo-blocking** -- deny known-malicious sources and Tor exit nodes, and traffic from listed countries, at the top of the organization. Start from the **Threat Intel And Geo Block** preset.
+**Threat intelligence and geo-blocking** — deny known-malicious sources and Tor exit nodes, and traffic from listed countries, at the top of the organization. Start from the **Threat Intel And Geo Block** preset.
 
 ## Works With
 
-- [**GCP Network Firewall Policy**](/infra-catalog/gcp-network-firewall-policy) -- the project-level policy attached to VPC networks, evaluated after this one
-- [**GCP Folder**](/infra-catalog/gcp-folder) -- the folder a policy lives under or is enforced on
-- [**GCP Tag Value**](/infra-catalog/gcp-tag-value) -- the secure tags rules key on
-- [**GCP VPC Network**](/infra-catalog/gcp-vpc-network) -- the networks `targetResources` and `srcNetworks` reference
-- [**GCP Firewall Rule**](/infra-catalog/gcp-firewall-rule) -- legacy per-network rules, evaluated last
+- [**GCP Network Firewall Policy**](/infra-catalog/gcp-network-firewall-policy) — the project-level policy attached to VPC networks, evaluated after this one
+- [**GCP Folder**](/infra-catalog/gcp-folder) — the folder a policy lives under or is enforced on
+- [**GCP Tag Value**](/infra-catalog/gcp-tag-value) — the secure tags rules key on
+- [**GCP VPC Network**](/infra-catalog/gcp-vpc-network) — the networks `targetResources` and `srcNetworks` reference
+- [**GCP Firewall Rule**](/infra-catalog/gcp-firewall-rule) — legacy per-network rules, evaluated last

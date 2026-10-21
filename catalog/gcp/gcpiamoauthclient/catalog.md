@@ -1,27 +1,27 @@
 # GCP IAM OAuth Client
 
-Creates a Workforce Identity Federation OAuth client — the registration that lets an application obtain Google Cloud access tokens on behalf of workforce-federated users via OAuth 2.0. The client carries its allowed grant types, scopes, and redirect URIs, plus managed credentials whose secrets GCP generates server-side and the platform delivers to consumers through ValueFromRef.
+Creates a Workforce Identity Federation OAuth client — the registration that lets an application obtain Google Cloud access tokens on behalf of workforce-federated users via OAuth 2.0. The client carries its allowed grant types, scopes, and redirect URIs, plus managed credentials whose secrets GCP generates server-side and the platform delivers to consumers by reference.
 
-Scope honesty: this is the ONLY kind of OAuth client Google's APIs can create programmatically. Classic consent-screen OAuth clients (end-user Google Sign-In) have no programmatic path — Google shut down the IAP OAuth Admin API that once created them (March 2026). Those clients remain a documented console step whose ID/secret feed GcpIdentityPlatformConfig's `defaultSupportedIdps` or a GcpSecretManagerSecret.
+Scope honesty: this is the ONLY kind of OAuth client Google's APIs can create programmatically. Classic consent-screen OAuth clients (end-user Google Sign-In) have no programmatic path — Google shut down the IAP OAuth Admin API that once created them (March 2026). Those clients remain a documented console step whose ID/secret feed GCP Identity Platform Config's `defaultSupportedIdps` or a GCP Secret Manager Secret.
 
 ## What Gets Created
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **OAuth Client** -- a `google_iam_oauth_client` (the Workforce Identity Federation OAuth registration) with grant types, scopes, redirect URIs, and confidentiality model
-- **OAuth Client Credentials** -- one `google_iam_oauth_client_credential` per `credentials` entry; secrets are generated server-side by GCP
-- **IAM API enablement** -- `iam.googleapis.com` enabled in the target project (never disabled on destroy)
+- **OAuth Client** — a `google_iam_oauth_client` (the Workforce Identity Federation OAuth registration) with grant types, scopes, redirect URIs, and confidentiality model
+- **OAuth Client Credentials** — one `google_iam_oauth_client_credential` per `credentials` entry; secrets are generated server-side by GCP
+- **IAM API enablement** — `iam.googleapis.com` enabled in the target project (never disabled on destroy)
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **GCP Provider Connection** -- an active connection in the Connect module with credentials for the target GCP project.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
+- **GCP Provider Connection** — an active connection in the Connect module with credentials for the target GCP project.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
 
 ### GCP Project
 
-- **A GCP project** where the client is created (directly or via a GcpProject reference).
+- **A GCP project** where the client is created (directly or via a GCP Project reference).
 - **IAM**: the deploying identity needs `roles/iam.workforcePoolAdmin` or broader on the project.
 
 ## Deploy
@@ -92,45 +92,45 @@ The InfraPipeline deploys the app first, registers the client with the resolved 
 
 These are the most important decisions when configuring an OAuth client. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Client type** -- only `CONFIDENTIAL_CLIENT` (server-side apps — manage secrets via `credentials`) can be created: GCP's enum lists `PUBLIC_CLIENT` (mobile apps, SPAs) but the service rejects creating one ("Client type is not supported"). Immutable.
+**Client type** — only `CONFIDENTIAL_CLIENT` (server-side apps — manage secrets via `credentials`) can be created: GCP's enum lists `PUBLIC_CLIENT` (mobile apps, SPAs) but the service rejects creating one ("Client type is not supported"). Immutable.
 
-**Grant types and scopes** -- Google's API accepts exactly `AUTHORIZATION_CODE_GRANT` and `REFRESH_TOKEN_GRANT`; scopes are the OAuth scopes the client may request during flows. Grant only what the application uses.
+**Grant types and scopes** — Google's API accepts exactly `AUTHORIZATION_CODE_GRANT` and `REFRESH_TOKEN_GRANT`; scopes are the OAuth scopes the client may request during flows. Grant only what the application uses.
 
-**Credentials** -- each entry creates one managed credential whose secret GCP generates server-side. GCP requires a credential to be DISABLED before it can be deleted: disable in one apply, remove in the next. The first credential's secret is the `client_secret` output.
+**Credentials** — each entry creates one managed credential whose secret GCP generates server-side. GCP requires a credential to be DISABLED before it can be deleted: disable in one apply, remove in the next. The first credential's secret is the `client_secret` output.
 
-**Disabled** -- `disabled: true` stops new authorizations without deleting the client — the reversible kill switch.
+**Disabled** — `disabled: true` stops new authorizations without deleting the client — the reversible kill switch.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **GcpProject** (optional) | `projectId` | `status.outputs.project_id` |
-| **GcpCloudRun** (optional) | `allowedRedirectUris` entries | `status.outputs.url` |
+| **GCP Project** (optional) | `projectId` | `status.outputs.project_id` |
+| **GCP Cloud Run** (optional) | `allowedRedirectUris` entries | `status.outputs.url` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
 | `client_id` | The OAuth client ID applications present in flows | Application configuration |
 | `client_name` | `projects/{project}/locations/{location}/oauthClients/{id}` | Tooling that addresses the client by full name |
 | `state` | Lifecycle state (`ACTIVE`, `DELETED` during soft-delete) | Health checks |
-| `client_secret` | The first credential's server-generated secret | GcpSecretManagerSecret initial version — the secret never leaves the graph |
+| `client_secret` | The first credential's server-generated secret | GCP Secret Manager Secret initial version — the secret never leaves the graph |
 
 ## Common Patterns
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Server-side web app** -- a confidential client with both grant types and one managed credential; the secret flows to the app through Secret Manager. Start from the **Web App Client** preset.
+**Server-side web app** — a confidential client with both grant types and one managed credential; the secret flows to the app through Secret Manager. Start from the **Web App Client** preset.
 
-**Single-page app** -- no workforce-federation path exists today: GCP rejects public-client creation at the API, and a confidential client's secret cannot live in a browser bundle. Until GCP ships public-client support, SPAs authenticate through a confidential backend-for-frontend that holds the credential server-side.
+**Single-page app** — no workforce-federation path exists today: GCP rejects public-client creation at the API, and a confidential client's secret cannot live in a browser bundle. Until GCP ships public-client support, SPAs authenticate through a confidential backend-for-frontend that holds the credential server-side.
 
 ## Works With
 
-- [**GCP Identity Platform Config**](/infra-catalog/gcp-identity-platform-config) -- consumes console-created consent-screen client IDs/secrets for end-user sign-in
-- [**GCP Secret Manager Secret**](/infra-catalog/gcp-secret-manager-secret) -- durable home for the generated client secret
-- [**GCP Cloud Run**](/infra-catalog/gcp-cloud-run) -- its URL output feeds the redirect URIs
-- [**GCP Project**](/infra-catalog/gcp-project) -- provides the GCP project where the client is created
+- [**GCP Identity Platform Config**](/infra-catalog/gcp-identity-platform-config) — consumes console-created consent-screen client IDs/secrets for end-user sign-in
+- [**GCP Secret Manager Secret**](/infra-catalog/gcp-secret-manager-secret) — durable home for the generated client secret
+- [**GCP Cloud Run**](/infra-catalog/gcp-cloud-run) — its URL output feeds the redirect URIs
+- [**GCP Project**](/infra-catalog/gcp-project) — provides the GCP project where the client is created

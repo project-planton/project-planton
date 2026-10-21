@@ -20,7 +20,7 @@ When you deploy this Infra Component, the IaC module provisions:
 ### AWS Account
 
 - **An instance in the SAME availability zone** (only for attachments) — EBS never attaches across zones; the instance's placement decides the volume's `availabilityZone`.
-- **The source snapshot** (only for restores) — in the same region; reference an AwsEbsSnapshot Infra Component or pass a literal `snap-...` id.
+- **The source snapshot** (only for restores) — in the same region; reference an AWS EBS Snapshot Infra Component or pass a literal `snap-...` id.
 - **A KMS key** (only for `aws:kms`-style customer-key encryption) — unset with `encrypted: true` uses the AWS-managed `aws/ebs` key.
 
 ## Deploy
@@ -62,7 +62,7 @@ This creates an encrypted 200 GiB gp3 volume with provisioned IOPS and throughpu
 
 ### InfraChart
 
-When the volume deploys alongside its instance in one chart, wire the instance reference via ValueFromRef:
+When the volume deploys alongside its instance in one chart, wire the instance reference:
 
 ```yaml
 spec:
@@ -104,20 +104,20 @@ These are the most important decisions when configuring an EBS volume. Explore t
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AwsEbsSnapshot** (optional, create arm) | `snapshotId` | `status.outputs.snapshot_id` |
-| **AwsKmsKey** (optional, create arm) | `kmsKeyId` | `status.outputs.key_arn` |
-| **AwsEbsVolume** (copy arm) | `copyFrom.sourceVolumeId` | `status.outputs.volume_id` |
-| **AwsEc2Instance** (per attachment) | `attachments[].instanceId` | `status.outputs.instance_id` |
+| **AWS EBS Snapshot** (optional, create arm) | `snapshotId` | `status.outputs.snapshot_id` |
+| **AWS KMS Key** (optional, create arm) | `kmsKeyId` | `status.outputs.key_arn` |
+| **AWS EBS Volume** (copy arm) | `copyFrom.sourceVolumeId` | `status.outputs.volume_id` |
+| **AWS EC2 Instance** (per attachment) | `attachments[].instanceId` | `status.outputs.instance_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
-| `volume_id` | The volume's id (`vol-...`) | AwsEbsSnapshot's volume arm (`volumeId`) and other volumes' copy arms (`copyFrom.sourceVolumeId`) |
+| `volume_id` | The volume's id (`vol-...`) | AWS EBS Snapshot's volume arm (`volumeId`) and other volumes' copy arms (`copyFrom.sourceVolumeId`) |
 | `volume_arn` | The volume's ARN | IAM policy statements scoping volume actions |
 | `availability_zone` | The zone the volume actually lives in — notably useful for copies, which inherit the source's zone | Placing the compute that must sit beside the disk |
 

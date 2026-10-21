@@ -1,6 +1,6 @@
 # Kafka MirrorMaker 2
 
-Deploys a MirrorMaker 2 replication engine on Kubernetes as a Strimzi `KafkaMirrorMaker2` custom resource — continuous, offset-aware mirroring of topics, records, and consumer-group positions from one or more source Kafka clusters into one target. This is the migration on-ramp: point the workers at a running MSK, Confluent Cloud, or datacenter cluster, replicate into your Strimzi-managed Kafka, then cut consumers over with their offsets intact (checkpointing translates source offsets to target offsets). Each `mirrors` entry is one source; the target connection and the engine's group identity live once on the resource.
+Deploys a MirrorMaker 2 replication engine on Kubernetes as a Strimzi KafkaMirrorMaker2 custom resource — continuous, offset-aware mirroring of topics, records, and consumer-group positions from one or more source Kafka clusters into one target. This is the migration on-ramp: point the workers at a running MSK, Confluent Cloud, or datacenter cluster, replicate into your Strimzi-managed Kafka, then cut consumers over with their offsets intact (checkpointing translates source offsets to target offsets). Each `mirrors` entry is one source; the target connection and the engine's group identity live once on the resource.
 
 ## What Gets Created
 
@@ -117,16 +117,16 @@ These are the most important decisions when configuring a MirrorMaker 2 deployme
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **KubernetesNamespace** | `namespace` | `spec.name` |
-| **KubernetesKafka** | `target.bootstrapServers` (and `mirrors[].source.bootstrapServers` for in-cluster sources) | `status.outputs.internal_bootstrap_endpoint` |
-| **KubernetesKafka** | `target.tls.trustedCertificates[].secretName` (and per-source) | `status.outputs.cluster_ca_cert_secret_name` |
-| **KubernetesKafkaUser** | `authentication.certificateAndKey.secretName` / `authentication.passwordSecret.secretName` (target and per-source) | `status.outputs.secret_name` |
+| **Kubernetes Namespace** | `namespace` | `spec.name` |
+| **Apache Kafka** | `target.bootstrapServers` (and `mirrors[].source.bootstrapServers` for in-cluster sources) | `status.outputs.internal_bootstrap_endpoint` |
+| **Apache Kafka** | `target.tls.trustedCertificates[].secretName` (and per-source) | `status.outputs.cluster_ca_cert_secret_name` |
+| **Kafka User** | `authentication.certificateAndKey.secretName` / `authentication.passwordSecret.secretName` (target and per-source) | `status.outputs.secret_name` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

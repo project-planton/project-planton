@@ -6,19 +6,19 @@ Deploys a federated identity provider into an existing Cognito User Pool, enabli
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **Cognito Identity Provider** -- a federation registration attached to the specified User Pool, configured with provider-specific details (OAuth client credentials, OIDC issuer, or SAML metadata) and optional attribute mapping from provider claims to pool schema attributes
+- **Cognito Identity Provider** — a federation registration attached to the specified User Pool, configured with provider-specific details (OAuth client credentials, OIDC issuer, or SAML metadata) and optional attribute mapping from provider claims to pool schema attributes
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **AWS Provider Connection** -- an active connection in the Connect module with credentials for the target AWS account. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline credentials or cross-account trust authentication modes.
+- **AWS Provider Connection** — an active connection in the Connect module with credentials for the target AWS account. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline credentials or cross-account trust authentication modes.
 
 ### AWS Account
 
-- **A Cognito User Pool** -- the identity provider attaches to an existing pool. Provide the `userPoolId` directly or reference an AwsCognitoUserPool Infra Component via ValueFromRef.
-- **Provider credentials** -- OAuth client ID and secret (for Google, Facebook, Amazon, OIDC), Apple private key and team ID (for Sign In with Apple), or SAML metadata URL/file (for SAML 2.0). Obtain these from the external identity provider's developer console.
+- **A Cognito User Pool** — the identity provider attaches to an existing pool. Provide the `userPoolId` directly or reference an AWS Cognito User Pool Infra Component.
+- **Provider credentials** — OAuth client ID and secret (for Google, Facebook, Amazon, OIDC), Apple private key and team ID (for Sign In with Apple), or SAML metadata URL/file (for SAML 2.0). Obtain these from the external identity provider's developer console.
 
 ## Deploy
 
@@ -60,7 +60,7 @@ This creates a Google identity provider attached to the specified User Pool with
 
 ### InfraChart
 
-When deploying as part of a multi-resource environment, use ValueFromRef to wire the identity provider to a User Pool deployed in the same InfraPipeline:
+When deploying as part of a multi-resource environment, use references to wire the identity provider to a User Pool deployed in the same InfraPipeline:
 
 ```yaml
 spec:
@@ -77,25 +77,25 @@ The InfraPipeline resolves the dependency graph, deploys the User Pool first, th
 
 These are the most important decisions when configuring a Cognito Identity Provider. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Provider type** -- Determines the authentication protocol and which configuration block to populate: `google`, `facebook`, `loginWithAmazon`, `signInWithApple` for social login; `oidc` for enterprise SSO with Okta, Azure AD, or any OIDC-compliant provider; `saml` for SAML 2.0 federation. The `providerType` field is ForceNew -- changing it requires replacing the identity provider.
+**Provider type** — Determines the authentication protocol and which configuration block to populate: `google`, `facebook`, `loginWithAmazon`, `signInWithApple` for social login; `oidc` for enterprise SSO with Okta, Azure AD, or any OIDC-compliant provider; `saml` for SAML 2.0 federation. The `providerType` field is ForceNew — changing it requires replacing the identity provider.
 
-**Provider name** -- A unique identifier within the User Pool (e.g., "Google", "CorpOkta", "AzureAD-SAML"). This name appears in the User Pool Client's `supportedIdentityProviders` list and in the hosted UI provider selection. ForceNew -- cannot be changed after creation.
+**Provider name** — A unique identifier within the User Pool (e.g., "Google", "CorpOkta", "AzureAD-SAML"). This name appears in the User Pool Client's `supportedIdentityProviders` list and in the hosted UI provider selection. ForceNew — cannot be changed after creation.
 
-**Attribute mapping** -- Maps provider-specific attribute names to Cognito pool attributes (e.g., Google's `sub` to `username`, SAML claim URIs to `email`). When omitted, AWS applies default mappings based on the provider type. Custom mappings are essential when your provider uses non-standard claim names.
+**Attribute mapping** — Maps provider-specific attribute names to Cognito pool attributes (e.g., Google's `sub` to `username`, SAML claim URIs to `email`). When omitted, AWS applies default mappings based on the provider type. Custom mappings are essential when your provider uses non-standard claim names.
 
-**SAML metadata source** -- For SAML providers, choose between `metadataUrl` (Cognito fetches metadata from the IdP) and `metadataFile` (inline XML metadata for air-gapped environments). Exactly one must be set.
+**SAML metadata source** — For SAML providers, choose between `metadataUrl` (Cognito fetches metadata from the IdP) and `metadataFile` (inline XML metadata for air-gapped environments). Exactly one must be set.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AwsCognitoUserPool** | `userPoolId` | `status.outputs.user_pool_id` |
+| **AWS Cognito User Pool** | `userPoolId` | `status.outputs.user_pool_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -107,13 +107,13 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Google social login** -- Google OAuth 2.0 with email, profile, and openid scopes. The quickest path to social sign-in for consumer-facing applications. Start from the **Google OAuth** preset.
+**Google social login** — Google OAuth 2.0 with email, profile, and openid scopes. The quickest path to social sign-in for consumer-facing applications. Start from the **Google OAuth** preset.
 
-**Enterprise OIDC** -- Generic OIDC configuration for Okta, Azure AD, Auth0, Keycloak, or any OIDC-compliant identity provider. Cognito auto-discovers endpoints from the issuer URL. Start from the **Enterprise OIDC** preset.
+**Enterprise OIDC** — Generic OIDC configuration for Okta, Azure AD, Auth0, Keycloak, or any OIDC-compliant identity provider. Cognito auto-discovers endpoints from the issuer URL. Start from the **Enterprise OIDC** preset.
 
-**SAML 2.0 federation** -- SAML federation with metadata URL, single logout enabled, and standard claim URI attribute mapping. Works with Azure AD, ADFS, Salesforce, and other SAML 2.0 IdPs. Start from the **SAML Federation** preset.
+**SAML 2.0 federation** — SAML federation with metadata URL, single logout enabled, and standard claim URI attribute mapping. Works with Azure AD, ADFS, Salesforce, and other SAML 2.0 IdPs. Start from the **SAML Federation** preset.
 
 ## Works With
 
-- [**AWS Cognito User Pool**](/infra-catalog/aws-cognito-user-pool) -- provides the parent user pool that this identity provider attaches to
-- [**AWS Cognito User Pool Client**](/infra-catalog/aws-cognito-user-pool-client) -- lists this provider's name in `supportedIdentityProviders` to offer the sign-in option to an application
+- [**AWS Cognito User Pool**](/infra-catalog/aws-cognito-user-pool) — provides the parent user pool that this identity provider attaches to
+- [**AWS Cognito User Pool Client**](/infra-catalog/aws-cognito-user-pool-client) — lists this provider's name in `supportedIdentityProviders` to offer the sign-in option to an application

@@ -6,18 +6,18 @@ Grants one role, to one identity, on ONE Cloud KMS crypto key — the least-priv
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **Crypto Key IAM Member Binding** -- a `kms.CryptoKeyIAMMember` merging the (role, member) pair into the target key's IAM policy, with an optional IAM Condition attached
+- **Crypto Key IAM Member Binding** — a `kms.CryptoKeyIAMMember` merging the (role, member) pair into the target key's IAM policy, with an optional IAM Condition attached
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **GCP Provider Connection** -- an active connection in the Connect module with credentials permitted to set IAM policy on the target key (e.g. `roles/cloudkms.admin` on the key or its ring). Map it as the default for your environment, or specify it explicitly.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
+- **GCP Provider Connection** — an active connection in the Connect module with credentials permitted to set IAM policy on the target key (e.g. `roles/cloudkms.admin` on the key or its ring). Map it as the default for your environment, or specify it explicitly.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
 
 ### GCP Project
 
-- **A KMS crypto key** whose IAM policy receives the grant. Provide the fully qualified key path directly or reference a GcpKmsKey Infra Component via ValueFromRef.
+- **A KMS crypto key** whose IAM policy receives the grant. Provide the fully qualified key path directly or reference a GCP KMS Key Infra Component.
 - **The identity** receiving the grant must already exist (deleted principals are not grantable).
 
 ## Deploy
@@ -76,43 +76,43 @@ The InfraPipeline resolves the dependency graph, deploys the key (and the accoun
 
 These are the most important decisions when configuring a grant. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**The CMEK pattern** -- to encrypt a GCP service's resources with your own key, grant that service's SERVICE AGENT (e.g. GCS's `service-<project-number>@gs-project-accounts.iam.gserviceaccount.com`) the `roles/cloudkms.cryptoKeyEncrypterDecrypter` role on the key, then point the resource's KMS field at the key. Both halves are required — a missing grant is the classic CMEK deploy failure.
+**The CMEK pattern** — to encrypt a GCP service's resources with your own key, grant that service's SERVICE AGENT (e.g. GCS's `service-<project-number>@gs-project-accounts.iam.gserviceaccount.com`) the `roles/cloudkms.cryptoKeyEncrypterDecrypter` role on the key, then point the resource's KMS field at the key. Both halves are required — a missing grant is the classic CMEK deploy failure.
 
-**Role** -- a predefined KMS role (`roles/cloudkms.cryptoKeyEncrypterDecrypter` for CMEK, `signerVerifier` for signing keys, the one-directional `cryptoKeyEncrypter`/`cryptoKeyDecrypter` split for pipelines that must never read what they write, `publicKeyViewer` for verification-only consumers) or a custom role's fully-qualified name.
+**Role** — a predefined KMS role (`roles/cloudkms.cryptoKeyEncrypterDecrypter` for CMEK, `signerVerifier` for signing keys, the one-directional `cryptoKeyEncrypter`/`cryptoKeyDecrypter` split for pipelines that must never read what they write, `publicKeyViewer` for verification-only consumers) or a custom role's fully-qualified name.
 
-**Member format** -- the prefix declares the identity type: `serviceAccount:<email>`, `user:<email>`, `group:<email>`, `domain:<domain>`, or `principal://`/`principalSet://` federation principals. Format validation happens at deploy time because values usually arrive through references.
+**Member format** — the prefix declares the identity type: `serviceAccount:<email>`, `user:<email>`, `group:<email>`, `domain:<domain>`, or `principal://`/`principalSet://` federation principals. Format validation happens at deploy time because values usually arrive through references.
 
-**IAM Condition** -- an optional CEL expression scoping WHEN the grant applies (a break-glass expiry is the everyday case on keys). The condition is part of the grant's identity: the same role with and without a condition are two independent grants.
+**IAM Condition** — an optional CEL expression scoping WHEN the grant applies (a break-glass expiry is the everyday case on keys). The condition is part of the grant's identity: the same role with and without a condition are two independent grants.
 
-**Everything replaces atomically** -- an IAM grant has no update. Changing key, role, member, or condition replaces the grant — and for the brief moment between delete and create, the member's encrypt/decrypt calls fail. Schedule changes on keys serving live CMEK traffic accordingly.
+**Everything replaces atomically** — an IAM grant has no update. Changing key, role, member, or condition replaces the grant — and for the brief moment between delete and create, the member's encrypt/decrypt calls fail. Schedule changes on keys serving live CMEK traffic accordingly.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **GcpKmsKey** | `cryptoKeyId` | `status.outputs.key_id` |
-| **GcpIamCustomRole** (optional) | `role` | `status.outputs.name` |
-| **GcpServiceAccount** (optional) | `member` | `status.outputs.member` |
+| **GCP KMS Key** | `cryptoKeyId` | `status.outputs.key_id` |
+| **GCP IAM Custom Role** (optional) | `role` | `status.outputs.name` |
+| **GCP Service Account** (optional) | `member` | `status.outputs.member` |
 
 ### What This Kind Provides
 
-This kind has no outputs a downstream Infra Component would consume: `status.outputs` records the grant's post-resolution facts — the (`crypto_key_id`, `role`, `member`) triple after any references were resolved, plus the key IAM policy `etag` at the moment this grant merged. They exist for audit and drift review, not for ValueFromRef wiring.
+This kind has no outputs a downstream Infra Component would consume: `status.outputs` records the grant's post-resolution facts — the (`crypto_key_id`, `role`, `member`) triple after any references were resolved, plus the key IAM policy `etag` at the moment this grant merged. They exist for audit and drift review, not for references.
 
 ## Common Patterns
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Storage CMEK grant** -- the GCS service agent gets encrypter/decrypter on the bucket's key; the grant every CMEK bucket needs. Start from the **Cloud Storage CMEK Grant** preset.
+**Storage CMEK grant** — the GCS service agent gets encrypter/decrypter on the bucket's key; the grant every CMEK bucket needs. Start from the **Cloud Storage CMEK Grant** preset.
 
-**Workload key user** -- an application's service account composed by reference for application-level encryption or signing. Start from the **Workload Key User Grant** preset.
+**Workload key user** — an application's service account composed by reference for application-level encryption or signing. Start from the **Workload Key User Grant** preset.
 
-**Conditional key access** -- a human identity with a time-boxed condition; break-glass access that removes itself. Start from the **Conditional Key Access (Time-Bound)** preset.
+**Conditional key access** — a human identity with a time-boxed condition; break-glass access that removes itself. Start from the **Conditional Key Access (Time-Bound)** preset.
 
 ## Works With
 
-- [**GCP KMS Key**](/infra-catalog/gcp-kms-key) -- its `key_id` output feeds the crypto key field; the key this grant controls access to
-- [**GCP KMS Key Ring**](/infra-catalog/gcp-kms-key-ring) -- the key's container; IAM granted at the ring flows down to every key (this kind exists to avoid that blast radius)
-- [**GCP Service Account**](/infra-catalog/gcp-service-account) -- its `member` output feeds the member field for workload key access
-- [**GCP IAM Custom Role**](/infra-catalog/gcp-iam-custom-role) -- its `name` output feeds the role field for curated permission bundles
+- [**GCP KMS Key**](/infra-catalog/gcp-kms-key) — its `key_id` output feeds the crypto key field; the key this grant controls access to
+- [**GCP KMS Key Ring**](/infra-catalog/gcp-kms-key-ring) — the key's container; IAM granted at the ring flows down to every key (this kind exists to avoid that blast radius)
+- [**GCP Service Account**](/infra-catalog/gcp-service-account) — its `member` output feeds the member field for workload key access
+- [**GCP IAM Custom Role**](/infra-catalog/gcp-iam-custom-role) — its `name` output feeds the role field for curated permission bundles

@@ -65,7 +65,7 @@ These are the most important decisions when configuring an account policy. Explo
 
 **One policy per type is the practical quota** — AWS bounds account policies per type (one for most types). Treat each (name, type) pair as a singleton per capability: a second FIELD_INDEX_POLICY under a different name is rejected server-side where the type is single-instance.
 
-**Account transformer vs per-group transformer** — a TRANSFORMER_POLICY here applies to every log group; the per-log-group transformer (on AwsCloudwatchLogGroup) wins where both exist. Prefer per-group transformers for service-specific parsing and the account policy for org-wide normalization.
+**Account transformer vs per-group transformer** — a TRANSFORMER_POLICY here applies to every log group; the per-log-group transformer (on AWS CloudWatch Log Group) wins where both exist. Prefer per-group transformers for service-specific parsing and the account policy for org-wide normalization.
 
 **What updates in place** — document edits apply in place; `policyName`, `policyType`, and `selectionCriteria` all replace the policy. The policy applies to matching log groups immediately, including groups created after it.
 
@@ -77,7 +77,7 @@ This kind has no foreign key dependencies. A subscription-filter policy's destin
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` echoes the policy's identity back: `policy_name` and `policy_type`, which together form the provider's import ID (`policy_name:policy_type`). Both are input echoes — nothing downstream composes on an account policy via ValueFromRef.
+After provisioning, `status.outputs` echoes the policy's identity back: `policy_name` and `policy_type`, which together form the provider's import ID (`policy_name:policy_type`). Both are input echoes — nothing downstream composes on an account policy by reference.
 
 ## Common Patterns
 

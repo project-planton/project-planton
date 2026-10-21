@@ -1,22 +1,22 @@
 # GCP Tag Value
 
-Creates a Google Cloud Resource Manager tag value: the VALUE half of a tag -- `prod` under the `environment` key, `pci` under `data-classification`. A value belongs to exactly one key (`GcpTagKey`) and is what gets bound to resources (`GcpTagBinding`) and what organization policies, IAM conditions, and firewall rules test for. Declare one value per allowed setting of a key; a key's vocabulary is the set of values under it.
+Creates a Google Cloud Resource Manager tag value: the VALUE half of a tag — prod under the environment key, pci under data-classification. A value belongs to exactly one key (`GcpTagKey`) and is what gets bound to resources (`GcpTagBinding`) and what organization policies, IAM conditions, and firewall rules test for. Declare one value per allowed setting of a key; a key's vocabulary is the set of values under it.
 
 ## What Gets Created
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **Tag value** -- the `tags_tag_value` under its key, with its short name and description
+- **Tag value** — the `tags_tag_value` under its key, with its short name and description
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **GCP Provider Connection** -- an active connection in the Connect module with credentials that can administer tags at the key's owner. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **GCP Provider Connection** — an active connection in the Connect module with credentials that can administer tags at the key's owner. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
 
 ### GCP Tag Key
 
-- **The key must exist** -- declare it with `GcpTagKey` and reference its `name` output, or pass the `tagKeys/{id}` literal.
+- **The key must exist** — declare it with `GcpTagKey` and reference its `name` output, or pass the `tagKeys/{id}` literal.
 - **IAM**: the deploying identity needs `roles/resourcemanager.tagAdmin` on the key's owner (organization or project).
 - **Short names are unique per key** and reserved for 30 days after deletion; when the key has an allowed-values regex, the short name must match it.
 
@@ -52,7 +52,7 @@ This declares `environment/prod` under the existing `environment` key. An Infra 
 
 ### InfraChart
 
-When deploying as part of a multi-resource environment, the value references its `GcpTagKey` via ValueFromRef, and every `GcpTagBinding` references the value's `name`:
+When deploying as part of a multi-resource environment, the value references its `GcpTagKey`, and every `GcpTagBinding` references the value's `name`:
 
 ```yaml
 spec:
@@ -70,23 +70,23 @@ The InfraPipeline deploys the key first, then the value, then every binding that
 
 These are the most important decisions when configuring a tag value. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Key** -- the `GcpTagKey` the value belongs to (its `name` output, `tagKeys/{id}`). Immutable.
+**Key** — the `GcpTagKey` the value belongs to (its `name` output, `tagKeys/{id}`). Immutable.
 
-**Short name** -- the value as written in conditions (`resource.matchTag('{org}/environment', 'prod')`); defaults to the manifest name. Any UTF-8 except `/`, `\`, `'`, `"`. Immutable: rename by creating a new value.
+**Short name** — the value as written in conditions (`resource.matchTag('{org}/environment', 'prod')`); defaults to the manifest name. Any UTF-8 except `/`, `\`, `'`, `"`. Immutable: rename by creating a new value.
 
-**Deletion policy** -- `DELETE` (default) fails while any binding still uses the value -- destroy the bindings first (a chart's dependency order does this when they reference the value); `PREVENT` fails the destroy; `ABANDON` leaves the value and its bindings live.
+**Deletion policy** — `DELETE` (default) fails while any binding still uses the value — destroy the bindings first (a chart's dependency order does this when they reference the value); `PREVENT` fails the destroy; `ABANDON` leaves the value and its bindings live.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **GcpTagKey** | `tagKey` | `status.outputs.name` |
+| **GCP Tag Key** | `tagKey` | `status.outputs.name` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -99,12 +99,12 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Environment prod** -- the `prod` value of the `environment` key. Start from the **Environment Prod** preset.
+**Environment prod** — the `prod` value of the `environment` key. Start from the **Environment Prod** preset.
 
-**Environment nonprod** -- the sibling value, showing one key with several values. Start from the **Environment Nonprod** preset.
+**Environment nonprod** — the sibling value, showing one key with several values. Start from the **Environment Nonprod** preset.
 
 ## Works With
 
-- [**GCP Tag Key**](/infra-catalog/gcp-tag-key) -- the key this value belongs to
-- [**GCP Tag Binding**](/infra-catalog/gcp-tag-binding) -- attaches this value to a resource
-- [**GCP Organization Policy**](/infra-catalog/gcp-org-policy) -- rules conditioned on this value
+- [**GCP Tag Key**](/infra-catalog/gcp-tag-key) — the key this value belongs to
+- [**GCP Tag Binding**](/infra-catalog/gcp-tag-binding) — attaches this value to a resource
+- [**GCP Organization Policy**](/infra-catalog/gcp-org-policy) — rules conditioned on this value

@@ -11,7 +11,7 @@
 **KubernetesPlantonOperatorSpec** installs the Planton operator — the
 lifecycle manager that reconciles a `PlantonPlatform` declaration into a
 running self-hosted Planton (control plane, console, identity server,
-databases, in-cluster runner, secrets manager) — from the official
+databases, in-cluster runner, secrets manager) — from Planton's
 `planton-operator` Helm chart (OCI, ghcr.io/plantonhq/charts) as a real
 Helm release, byte-identical to a hand-installed one.
 
@@ -342,7 +342,7 @@ pulling the operator image from a private mirror.
 Override the operator image (registry mirrors, air-gapped clusters).
 Empty = the chart default (ghcr.io/plantonhq/planton/operator at the
 chart's app version). The mirror must be digest-identical to the
-official image — the operator and the definitions the chart renders
+Planton's image — the operator and the definitions the chart renders
 are one build.
 
 ### spec.image.repository

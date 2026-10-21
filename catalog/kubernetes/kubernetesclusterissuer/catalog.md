@@ -6,19 +6,19 @@ Creates one cert-manager ClusterIssuer — a cluster-scoped certificate authorit
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **ClusterIssuer** -- the cert-manager custom resource, named after `metadata.name`, configured with the selected signing backend
-- **Credential Secrets** -- wherever the backend needs a credential (a Cloudflare token, AWS secret key, Vault token, TSIG key), the module materializes it as a Kubernetes Secret in cert-manager's cluster-resource namespace and wires the CR's secretRef to it — you declare the value once, it never appears in rendered manifests
-- **ACME Account Key Secret** -- created by cert-manager itself on first ACME registration (ACME backend only)
+- **ClusterIssuer** — the cert-manager custom resource, named after `metadata.name`, configured with the selected signing backend
+- **Credential Secrets** — wherever the backend needs a credential (a Cloudflare token, AWS secret key, Vault token, TSIG key), the module materializes it as a Kubernetes Secret in cert-manager's cluster-resource namespace and wires the CR's secretRef to it — you declare the value once, it never appears in rendered manifests
+- **ACME Account Key Secret** — created by cert-manager itself on first ACME registration (ACME backend only)
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **Kubernetes Provider Connection** -- an active connection in the Connect module with credentials for the target cluster.
+- **Kubernetes Provider Connection** — an active connection in the Connect module with credentials for the target cluster.
 
 ### Kubernetes Cluster
 
-- **Cert Manager must be installed first** -- the ClusterIssuer is a cert-manager custom resource. Reference the Cert Manager resource's `cluster_resource_namespace` output for correct-by-construction wiring.
+- **Cert Manager must be installed first** — the ClusterIssuer is a cert-manager custom resource. Reference the Cert Manager resource's `cluster_resource_namespace` output for correct-by-construction wiring.
 - For keyless DNS-01 (Route53 via IRSA, Cloud DNS via GKE Workload Identity, Azure DNS via AKS Workload Identity), the cert-manager controller's workload identity must be configured on the Cert Manager resource.
 - For token-based DNS-01 (Cloudflare, DigitalOcean), have the scoped token ready — for Cloudflare, a token with Zone:Zone:Read and Zone:DNS:Edit on the target zones.
 
@@ -85,32 +85,32 @@ The InfraPipeline installs cert-manager first, then creates the ClusterIssuer ag
 
 These are the most important decisions when configuring a Cluster Issuer. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**ClusterIssuer vs Issuer** -- Identical signing capabilities (the config message is shared), different scope. Use a ClusterIssuer for the platform-wide CA (one `letsencrypt-production` serving every team); use a namespace-scoped Cert Manager Issuer when a namespace needs its own CA or its own credential blast radius.
+**ClusterIssuer vs Issuer** — Identical signing capabilities (the config message is shared), different scope. Use a ClusterIssuer for the platform-wide CA (one `letsencrypt-production` serving every team); use a namespace-scoped Cert Manager Issuer when a namespace needs its own CA or its own credential blast radius.
 
-**Pick the signing backend** -- `acme` for browser-trusted public TLS, `ca` to sign with a CA keypair from a Kubernetes Secret (internal PKI, mTLS), `selfSigned` to bootstrap a CA chain or for development, `vault` for a centralized Vault/OpenBao PKI engine.
+**Pick the signing backend** — `acme` for browser-trusted public TLS, `ca` to sign with a CA keypair from a Kubernetes Secret (internal PKI, mTLS), `selfSigned` to bootstrap a CA chain or for development, `vault` for a centralized Vault/OpenBao PKI engine.
 
-**Stage before production (ACME)** -- Let's Encrypt production enforces strict rate limits that a misconfigured setup can exhaust for a whole domain. Point `acme.server` at the staging endpoint while testing, then switch.
+**Stage before production (ACME)** — Let's Encrypt production enforces strict rate limits that a misconfigured setup can exhaust for a whole domain. Point `acme.server` at the staging endpoint while testing, then switch.
 
-**Solvers decide how ownership is proven** -- DNS-01 (publish a TXT record) is the only challenge type that can issue wildcard certificates and works for non-public services; HTTP-01 (serve a token on port 80) needs public reachability. A single catch-all solver is the common case; add selector-scoped solvers when different DNS zones need different providers.
+**Solvers decide how ownership is proven** — DNS-01 (publish a TXT record) is the only challenge type that can issue wildcard certificates and works for non-public services; HTTP-01 (serve a token on port 80) needs public reachability. A single catch-all solver is the common case; add selector-scoped solvers when different DNS zones need different providers.
 
-**Keyless where the platform allows it** -- DNS-01 providers that authenticate ambiently (Route53, Cloud DNS, Azure DNS) inherit the identity configured on the cert-manager controller — leave their static credential fields empty. Token providers (Cloudflare, DigitalOcean) always need their token.
+**Keyless where the platform allows it** — DNS-01 providers that authenticate ambiently (Route53, Cloud DNS, Azure DNS) inherit the identity configured on the cert-manager controller — leave their static credential fields empty. Token providers (Cloudflare, DigitalOcean) always need their token.
 
-**Credentials are declared, not pre-created** -- Wherever upstream cert-manager expects a `secretRef` to a hand-made Secret, this spec accepts the credential value directly (marked sensitive). The module materializes the Secret and wires the reference.
+**Credentials are declared, not pre-created** — Wherever upstream cert-manager expects a `secretRef` to a hand-made Secret, this spec accepts the credential value directly (marked sensitive). The module materializes the Secret and wires the reference.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **KubernetesCertManager** | `certManagerNamespace` | `status.outputs.cluster_resource_namespace` |
-| **KubernetesCertificate** | `config.ca.caSecretName` | `status.outputs.secret_name` |
-| **KubernetesServiceAccount** | `config.vault.kubernetesAuth.serviceAccountName` | `metadata.name` |
-| **KubernetesServiceAccount** | `config.acme.solvers[].dns01.route53.serviceAccount.serviceAccountName` | `metadata.name` |
+| **Cert Manager** | `certManagerNamespace` | `status.outputs.cluster_resource_namespace` |
+| **Cert Manager Certificate** | `config.ca.caSecretName` | `status.outputs.secret_name` |
+| **Kubernetes ServiceAccount** | `config.vault.kubernetesAuth.serviceAccountName` | `metadata.name` |
+| **Kubernetes ServiceAccount** | `config.acme.solvers[].dns01.route53.serviceAccount.serviceAccountName` | `metadata.name` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -122,19 +122,19 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Public TLS via Cloudflare** -- Let's Encrypt with a DNS-01 catch-all solver authenticated by a scoped API token. Start from the **ClusterIssuer with Cloudflare DNS-01 Challenge** preset.
+**Public TLS via Cloudflare** — Let's Encrypt with a DNS-01 catch-all solver authenticated by a scoped API token. Start from the **ClusterIssuer with Cloudflare DNS-01 Challenge** preset.
 
-**Keyless on GKE** -- Cloud DNS DNS-01 with no static key; the controller's GKE Workload Identity signs the API calls. Start from the **ClusterIssuer with GCP Cloud DNS** preset.
+**Keyless on GKE** — Cloud DNS DNS-01 with no static key; the controller's GKE Workload Identity signs the API calls. Start from the **ClusterIssuer with GCP Cloud DNS** preset.
 
-**Keyless on EKS** -- Route53 DNS-01 through the controller's IRSA identity. Start from the **ClusterIssuer with AWS Route53** preset.
+**Keyless on EKS** — Route53 DNS-01 through the controller's IRSA identity. Start from the **ClusterIssuer with AWS Route53** preset.
 
-**Enterprise PKI** -- Certificates signed by a Vault PKI engine, authenticated via Vault's Kubernetes auth method (keyless). Start from the **Vault PKI ClusterIssuer** preset.
+**Enterprise PKI** — Certificates signed by a Vault PKI engine, authenticated via Vault's Kubernetes auth method (keyless). Start from the **Vault PKI ClusterIssuer** preset.
 
 ## Works With
 
-- [**Cert Manager**](/infra-catalog/kubernetes-cert-manager) -- must be installed first; provides the controller, the CRDs, and the cluster-resource namespace this issuer's Secrets live in.
-- [**Cert Manager Certificate**](/infra-catalog/kubernetes-certificate) -- requests certificates from this issuer by name, from any namespace.
-- [**Ingress NGINX**](/infra-catalog/kubernetes-ingress-nginx) -- serves HTTPS with the issued certificate Secrets; ingress-shim annotations can name this issuer directly.
-- [**Kubernetes Gateway**](/infra-catalog/kubernetes-gateway) -- terminates TLS with certificate Secrets issued by this issuer.
-- [**Kubernetes ServiceAccount**](/infra-catalog/kubernetes-service-account) -- composes the per-issuer IRSA and Vault Kubernetes-auth identities.
-- [**Cert Manager Issuer**](/infra-catalog/kubernetes-issuer) -- the namespace-scoped alternative for team-owned CAs and credential isolation.
+- [**Cert Manager**](/infra-catalog/kubernetes-cert-manager) — must be installed first; provides the controller, the CRDs, and the cluster-resource namespace this issuer's Secrets live in.
+- [**Cert Manager Certificate**](/infra-catalog/kubernetes-certificate) — requests certificates from this issuer by name, from any namespace.
+- [**Ingress NGINX**](/infra-catalog/kubernetes-ingress-nginx) — serves HTTPS with the issued certificate Secrets; ingress-shim annotations can name this issuer directly.
+- [**Kubernetes Gateway**](/infra-catalog/kubernetes-gateway) — terminates TLS with certificate Secrets issued by this issuer.
+- [**Kubernetes ServiceAccount**](/infra-catalog/kubernetes-service-account) — composes the per-issuer IRSA and Vault Kubernetes-auth identities.
+- [**Cert Manager Issuer**](/infra-catalog/kubernetes-issuer) — the namespace-scoped alternative for team-owned CAs and credential isolation.

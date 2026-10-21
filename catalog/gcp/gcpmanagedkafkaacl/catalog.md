@@ -6,18 +6,18 @@ Grants producers and consumers access to their topics and consumer groups in the
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **Kafka ACL** -- a `managed_kafka_acl` for the pattern named by `aclId`
+- **Kafka ACL** — a `managed_kafka_acl` for the pattern named by `aclId`
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **GCP Provider Connection** -- an active connection in the Connect module with Managed Service for Apache Kafka admin permissions (`roles/managedkafka.admin`) on the project. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
+- **GCP Provider Connection** — an active connection in the Connect module with Managed Service for Apache Kafka admin permissions (`roles/managedkafka.admin`) on the project. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
 
 ### Required Dependencies
 
-- **`GcpManagedKafkaCluster`** -- the cluster the ACL applies to (`cluster`).
+- **`GcpManagedKafkaCluster`** — the cluster the ACL applies to (`cluster`).
 
 ## Deploy
 
@@ -60,24 +60,24 @@ Reference the `GcpManagedKafkaCluster` from `cluster`; declare one ACL per topic
 
 These are the most important decisions when configuring this component. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**The pattern** -- `aclId` is both the ACL's name and what it governs -- a literal topic or group, a prefix, a transactional id, or the whole cluster.
+**The pattern** — `aclId` is both the ACL's name and what it governs — a literal topic or group, a prefix, a transactional id, or the whole cluster.
 
-**Entries** -- each entry is a principal, an operation, and ALLOW (default) or DENY. Producers need WRITE (and DESCRIBE), consumers READ on the topic and on their group.
+**Entries** — each entry is a principal, an operation, and ALLOW (default) or DENY. Producers need WRITE (and DESCRIBE), consumers READ on the topic and on their group.
 
-**Principals** -- `User:` followed by a Google service account or user email, or the certificate principal your cluster's mTLS mapping rules produce; `User:*` is everyone.
+**Principals** — `User:` followed by a Google service account or user email, or the certificate principal your cluster's mTLS mapping rules produce; `User:*` is everyone.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **GcpProject** | `projectId` | `status.outputs.project_id` |
-| **GcpManagedKafkaCluster** | `cluster` | `status.outputs.name` |
+| **GCP Project** | `projectId` | `status.outputs.project_id` |
+| **GCP Managed Kafka Cluster** | `cluster` | `status.outputs.name` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|-----------------------|
@@ -89,13 +89,13 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**One topic** -- A producer's WRITE and DESCRIBE and a consumer's READ on one topic. Start from the **Topic Producer and Consumer** preset.
+**One topic** — A producer's WRITE and DESCRIBE and a consumer's READ on one topic. Start from the **Topic Producer and Consumer** preset.
 
-**Consumer group** -- READ on the consumer group a service reads with. Start from the **Consumer Group Read** preset.
+**Consumer group** — READ on the consumer group a service reads with. Start from the **Consumer Group Read** preset.
 
-**Team namespace** -- ALL on every topic starting with a team's prefix. Start from the **Team Topic Prefix** preset.
+**Team namespace** — ALL on every topic starting with a team's prefix. Start from the **Team Topic Prefix** preset.
 
 ## Works With
 
-- [**GCP Managed Kafka Cluster**](/infra-catalog/gcp-managed-kafka-cluster) -- the cluster the rules apply to
-- [**GCP Managed Kafka Topic**](/infra-catalog/gcp-managed-kafka-topic) -- the topics they govern
+- [**GCP Managed Kafka Cluster**](/infra-catalog/gcp-managed-kafka-cluster) — the cluster the rules apply to
+- [**GCP Managed Kafka Topic**](/infra-catalog/gcp-managed-kafka-topic) — the topics they govern

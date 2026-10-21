@@ -1295,7 +1295,10 @@ After all updates, **execute validation commands in sequence**:
    billing-relevant fields need cost-driver entries, new security-relevant fields
    may move a control from not_applicable to configurable, and added/removed
    module resources change the derived permission statements (update the notes
-   citing the terraform resource types). Validate with
+   citing the terraform resource types, and each changed entry's `reach` and
+   `privilege` -- the gates name the value they expect -- plus the GCP API
+   ownership: the kind's own enablement, `api_enabled_by`, or
+   `caller_project_services`). Validate with
    `go test ./pkg/finops/... ./pkg/compliance/... ./pkg/iac/permissions/... ./pkg/iac/actioninventory/`
    (the last proves every permission name exists in the provider's inventory
    snapshot; a new service prefix needs `make generate-action-inventory

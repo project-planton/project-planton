@@ -1,5 +1,5 @@
 # Least-privilege permissions the IaC runner's Azure principal needs to
-# provision, update, and destroy this component with the official modules.
+# provision, update, and destroy this component with the platform modules.
 # Every entry is `derived` (static analysis of the module sources, cited in
 # notes) until the live capture lane upgrades it to `proven`. Schema:
 # iac/catalogkindpermissions/v1.
@@ -34,4 +34,5 @@ spec:
           - Microsoft.Network/privateDnsZones/TXT/write
           - Microsoft.Network/privateDnsZones/TXT/delete
         provenance: derived
+        privilege: ordinary
         notes: Covers the module's seven count-gated azurerm_private_dns_*_record resources -- exactly one materializes per deployment (the spec's exactly-one-payload rule), but the grant spans all seven record types so one profile serves any manifest. Record sets are addressed by the parent zone's ARM ID plus the record name. Held via Private DNS Zone Contributor on the zone's resource group, or a narrower custom role.

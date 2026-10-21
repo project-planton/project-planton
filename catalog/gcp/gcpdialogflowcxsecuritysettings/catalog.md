@@ -6,19 +6,19 @@ Sets the privacy policy your conversational agents run under: personal data scru
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **API enablement** -- `dialogflow.googleapis.com` on the project
-- **Security settings** -- a `diagflow.CxSecuritySettings` with redaction, retention, audio export, and Insights export
+- **API enablement** — `dialogflow.googleapis.com` on the project
+- **Security settings** — a `diagflow.CxSecuritySettings` with redaction, retention, audio export, and Insights export
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **GCP Provider Connection** -- an active connection in the Connect module with Dialogflow admin permissions on the project. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
+- **GCP Provider Connection** — an active connection in the Connect module with Dialogflow admin permissions on the project. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
 
 ### Optional Dependencies
 
-- **GcpGcsBucket** -- for audio export, referenced by `audioExportSettings.gcsBucket`.
+- **GCP GCS Bucket** — for audio export, referenced by `audioExportSettings.gcsBucket`.
 
 ## Deploy
 
@@ -58,24 +58,24 @@ When deploying as part of a multi-resource environment, reference these settings
 
 These are the most important decisions when configuring security settings. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Redaction** -- `redactionStrategy: REDACT_WITH_SERVICE` with `redactionScope: REDACT_DISK_STORAGE` scrubs personal data before anything is stored. Your own Sensitive Data Protection templates decide what counts as sensitive and how it is replaced.
+**Redaction** — `redactionStrategy: REDACT_WITH_SERVICE` with `redactionScope: REDACT_DISK_STORAGE` scrubs personal data before anything is stored. Your own Sensitive Data Protection templates decide what counts as sensitive and how it is replaced.
 
-**Retention** -- `retentionWindowDays` keeps data for a set number of days; `retentionStrategy: REMOVE_AFTER_CONVERSATION` keeps nothing past the conversation and switches off audio and Insights export.
+**Retention** — `retentionWindowDays` keeps data for a set number of days; `retentionStrategy: REMOVE_AFTER_CONVERSATION` keeps nothing past the conversation and switches off audio and Insights export.
 
-**Exports** -- audio export records telephony calls into your bucket; Insights export feeds Conversational Insights. Both follow the retention rule.
+**Exports** — audio export records telephony calls into your bucket; Insights export feeds Conversational Insights. Both follow the retention rule.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **GcpProject** | `projectId` | `status.outputs.project_id` |
-| **GcpGcsBucket** | `audioExportSettings.gcsBucket` | `status.outputs.bucket_name` |
+| **GCP Project** | `projectId` | `status.outputs.project_id` |
+| **GCP GCS Bucket** | `audioExportSettings.gcsBucket` | `status.outputs.bucket_name` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -87,11 +87,11 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**PII redaction** -- Redaction with Google's default detectors and 30-day retention. Start from the **PII Redaction** preset.
+**PII redaction** — Redaction with Google's default detectors and 30-day retention. Start from the **PII Redaction** preset.
 
-**Call recording and insights** -- Redacted MP3 recordings into your bucket, Insights export, 90-day retention, protected by `PREVENT`. Start from the **Call Recording and Insights** preset.
+**Call recording and insights** — Redacted MP3 recordings into your bucket, Insights export, 90-day retention, protected by `PREVENT`. Start from the **Call Recording and Insights** preset.
 
 ## Works With
 
-- [**GCP Dialogflow CX Agent**](/infra-catalog/gcp-dialogflow-cx-agent) -- the agents that apply these settings
-- [**GCP GCS Bucket**](/infra-catalog/gcp-gcs-bucket) -- where exported audio lands
+- [**GCP Dialogflow CX Agent**](/infra-catalog/gcp-dialogflow-cx-agent) — the agents that apply these settings
+- [**GCP GCS Bucket**](/infra-catalog/gcp-gcs-bucket) — where exported audio lands

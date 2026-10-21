@@ -1,6 +1,6 @@
 # Argo Workflows
 
-Deploys Argo Workflows — the Kubernetes-native workflow engine for DAG/step pipelines (CI jobs, data and ML pipelines, batch orchestration) — from the official `argo-workflows` Helm chart. Every workflow step runs as a pod; the engine turns declarative pipeline documents into running containers with retries, artifacts, and history. The grain is deliberate: **this kind installs the ENGINE only.** Workflows, WorkflowTemplates and CronWorkflows are Kubernetes custom resources declared like any other manifest (a KubernetesManifest, a chart, the Argo CLI/UI) once the engine runs. Submit against the runner ServiceAccount (`workflowServiceAccount`, default `argo-workflow`) — workflow pods run with ITS permissions, never the controller's.
+Deploys Argo Workflows — the Kubernetes-native workflow engine for DAG/step pipelines (CI jobs, data and ML pipelines, batch orchestration) — from the official argo-workflows Helm chart. Every workflow step runs as a pod; the engine turns declarative pipeline documents into running containers with retries, artifacts, and history. The grain is deliberate: **this kind installs the ENGINE only.** Workflows, WorkflowTemplates and CronWorkflows are Kubernetes custom resources declared like any other manifest (a Kubernetes Manifest, a chart, the Argo CLI/UI) once the engine runs. Submit against the runner ServiceAccount (`workflowServiceAccount`, default `argo-workflow`) — workflow pods run with ITS permissions, never the controller's.
 
 ## What Gets Created
 
@@ -76,7 +76,7 @@ These are the most important decisions when configuring an Argo Workflows engine
 
 **Two durability seams — both empty by default, both deliberate.** Declare `artifactRepository` so steps can pass files (and, with `archiveLogs`, so the UI shows step logs after pods are gone): exactly one backend — S3-compatible, GCS, or Azure Blob. Declare `archive` (Postgres/MySQL) so run history survives the Workflow CRs' garbage collection; without it, history lives only in etcd until `retentionPolicy` or TTLs prune it. With the archive keeping history, `retentionPolicy` caps the CRs kept per outcome (completed/failed/errored) — explicit `0` means "keep none of that outcome," which is honest and preserved; empty means keep everything.
 
-**Object storage is keyless first.** The S3 arm enforces exactly one credential path: `useAmbientCredentials` (IRSA / workload identity on the RUNNER service account) XOR a `credentialsSecret` reference. The credentials Secret defaults compose a KubernetesSeaweedFs resource's generated `-s3-secret` untouched — its name by reference and its admin key pair through the key-name defaults (`admin_access_key_id`/`admin_secret_access_key`); a Secret shaped to the chart's documented example (`accesskey`/`secretkey`) needs both key names set explicitly. The S3 endpoint composes by reference into `endpoint`. GCS and Azure are keyless by absence: leave the credentials Secret name empty for GKE workload identity / Azure workload identity on the runner account.
+**Object storage is keyless first.** The S3 arm enforces exactly one credential path: `useAmbientCredentials` (IRSA / workload identity on the RUNNER service account) XOR a `credentialsSecret` reference. The credentials Secret defaults compose a SeaweedFS resource's generated `-s3-secret` untouched — its name by reference and its admin key pair through the key-name defaults (`admin_access_key_id`/`admin_secret_access_key`); a Secret shaped to the chart's documented example (`accesskey`/`secretkey`) needs both key names set explicitly. The S3 endpoint composes by reference into `endpoint`. GCS and Azure are keyless by absence: leave the credentials Secret name empty for GKE workload identity / Azure workload identity on the runner account.
 
 **Server auth modes are the front-door posture.** Empty = `client`: callers present a Kubernetes bearer token and act with ITS permissions — auditable, least-privilege, the right default. `server` runs every request with the server's own ServiceAccount — no login, anyone who reaches the endpoint has the server's full power; acceptable only behind trusted network boundaries. `sso` opens OIDC login (configure the chart's `server.sso` block via `helmValues`; its client ID/secret ride existing Secrets by the chart's own contract). `secure` flips the server to HTTPS with its self-signed certificate — probes, clients, and the exported endpoint output all follow the scheme. The server Service stays ClusterIP; expose via Ingress or Gateway API kinds over the exported handle, and set `baseHref` when a public URL fronts it.
 
@@ -92,19 +92,19 @@ These are the most important decisions when configuring an Argo Workflows engine
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **KubernetesNamespace** | `namespace` | `spec.name` |
-| **KubernetesSeaweedFs** | `artifactRepository.s3.endpoint` | `status.outputs.s3_endpoint` |
-| **KubernetesSeaweedFs** | `artifactRepository.s3.credentialsSecret.secretName` | `status.outputs.s3_credentials_secret_name` |
-| **KubernetesPostgres** | `archive.host` | `status.outputs.rw_service` |
-| **KubernetesPostgres** | `archive.credentialsSecret.name` | `status.outputs.password_secret.name` |
+| **Kubernetes Namespace** | `namespace` | `spec.name` |
+| **SeaweedFS** | `artifactRepository.s3.endpoint` | `status.outputs.s3_endpoint` |
+| **SeaweedFS** | `artifactRepository.s3.credentialsSecret.secretName` | `status.outputs.s3_credentials_secret_name` |
+| **PostgreSQL** | `archive.host` | `status.outputs.rw_service` |
+| **PostgreSQL** | `archive.credentialsSecret.name` | `status.outputs.password_secret.name` |
 
-The GCS/Azure credential Secrets and the image pull secret are referenced by Secret NAME (plain strings), not ValueFromRef.
+The GCS/Azure credential Secrets and the image pull secret are referenced by Secret NAME (plain strings), not references.
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -120,7 +120,7 @@ Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
 **Dev loop / first pipelines** — the smallest useful engine: controller, UI in `client` auth mode, and the runner identity — no artifact repository, no archive; declare both before pipelines produce anything worth keeping. Start from the **Dev pipelines preset**.
 
-**Production pipelines** — both durability seams filled: an in-cluster S3-compatible artifact store (composes from a KubernetesSeaweedFs) with archived logs, a Postgres archive (composes from a KubernetesPostgres), a working-set retention policy, controller resources, and ServiceMonitors. Start from the **Durable pipelines preset**.
+**Production pipelines** — both durability seams filled: an in-cluster S3-compatible artifact store (composes from a SeaweedFS) with archived logs, a Postgres archive (composes from a PostgreSQL), a working-set retention policy, controller resources, and ServiceMonitors. Start from the **Durable pipelines preset**.
 
 **Several engines in one cluster** — the instance-ID mechanism: this controller reconciles only its own labeled Workflows, the runner identity lands in the team's app namespaces, parallelism caps keep noisy pipelines contained, and a team-scoped runner name keeps identity grants unmistakable. Start from the **Multi-team preset**.
 

@@ -1,23 +1,23 @@
 # Azure Redis Cache Access Policy
 
-Defines a CUSTOM data-plane access policy on an Azure Cache for Redis -- a named permission set, written in Redis's own ACL syntax, that Microsoft Entra identities are granted through AzureRedisCacheAccessPolicyAssignment. This is the Redis data-plane analog of a custom role definition: the policy says WHAT is allowed (commands, command categories, key patterns); the assignment says WHO gets it.
+Defines a CUSTOM data-plane access policy on an Azure Cache for Redis — a named permission set, written in Redis's own ACL syntax, that Microsoft Entra identities are granted through Azure Redis Cache Access Policy Assignment. This is the Redis data-plane analog of a custom role definition: the policy says WHAT is allowed (commands, command categories, key patterns); the assignment says WHO gets it.
 
 ## What Gets Created
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **Access Policy** -- a named permission set on the referenced cache, expressed in Redis ACL syntax and updatable in place
+- **Access Policy** — a named permission set on the referenced cache, expressed in Redis ACL syntax and updatable in place
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **Azure Provider Connection** -- an active connection in the Connect module with credentials for the target Azure subscription.
-- **Planton Runner** -- required when using Runner-based credential delivery.
+- **Azure Provider Connection** — an active connection in the Connect module with credentials for the target Azure subscription.
+- **Planton Runner** — required when using Runner-based credential delivery.
 
 ### Azure Subscription
 
-- **An Azure Cache for Redis** with Microsoft Entra token authentication enabled (`redisConfiguration.activeDirectoryAuthenticationEnabled: true`) -- policies gate token-authenticated clients, not access-key clients. Reference the AzureRedisCache Infra Component via ValueFromRef.
+- **An Azure Cache for Redis** with Microsoft Entra token authentication enabled (`redisConfiguration.activeDirectoryAuthenticationEnabled: true`) — policies gate token-authenticated clients, not access-key clients. Reference the Azure Redis Cache Infra Component.
 
 ## Deploy
 
@@ -54,7 +54,7 @@ This creates a custom policy named `session-worker` on the referenced cache, all
 
 ### InfraChart
 
-When the policy and its cache deploy in the same InfraChart, wire the cache reference with ValueFromRef:
+When the policy and its cache deploy in the same InfraChart, wire the cache reference:
 
 ```yaml
 spec:
@@ -73,43 +73,43 @@ The InfraPipeline resolves the dependency graph, provisions the cache first, the
 
 These are the most important decisions when configuring an access policy. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Built-in policy or custom policy** -- Azure ships three built-in policies -- **Data Owner** (full access including admin commands), **Data Contributor** (read-write), and **Data Reader** (read-only) -- which AzureRedisCacheAccessPolicyAssignment references by literal name without any policy resource existing. Create a custom policy only when the built-ins are too coarse: read-write on one key prefix, no admin commands, a three-command worker. If a built-in fits, skip this kind entirely and write the assignment directly.
+**Built-in policy or custom policy** — Azure ships three built-in policies — **Data Owner** (full access including admin commands), **Data Contributor** (read-write), and **Data Reader** (read-only) — which Azure Redis Cache Access Policy Assignment references by literal name without any policy resource existing. Create a custom policy only when the built-ins are too coarse: read-write on one key prefix, no admin commands, a three-command worker. If a built-in fits, skip this kind entirely and write the assignment directly.
 
-**Permissions (Redis ACL syntax)** -- Command/category grants followed by key patterns. Building blocks: `+@read` allows a command category, `+get` a single command, `-@dangerous` carves one out, and `~pattern` scopes which keys the grants apply to (`~*` for all keys). Semantics are ALLOW-only with carve-outs -- there is no deny-first mode. Updatable in place: an edit changes what every assignment holding this policy can do, immediately.
+**Permissions (Redis ACL syntax)** — Command/category grants followed by key patterns. Building blocks: `+@read` allows a command category, `+get` a single command, `-@dangerous` carves one out, and `~pattern` scopes which keys the grants apply to (`~*` for all keys). Semantics are ALLOW-only with carve-outs — there is no deny-first mode. Updatable in place: an edit changes what every assignment holding this policy can do, immediately.
 
-**Policy name** -- What assignments reference, unique within the cache. Must not collide with the built-in names. Changing the name replaces the policy and strands assignments holding the old one.
+**Policy name** — What assignments reference, unique within the cache. Must not collide with the built-in names. Changing the name replaces the policy and strands assignments holding the old one.
 
-**Cache binding** -- `redisCacheId` is fixed at creation: a policy cannot move between caches. Reorganizing caches means recreating every custom policy (and its assignments) on the new cache -- keep the policy manifests alongside the cache manifest so the whole set replays together.
+**Cache binding** — `redisCacheId` is fixed at creation: a policy cannot move between caches. Reorganizing caches means recreating every custom policy (and its assignments) on the new cache — keep the policy manifests alongside the cache manifest so the whole set replays together.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AzureRedisCache** | `redisCacheId` | `status.outputs.redis_cache_id` |
+| **Azure Redis Cache** | `redisCacheId` | `status.outputs.redis_cache_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
-| `access_policy_name` | The policy's name | AzureRedisCacheAccessPolicyAssignment's `accessPolicyName` |
+| `access_policy_name` | The policy's name | Azure Redis Cache Access Policy Assignment's `accessPolicyName` |
 
-The outputs also carry `access_policy_id`, the policy's ARM ID -- assignments reference the policy by name within the cache, so the ID has no ValueFromRef consumer.
+The outputs also carry `access_policy_id`, the policy's ARM ID — assignments reference the policy by name within the cache, so the ID has no consumer that references it.
 
 ## Common Patterns
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Read-only on a prefix** -- `+@read +@connection ~metrics:*` for dashboards and debuggers. Start from the **Read-Only Policy on a Key Prefix** preset.
+**Read-only on a prefix** — `+@read +@connection ~metrics:*` for dashboards and debuggers. Start from the **Read-Only Policy on a Key Prefix** preset.
 
-**Application writer, no admin** -- `+@all -@dangerous ~app1:*` for the everyday application identity. Start from the **Application Writer Without Admin Commands** preset.
+**Application writer, no admin** — `+@all -@dangerous ~app1:*` for the everyday application identity. Start from the **Application Writer Without Admin Commands** preset.
 
-**Least-privilege worker** -- exact commands on one prefix, e.g. `+get +set +del ~session:*`. Start from the **Queue Worker with Single-Command Grants** preset.
+**Least-privilege worker** — exact commands on one prefix, e.g. `+get +set +del ~session:*`. Start from the **Queue Worker with Single-Command Grants** preset.
 
 ## Works With
 
-- [**Azure Redis Cache**](/infra-catalog/azure-redis-cache) -- the cache the policy is defined on
-- [**Azure Redis Cache Access Policy Assignment**](/infra-catalog/azure-redis-cache-access-policy-assignment) -- grants this policy (by name) to a Microsoft Entra identity
+- [**Azure Redis Cache**](/infra-catalog/azure-redis-cache) — the cache the policy is defined on
+- [**Azure Redis Cache Access Policy Assignment**](/infra-catalog/azure-redis-cache-access-policy-assignment) — grants this policy (by name) to a Microsoft Entra identity

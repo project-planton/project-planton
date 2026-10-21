@@ -6,18 +6,18 @@ Grants one role, to one identity, on ONE Cloud Storage bucket — for grantees t
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **Bucket IAM Member Binding** -- a `google_storage_bucket_iam_member` merging the (role, member) pair into the target bucket's IAM policy, with an optional IAM Condition attached
+- **Bucket IAM Member Binding** — a `google_storage_bucket_iam_member` merging the (role, member) pair into the target bucket's IAM policy, with an optional IAM Condition attached
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **GCP Provider Connection** -- an active connection in the Connect module with credentials permitted to set IAM policy on the target bucket (e.g. `roles/storage.admin` on the bucket or its project). Map it as the default for your environment, or specify it explicitly.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
+- **GCP Provider Connection** — an active connection in the Connect module with credentials permitted to set IAM policy on the target bucket (e.g. `roles/storage.admin` on the bucket or its project). Map it as the default for your environment, or specify it explicitly.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
 
 ### GCP Project
 
-- **A Cloud Storage bucket** whose IAM policy receives the grant. Provide its name directly or reference a GcpGcsBucket Infra Component via ValueFromRef.
+- **A Cloud Storage bucket** whose IAM policy receives the grant. Provide its name directly or reference a GCP GCS Bucket Infra Component.
 - **The identity** receiving the grant must already exist — a sink's writer identity exists once the sink is created.
 - **Uniform bucket-level access** on the bucket if the grant carries a condition.
 
@@ -79,42 +79,42 @@ The InfraPipeline deploys the bucket, then the sink that names it, then this gra
 
 These are the most important decisions when configuring a grant. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**This kind or the bucket's `iam_members`** -- use this kind only for a grantee created from the bucket (a sink exporting into it). Everyone else belongs in the bucket's own `iam_members`, where the grants travel with the bucket. Never declare the same (role, member) pair in both: removing either removes the grant.
+**This kind or the bucket's `iam_members`** — use this kind only for a grantee created from the bucket (a sink exporting into it). Everyone else belongs in the bucket's own `iam_members`, where the grants travel with the bucket. Never declare the same (role, member) pair in both: removing either removes the grant.
 
-**The sink pattern** -- a logging sink writes hourly batches as its writer identity. Grant that identity `roles/storage.objectCreator` — write only, never read — by referencing the sink's `writer_identity` output.
+**The sink pattern** — a logging sink writes hourly batches as its writer identity. Grant that identity `roles/storage.objectCreator` — write only, never read — by referencing the sink's `writer_identity` output.
 
-**Role** -- `roles/storage.objectCreator` for write-only uploaders, `roles/storage.objectViewer` to read, `roles/storage.objectUser` to read, write, and delete, `roles/storage.legacyBucketReader` to list, or a custom role's full name.
+**Role** — `roles/storage.objectCreator` for write-only uploaders, `roles/storage.objectViewer` to read, `roles/storage.objectUser` to read, write, and delete, `roles/storage.legacyBucketReader` to list, or a custom role's full name.
 
-**IAM Condition** -- an optional CEL expression scoping when or where the grant applies: an expiry, or an object-name prefix such as `resource.name.startsWith("projects/_/buckets/<bucket>/objects/logs/")`. Conditions require uniform bucket-level access. The condition is part of the grant's identity.
+**IAM Condition** — an optional CEL expression scoping when or where the grant applies: an expiry, or an object-name prefix such as `resource.name.startsWith("projects/_/buckets/<bucket>/objects/logs/")`. Conditions require uniform bucket-level access. The condition is part of the grant's identity.
 
-**Everything replaces atomically** -- an IAM grant has no update. Changing bucket, role, member, or condition replaces the grant, and for the moment between delete and create the member cannot write.
+**Everything replaces atomically** — an IAM grant has no update. Changing bucket, role, member, or condition replaces the grant, and for the moment between delete and create the member cannot write.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **GcpGcsBucket** | `bucket` | `status.outputs.bucket_id` |
-| **GcpIamCustomRole** (optional) | `role` | `status.outputs.name` |
-| **GcpServiceAccount** (optional) | `member` | `status.outputs.member` |
-| **GcpLoggingSink** (optional) | `member` | `status.outputs.writer_identity` |
+| **GCP GCS Bucket** | `bucket` | `status.outputs.bucket_id` |
+| **GCP IAM Custom Role** (optional) | `role` | `status.outputs.name` |
+| **GCP Service Account** (optional) | `member` | `status.outputs.member` |
+| **GCP Logging Sink** (optional) | `member` | `status.outputs.writer_identity` |
 
 ### What This Kind Provides
 
-This kind has no outputs a downstream Infra Component would consume: `status.outputs` records the grant's post-resolution facts — the (`bucket`, `role`, `member`) triple after any references were resolved, plus the bucket IAM policy `etag` at the moment this grant merged. They exist for audit and drift review, not for ValueFromRef wiring.
+This kind has no outputs a downstream Infra Component would consume: `status.outputs` records the grant's post-resolution facts — the (`bucket`, `role`, `member`) triple after any references were resolved, plus the bucket IAM policy `etag` at the moment this grant merged. They exist for audit and drift review, not for references.
 
 ## Common Patterns
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Logging sink writer** -- a sink's writer identity gets write-only access to its destination bucket; the grant every bucket log export needs. Start from the **Logging Sink Writer** preset.
+**Logging sink writer** — a sink's writer identity gets write-only access to its destination bucket; the grant every bucket log export needs. Start from the **Logging Sink Writer** preset.
 
-**Prefix-scoped writer** -- an uploader may create objects only under one prefix, enforced by an IAM condition. Start from the **Prefix-Scoped Object Writer** preset.
+**Prefix-scoped writer** — an uploader may create objects only under one prefix, enforced by an IAM condition. Start from the **Prefix-Scoped Object Writer** preset.
 
 ## Works With
 
-- [**GCP GCS Bucket**](/infra-catalog/gcp-gcs-bucket) -- its `bucket_id` output feeds the bucket field; its own `iam_members` covers grantees that do not depend on it
-- [**GCP Logging Sink**](/infra-catalog/gcp-logging-sink) -- its `writer_identity` output feeds the member field for bucket log exports
-- [**GCP Service Account**](/infra-catalog/gcp-service-account) -- its `member` output feeds the member field for workload access
-- [**GCP IAM Custom Role**](/infra-catalog/gcp-iam-custom-role) -- its `name` output feeds the role field for curated permission bundles
+- [**GCP GCS Bucket**](/infra-catalog/gcp-gcs-bucket) — its `bucket_id` output feeds the bucket field; its own `iam_members` covers grantees that do not depend on it
+- [**GCP Logging Sink**](/infra-catalog/gcp-logging-sink) — its `writer_identity` output feeds the member field for bucket log exports
+- [**GCP Service Account**](/infra-catalog/gcp-service-account) — its `member` output feeds the member field for workload access
+- [**GCP IAM Custom Role**](/infra-catalog/gcp-iam-custom-role) — its `name` output feeds the role field for curated permission bundles

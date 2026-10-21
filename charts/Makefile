@@ -1,8 +1,8 @@
 # =============================================================================
-# InfraCharts Validate, Build & Publish
+# InfraCharts Validate & Build
 # =============================================================================
 # Discovers all charts (provider/chart-name directories containing values.yaml)
-# and validates/publishes them.
+# and validates them.
 #
 # Usage (run from this charts/ directory):
 #   make validate       Validate all charts OFFLINE (renders with default
@@ -11,7 +11,6 @@
 #                       plane needed)
 #   make build          Build (validate) all charts through the platform
 #   make build-verbose  Build all charts with full output on failure
-#   make publish        Publish all charts to the Planton platform
 #
 # Two `planton` binaries are in play:
 #   - `make validate` uses the `chart validate` command — the offline
@@ -20,10 +19,14 @@
 #     and also enforced in CI via lint.charts. This target builds the CLI
 #     from the working tree so validation always matches the protos you are
 #     editing. Override with VALIDATE_BIN=/path/to/planton to skip the build.
-#   - `make build` / `make publish` use the Planton *Platform* CLI: the
-#     `InfraChart` kind is a platform API, and server-side chart build renders
-#     and validates through the live control plane — the authoritative gate
-#     before publishing.
+#   - `make build` uses the Planton *Platform* CLI: the `InfraChart` kind is
+#     a platform API, and server-side chart build renders and validates
+#     through the live control plane.
+#
+# These charts reach an instance only through the release: every release
+# bundles charts/ as infra-charts.zip, and each control plane (or desktop
+# daemon) seeds the bundle its own release pins as platform charts -- charts
+# that belong to no organization. Nothing publishes them by hand.
 # =============================================================================
 
 CHARTS := $(shell find . -mindepth 2 -name values.yaml -not -path '*/build/*' \
@@ -94,27 +97,6 @@ build-verbose:
 	  echo ""; \
 	done; \
 	echo "Build complete: $$passed passed, $$failed failed out of $$total charts"; \
-	if [ $$failed -gt 0 ]; then \
-	  echo ""; echo "Failed charts:"; printf "$$failures"; exit 1; \
-	fi
-
-.PHONY: publish
-publish:
-	@passed=0; failed=0; failures=""; i=0; \
-	total=$(words $(CHARTS)); \
-	for chart in $(CHARTS); do \
-	  i=$$((i+1)); \
-	  if planton chart publish "$$chart" --platform 2>&1 | grep -q "applied"; then \
-	    passed=$$((passed+1)); \
-	    printf "[%d/%d] ✔ %s\n" "$$i" "$$total" "$$chart"; \
-	  else \
-	    failed=$$((failed+1)); \
-	    failures="$$failures  $$chart\n"; \
-	    printf "[%d/%d] ✘ %s\n" "$$i" "$$total" "$$chart"; \
-	  fi; \
-	done; \
-	echo ""; \
-	echo "Publish complete: $$passed passed, $$failed failed out of $$total charts"; \
 	if [ $$failed -gt 0 ]; then \
 	  echo ""; echo "Failed charts:"; printf "$$failures"; exit 1; \
 	fi

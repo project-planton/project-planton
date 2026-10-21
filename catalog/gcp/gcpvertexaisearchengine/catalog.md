@@ -1,30 +1,30 @@
 # GCP Vertex AI Search Engine
 
-Stands up a Vertex AI Search app over your data stores: a search engine with Google-quality ranking, generated answers, and an embeddable widget; a chat engine that answers through a Dialogflow CX agent; or a recommendation engine that learns from user events. Tune results with synonyms, boosts, filters, promotions, and redirects, brand the widget, and add a Gemini Enterprise assistant with guardrails -- all in one block, on the Discovery Engine API behind the console's AI Applications.
+Stands up a Vertex AI Search app over your data stores: a search engine with Google-quality ranking, generated answers, and an embeddable widget; a chat engine that answers through a Dialogflow CX agent; or a recommendation engine that learns from user events. Tune results with synonyms, boosts, filters, promotions, and redirects, brand the widget, and add a Gemini Enterprise assistant with guardrails — all in one block, on the Discovery Engine API behind the console's AI Applications.
 
 ## What Gets Created
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **API enablement** -- `discoveryengine.googleapis.com` on the project (and `dialogflow.googleapis.com` for a chat engine)
-- **Engine** -- exactly one of `discoveryengine.SearchEngine`, `ChatEngine`, or `RecommendationEngine`, chosen by `engineType`
-- **Controls, serving config, widget config, assistants** -- one resource per declared control and assistant; PATCHes of the engine's default serving and widget configs
+- **API enablement** — `discoveryengine.googleapis.com` on the project (and `dialogflow.googleapis.com` for a chat engine)
+- **Engine** — exactly one of `discoveryengine.SearchEngine`, `ChatEngine`, or `RecommendationEngine`, chosen by `engineType`
+- **Controls, serving config, widget config, assistants** — one resource per declared control and assistant; PATCHes of the engine's default serving and widget configs
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **GCP Provider Connection** -- an active connection in the Connect module with Discovery Engine admin permissions on the project. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
+- **GCP Provider Connection** — an active connection in the Connect module with Discovery Engine admin permissions on the project. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
 
 ### Required Dependencies
 
-- **GcpVertexAiSearchDataStore** -- at least one store in the engine's location, enrolled in the engine's solution.
+- **GCP Vertex AI Search Data Store** — at least one store in the engine's location, enrolled in the engine's solution.
 
 ### Optional Dependencies
 
-- **GcpVertexAiSearchDataConnector** -- for engines over connector-synced stores, referenced by `collectionId`.
-- **GcpKmsKey** -- for customer-managed encryption of a search engine, referenced by `kmsKeyName`.
+- **GCP Vertex AI Search Data Connector** — for engines over connector-synced stores, referenced by `collectionId`.
+- **GCP KMS Key** — for customer-managed encryption of a search engine, referenced by `kmsKeyName`.
 
 ## Deploy
 
@@ -77,29 +77,29 @@ When deploying as part of a multi-resource environment, reference the data store
 
 These are the most important decisions when configuring an engine. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Which app** -- `engineType` picks search (the default), chat, or recommendation, and is immutable. Each arm has its own block: `searchEngineConfig` and the widget for search, `chatEngineConfig` for the Dialogflow agent, `mediaRecommendationEngineConfig` for the recommendation model.
+**Which app** — `engineType` picks search (the default), chat, or recommendation, and is immutable. Each arm has its own block: `searchEngineConfig` and the widget for search, `chatEngineConfig` for the Dialogflow agent, `mediaRecommendationEngineConfig` for the recommendation model.
 
-**How results are shaped** -- `controls` declare synonyms, boosts, filters, promotions, and redirects, each keyed by id and active under its conditions; `servingConfig` says which of them the engine's default serving config applies. Editors tune results by editing the manifest, not the application.
+**How results are shaped** — `controls` declare synonyms, boosts, filters, promotions, and redirects, each keyed by id and active under its conditions; `servingConfig` says which of them the engine's default serving config applies. Editors tune results by editing the manifest, not the application.
 
-**Who sees the widget** -- `widgetConfig.accessSettings` decides between an authenticated intranet widget (optionally through your own identity provider) and a public one embeddable from allowlisted domains; `uiSettings.interactionType` decides whether the widget generates an answer above the results.
+**Who sees the widget** — `widgetConfig.accessSettings` decides between an authenticated intranet widget (optionally through your own identity provider) and a public one embeddable from allowlisted domains; `uiSettings.interactionType` decides whether the widget generates an answer above the results.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **GcpProject** | `projectId` | `status.outputs.project_id` |
-| **GcpVertexAiSearchDataStore** | `dataStoreIds[]` | `status.outputs.data_store_id` |
-| **GcpVertexAiSearchDataStore** | `controls[].*Action.dataStore`, `widgetConfig.uiSettings.dataStoreUiConfigs[].name` | `status.outputs.name` |
-| **GcpVertexAiSearchDataConnector** | `collectionId` | `status.outputs.collection_id` |
-| **GcpKmsKey** | `kmsKeyName` | `status.outputs.key_id` |
-| **GcpModelArmorTemplate** | `assistants[].customerPolicy.modelArmorConfig.userPromptTemplate`, `.responseTemplate` | `status.outputs.name` |
-| **GcpDialogflowCxAgent** | `chatEngineConfig.dialogflowAgentToLink` | `status.outputs.name` |
+| **GCP Project** | `projectId` | `status.outputs.project_id` |
+| **GCP Vertex AI Search Data Store** | `dataStoreIds[]` | `status.outputs.data_store_id` |
+| **GCP Vertex AI Search Data Store** | `controls[].*Action.dataStore`, `widgetConfig.uiSettings.dataStoreUiConfigs[].name` | `status.outputs.name` |
+| **GCP Vertex AI Search Data Connector** | `collectionId` | `status.outputs.collection_id` |
+| **GCP KMS Key** | `kmsKeyName` | `status.outputs.key_id` |
+| **GCP Model Armor Template** | `assistants[].customerPolicy.modelArmorConfig.userPromptTemplate`, `.responseTemplate` | `status.outputs.name` |
+| **GCP Dialogflow CX Agent** | `chatEngineConfig.dialogflowAgentToLink` | `status.outputs.name` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -113,20 +113,20 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Search standard** -- The smallest search engine over one store. Start from the **Search Standard** preset.
+**Search standard** — The smallest search engine over one store. Start from the **Search Standard** preset.
 
-**Enterprise controls and widget** -- Enterprise tier, generated answers, five serving controls, a branded public widget, CMEK. Start from the **Enterprise Controls and Widget** preset.
+**Enterprise controls and widget** — Enterprise tier, generated answers, five serving controls, a branded public widget, CMEK. Start from the **Enterprise Controls and Widget** preset.
 
-**Chat agent and assistant** -- A chat engine that creates its Dialogflow CX agent, with a guarded Gemini Enterprise assistant. Start from the **Chat Agent and Assistant** preset.
+**Chat agent and assistant** — A chat engine that creates its Dialogflow CX agent, with a guarded Gemini Enterprise assistant. Start from the **Chat Agent and Assistant** preset.
 
-**Media recommendations** -- A recommended-for-you engine over a media catalog, optimizing watch time. Start from the **Media Recommendations** preset.
+**Media recommendations** — A recommended-for-you engine over a media catalog, optimizing watch time. Start from the **Media Recommendations** preset.
 
-**Chat over a managed agent** -- A chat engine that answers through a `GcpDialogflowCxAgent` you manage as its own block. Start from the **Chat Over a Managed Agent** preset.
+**Chat over a managed agent** — A chat engine that answers through a `GcpDialogflowCxAgent` you manage as its own block. Start from the **Chat Over a Managed Agent** preset.
 
 ## Works With
 
-- [**GCP Vertex AI Search Data Store**](/infra-catalog/gcp-vertex-ai-search-data-store) -- the stores the engine reads
-- [**GCP Vertex AI Search Data Connector**](/infra-catalog/gcp-vertex-ai-search-data-connector) -- connector-synced stores in their own collection
-- [**GCP KMS Key**](/infra-catalog/gcp-kms-key) -- customer-managed encryption
-- [**GCP Model Armor Template**](/infra-catalog/gcp-model-armor-template) -- the safety templates assistants screen prompts and responses through
-- [**GCP Dialogflow CX Agent**](/infra-catalog/gcp-dialogflow-cx-agent) -- the conversational agent a chat engine answers through, managed as its own block
+- [**GCP Vertex AI Search Data Store**](/infra-catalog/gcp-vertex-ai-search-data-store) — the stores the engine reads
+- [**GCP Vertex AI Search Data Connector**](/infra-catalog/gcp-vertex-ai-search-data-connector) — connector-synced stores in their own collection
+- [**GCP KMS Key**](/infra-catalog/gcp-kms-key) — customer-managed encryption
+- [**GCP Model Armor Template**](/infra-catalog/gcp-model-armor-template) — the safety templates assistants screen prompts and responses through
+- [**GCP Dialogflow CX Agent**](/infra-catalog/gcp-dialogflow-cx-agent) — the conversational agent a chat engine answers through, managed as its own block

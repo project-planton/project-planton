@@ -10,10 +10,6 @@ import (
 	"github.com/plantonhq/planton/operator/internal/resources"
 )
 
-// wantTofu is the zero-config default provisioner the seeds and the binding
-// must both land on.
-const wantTofu = "tofu"
-
 // The runner is deployed by default: an install that cannot deploy
 // infrastructure is a browsing UI. Opting out is the explicit act.
 func TestRunner_IsEnabledByDefault(t *testing.T) {
@@ -142,25 +138,6 @@ func TestRunnerConfig_SpecWins(t *testing.T) {
 	}
 }
 
-// Defaulting lives in code as well as the CRD marker: a nil spec.bootstrap
-// gets no marker defaults.
-func TestEffectiveIacProvisioner(t *testing.T) {
-	p := ingressPlatform(false)
-	if got := effectiveIacProvisioner(p); got != wantTofu {
-		t.Errorf("provisioner = %s, want tofu with no bootstrap spec", got)
-	}
-
-	p.Spec.Bootstrap = &v1.BootstrapSpec{}
-	if got := effectiveIacProvisioner(p); got != wantTofu {
-		t.Errorf("provisioner = %s, want tofu with an empty bootstrap spec", got)
-	}
-
-	p.Spec.Bootstrap.IacProvisioner = "terraform"
-	if got := effectiveIacProvisioner(p); got != "terraform" {
-		t.Errorf("provisioner = %s, want the declared terraform", got)
-	}
-}
-
 // The controlplane config carries the runner binding exactly when the runner
 // is enabled -- the Java seeders activate on the slug property's presence, so
 // a disabled runner must leave the binding nil.
@@ -171,8 +148,8 @@ func TestBuildConfig_RunnerBindingFollowsToggle(t *testing.T) {
 	if cfg.Runner == nil {
 		t.Fatal("expected a runner binding by default")
 	}
-	if cfg.Runner.CloudOpsSecretName == "" || cfg.Runner.Provisioner != wantTofu {
-		t.Errorf("binding = %+v, want the CloudOps Secret name and tofu", cfg.Runner)
+	if cfg.Runner.CloudOpsSecretName == "" {
+		t.Errorf("binding = %+v, want the CloudOps Secret name", cfg.Runner)
 	}
 
 	p := ingressPlatform(true)

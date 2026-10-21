@@ -74,7 +74,7 @@ This creates the `corp.internal` private zone in the app VPC with an `api` servi
 
 ### InfraChart
 
-When a private namespace deploys alongside its VPC in one chart, wire the VPC reference via ValueFromRef:
+When a private namespace deploys alongside its VPC in one chart, wire the VPC reference:
 
 ```yaml
 spec:
@@ -118,15 +118,15 @@ These are the most important decisions when configuring a Cloud Map namespace. E
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AwsVpc** | `vpcId` | `status.outputs.vpc_id` |
-| **AwsAlb** | `services[].instances[].aliasDnsName` | `status.outputs.load_balancer_dns_name` |
-| **AwsEc2Instance** | `services[].instances[].ec2InstanceId` | `status.outputs.instance_id` |
+| **AWS VPC** | `vpcId` | `status.outputs.vpc_id` |
+| **AWS ALB** | `services[].instances[].aliasDnsName` | `status.outputs.load_balancer_dns_name` |
+| **AWS EC2 Instance** | `services[].instances[].ec2InstanceId` | `status.outputs.instance_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

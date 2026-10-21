@@ -71,7 +71,7 @@ This creates an IAM-authenticated MCP gateway with one target that derives a too
 
 ### InfraChart
 
-When the gateway deploys alongside its execution role in one chart, wire the role reference via ValueFromRef:
+When the gateway deploys alongside its execution role in one chart, wire the role reference:
 
 ```yaml
 spec:
@@ -108,19 +108,19 @@ These are the most important decisions when configuring a gateway. Explore the f
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AwsIamRole** | `roleArn` | `status.outputs.role_arn` |
-| **AwsKmsKey** | `kmsKeyArn` | `status.outputs.key_arn` |
-| **AwsLambda** | `interceptors[].lambdaArn`, `targets[].backend.lambda.lambdaArn` | `status.outputs.function_arn` |
-| **AwsBedrockAgentCoreIdentity** | `policyEngine.policyEngineArn` | `status.outputs.policy_engine_arn` |
-| **AwsBedrockAgentCoreRuntime** | `targets[].backend.agentcoreRuntime.agentRuntimeArn` | `status.outputs.agent_runtime_arn` |
+| **AWS IAM Role** | `roleArn` | `status.outputs.role_arn` |
+| **AWS KMS Key** | `kmsKeyArn` | `status.outputs.key_arn` |
+| **AWS Lambda** | `interceptors[].lambdaArn`, `targets[].backend.lambda.lambdaArn` | `status.outputs.function_arn` |
+| **AWS Bedrock AgentCore Identity** | `policyEngine.policyEngineArn` | `status.outputs.policy_engine_arn` |
+| **AWS Bedrock AgentCore Runtime** | `targets[].backend.agentcoreRuntime.agentRuntimeArn` | `status.outputs.agent_runtime_arn` |
 
-Target credential providers (`credentials.apiKey.providerArn`, `credentials.oauth.providerArn`) also commonly reference an **AwsBedrockAgentCoreIdentity** resource's provider-ARN output maps, and private endpoints for JWT providers and backends take **AwsVpc**, **AwsSubnet**, and **AwsSecurityGroup** references.
+Target credential providers (`credentials.apiKey.providerArn`, `credentials.oauth.providerArn`) also commonly reference an **AWS Bedrock AgentCore Identity** resource's provider-ARN output maps, and private endpoints for JWT providers and backends take **AWS VPC**, **AWS Subnet**, and **AWS Security Group** references.
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

@@ -1,5 +1,5 @@
 # Least-privilege permissions the IaC runner's Kubernetes principal needs to
-# provision, update, and destroy this component with the official modules.
+# provision, update, and destroy this component with the platform modules.
 # Every entry is `derived` (static analysis of the module sources plus the
 # pinned 0.8.0 chart's template census, cited in notes) until the live
 # capture lane upgrades it to `proven`. Schema: iac/catalogkindpermissions/v1.

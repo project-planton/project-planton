@@ -1,6 +1,6 @@
 # RabbitMQ
 
-Deploys a RabbitMQ cluster — the queue-messaging broker behind task queues, work distribution, RPC, and per-message routing (AMQP 0-9-1/1.0, with MQTT and STOMP via plugins) — declared as a `RabbitmqCluster` custom resource and reconciled by the RabbitMQ Cluster Operator. The operator renders the cluster as one StatefulSet plus two Services and generates the administrator credentials itself — they never pass through the spec.
+Deploys a RabbitMQ cluster — the queue-messaging broker behind task queues, work distribution, RPC, and per-message routing (AMQP 0-9-1/1.0, with MQTT and STOMP via plugins) — declared as a RabbitmqCluster custom resource and reconciled by the RabbitMQ Cluster Operator. The operator renders the cluster as one StatefulSet plus two Services and generates the administrator credentials itself — they never pass through the spec.
 
 **Queue, not log**: RabbitMQ delivers each message and forgets it on acknowledgement. For append-only event streaming and replayable history at scale, use **Apache Kafka** instead — that boundary is the first decision, not a tuning knob.
 
@@ -96,16 +96,16 @@ These are the most important decisions when configuring a RabbitMQ cluster. Expl
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **KubernetesNamespace** | `namespace` | `spec.name` |
-| **KubernetesStorageClass** | `storageClass` | `metadata.name` |
-| **KubernetesCertificate** | `tls.secretName` | `status.outputs.secret_name` |
-| **KubernetesSecret** | `tls.caSecretName` | `metadata.name` |
+| **Kubernetes Namespace** | `namespace` | `spec.name` |
+| **Kubernetes StorageClass** | `storageClass` | `metadata.name` |
+| **Cert Manager Certificate** | `tls.secretName` | `status.outputs.secret_name` |
+| **Kubernetes Secret** | `tls.caSecretName` | `metadata.name` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

@@ -1,25 +1,25 @@
 # Azure Machine Learning Compute Instance
 
-Creates a compute instance on an Azure Machine Learning workspace -- a single always-on VM serving as one data scientist's cloud workstation for notebooks, interactive debugging, and small jobs.
+Creates a compute instance on an Azure Machine Learning workspace — a single always-on VM serving as one data scientist's cloud workstation for notebooks, interactive debugging, and small jobs.
 
 ## What Gets Created
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **Compute Instance** -- an ARM child of the workspace (`.../workspaces/{ws}/computes/{name}`): one VM with its size, ownership, identity, and networking
+- **Compute Instance** — an ARM child of the workspace (`.../workspaces/{ws}/computes/{name}`): one VM with its size, ownership, identity, and networking
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **Azure Provider Connection** -- an active connection in the Connect module with credentials for the target Azure subscription.
-- **An AzureMachineLearningWorkspace** -- the instance is created on it and always runs in its region.
+- **Azure Provider Connection** — an active connection in the Connect module with credentials for the target Azure subscription.
+- **An Azure Machine Learning Workspace** — the instance is created on it and always runs in its region.
 
 ### Azure Subscription
 
-- **A running VM bills around the clock** -- the instance does not scale to zero; stop it (portal/CLI) outside working hours or delete it when its owner moves on.
-- **No update path** -- EVERY change (tags included) replaces the instance; its OS disk and local files go with it. Keep work in datastores and git.
-- **Names are region-scoped** -- instance names are unique per Azure region per subscription, not per workspace.
+- **A running VM bills around the clock** — the instance does not scale to zero; stop it (portal/CLI) outside working hours or delete it when its owner moves on.
+- **No update path** — EVERY change (tags included) replaces the instance; its OS disk and local files go with it. Keep work in datastores and git.
+- **Names are region-scoped** — instance names are unique per Azure region per subscription, not per workspace.
 
 ## Deploy
 
@@ -77,27 +77,27 @@ The InfraPipeline resolves the dependency graph and deploys the workspace before
 
 These are the most important decisions when configuring the instance. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Ownership** -- `authorizationType: personal` with `assignToUser` is the platform-team pattern: provision the instance FOR a colleague (their tenant and object IDs); without `assignToUser` the deploying principal owns it.
+**Ownership** — `authorizationType: personal` with `assignToUser` is the platform-team pattern: provision the instance FOR a colleague (their tenant and object IDs); without `assignToUser` the deploying principal owns it.
 
-**VM size** -- this VM runs around the clock; size it for interactive work (general-purpose DS-series) and push heavy training to a compute cluster instead.
+**VM size** — this VM runs around the clock; size it for interactive work (general-purpose DS-series) and push heavy training to a compute cluster instead.
 
-**Identity** -- give the instance a managed identity and grant it data access; its owner's notebooks then reach storage credential-free. The whole block is fixed at creation here (unlike the cluster's).
+**Identity** — give the instance a managed identity and grant it data access; its owner's notebooks then reach storage credential-free. The whole block is fixed at creation here (unlike the cluster's).
 
-**SSH** -- absent means the SSH port is disabled (the right default). When present, the service assigns the username and port -- read them from the outputs.
+**SSH** — absent means the SSH port is disabled (the right default). When present, the service assigns the username and port — read them from the outputs.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AzureMachineLearningWorkspace** | `workspaceId` | `status.outputs.machine_learning_workspace_id` |
-| **AzureSubnet** | `subnetId` | `status.outputs.subnet_id` |
-| **AzureUserAssignedIdentity** | `identity.identityIds[]` | `status.outputs.identity_id` |
+| **Azure Machine Learning Workspace** | `workspaceId` | `status.outputs.machine_learning_workspace_id` |
+| **Azure Subnet** | `subnetId` | `status.outputs.subnet_id` |
+| **Azure User Assigned Identity** | `identity.identityIds[]` | `status.outputs.identity_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -109,13 +109,13 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Personal dev instance** -- a general-purpose workstation assigned to one user. Start from the **Personal Dev Instance** preset.
+**Personal dev instance** — a general-purpose workstation assigned to one user. Start from the **Personal Dev Instance** preset.
 
-**Private workstation** -- a VNet-placed instance with no public IP. Start from the **Private Instance** preset.
+**Private workstation** — a VNet-placed instance with no public IP. Start from the **Private Instance** preset.
 
 ## Works With
 
-- [**Azure Machine Learning Workspace**](/infra-catalog/azure-machine-learning-workspace) -- the parent workspace
-- [**Azure Machine Learning Compute Cluster**](/infra-catalog/azure-machine-learning-compute-cluster) -- where heavy training belongs
-- [**Azure Subnet**](/infra-catalog/azure-subnet) -- VNet placement for the instance
-- [**Azure User Assigned Identity**](/infra-catalog/azure-user-assigned-identity) -- bring-your-own identity for data grants
+- [**Azure Machine Learning Workspace**](/infra-catalog/azure-machine-learning-workspace) — the parent workspace
+- [**Azure Machine Learning Compute Cluster**](/infra-catalog/azure-machine-learning-compute-cluster) — where heavy training belongs
+- [**Azure Subnet**](/infra-catalog/azure-subnet) — VNet placement for the instance
+- [**Azure User Assigned Identity**](/infra-catalog/azure-user-assigned-identity) — bring-your-own identity for data grants

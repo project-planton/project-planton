@@ -1,5 +1,5 @@
 # Least-privilege permissions the IaC runner's GCP principal needs to
-# provision, update, and destroy this component with the official modules.
+# provision, update, and destroy this component with the platform modules.
 # Every entry is `derived` (static analysis of the module sources, cited in
 # notes) until the live capture lane upgrades it to `proven`. Schema:
 # iac/catalogkindpermissions/v1.
@@ -16,6 +16,8 @@ spec:
           - serviceusage.services.get
           - serviceusage.services.list
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers google_project_service enabling tpu.googleapis.com on the target project. disable_on_destroy is false in the module, so the disable permission is never needed.
       - purpose: ManageTpuVm
         permissions:
@@ -25,11 +27,15 @@ spec:
           - tpu.nodes.delete
           - tpu.operations.get
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers google_tpu_v2_vm (google-beta; Pulumi tpu.V2Vm) -- created and deleted through long-running operations the provider polls, patched for the description, labels, metadata, tags, and data disks. roles/tpu.admin contains all five.
       - purpose: ActAsTpuIdentity
         permissions:
           - iam.serviceAccounts.actAs
         provenance: derived
+        reach: target
+        privilege: uses_identity
         condition:
           spec_field_set: service_account
         notes: Running the hosts as a named service account requires acting as it (held on the account).
@@ -37,6 +43,8 @@ spec:
         permissions:
           - compute.subnetworks.use
         provenance: derived
+        reach: target
+        privilege: ordinary
         condition:
           spec_field_set: network_config
         notes: Placing the TPU on a declared subnetwork requires using it; the same holds for each entry of network_configs.

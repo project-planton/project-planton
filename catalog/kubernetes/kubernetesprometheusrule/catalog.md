@@ -1,26 +1,26 @@
 # Prometheus Rule
 
-Declares a prometheus-operator PrometheusRule: a namespaced set of Prometheus alerting and recording rules that every Prometheus selecting the object loads and evaluates. Alerting rules turn a PromQL condition into alerts Alertmanager routes; recording rules precompute expensive queries into cheap series for dashboards and alerts. The spec is faithful to the upstream `monitoring.coreos.com/v1` PrometheusRule (pinned to prometheus-operator v0.94.1), after a Planton envelope that places the object and sets its own labels -- this is how you declare what your platform alerts on, next to the workloads it watches.
+Declares a prometheus-operator PrometheusRule: a namespaced set of Prometheus alerting and recording rules that every Prometheus selecting the object loads and evaluates. Alerting rules turn a PromQL condition into alerts Alertmanager routes; recording rules precompute expensive queries into cheap series for dashboards and alerts. The spec is faithful to the upstream `monitoring.coreos.com/v1` PrometheusRule (pinned to prometheus-operator v0.94.1), after a Planton envelope that places the object and sets its own labels — this is how you declare what your platform alerts on, next to the workloads it watches.
 
 ## What Gets Created
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **A PrometheusRule** -- one namespaced object carrying your rule groups, which the prometheus-operator renders into the rule files of every Prometheus whose rule selector matches it.
-- **Kubernetes Labels** -- your own labels on the object (the ones a Prometheus selects by), with resource metadata labels (resource name, kind, organization, environment) applied automatically on top.
+- **A PrometheusRule** — one namespaced object carrying your rule groups, which the prometheus-operator renders into the rule files of every Prometheus whose rule selector matches it.
+- **Kubernetes Labels** — your own labels on the object (the ones a Prometheus selects by), with resource metadata labels (resource name, kind, organization, environment) applied automatically on top.
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **Kubernetes Provider Connection** -- an active connection in the Connect module with kubeconfig credentials for the target cluster. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline kubeconfig authentication.
+- **Kubernetes Provider Connection** — an active connection in the Connect module with kubeconfig credentials for the target cluster. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline kubeconfig authentication.
 
 ### Kubernetes Cluster
 
-- **prometheus-operator CRDs installed** -- **Kube Prometheus Stack** installs them, along with the Prometheus that evaluates the rules.
-- **A Prometheus that selects the object** -- the stack's default discovery loads every rule object; a fenced stack loads only objects carrying its `release` label.
-- **Target namespace exists** -- reference an existing one or create it first.
+- **prometheus-operator CRDs installed** — **Kube Prometheus Stack** installs them, along with the Prometheus that evaluates the rules.
+- **A Prometheus that selects the object** — the stack's default discovery loads every rule object; a fenced stack loads only objects carrying its `release` label.
+- **Target namespace exists** — reference an existing one or create it first.
 
 ## Deploy
 
@@ -84,7 +84,7 @@ The InfraPipeline creates the namespace first, then the rule. The Prometheus tha
 
 These are the most important decisions when configuring a rule object. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**The object's labels decide who loads it.** `labels` are the object's own metadata, the thing a Prometheus's rule selector matches. Under the stack's default discovery no label is needed; a stack on `release_managed_only` loads only objects labelled `release: <its release name>`. These are not the labels alerts carry -- those are each group's and rule's `labels`.
+**The object's labels decide who loads it.** `labels` are the object's own metadata, the thing a Prometheus's rule selector matches. Under the stack's default discovery no label is needed; a stack on `release_managed_only` loads only objects labelled `release: <its release name>`. These are not the labels alerts carry — those are each group's and rule's `labels`.
 
 **One bad rule silences the whole object.** Prometheus refuses a rule file with one malformed rule, and the operator then drops every rule in the object. The spec refuses the common shapes (a rule that is both or neither recording and alerting, a recording rule with alert-only fields) before the apply; the PromQL itself is checked only by Prometheus. Split rules into objects by owner.
 
@@ -96,13 +96,13 @@ These are the most important decisions when configuring a rule object. Explore t
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **KubernetesNamespace** | `namespace` | `spec.name` |
+| **Kubernetes Namespace** | `namespace` | `spec.name` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|-----------------------|
@@ -113,11 +113,11 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Alert on an error budget** -- page only when a service burns its availability budget fast, and open a ticket when it burns slowly. Start from the **Error-Budget Burn Alerts** preset.
+**Alert on an error budget** — page only when a service burns its availability budget fast, and open a ticket when it burns slowly. Start from the **Error-Budget Burn Alerts** preset.
 
-**Precompute what alerts and dashboards read** -- record a service's error ratio over several windows once, and read the cheap series everywhere. Start from the **Error-Ratio Recording Rules** preset.
+**Precompute what alerts and dashboards read** — record a service's error ratio over several windows once, and read the cheap series everywhere. Start from the **Error-Ratio Recording Rules** preset.
 
 ## Works With
 
-- [**Kube Prometheus Stack**](/infra-catalog/kubernetes-kube-prometheus-stack) -- installs the CRDs and the Prometheus and Alertmanager that evaluate and route the rules.
-- [**Kubernetes Namespace**](/infra-catalog/kubernetes-namespace) -- the placement target the rule object lives in.
+- [**Kube Prometheus Stack**](/infra-catalog/kubernetes-kube-prometheus-stack) — installs the CRDs and the Prometheus and Alertmanager that evaluate and route the rules.
+- [**Kubernetes Namespace**](/infra-catalog/kubernetes-namespace) — the placement target the rule object lives in.

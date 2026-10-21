@@ -1,24 +1,24 @@
 # GCP BigQuery Reservation Group
 
-Groups BigQuery reservations so they lend idle slots to each other first -- keeping spare capacity inside a team or tier before it flows to the rest of the admin project.
+Groups BigQuery reservations so they lend idle slots to each other first — keeping spare capacity inside a team or tier before it flows to the rest of the admin project.
 
 ## What Gets Created
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **API enablement** -- `bigqueryreservation.googleapis.com` on the admin project (never disabled on destroy)
-- **Reservation group** -- a `bigquery_reservation_group`
+- **API enablement** — `bigqueryreservation.googleapis.com` on the admin project (never disabled on destroy)
+- **Reservation group** — a `bigquery_reservation_group`
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **GCP Provider Connection** -- an active connection in the Connect module with BigQuery resource admin permissions (`roles/bigquery.resourceAdmin`) on the project. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
+- **GCP Provider Connection** — an active connection in the Connect module with BigQuery resource admin permissions (`roles/bigquery.resourceAdmin`) on the project. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
 
 ### Optional Dependencies
 
-- **`GcpBigQueryReservation`** -- the reservations that join the group.
+- **`GcpBigQueryReservation`** — the reservations that join the group.
 
 ## Deploy
 
@@ -55,21 +55,21 @@ Declare the group next to the `GcpBigQueryReservation` blocks that reference its
 
 These are the most important decisions when configuring this component. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Membership** -- reservations join from their own `reservationGroup`; the group lists nothing itself.
+**Membership** — reservations join from their own `reservationGroup`; the group lists nothing itself.
 
-**Sharing** -- idle slots go to the group's other reservations before anyone else in the admin project.
+**Sharing** — idle slots go to the group's other reservations before anyone else in the admin project.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **GcpProject** | `projectId` | `status.outputs.project_id` |
+| **GCP Project** | `projectId` | `status.outputs.project_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|-----------------------|
@@ -80,10 +80,10 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Team tier** -- A group for one team's or one tier's reservations. Start from the **Team Tier** preset.
+**Team tier** — A group for one team's or one tier's reservations. Start from the **Team Tier** preset.
 
-**Protected production tier** -- An EU group that production reservations depend on, protected by `PREVENT`. Start from the **Protected EU Group** preset.
+**Protected production tier** — An EU group that production reservations depend on, protected by `PREVENT`. Start from the **Protected EU Group** preset.
 
 ## Works With
 
-- [**GCP BigQuery Reservation**](/infra-catalog/gcp-bigquery-reservation) -- the members
+- [**GCP BigQuery Reservation**](/infra-catalog/gcp-bigquery-reservation) — the members

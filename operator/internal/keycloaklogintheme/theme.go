@@ -51,7 +51,6 @@ const ThemeName = "planton"
 const (
 	PathThemeProperties      = "login/theme.properties"
 	PathStylesCSS            = "login/resources/css/planton.css"
-	PathLogoSVG              = "login/resources/img/planton-logo.svg"
 	PathInterFontWOFF2       = "login/resources/fonts/inter-latin.woff2"
 	PathEmailThemeProperties = "email/theme.properties"
 	PathEmailHTMLLayout      = "email/html/template.ftl"

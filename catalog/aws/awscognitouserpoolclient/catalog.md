@@ -18,9 +18,9 @@ When you deploy this Infra Component, the IaC module provisions:
 
 ### AWS Account
 
-- **A Cognito User Pool** — the directory this application authenticates against. Reference an AwsCognitoUserPool Infra Component or provide the pool ID directly.
-- **Identity providers** (only for federated sign-in) — list providers by name or reference AwsCognitoIdentityProvider resources in `supportedIdentityProviders`.
-- **Resource server scopes** (only for custom scopes) — an AwsCognitoResourceServer minting the `identifier/scope-name` strings this client will request; mandatory for the `client_credentials` grant.
+- **A Cognito User Pool** — the directory this application authenticates against. Reference an AWS Cognito User Pool Infra Component or provide the pool ID directly.
+- **Identity providers** (only for federated sign-in) — list providers by name or reference AWS Cognito Identity Provider resources in `supportedIdentityProviders`.
+- **Resource server scopes** (only for custom scopes) — an AWS Cognito Resource Server minting the `identifier/scope-name` strings this client will request; mandatory for the `client_credentials` grant.
 
 ## Deploy
 
@@ -74,7 +74,7 @@ This creates a public SPA client on the referenced pool: Authorization Code gran
 
 ### InfraChart
 
-When the client deploys alongside its pool and a federated provider in one chart, wire both references via ValueFromRef:
+When the client deploys alongside its pool and a federated provider in one chart, wire both references:
 
 ```yaml
 spec:
@@ -124,18 +124,18 @@ These are the most important decisions when configuring an app client. Explore t
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AwsCognitoUserPool** | `userPoolId` | `status.outputs.user_pool_id` |
-| **AwsCognitoIdentityProvider** | `supportedIdentityProviders` | `status.outputs.provider_name` |
-| **AwsIamRole** | `analyticsConfiguration.roleArn` | `status.outputs.role_arn` |
-| **AwsSesEmailIdentity** | `riskConfiguration.accountTakeover.notifyConfiguration.sourceArn` | `status.outputs.identity_arn` |
+| **AWS Cognito User Pool** | `userPoolId` | `status.outputs.user_pool_id` |
+| **AWS Cognito Identity Provider** | `supportedIdentityProviders` | `status.outputs.provider_name` |
+| **AWS IAM Role** | `analyticsConfiguration.roleArn` | `status.outputs.role_arn` |
+| **AWS SES Email Identity** | `riskConfiguration.accountTakeover.notifyConfiguration.sourceArn` | `status.outputs.identity_arn` |
 
 Custom resource-server scopes travel as plain strings in `allowedOauthScopes` — copy them from the resource server's `scope_identifiers` output.
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

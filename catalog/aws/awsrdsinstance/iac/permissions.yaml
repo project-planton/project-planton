@@ -1,5 +1,5 @@
 # Least-privilege permissions the IaC runner's AWS principal needs to
-# provision, update, and destroy this component with the official modules.
+# provision, update, and destroy this component with the platform modules.
 # Every entry is `derived` (static analysis of the module sources, cited in
 # notes) until the live capture lane upgrades it to `proven`. Schema:
 # iac/catalogkindpermissions/v1.
@@ -25,8 +25,10 @@ spec:
           - rds:ListTagsForResource
         resources:
           - arn:aws:rds:*:*:db:*
-        provenance: derived
-        notes: Covers aws_db_instance across its create shapes -- fresh instance, read replica (replicate_source_db), snapshot restore, and point-in-time restore -- plus modify, tagging, and teardown.
+        provenance: proven
+        reach: target
+        privilege: ordinary
+        notes: "Covers aws_db_instance across its create shapes -- fresh instance, read replica (replicate_source_db), snapshot restore, and point-in-time restore -- plus modify, tagging, and teardown. Proven 2026-10-20 on dev by the least-privilege lane: an identity holding exactly the kind's rendered permissions deployed, updated and destroyed it."
       - sid: ManageSnapshotsOnLifecycle
         actions:
           - rds:CreateDBSnapshot
@@ -34,8 +36,10 @@ spec:
           - rds:DescribeDBSnapshots
         resources:
           - arn:aws:rds:*:*:snapshot:*
-        provenance: derived
-        notes: Final snapshots on teardown (skip_final_snapshot=false) and reads of the source snapshot for restore-based creates.
+        provenance: proven
+        reach: target
+        privilege: ordinary
+        notes: "Final snapshots on teardown (skip_final_snapshot=false) and reads of the source snapshot for restore-based creates. Proven 2026-10-20 on dev by the least-privilege lane: an identity holding exactly the kind's rendered permissions deployed, updated and destroyed it."
       - sid: ManageSubnetAndParameterGroups
         actions:
           - rds:CreateDBSubnetGroup
@@ -51,12 +55,32 @@ spec:
           - rds:DeleteOptionGroup
           - rds:ModifyOptionGroup
           - rds:DescribeOptionGroups
+          - rds:AddTagsToResource
+          - rds:RemoveTagsFromResource
+          - rds:ListTagsForResource
         resources:
           - arn:aws:rds:*:*:subgrp:*
           - arn:aws:rds:*:*:pg:*
           - arn:aws:rds:*:*:og:*
         provenance: derived
-        notes: Covers the conditional aws_db_subnet_group, aws_db_parameter_group, and aws_db_option_group satellites -- each created only when the spec provides subnets, parameters, or options inline.
+        reach: target
+        privilege: ordinary
+        notes: "Covers the conditional aws_db_subnet_group, aws_db_parameter_group, and aws_db_option_group satellites -- each created only when the spec provides subnets, parameters, or options inline. Each is tagged as it is created and its tags are read and changed afterwards, and RDS authorizes those tag calls on the satellite's own ARN (rds:AddTagsToResource on a subgrp ARN was refused on a live create without it), so the tag actions sit here beside the instance's own."
+      - sid: ReferenceGroupsFromInstance
+        actions:
+          - rds:CreateDBInstance
+          - rds:ModifyDBInstance
+          - rds:CreateDBInstanceReadReplica
+          - rds:RestoreDBInstanceFromDBSnapshot
+          - rds:RestoreDBInstanceToPointInTime
+        resources:
+          - arn:aws:rds:*:*:subgrp:*
+          - arn:aws:rds:*:*:pg:*
+          - arn:aws:rds:*:*:og:*
+        provenance: proven
+        reach: target
+        privilege: ordinary
+        notes: "RDS authorizes an instance's create, modify, and restore calls on the ARN of every subnet, parameter, and option group the instance names, as well as on the instance's own ARN (rds:CreateDBInstance on a pg ARN was refused on a live create without it). A default parameter or option group is covered by the same wildcards. Proven 2026-10-20 on dev by the least-privilege lane: an identity holding exactly the kind's rendered permissions deployed, updated and destroyed it."
       - sid: DescribeVpcContext
         actions:
           - ec2:DescribeSubnets
@@ -64,8 +88,10 @@ spec:
           - ec2:DescribeVpcs
         resources:
           - "*"
-        provenance: derived
-        notes: Subnet-group creation and security-group attachment validate their references. EC2 Describe APIs support no resource-level scoping, so the wildcard is the narrowest possible scope.
+        provenance: proven
+        reach: target
+        privilege: ordinary
+        notes: "Subnet-group creation and security-group attachment validate their references. EC2 Describe APIs support no resource-level scoping, so the wildcard is the narrowest possible scope. Proven 2026-10-20 on dev by the least-privilege lane: an identity holding exactly the kind's rendered permissions deployed, updated and destroyed it."
       - sid: ManageIamRoleAssociations
         actions:
           - rds:AddRoleToDBInstance
@@ -74,8 +100,10 @@ spec:
         resources:
           - arn:aws:rds:*:*:db:*
           - arn:aws:iam::*:role/*
-        provenance: derived
-        notes: Covers aws_db_instance_role_association (spec.iam_roles, and s3_import's ingestion role) plus monitoring_role_arn for Enhanced Monitoring -- RDS assumes the referenced roles, and associating them passes them. Narrow the role ARN in a hardened deployment.
+        provenance: proven
+        reach: target
+        privilege: uses_identity
+        notes: "Covers aws_db_instance_role_association (spec.iam_roles, and s3_import's ingestion role) plus monitoring_role_arn for Enhanced Monitoring -- RDS assumes the referenced roles, and associating them passes them. Narrow the role ARN in a hardened deployment. Proven 2026-10-20 on dev by the least-privilege lane: an identity holding exactly the kind's rendered permissions deployed, updated and destroyed it."
       - sid: UseCustomerManagedKeys
         actions:
           - kms:DescribeKey
@@ -83,11 +111,26 @@ spec:
         resources:
           - arn:aws:kms:*:*:key/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Required only when kms_key_id, master_user_secret_kms_key_id, or performance_insights_kms_key_id selects a customer-managed key -- RDS creates grants against the key during instance create/modify.
       - sid: ManageMasterUserSecret
         actions:
+          - secretsmanager:CreateSecret
+          - secretsmanager:TagResource
           - secretsmanager:DescribeSecret
         resources:
           - arn:aws:secretsmanager:*:*:secret:rds!*
-        provenance: derived
-        notes: With manage_master_user_password=true, RDS owns the Secrets Manager secret; the provider reads it back into state after create. Scoped to the rds!-prefixed secrets RDS manages.
+        provenance: proven
+        reach: target
+        privilege: ordinary
+        notes: "With manage_master_user_password=true, RDS creates and tags the master user's Secrets Manager secret as the caller during the instance's create, modify, or restore, so the caller needs those actions itself (a live create was refused with \"isn't authorized to create a secret in AWS Secrets Manager\" without them); the provider reads the secret back into state after create, and RDS deletes it with the instance. Scoped to the rds!-prefixed secrets RDS manages. Proven 2026-10-20 on dev by the least-privilege lane: an identity holding exactly the kind's rendered permissions deployed, updated and destroyed it."
+      - sid: DescribeMasterUserSecretKey
+        actions:
+          - kms:DescribeKey
+        resources:
+          - arn:aws:kms:*:*:key/*
+        provenance: proven
+        reach: target
+        privilege: ordinary
+        notes: "With manage_master_user_password=true, RDS describes the key that encrypts the master user's secret as the caller -- the aws/secretsmanager key by default, or master_user_secret_kms_key_id's customer-managed key. Proven 2026-10-20 on dev by the least-privilege lane: an identity holding exactly the kind's rendered permissions deployed, updated and destroyed it."

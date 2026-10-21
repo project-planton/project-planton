@@ -1,5 +1,5 @@
 # Least-privilege permissions the IaC runner's AWS principal needs to
-# provision, update, and destroy this component with the official modules.
+# provision, update, and destroy this component with the platform modules.
 # Every entry is `derived` (static analysis of the module sources, cited in
 # notes) until the live capture lane upgrades it to `proven`. DocumentDB
 # management actions live under the rds: prefix -- there is no docdb:
@@ -31,6 +31,8 @@ spec:
           - arn:aws:rds:*:*:global-cluster:*
           - arn:aws:rds:*:*:db:*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_docdb_cluster across its create shapes -- fresh cluster, snapshot restore, point-in-time restore/clone, and global-cluster join -- plus modify, tagging, and teardown. CreateDBCluster and the Restore* calls authorize against the cluster parameter group and subnet group ARNs resolved for the request (defaults included), the source snapshot on snapshot restores, and the global cluster when global_cluster_identifier is set -- omitting those formats denies the create. Tagging (AddTagsToResource et al.) also authorizes against the instance (db), subnet-group, and parameter-group ARNs the module tags.
       - sid: ManageClusterInstances
         actions:
@@ -42,6 +44,8 @@ spec:
           - arn:aws:rds:*:*:db:*
           - arn:aws:rds:*:*:cluster:*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_docdb_cluster_instance -- one per spec.instances entry. Creating an instance inside a cluster authorizes against both the db and cluster ARNs.
       - sid: ManageClusterSnapshotsOnLifecycle
         actions:
@@ -52,6 +56,8 @@ spec:
           - arn:aws:rds:*:*:cluster-snapshot:*
           - arn:aws:rds:*:*:cluster:*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Final snapshots on teardown (skip_final_snapshot=false) and reads of the source snapshot for restore-based creates.
       - sid: ManageSubnetAndParameterGroups
         actions:
@@ -68,6 +74,8 @@ spec:
           - arn:aws:rds:*:*:subgrp:*
           - arn:aws:rds:*:*:cluster-pg:*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers the conditional aws_docdb_subnet_group and aws_docdb_cluster_parameter_group satellites -- each created only when the spec provides subnets or inline parameters.
       - sid: DescribeVpcContext
         actions:
@@ -77,6 +85,8 @@ spec:
         resources:
           - "*"
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Subnet-group creation and security-group attachment validate their references. EC2 Describe APIs support no resource-level scoping, so the wildcard is the narrowest possible scope.
       - sid: UseCustomerManagedKeys
         actions:
@@ -85,4 +95,6 @@ spec:
         resources:
           - arn:aws:kms:*:*:key/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Required only when kms_key_id (or a per-instance performance_insights_kms_key_id) selects a customer-managed key -- the service creates grants against the key during cluster create.

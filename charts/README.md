@@ -152,7 +152,7 @@ make validate
 
 # Server-side (Planton Platform CLI): renders and validates through the live
 # control plane, exactly as the console does — the authoritative gate before
-# publishing.
+# a chart ships in the release.
 planton chart build <provider>/<chart> --no-browser
 ```
 

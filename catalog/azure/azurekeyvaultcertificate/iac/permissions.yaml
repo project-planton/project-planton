@@ -1,5 +1,5 @@
 # Least-privilege permissions the IaC runner's Azure principal needs to
-# provision, update, and destroy this component with the official modules.
+# provision, update, and destroy this component with the platform modules.
 # Every entry is `derived` (static analysis of the module sources, cited in
 # notes) until the live capture lane upgrades it to `proven`. Schema:
 # iac/catalogkindpermissions/v1.
@@ -14,6 +14,7 @@ spec:
         actions:
           - Microsoft.KeyVault/vaults/read
         provenance: derived
+        privilege: ordinary
         notes: "The modules receive the vault as an ARM resource ID (key_vault_id) and resolve its data-plane URI with an ARM read before any certificate call -- the only management-plane touch this component makes."
       - purpose: ManageCertificateDataPlane
         data_actions:
@@ -25,4 +26,5 @@ spec:
           - Microsoft.KeyVault/vaults/certificates/recover/action
           - Microsoft.KeyVault/vaults/certificates/purge/action
         provenance: derived
+        privilege: ordinary
         notes: "A Key Vault certificate is a data-plane object -- azurerm_key_vault_certificate / keyvault.NewCertificate talk to {name}.vault.azure.net, not ARM, which is why creation fails with a 403 when the principal lacks these grants even if it owns the subscription (held via the Key Vault Administrator or Key Vault Certificates Officer role on the vault, or certificate permissions in a legacy access policy -- migrated from the READMEs). create covers vault-generated enrollment (issuer Self completes synchronously; a CA issuer keeps the operation pending until the CA responds); import covers PFX/PEM bundle imports, each contents change importing a new version; read covers refresh (public part, policy, and the identifiers the outputs export -- never the private key); update covers policy and tag changes; delete covers destroy. The azurerm provider's default features add the last two: a name-colliding create against a soft-deleted certificate auto-RECOVERS it (recover_soft_deleted_certificates, default true), and destroy PURGES the soft-deleted certificate so the name frees immediately (purge_soft_deleted_certs_on_destroy, default true -- inert when the vault's purge protection is on)."

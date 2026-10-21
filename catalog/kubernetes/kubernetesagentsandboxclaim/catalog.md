@@ -1,28 +1,28 @@
 # Agent Sandbox Claim
 
-Declares an agent-sandbox SandboxClaim: a request for one sandbox from a warm pool. The agent-sandbox controller hands the claim a ready member of the pool, or starts a fresh sandbox from the pool's template when none is ready or the claim asks for something a running pod cannot take, and the sandbox then belongs to the claim. The spec is faithful to the upstream `extensions.agents.x-k8s.io/v1beta1` SandboxClaim (pinned to agent-sandbox v1.0.7) -- products usually create claims at runtime, and this is how you declare one that should exist as long as its declaration does.
+Declares an agent-sandbox SandboxClaim: a request for one sandbox from a warm pool. The agent-sandbox controller hands the claim a ready member of the pool, or starts a fresh sandbox from the pool's template when none is ready or the claim asks for something a running pod cannot take, and the sandbox then belongs to the claim. The spec is faithful to the upstream `extensions.agents.x-k8s.io/v1beta1` SandboxClaim (pinned to agent-sandbox v1.0.7) — products usually create claims at runtime, and this is how you declare one that should exist as long as its declaration does.
 
 ## What Gets Created
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **A SandboxClaim** -- one namespaced object naming its pool, its lifecycle, and the labels, variables and volumes its sandbox gets.
-- **Kubernetes Labels** -- your own labels on the object, with resource metadata labels (resource name, kind, organization, environment) applied automatically on top.
+- **A SandboxClaim** — one namespaced object naming its pool, its lifecycle, and the labels, variables and volumes its sandbox gets.
+- **Kubernetes Labels** — your own labels on the object, with resource metadata labels (resource name, kind, organization, environment) applied automatically on top.
 
-The controller then binds the claim to a sandbox -- a warm pool member, or one started for it -- and records the sandbox's name in the claim's status.
+The controller then binds the claim to a sandbox — a warm pool member, or one started for it — and records the sandbox's name in the claim's status.
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **Kubernetes Provider Connection** -- an active connection in the Connect module with kubeconfig credentials for the target cluster. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline kubeconfig authentication.
+- **Kubernetes Provider Connection** — an active connection in the Connect module with kubeconfig credentials for the target cluster. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline kubeconfig authentication.
 
 ### Kubernetes Cluster
 
-- **Agent Sandbox Controller installed, with extensions on** -- it installs the SandboxClaim definition and the controller that binds claims.
-- **An Agent Sandbox Warm Pool in the same namespace** -- the pool the claim draws from.
-- **Target namespace exists** -- reference an existing one or create it first.
+- **Agent Sandbox Controller installed, with extensions on** — it installs the SandboxClaim definition and the controller that binds claims.
+- **An Agent Sandbox Warm Pool in the same namespace** — the pool the claim draws from.
+- **Target namespace exists** — reference an existing one or create it first.
 
 ## Deploy
 
@@ -95,15 +95,15 @@ These are the most important decisions when configuring a claim. Explore the ful
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **KubernetesNamespace** | `namespace` | `spec.name` |
-| **KubernetesAgentSandboxWarmPool** | `warmPoolRef.name` | `status.outputs.sandbox_warm_pool_name` |
-| **KubernetesStorageClass** | `volumeClaimTemplates[].spec.storageClassName` | `status.outputs.storage_class_name` |
+| **Kubernetes Namespace** | `namespace` | `spec.name` |
+| **Agent Sandbox Warm Pool** | `warmPoolRef.name` | `status.outputs.sandbox_warm_pool_name` |
+| **Kubernetes StorageClass** | `volumeClaimTemplates[].spec.storageClassName` | `status.outputs.storage_class_name` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|-----------------------|
@@ -114,13 +114,13 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**A sandbox that stays someone's** -- a warm claim with an owner label, for a named workbench or a team's shared agent. Start from the **Standing User Sandbox** preset.
+**A sandbox that stays someone's** — a warm claim with an owner label, for a named workbench or a team's shared agent. Start from the **Standing User Sandbox** preset.
 
-**A sandbox shaped for one task** -- the task's ID, a larger workspace, and an end time. Start from the **Task Sandbox With Workspace** preset.
+**A sandbox shaped for one task** — the task's ID, a larger workspace, and an end time. Start from the **Task Sandbox With Workspace** preset.
 
 ## Works With
 
-- [**Agent Sandbox Warm Pool**](/infra-catalog/kubernetes-agent-sandbox-warm-pool) -- the pool the claim draws from.
-- [**Agent Sandbox Template**](/infra-catalog/kubernetes-agent-sandbox-template) -- decides what the claimed sandbox runs and what the claim may change.
-- [**Agent Sandbox Controller**](/infra-catalog/kubernetes-agent-sandbox-controller) -- binds the claim and routes callers to its sandbox.
-- [**Kubernetes Namespace**](/infra-catalog/kubernetes-namespace) -- the placement target the claim, its pool and its sandbox share.
+- [**Agent Sandbox Warm Pool**](/infra-catalog/kubernetes-agent-sandbox-warm-pool) — the pool the claim draws from.
+- [**Agent Sandbox Template**](/infra-catalog/kubernetes-agent-sandbox-template) — decides what the claimed sandbox runs and what the claim may change.
+- [**Agent Sandbox Controller**](/infra-catalog/kubernetes-agent-sandbox-controller) — binds the claim and routes callers to its sandbox.
+- [**Kubernetes Namespace**](/infra-catalog/kubernetes-namespace) — the placement target the claim, its pool and its sandbox share.

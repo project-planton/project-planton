@@ -1,6 +1,6 @@
 # Cost derivation: the machine-executable rules turning any
 # AwsPlantonRunner manifest's spec values into metered quantities and
-# price choices. The spec hides the compute substrate; the official
+# price choices. The spec hides the compute substrate; the platform
 # modules provision one always-on ECS Fargate task (desired count fixed
 # at one -- the registration's work queue serializes operations), a
 # Secrets Manager secret for the runner token, and a CloudWatch log

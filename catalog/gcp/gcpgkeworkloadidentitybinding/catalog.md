@@ -6,14 +6,14 @@ Creates an IAM policy binding that allows a Kubernetes ServiceAccount (KSA) in a
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **IAM Member Binding** -- a `serviceaccount.IAMMember` that grants `roles/iam.workloadIdentityUser` on the specified Google ServiceAccount to the Kubernetes ServiceAccount, using the member format `serviceAccount:{projectId}.svc.id.goog[{namespace}/{name}]`
+- **IAM Member Binding** — a `serviceaccount.IAMMember` that grants `roles/iam.workloadIdentityUser` on the specified Google ServiceAccount to the Kubernetes ServiceAccount, using the member format `serviceAccount:{projectId}.svc.id.goog[{namespace}/{name}]`
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **GCP Provider Connection** -- an active connection in the Connect module with credentials for the target GCP project. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
+- **GCP Provider Connection** — an active connection in the Connect module with credentials for the target GCP project. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
 
 ### GCP Project
 
@@ -56,7 +56,7 @@ This grants the `cert-manager` Kubernetes ServiceAccount permission to impersona
 
 ### InfraChart
 
-When deploying as part of a multi-resource environment, use ValueFromRef to wire the binding to a GCP project and service account deployed in the same InfraPipeline:
+When deploying as part of a multi-resource environment, use references to wire the binding to a GCP project and service account deployed in the same InfraPipeline:
 
 ```yaml
 spec:
@@ -78,28 +78,28 @@ The InfraPipeline resolves the dependency graph, deploys the project and service
 
 These are the most important decisions when configuring a Workload Identity binding. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**KSA namespace and name** -- The `ksaNamespace` and `ksaName` fields must exactly match the Kubernetes ServiceAccount that pods use. The binding is namespace-scoped -- a KSA in namespace `default` cannot use a binding created for namespace `cert-manager`.
+**KSA namespace and name** — The `ksaNamespace` and `ksaName` fields must exactly match the Kubernetes ServiceAccount that pods use. The binding is namespace-scoped — a KSA in namespace `default` cannot use a binding created for namespace `cert-manager`.
 
-**Google ServiceAccount selection** -- The GSA referenced by `serviceAccountEmail` determines what GCP permissions the KSA inherits. Follow least-privilege principles: create purpose-specific GSAs with only the IAM roles the workload needs, rather than reusing a broadly-permissioned account.
+**Google ServiceAccount selection** — The GSA referenced by `serviceAccountEmail` determines what GCP permissions the KSA inherits. Follow least-privilege principles: create purpose-specific GSAs with only the IAM roles the workload needs, rather than reusing a broadly-permissioned account.
 
-**One binding per pair** -- Each unique KSA-to-GSA pair requires its own binding. If multiple KSAs need to impersonate the same GSA, create separate bindings for each.
+**One binding per pair** — Each unique KSA-to-GSA pair requires its own binding. If multiple KSAs need to impersonate the same GSA, create separate bindings for each.
 
-**IAM Condition** -- an optional CEL expression scoping WHEN the binding applies (a time-boxed migration window is the everyday case). The condition is part of the grant's identity: the same binding with and without a condition are two independent grants.
+**IAM Condition** — an optional CEL expression scoping WHEN the binding applies (a time-boxed migration window is the everyday case). The condition is part of the grant's identity: the same binding with and without a condition are two independent grants.
 
-**Everything replaces atomically** -- an IAM grant has no update. Changing the project, GSA, KSA coordinates, or condition replaces the grant (a brief moment where the KSA cannot mint tokens); the replacement destroys nothing and is GCP's own designed change workflow.
+**Everything replaces atomically** — an IAM grant has no update. Changing the project, GSA, KSA coordinates, or condition replaces the grant (a brief moment where the KSA cannot mint tokens); the replacement destroys nothing and is GCP's own designed change workflow.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **GcpProject** | `projectId` | `status.outputs.project_id` |
-| **GcpServiceAccount** | `serviceAccountEmail` | `status.outputs.email` |
+| **GCP Project** | `projectId` | `status.outputs.project_id` |
+| **GCP Service Account** | `serviceAccountEmail` | `status.outputs.email` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -110,9 +110,9 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Standard binding** -- A single KSA-to-GSA binding for common use cases like cert-manager DNS validation, external-dns record management, or application access to Cloud SQL, Cloud Storage, or Pub/Sub. Provide the project, GSA email, and KSA coordinates. Start from the **Standard Workload Identity Binding** preset.
+**Standard binding** — A single KSA-to-GSA binding for common use cases like cert-manager DNS validation, external-dns record management, or application access to Cloud SQL, Cloud Storage, or Pub/Sub. Provide the project, GSA email, and KSA coordinates. Start from the **Standard Workload Identity Binding** preset.
 
 ## Works With
 
-- [**GCP Project**](/infra-catalog/gcp-project) -- provides the GCP project that hosts the GKE Workload Identity pool
-- [**GCP Service Account**](/infra-catalog/gcp-service-account) -- provides the Google ServiceAccount that the KSA impersonates
+- [**GCP Project**](/infra-catalog/gcp-project) — provides the GCP project that hosts the GKE Workload Identity pool
+- [**GCP Service Account**](/infra-catalog/gcp-service-account) — provides the Google ServiceAccount that the KSA impersonates

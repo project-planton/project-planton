@@ -1,5 +1,5 @@
 # Least-privilege permissions the IaC runner's AWS principal needs to
-# provision, update, and destroy this component with the official modules.
+# provision, update, and destroy this component with the platform modules.
 # Every entry is `derived` (static analysis of the module sources, cited in
 # notes) until the live capture lane upgrades it to `proven`. Schema:
 # iac/catalogkindpermissions/v1.
@@ -21,6 +21,8 @@ spec:
         resources:
           - arn:aws:cloudfront::*:distribution/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_cloudfront_distribution -- create, read, converge, tag, and the disable-then-delete teardown. CloudFront is a global service; the distribution id is the ARN's variable part.
       - sid: CreateGlobalResources
         actions:
@@ -30,6 +32,8 @@ spec:
         resources:
           - "*"
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: The service reference lists NO resource types for these three Create actions -- the CloudFront developer guide's own policy examples specify Resource "*" for CreateDistribution, not a distribution-ARN pattern -- while every read/update/delete/tag sibling scopes to its resource ARN. An ARN-scoped create grant never matches and would deny provisioning at runtime; the wildcard is the narrowest possible scope.
       - sid: ManageOriginAccessControl
         actions:
@@ -39,6 +43,8 @@ spec:
         resources:
           - arn:aws:cloudfront::*:origin-access-control/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_cloudfront_origin_access_control, created for each S3 origin with create_origin_access_control true so the bucket accepts only this distribution's signed requests.
       - sid: ManageContinuousDeploymentPolicy
         actions:
@@ -48,6 +54,8 @@ spec:
         resources:
           - arn:aws:cloudfront::*:continuous-deployment-policy/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_cloudfront_continuous_deployment_policy, created only when spec.continuous_deployment wires a staging distribution for weighted or header-routed canary traffic.
       - sid: ManageMonitoringSubscription
         actions:
@@ -57,4 +65,6 @@ spec:
         resources:
           - "*"
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_cloudfront_monitoring_subscription, created only when enable_additional_metrics is true. The service reference lists NO resource types for any of the three subscription actions, so IAM evaluates them against Resource "*" -- an ARN-scoped grant never matches. The wildcard is the narrowest possible scope.

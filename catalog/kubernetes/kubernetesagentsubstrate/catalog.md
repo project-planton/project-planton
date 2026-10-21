@@ -137,19 +137,19 @@ These are the decisions that matter most. Explore the full field reference in th
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **KubernetesNamespace** | `namespace` | `spec.name` |
-| **GcpGkeCluster** | `platform.gke.clusterId` | `status.outputs.cluster_id` |
-| **GcpServiceAccount** | `platform.gke.apiServerServiceAccount`, `platform.gke.nodeAgentServiceAccount` | `status.outputs.email` |
-| **GcpCloudSql** | `database.cloudSql.instanceConnectionName` | `status.outputs.connection_name` |
-| **GcpGcsBucket** | `storage.gcs.bucket` | `status.outputs.bucket_name` |
-| **KubernetesSeaweedFs** | `storage.s3.endpoint` | `status.outputs.s3_endpoint` |
-| **KubernetesSecret** | `storage.s3.credentials.secretName`, the external database's connection strings | `status.outputs.secret_name` |
+| **Kubernetes Namespace** | `namespace` | `spec.name` |
+| **GCP GKE Cluster** | `platform.gke.clusterId` | `status.outputs.cluster_id` |
+| **GCP Service Account** | `platform.gke.apiServerServiceAccount`, `platform.gke.nodeAgentServiceAccount` | `status.outputs.email` |
+| **GCP Cloud SQL** | `database.cloudSql.instanceConnectionName` | `status.outputs.connection_name` |
+| **GCP GCS Bucket** | `storage.gcs.bucket` | `status.outputs.bucket_name` |
+| **SeaweedFS** | `storage.s3.endpoint` | `status.outputs.s3_endpoint` |
+| **Kubernetes Secret** | `storage.s3.credentials.secretName`, the external database's connection strings | `status.outputs.secret_name` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

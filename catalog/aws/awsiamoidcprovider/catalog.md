@@ -1,13 +1,13 @@
 # AWS IAM OIDC Provider
 
-Registers an OpenID Connect (OIDC) identity provider in AWS IAM -- the trust anchor for keyless, web-identity federation. It lets an external issuer's short-lived tokens be exchanged for AWS credentials through STS `AssumeRoleWithWebIdentity`, so workloads and pipelines never hold long-lived AWS access keys. You define it from an issuer URL, a list of allowed client IDs (audiences), and optional CA thumbprints; it exports the provider ARN that IAM roles trust as a `Federated` principal.
+Registers an OpenID Connect (OIDC) identity provider in AWS IAM — the trust anchor for keyless, web-identity federation. It lets an external issuer's short-lived tokens be exchanged for AWS credentials through STS `AssumeRoleWithWebIdentity`, so workloads and pipelines never hold long-lived AWS access keys. You define it from an issuer URL, a list of allowed client IDs (audiences), and optional CA thumbprints; it exports the provider ARN that IAM roles trust as a `Federated` principal.
 
 ## What Gets Created
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **IAM OIDC Provider** -- an `aws_iam_openid_connect_provider` (Pulumi: `iam.OpenIdConnectProvider`) registered under the issuer `url`, scoped to the supplied `clientIdList`, and optionally pinned to `thumbprintList`
-- **AWS Tags** -- resource metadata tags (organization, environment, resource kind, resource ID) applied to the provider
+- **IAM OIDC Provider** — an `aws_iam_openid_connect_provider` (Pulumi: `iam.OpenIdConnectProvider`) registered under the issuer `url`, scoped to the supplied `clientIdList`, and optionally pinned to `thumbprintList`
+- **AWS Tags** — resource metadata tags (organization, environment, resource kind, resource ID) applied to the provider
 
 That single resource is the trust anchor. Access itself is granted by a separate **AWS IAM Role** whose trust policy references this provider's ARN.
 
@@ -15,13 +15,13 @@ That single resource is the trust anchor. Access itself is granted by a separate
 
 ### Planton Setup
 
-- **AWS Provider Connection** -- an active connection in the Connect module with credentials for the target AWS account. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **An OIDC issuer** -- for EKS IRSA, an `AwsEksCluster` you can reference (its `status.outputs.oidc_issuer_url` flows in automatically); for CI/CD, the platform issuer URL (e.g. `https://token.actions.githubusercontent.com`).
+- **AWS Provider Connection** — an active connection in the Connect module with credentials for the target AWS account. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **An OIDC issuer** — for EKS IRSA, an `AwsEksCluster` you can reference (its `status.outputs.oidc_issuer_url` flows in automatically); for CI/CD, the platform issuer URL (e.g. `https://token.actions.githubusercontent.com`).
 
 ### AWS Account
 
-- **IAM permissions** -- the credentials used by the Provider Connection must allow `iam:CreateOpenIDConnectProvider`, `iam:TagOpenIDConnectProvider`, and related IAM permissions.
-- **One provider per URL** -- AWS allows at most one OIDC provider per unique issuer URL per account.
+- **IAM permissions** — the credentials used by the Provider Connection must allow `iam:CreateOpenIDConnectProvider`, `iam:TagOpenIDConnectProvider`, and related IAM permissions.
+- **One provider per URL** — AWS allows at most one OIDC provider per unique issuer URL per account.
 
 ## Deploy
 
@@ -56,7 +56,7 @@ This registers GitHub Actions as a trusted OIDC issuer. Next, create an **AWS IA
 
 ### InfraChart
 
-When the provider registers an EKS cluster's issuer deployed in the same chart, wire the issuer reference via ValueFromRef:
+When the provider registers an EKS cluster's issuer deployed in the same chart, wire the issuer reference:
 
 ```yaml
 spec:
@@ -76,25 +76,25 @@ The InfraPipeline resolves the dependency graph, deploys the cluster first, then
 
 These are the most important decisions when configuring an OIDC provider. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Issuer URL (`url`)** -- The OIDC issuer (`iss` claim) AWS will trust. Reference an `AwsEksCluster` to wire IRSA without copying the issuer URL by hand (it resolves from the cluster's `status.outputs.oidc_issuer_url` at deploy time), or paste a literal HTTPS URL for CI issuers. The URL is fixed after creation -- changing it replaces the provider.
+**Issuer URL (`url`)** — The OIDC issuer (`iss` claim) AWS will trust. Reference an `AwsEksCluster` to wire IRSA without copying the issuer URL by hand (it resolves from the cluster's `status.outputs.oidc_issuer_url` at deploy time), or paste a literal HTTPS URL for CI issuers. The URL is fixed after creation — changing it replaces the provider.
 
-**Client IDs / audiences (`clientIdList`)** -- The values tokens carry in their `aud` claim. For both EKS IRSA and GitHub Actions this is `sts.amazonaws.com` (preselected by default). At least one is required; each must be 1-255 characters and unique.
+**Client IDs / audiences (`clientIdList`)** — The values tokens carry in their `aud` claim. For both EKS IRSA and GitHub Actions this is `sts.amazonaws.com` (preselected by default). At least one is required; each must be 1-255 characters and unique.
 
-**CA thumbprints (`thumbprintList`)** -- Optional SHA-1 fingerprints (40 hex chars) of the issuer's root CA. Leave empty for well-known issuers (EKS, GitHub Actions, Google) -- AWS secures the TLS connection with its trusted CA store and derives the thumbprint for you. Supply thumbprints only for an issuer whose CA is not publicly trusted.
+**CA thumbprints (`thumbprintList`)** — Optional SHA-1 fingerprints (40 hex chars) of the issuer's root CA. Leave empty for well-known issuers (EKS, GitHub Actions, Google) — AWS secures the TLS connection with its trusted CA store and derives the thumbprint for you. Supply thumbprints only for an issuer whose CA is not publicly trusted.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AwsEksCluster** (optional) | `url` | `status.outputs.oidc_issuer_url` |
+| **AWS EKS Cluster** (optional) | `url` | `status.outputs.oidc_issuer_url` |
 
 Referencing the cluster resolves its OIDC issuer at deploy time, so IRSA setup is composable rather than copy-paste; CI issuers pass a literal URL instead.
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components consume by reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -105,13 +105,13 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**EKS IRSA** -- Register an EKS cluster's OIDC issuer (by reference) with the `sts.amazonaws.com` audience, so Kubernetes ServiceAccounts can assume IAM roles. The required first step before creating IRSA roles. Start from the **EKS IRSA OIDC Provider** preset.
+**EKS IRSA** — Register an EKS cluster's OIDC issuer (by reference) with the `sts.amazonaws.com` audience, so Kubernetes ServiceAccounts can assume IAM roles. The required first step before creating IRSA roles. Start from the **EKS IRSA OIDC Provider** preset.
 
-**GitHub Actions federation** -- Register `https://token.actions.githubusercontent.com` so pipelines assume a deploy role without storing AWS keys. Start from the **GitHub Actions OIDC Provider** preset.
+**GitHub Actions federation** — Register `https://token.actions.githubusercontent.com` so pipelines assume a deploy role without storing AWS keys. Start from the **GitHub Actions OIDC Provider** preset.
 
-**Generic issuer with a pinned thumbprint** -- For an issuer whose CA is not publicly trusted, supply the root CA's SHA-1 thumbprint. Start from the **Generic OIDC Provider with Explicit Thumbprint** preset.
+**Generic issuer with a pinned thumbprint** — For an issuer whose CA is not publicly trusted, supply the root CA's SHA-1 thumbprint. Start from the **Generic OIDC Provider with Explicit Thumbprint** preset.
 
 ## Works With
 
-- [**AWS IAM Role**](/infra-catalog/aws-iam-role) -- the role whose trust policy references this provider's `provider_arn` to grant web-identity (IRSA / CI federation) access
-- [**AWS EKS Cluster**](/infra-catalog/aws-eks-cluster) -- exports the `oidc_issuer_url` this provider consumes for IRSA; reference it from the `url` field
+- [**AWS IAM Role**](/infra-catalog/aws-iam-role) — the role whose trust policy references this provider's `provider_arn` to grant web-identity (IRSA / CI federation) access
+- [**AWS EKS Cluster**](/infra-catalog/aws-eks-cluster) — exports the `oidc_issuer_url` this provider consumes for IRSA; reference it from the `url` field

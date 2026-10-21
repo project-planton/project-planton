@@ -1,26 +1,26 @@
 # Pod Monitor
 
-Declares a prometheus-operator PodMonitor: a namespaced object that tells every Prometheus selecting it which pods to scrape for metrics directly -- on which container port and path, how often, and with which credentials -- without a Service in between. Each running pod matching its label selector becomes a scrape target, one per replica. The spec is faithful to the upstream `monitoring.coreos.com/v1` PodMonitor (pinned to prometheus-operator v0.94.1), after a Planton envelope that places the object and sets its own labels -- this is how you watch database instances, node-level exporters and sidecars that no Service exposes.
+Declares a prometheus-operator PodMonitor: a namespaced object that tells every Prometheus selecting it which pods to scrape for metrics directly — on which container port and path, how often, and with which credentials — without a Service in between. Each running pod matching its label selector becomes a scrape target, one per replica. The spec is faithful to the upstream `monitoring.coreos.com/v1` PodMonitor (pinned to prometheus-operator v0.94.1), after a Planton envelope that places the object and sets its own labels — this is how you watch database instances, node-level exporters and sidecars that no Service exposes.
 
 ## What Gets Created
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **A PodMonitor** -- one namespaced object carrying your selector and scrape endpoints, which the prometheus-operator renders into the scrape configuration of every Prometheus whose PodMonitor selector matches it.
-- **Kubernetes Labels** -- your own labels on the object (the ones a Prometheus selects by), with resource metadata labels (resource name, kind, organization, environment) applied automatically on top.
+- **A PodMonitor** — one namespaced object carrying your selector and scrape endpoints, which the prometheus-operator renders into the scrape configuration of every Prometheus whose PodMonitor selector matches it.
+- **Kubernetes Labels** — your own labels on the object (the ones a Prometheus selects by), with resource metadata labels (resource name, kind, organization, environment) applied automatically on top.
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **Kubernetes Provider Connection** -- an active connection in the Connect module with kubeconfig credentials for the target cluster. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline kubeconfig authentication.
+- **Kubernetes Provider Connection** — an active connection in the Connect module with kubeconfig credentials for the target cluster. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline kubeconfig authentication.
 
 ### Kubernetes Cluster
 
-- **prometheus-operator CRDs installed** -- **Kube Prometheus Stack** installs them, along with the Prometheus that scrapes through the monitor.
-- **A Prometheus that selects the object** -- the stack's default discovery loads every PodMonitor; a fenced stack loads only objects carrying its `release` label.
-- **Pods that declare the metrics port** -- a container port the pod does not declare yields no target.
+- **prometheus-operator CRDs installed** — **Kube Prometheus Stack** installs them, along with the Prometheus that scrapes through the monitor.
+- **A Prometheus that selects the object** — the stack's default discovery loads every PodMonitor; a fenced stack loads only objects carrying its `release` label.
+- **Pods that declare the metrics port** — a container port the pod does not declare yields no target.
 - **Target namespace exists**, together with any Secret or ConfigMap the monitor reads for credentials.
 
 ## Deploy
@@ -105,15 +105,15 @@ These are the most important decisions when configuring a pod monitor. Explore t
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **KubernetesNamespace** | `namespace`, `namespace_selector.match_names` | `spec.name` |
-| **KubernetesSecret** | every Secret selector's `name` (`authorization.credentials`, `basic_auth`, `oauth2.client_secret`, `tls_config.key_secret`, ...) | `status.outputs.secret_name` |
-| **KubernetesConfigMap** | every ConfigMap selector's `name` (`tls_config.ca.config_map`, `oauth2.client_id.config_map`, ...) | `status.outputs.configmap_name` |
+| **Kubernetes Namespace** | `namespace`, `namespace_selector.match_names` | `spec.name` |
+| **Kubernetes Secret** | every Secret selector's `name` (`authorization.credentials`, `basic_auth`, `oauth2.client_secret`, `tls_config.key_secret`, ...) | `status.outputs.secret_name` |
+| **Kubernetes ConfigMap** | every ConfigMap selector's `name` (`tls_config.ca.config_map`, `oauth2.client_id.config_map`, ...) | `status.outputs.configmap_name` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|-----------------------|
@@ -124,14 +124,14 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Watch a PostgreSQL cluster's instances** -- every CloudNativePG instance scraped on its `metrics` port, with its role on the series. Start from the **CloudNativePG Instances** preset.
+**Watch a PostgreSQL cluster's instances** — every CloudNativePG instance scraped on its `metrics` port, with its role on the series. Start from the **CloudNativePG Instances** preset.
 
-**Scrape a DaemonSet's exporter on every node** -- one target per node, labelled with the node it runs on. Start from the **Per-Node Exporter** preset.
+**Scrape a DaemonSet's exporter on every node** — one target per node, labelled with the node it runs on. Start from the **Per-Node Exporter** preset.
 
 ## Works With
 
-- [**Kube Prometheus Stack**](/infra-catalog/kubernetes-kube-prometheus-stack) -- installs the CRDs and the Prometheus that scrapes through the monitor.
-- [**Service Monitor**](/infra-catalog/kubernetes-service-monitor) -- scrapes through a Service instead.
-- [**Prometheus Rule**](/infra-catalog/kubernetes-prometheus-rule) -- alerts and recording rules over the scraped series.
-- [**Kubernetes Secret**](/infra-catalog/kubernetes-secret) -- holds the scrape credentials the monitor references.
-- [**Kubernetes Namespace**](/infra-catalog/kubernetes-namespace) -- the placement target the monitor lives in.
+- [**Kube Prometheus Stack**](/infra-catalog/kubernetes-kube-prometheus-stack) — installs the CRDs and the Prometheus that scrapes through the monitor.
+- [**Service Monitor**](/infra-catalog/kubernetes-service-monitor) — scrapes through a Service instead.
+- [**Prometheus Rule**](/infra-catalog/kubernetes-prometheus-rule) — alerts and recording rules over the scraped series.
+- [**Kubernetes Secret**](/infra-catalog/kubernetes-secret) — holds the scrape credentials the monitor references.
+- [**Kubernetes Namespace**](/infra-catalog/kubernetes-namespace) — the placement target the monitor lives in.

@@ -1,28 +1,28 @@
 # Agent Sandbox Template
 
-Declares an agent-sandbox SandboxTemplate: the hardened blueprint of a sandbox -- its pod, its volumes, its network fence, and what a claim may change -- from which warm pools keep sandboxes ready and claims hand them out. A template runs nothing by itself; the agent-sandbox controller fences its sandboxes with a shared NetworkPolicy, and every sandbox a pool or a claim creates runs its pod. The spec is faithful to the upstream `extensions.agents.x-k8s.io/v1beta1` SandboxTemplate (pinned to agent-sandbox v1.0.7), Kubernetes' full pod specification included -- this is the node a platform team owns and hardens once for every sandbox a product hands out.
+Declares an agent-sandbox SandboxTemplate: the hardened blueprint of a sandbox — its pod, its volumes, its network fence, and what a claim may change — from which warm pools keep sandboxes ready and claims hand them out. A template runs nothing by itself; the agent-sandbox controller fences its sandboxes with a shared NetworkPolicy, and every sandbox a pool or a claim creates runs its pod. The spec is faithful to the upstream `extensions.agents.x-k8s.io/v1beta1` SandboxTemplate (pinned to agent-sandbox v1.0.7), Kubernetes' full pod specification included — this is the node a platform team owns and hardens once for every sandbox a product hands out.
 
 ## What Gets Created
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **A SandboxTemplate** -- one namespaced object carrying the pod template, the volume claim templates, the network policy and the claim policies.
-- **Kubernetes Labels** -- your own labels on the object, with resource metadata labels (resource name, kind, organization, environment) applied automatically on top.
+- **A SandboxTemplate** — one namespaced object carrying the pod template, the volume claim templates, the network policy and the claim policies.
+- **Kubernetes Labels** — your own labels on the object, with resource metadata labels (resource name, kind, organization, environment) applied automatically on top.
 
-The controller then keeps one NetworkPolicy for the template, named `<template>-network-policy`, selecting every sandbox created from it -- unless the template is Unmanaged.
+The controller then keeps one NetworkPolicy for the template, named `<template>-network-policy`, selecting every sandbox created from it — unless the template is Unmanaged.
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **Kubernetes Provider Connection** -- an active connection in the Connect module with kubeconfig credentials for the target cluster. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline kubeconfig authentication.
+- **Kubernetes Provider Connection** — an active connection in the Connect module with kubeconfig credentials for the target cluster. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline kubeconfig authentication.
 
 ### Kubernetes Cluster
 
-- **Agent Sandbox Controller installed, with extensions on** -- it installs the SandboxTemplate definition and the controllers that act on it.
-- **A NetworkPolicy-enforcing network** -- for the template's fence to take effect (most managed clusters enforce it; kind's default network does not).
-- **Target namespace exists** -- reference an existing one or create it first.
+- **Agent Sandbox Controller installed, with extensions on** — it installs the SandboxTemplate definition and the controllers that act on it.
+- **A NetworkPolicy-enforcing network** — for the template's fence to take effect (most managed clusters enforce it; kind's default network does not).
+- **Target namespace exists** — reference an existing one or create it first.
 
 ## Deploy
 
@@ -89,7 +89,7 @@ spec:
           image: us-docker.pkg.dev/acme/agents/coding-agent:2.3.0
 ```
 
-The InfraPipeline creates the namespace first, then the template. A KubernetesAgentSandboxWarmPool references the template's `sandbox_template_name` output, so the pool is created after it.
+The InfraPipeline creates the namespace first, then the template. A Agent Sandbox Warm Pool references the template's `sandbox_template_name` output, so the pool is created after it.
 
 ## Key Configuration
 
@@ -97,7 +97,7 @@ These are the most important decisions when configuring a template. Explore the 
 
 **The template decides isolation for every sandbox.** Set the runtime class (gVisor on GKE Sandbox nodes, a Kata class elsewhere), the security context and the resources here, once. A warm pool rolls its members to a changed template by its update strategy.
 
-**The fence is managed by default, and strict.** With no `networkPolicy`, the controller admits ingress only from its router and egress only to the public internet -- private ranges, the metadata server and cluster DNS are blocked. Declaring `networkPolicy` replaces that default with exactly your rules; `networkPolicyManagement: Unmanaged` hands the fence to Cilium or a mesh.
+**The fence is managed by default, and strict.** With no `networkPolicy`, the controller admits ingress only from its router and egress only to the public internet — private ranges, the metadata server and cluster DNS are blocked. Declaring `networkPolicy` replaces that default with exactly your rules; `networkPolicyManagement: Unmanaged` hands the fence to Cilium or a mesh.
 
 **Claim policies trade flexibility for warm starts.** `envVarsInjectionPolicy` and `volumeClaimTemplatesPolicy` decide whether a claim may add (or override) environment variables and volumes. Any claim that does gets a fresh, cold sandbox, because those are baked into a pod before it starts.
 
@@ -107,19 +107,19 @@ These are the most important decisions when configuring a template. Explore the 
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **KubernetesNamespace** | `namespace` | `spec.name` |
-| **KubernetesSecret** | `podTemplate.spec` -- `secretKeyRef`, `secretRef`, secret volumes and projections, `imagePullSecrets` | `status.outputs.secret_name` |
-| **KubernetesConfigMap** | `podTemplate.spec` -- `configMapKeyRef`, `configMapRef`, ConfigMap volumes and projections | `status.outputs.configmap_name` |
-| **KubernetesServiceAccount** | `podTemplate.spec.serviceAccountName` | `status.outputs.service_account_name` |
-| **KubernetesPriorityClass** | `podTemplate.spec.priorityClassName` | `status.outputs.priority_class_name` |
-| **KubernetesPersistentVolumeClaim** | `podTemplate.spec.volumes[].persistentVolumeClaim.claimName` | `status.outputs.pvc_name` |
-| **KubernetesStorageClass** | `volumeClaimTemplates[].spec.storageClassName` | `status.outputs.storage_class_name` |
+| **Kubernetes Namespace** | `namespace` | `spec.name` |
+| **Kubernetes Secret** | `podTemplate.spec` — `secretKeyRef`, `secretRef`, secret volumes and projections, `imagePullSecrets` | `status.outputs.secret_name` |
+| **Kubernetes ConfigMap** | `podTemplate.spec` — `configMapKeyRef`, `configMapRef`, ConfigMap volumes and projections | `status.outputs.configmap_name` |
+| **Kubernetes ServiceAccount** | `podTemplate.spec.serviceAccountName` | `status.outputs.service_account_name` |
+| **Kubernetes PriorityClass** | `podTemplate.spec.priorityClassName` | `status.outputs.priority_class_name` |
+| **Kubernetes PersistentVolumeClaim** | `podTemplate.spec.volumes[].persistentVolumeClaim.claimName` | `status.outputs.pvc_name` |
+| **Kubernetes StorageClass** | `volumeClaimTemplates[].spec.storageClassName` | `status.outputs.storage_class_name` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|-----------------------|
@@ -130,15 +130,15 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Sandboxes for untrusted code** -- gVisor isolation, no credentials, a locked-down container and the controller's secure-default fence. Start from the **Hardened gVisor Template** preset.
+**Sandboxes for untrusted code** — gVisor isolation, no credentials, a locked-down container and the controller's secure-default fence. Start from the **Hardened gVisor Template** preset.
 
-**Coding agents with a workspace** -- a per-sandbox workspace, HTTPS egress outside private ranges, and claims allowed to bring their own settings. Start from the **Coding Agent Template** preset.
+**Coding agents with a workspace** — a per-sandbox workspace, HTTPS egress outside private ranges, and claims allowed to bring their own settings. Start from the **Coding Agent Template** preset.
 
-**A fence owned by Cilium or a mesh** -- the controller creates no policy and the sandboxes carry the label your policy selects. Start from the **Externally Fenced Template** preset.
+**A fence owned by Cilium or a mesh** — the controller creates no policy and the sandboxes carry the label your policy selects. Start from the **Externally Fenced Template** preset.
 
 ## Works With
 
-- [**Agent Sandbox Controller**](/infra-catalog/kubernetes-agent-sandbox-controller) -- installs the definition, fences the template's sandboxes, and routes callers to them.
-- [**Agent Sandbox Warm Pool**](/infra-catalog/kubernetes-agent-sandbox-warm-pool) -- keeps sandboxes from this template ready to claim.
-- [**Agent Sandbox**](/infra-catalog/kubernetes-agent-sandbox) -- the same pod blueprint, for one long-lived sandbox you declare directly.
-- [**Kubernetes Namespace**](/infra-catalog/kubernetes-namespace) -- the placement target the template, its pools and their sandboxes share.
+- [**Agent Sandbox Controller**](/infra-catalog/kubernetes-agent-sandbox-controller) — installs the definition, fences the template's sandboxes, and routes callers to them.
+- [**Agent Sandbox Warm Pool**](/infra-catalog/kubernetes-agent-sandbox-warm-pool) — keeps sandboxes from this template ready to claim.
+- [**Agent Sandbox**](/infra-catalog/kubernetes-agent-sandbox) — the same pod blueprint, for one long-lived sandbox you declare directly.
+- [**Kubernetes Namespace**](/infra-catalog/kubernetes-namespace) — the placement target the template, its pools and their sandboxes share.

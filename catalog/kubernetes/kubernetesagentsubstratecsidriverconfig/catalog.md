@@ -1,13 +1,13 @@
 # Agent Substrate CSI Driver Config
 
-Declares an Agent Substrate CSIDriverConfig: how Substrate reaches one CSI driver -- its Controller endpoint, its node socket and how the connection is trusted -- so an agent's external volume is provisioned and mounted by your storage instead of riding in the agent's snapshots. When an actor template asks for a volume of a StorageClass, Substrate finds this config by the class's provisioner and calls the driver itself. The spec is faithful to the upstream `ate.dev/v1alpha1` CSIDriverConfig (pinned to Agent Substrate v0.5.0) -- this is how agents use the storage you already run.
+Declares an Agent Substrate CSIDriverConfig: how Substrate reaches one CSI driver — its Controller endpoint, its node socket and how the connection is trusted — so an agent's external volume is provisioned and mounted by your storage instead of riding in the agent's snapshots. When an actor template asks for a volume of a StorageClass, Substrate finds this config by the class's provisioner and calls the driver itself. The spec is faithful to the upstream `ate.dev/v1alpha1` CSIDriverConfig (pinned to Agent Substrate v0.5.0) — this is how agents use the storage you already run.
 
 ## What Gets Created
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **A CSIDriverConfig** -- one cluster-scoped object, named after the driver, holding its endpoints and TLS settings.
-- **Kubernetes Labels** -- your own labels on the object, with resource metadata labels (resource name, kind, organization, environment) applied automatically on top.
+- **A CSIDriverConfig** — one cluster-scoped object, named after the driver, holding its endpoints and TLS settings.
+- **Kubernetes Labels** — your own labels on the object, with resource metadata labels (resource name, kind, organization, environment) applied automatically on top.
 
 The config registers a driver; it does not install one.
 
@@ -15,13 +15,13 @@ The config registers a driver; it does not install one.
 
 ### Planton Setup
 
-- **Kubernetes Provider Connection** -- an active connection in the Connect module with kubeconfig credentials for the target cluster. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline kubeconfig authentication.
+- **Kubernetes Provider Connection** — an active connection in the Connect module with kubeconfig credentials for the target cluster. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline kubeconfig authentication.
 
 ### Kubernetes Cluster
 
-- **Agent Substrate installed** -- it installs the CSIDriverConfig definition and runs the API server and node agents that call the driver.
-- **The CSI driver running** -- its Controller service reachable from the API server over TCP (usually a small bridge in front of its unix socket), and its node plugin bind-mounting `/var/lib/ate` with bidirectional propagation.
+- **Agent Substrate installed** — it installs the CSIDriverConfig definition and runs the API server and node agents that call the driver.
+- **The CSI driver running** — its Controller service reachable from the API server over TCP (usually a small bridge in front of its unix socket), and its node plugin bind-mounting `/var/lib/ate` with bidirectional propagation.
 - **A StorageClass** whose provisioner is the driver's name, for actor templates to name.
 
 ## Deploy
@@ -90,13 +90,13 @@ These are the most important decisions when configuring a CSI driver config. Exp
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **KubernetesAgentSubstrate** | (prerequisite: the definition and the components that read it) | -- |
+| **Agent Substrate** | (prerequisite: the definition and the components that read it) | — |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|-----------------------|
@@ -106,13 +106,13 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**An encrypted driver connection** -- the Controller endpoint over TLS with Substrate's pod identity. Start from the **TLS With Pod Identity** preset.
+**An encrypted driver connection** — the Controller endpoint over TLS with Substrate's pod identity. Start from the **TLS With Pod Identity** preset.
 
-**An in-cluster plaintext driver** -- a Controller service only the API server can reach. Start from the **In-Cluster Plaintext Driver** preset.
+**An in-cluster plaintext driver** — a Controller service only the API server can reach. Start from the **In-Cluster Plaintext Driver** preset.
 
 ## Works With
 
-- [**Agent Substrate**](/infra-catalog/kubernetes-agent-substrate) -- the control plane whose API server and node agents call the driver.
-- [**Agent Substrate Worker Pool**](/infra-catalog/kubernetes-agent-substrate-worker-pool) -- the workers whose actors mount the volumes.
-- [**Agent Substrate Sandbox Config**](/infra-catalog/kubernetes-agent-substrate-sandbox-config) -- the runtime those actors boot.
-- [**Kubernetes Storage Class**](/infra-catalog/kubernetes-storage-class) -- the class actor templates name, with this driver as its provisioner.
+- [**Agent Substrate**](/infra-catalog/kubernetes-agent-substrate) — the control plane whose API server and node agents call the driver.
+- [**Agent Substrate Worker Pool**](/infra-catalog/kubernetes-agent-substrate-worker-pool) — the workers whose actors mount the volumes.
+- [**Agent Substrate Sandbox Config**](/infra-catalog/kubernetes-agent-substrate-sandbox-config) — the runtime those actors boot.
+- [**Kubernetes Storage Class**](/infra-catalog/kubernetes-storage-class) — the class actor templates name, with this driver as its provisioner.

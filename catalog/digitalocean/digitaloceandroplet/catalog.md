@@ -6,27 +6,27 @@ Deploys a DigitalOcean Droplet with configurable sizing, region and VPC placemen
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **DigitalOcean Droplet** -- a virtual machine using the configured size slug, base image, and optional cloud-init user data; placed in the specified region and VPC, or DigitalOcean's choice of region and its default VPC when omitted
-- **SSH Key Injection** -- created only when `sshKeys` are provided; injects account-registered keys at first boot
-- **Automated Backups** -- enabled by `enableBackups`, with an optional `backupPolicy` window (daily, or weekly with weekday and hour)
-- **Block Storage Volume Attachments** -- created only when `volumeIds` are provided; attaches existing volumes to the Droplet (volumes must reside in the same region)
-- **Monitoring and Web-Console Agents** -- opt-in via `monitoring` and `dropletAgent`
-- **DigitalOcean Tags** -- user-supplied tags plus the standard Planton labels, applied for firewall targeting and resource organization
+- **DigitalOcean Droplet** — a virtual machine using the configured size slug, base image, and optional cloud-init user data; placed in the specified region and VPC, or DigitalOcean's choice of region and its default VPC when omitted
+- **SSH Key Injection** — created only when `sshKeys` are provided; injects account-registered keys at first boot
+- **Automated Backups** — enabled by `enableBackups`, with an optional `backupPolicy` window (daily, or weekly with weekday and hour)
+- **Block Storage Volume Attachments** — created only when `volumeIds` are provided; attaches existing volumes to the Droplet (volumes must reside in the same region)
+- **Monitoring and Web-Console Agents** — opt-in via `monitoring` and `dropletAgent`
+- **DigitalOcean Tags** — user-supplied tags plus the standard Planton labels, applied for firewall targeting and resource organization
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **DigitalOcean Provider Connection** -- an active connection in the Connect module with a DigitalOcean API token. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline API token authentication.
+- **DigitalOcean Provider Connection** — an active connection in the Connect module with a DigitalOcean API token. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline API token authentication.
 
 ### DigitalOcean Account
 
-- **A VPC network** (optional) -- provide the VPC UUID directly or reference a DigitalOceanVpc Infra Component via ValueFromRef; omit to use the region's default VPC.
-- **SSH keys** (recommended) -- registered on your account (`doctl compute ssh-key list`); keys are injected at create only.
-- **A valid Droplet size slug** (e.g., `"s-2vcpu-4gb"`) -- check available sizes via `doctl compute size list`.
-- **A valid image slug** (e.g., `"ubuntu-24-04-x64"`) -- check available images via `doctl compute image list --public`.
-- **Block storage volumes** (optional) -- must be pre-created in the same region if you plan to attach them via `volumeIds`.
+- **A VPC network** (optional) — provide the VPC UUID directly or reference a DigitalOcean VPC Infra Component; omit to use the region's default VPC.
+- **SSH keys** (recommended) — registered on your account (`doctl compute ssh-key list`); keys are injected at create only.
+- **A valid Droplet size slug** (e.g., `"s-2vcpu-4gb"`) — check available sizes via `doctl compute size list`.
+- **A valid image slug** (e.g., `"ubuntu-24-04-x64"`) — check available images via `doctl compute image list --public`.
+- **Block storage volumes** (optional) — must be pre-created in the same region if you plan to attach them via `volumeIds`.
 
 ## Deploy
 
@@ -64,7 +64,7 @@ This creates a Droplet with the specified size and image in the NYC3 region, rea
 
 ### InfraChart
 
-When deploying as part of a multi-resource environment, use ValueFromRef to wire the Droplet to a VPC deployed in the same InfraPipeline:
+When deploying as part of a multi-resource environment, use references to wire the Droplet to a VPC deployed in the same InfraPipeline:
 
 ```yaml
 spec:
@@ -81,31 +81,31 @@ The InfraPipeline resolves the dependency graph, deploys the VPC first, then pro
 
 These are the most important decisions when configuring a Droplet. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**SSH keys** -- each `sshKeys` entry references a `DigitalOceanSshKey` (its `ssh_key_id` output) or carries a literal ID or fingerprint of a key already registered on the account. The list is applied at creation only: the API never reports the injected keys back, and later edits to the list are ignored rather than recreating the Droplet. A Droplet without keys falls back to a root password email.
+**SSH keys** — each `sshKeys` entry references a `DigitalOceanSshKey` (its `ssh_key_id` output) or carries a literal ID or fingerprint of a key already registered on the account. The list is applied at creation only: the API never reports the injected keys back, and later edits to the list are ignored rather than recreating the Droplet. A Droplet without keys falls back to a root password email.
 
-**Sizing** -- The `size` field sets the Droplet's CPU and memory (e.g., `"s-1vcpu-1gb"` for development, `"s-2vcpu-4gb"` for production web servers, `"c-4vcpu-8gb"` for CPU-intensive workloads). Resizing powers the Droplet off briefly; whether the disk also grows (permanently) is governed by `resizeDisk`, which defaults ON.
+**Sizing** — The `size` field sets the Droplet's CPU and memory (e.g., `"s-1vcpu-1gb"` for development, `"s-2vcpu-4gb"` for production web servers, `"c-4vcpu-8gb"` for CPU-intensive workloads). Resizing powers the Droplet off briefly; whether the disk also grows (permanently) is governed by `resizeDisk`, which defaults ON.
 
-**Backups** -- Set `enableBackups: true` for automated snapshots, and pin the window with `backupPolicy` (`daily`, or `weekly` with `weekday` and an `hour` on the 0/4/8/12/16/20 grid). A policy without the toggle is rejected. Known provider defect at the pinned version: backups are enabled and the policy applied, but every plan re-proposes `backups: false -> true` because the provider reads the state from a `features` list DigitalOcean no longer populates -- harmless noise, tracked upstream ([#1525](https://github.com/digitalocean/terraform-provider-digitalocean/issues/1525)).
+**Backups** — Set `enableBackups: true` for automated snapshots, and pin the window with `backupPolicy` (`daily`, or `weekly` with `weekday` and an `hour` on the 0/4/8/12/16/20 grid). A policy without the toggle is rejected. Known provider defect at the pinned version: backups are enabled and the policy applied, but every plan re-proposes `backups: false -> true` because the provider reads the state from a `features` list DigitalOcean no longer populates — harmless noise, tracked upstream ([#1525](https://github.com/digitalocean/terraform-provider-digitalocean/issues/1525)).
 
-**Cloud-init user data** -- The `userData` field accepts a cloud-init script (up to 32 KiB) for bootstrapping the Droplet on first boot. Applied at creation only: DigitalOcean stores only a hash, and later edits are ignored rather than recreating the Droplet (to run new user data, replace the Droplet deliberately). Adopting an existing Droplet whose manifest carries `userData`, `sshKeys`, or `dropletAgent` is therefore safe -- the first apply plans no replacement.
+**Cloud-init user data** — The `userData` field accepts a cloud-init script (up to 32 KiB) for bootstrapping the Droplet on first boot. Applied at creation only: DigitalOcean stores only a hash, and later edits are ignored rather than recreating the Droplet (to run new user data, replace the Droplet deliberately). Adopting an existing Droplet whose manifest carries `userData`, `sshKeys`, or `dropletAgent` is therefore safe — the first apply plans no replacement.
 
-**Volume attachments** -- `volumeIds` attaches existing block storage volumes (UUIDs or ValueFromRef references) and updates in place: moving a volume between Droplets is an edit to the Droplets' manifests, never a volume recreation. Volumes must live in the same region as the Droplet.
+**Volume attachments** — `volumeIds` attaches existing block storage volumes (UUIDs or references) and updates in place: moving a volume between Droplets is an edit to the Droplets' manifests, never a volume recreation. Volumes must live in the same region as the Droplet.
 
-**Networking one-way doors** -- `enableIpv6` turns on in place, but turning it off recreates the Droplet. `publicNetworking: false` (create-only) produces a Droplet with no public interface at all -- reachable only inside its VPC -- so it belongs behind a load balancer or bastion that already exists.
+**Networking one-way doors** — `enableIpv6` turns on in place, but turning it off recreates the Droplet. `publicNetworking: false` (create-only) produces a Droplet with no public interface at all — reachable only inside its VPC — so it belongs behind a load balancer or bastion that already exists.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **DigitalOceanVpc** (optional) | `vpc` | `status.outputs.vpc_id` |
-| **DigitalOceanVolume** (optional) | `volumeIds` | `status.outputs.volume_id` |
-| **DigitalOceanSshKey** (optional) | `sshKeys` | `status.outputs.ssh_key_id` |
+| **DigitalOcean VPC** (optional) | `vpc` | `status.outputs.vpc_id` |
+| **DigitalOcean Volume** (optional) | `volumeIds` | `status.outputs.volume_id` |
+| **DigitalOcean SSH Key** (optional) | `sshKeys` | `status.outputs.ssh_key_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -120,13 +120,13 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Production server** -- 2 vCPU / 4 GB instance with SSH keys, weekly backups in a fixed window, VPC isolation, monitoring, and tags for firewall targeting. Start from the **Production Droplet** preset.
+**Production server** — 2 vCPU / 4 GB instance with SSH keys, weekly backups in a fixed window, VPC isolation, monitoring, and tags for firewall targeting. Start from the **Production Droplet** preset.
 
-**Development instance** -- 1 vCPU / 1 GB instance with no backups and no pinned region or VPC — the smallest real Droplet. Start from the **Development Droplet** preset.
+**Development instance** — 1 vCPU / 1 GB instance with no backups and no pinned region or VPC — the smallest real Droplet. Start from the **Development Droplet** preset.
 
 ## Works With
 
-- [**DigitalOcean VPC**](/infra-catalog/digital-ocean-vpc) -- provides the private network for Droplet placement
-- [**DigitalOcean Volume**](/infra-catalog/digital-ocean-volume) -- provides block storage volumes attached to the Droplet
-- [**DigitalOcean Load Balancer**](/infra-catalog/digital-ocean-load-balancer) -- routes traffic to Droplets by ID or tag
-- [**DigitalOcean Cloud Firewall**](/infra-catalog/digital-ocean-firewall) -- secures Droplets by ID or tag
+- [**DigitalOcean VPC**](/infra-catalog/digital-ocean-vpc) — provides the private network for Droplet placement
+- [**DigitalOcean Volume**](/infra-catalog/digital-ocean-volume) — provides block storage volumes attached to the Droplet
+- [**DigitalOcean Load Balancer**](/infra-catalog/digital-ocean-load-balancer) — routes traffic to Droplets by ID or tag
+- [**DigitalOcean Cloud Firewall**](/infra-catalog/digital-ocean-firewall) — secures Droplets by ID or tag

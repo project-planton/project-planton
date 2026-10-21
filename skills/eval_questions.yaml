@@ -71,12 +71,14 @@ questions:
       Destroy and Replace rows first (a Replace destroys and recreates the
       resource, so what it holds does not carry over), its impact,
       warnings, readers, who can approve and when it lapses, and the
-      review's digest last. Approving is a person's decision, never the
-      agent's: `planton infra stack approve app-infra --env prod
-      --review-digest <d>`, naming each data-bearing destroy or replace
-      with `--destroy` / `--replace Kind/name`. The platform refuses an
-      approval when the review changed since it was read, a data-bearing
-      resource is not named, a row is Blocked (including a Replace the
+      review's digest last. Approving is a person's decision: `planton
+      infra stack approve app-infra --env prod --review-digest <d>`
+      approves exactly the review read, every Destroy and Replace in it,
+      and nobody types or names a resource. At a terminal it shows the
+      review and asks; `--yes` alone approves the current review. An agent
+      approves only on its person's word, and never a run its own person
+      started. The platform refuses an approval when the review changed
+      since it was read, a row is Blocked (including a Replace the
       requester has no destroy rights for), or the approver is the person
       who asked while another approver exists. A request nobody decides
       within 7 days lapses and closes Lapsed, having applied nothing.
@@ -86,10 +88,16 @@ questions:
         pattern: '(?s)planton infra stack review\s+<stackName> --env prod'
       - skill: planton
         file: references/infra.deployed-stacks.md
-        pattern: 'planton infra stack approve <stackName> --env prod --review-digest <d> --destroy AwsRdsInstance/orders-db'
+        pattern: 'planton infra stack approve <stackName> --env prod --review-digest <d>\n'
       - skill: planton
         file: references/infra.deployed-stacks.md
         pattern: 'Deciding is the user''s act, never yours'
+      - skill: planton
+        file: references/infra.deployed-stacks.md
+        pattern: '(?s)every\s+Destroy\s+and\s+Replace\s+in\s+it:\s+nobody\s+types\s+or\s+names\s+a\s+resource'
+      - skill: planton
+        file: references/infra.deployed-stacks.md
+        pattern: '(?s)\*\*Never\s+approve\s+a\s+run\s+your\s+own\s+person\s+started\*\*'
       - skill: planton
         file: references/infra.deployed-stacks.md
         pattern: 'This review changed since you read it'
@@ -172,10 +180,10 @@ questions:
       bucket when I apply, and how do I keep it running instead?
     answer: >
       The plan reads it Destroy: it is destroyed on its provider, only
-      after everything the plan applies has applied, and only with the
-      person's consent named per resource; one that holds data (its
-      catalog kind marks backup and recovery applicable; the plan marks it)
-      is destroyed only when named with `--destroy Kind/name`. To keep it,
+      after everything the plan applies has applied. The person's yes to
+      the plan (at a terminal, or `--plan-digest` / `--yes` without one)
+      covers every Destroy and Replace row, so each is said by name before
+      they answer; nobody types or names a resource to consent. To keep it,
       apply with `--keep Kind/name` (the stack lets go of it and it keeps
       running and billing on its provider), or mark it
       `planton.dev/keep-on-provider: "true"` under the resource's
@@ -189,10 +197,10 @@ questions:
         pattern: 'No longer in the templates: destroyed on its provider once everything the plan applies has applied'
       - skill: planton
         file: references/infra.deployed-stacks.md
-        pattern: '(?s)destroyed only when named\s+\(`--destroy Kind/name`\)'
+        pattern: '(?s)The user''s yes\s+covers every Destroy and Replace row the plan shows'
       - skill: planton
         file: references/infra.deployed-stacks.md
-        pattern: 'its catalog\s+kind marks backup and recovery applicable'
+        pattern: '(?s)nobody types or names a resource to consent to it'
       - skill: planton
         file: references/infra.deployed-stacks.md
         pattern: 'planton\.dev/keep-on-provider: "true"   # never destroyed'
@@ -243,32 +251,35 @@ questions:
     answer: >
       Both are removals of the run: listed from the start, carried out at
       the very end, after everything declared applied, the rollout
-      verified and the deployment record was written. The cache, holding
-      no data, is destroyed by default. The database holds data, so the run
-      waits for a person: destroy it by typing its name, or keep it on its
-      provider (`planton service removal destroy|keep <service> <number>
-      <env> <Kind/name>`). In a protected environment the approver decides
-      every removal at the gate. A failed apply or verification removes
-      nothing; a mistake is fixed by restoring the resource and pushing.
+      verified and the deployment record was written. In an unprotected
+      environment the push is the declaration itself, so both are
+      destroyed without asking, the database too; marking one
+      `planton.dev/keep-on-provider: "true"` before removing it keeps it
+      running. In a protected environment the approver decides every
+      removal at the gate: each is destroyed unless kept
+      (`planton service resolve-env-manual-gate … approve --keep
+      Kind/name`), and a removal that appears after the approval asks on
+      its own (`planton service removal destroy|keep <service> <number>
+      <env> <Kind/name>`). A failed apply or verification removes nothing.
     checks:
       - skill: planton
         file: references/service.delivery-verbs.md
         pattern: 'carries out each one at the very end, after everything declared applied'
       - skill: planton
         file: references/service.delivery-verbs.md
-        pattern: '\*\*Destroyed\*\* — the default for a resource that holds no data'
+        pattern: '\*\*Destroyed\*\* — the default, a database included'
       - skill: planton
         file: references/service.delivery-verbs.md
-        pattern: 'A resource that holds data always waits for a person'
+        pattern: 'In an unprotected environment nothing asks'
+      - skill: planton
+        file: references/service.delivery-verbs.md
+        pattern: 'In a protected environment, the approver decides every removal'
       - skill: planton
         file: references/service.delivery-verbs.md
         pattern: 'planton service removal keep checkout-api 131 prod AwsRdsInstance/orders-db'
       - skill: planton
         file: references/service.delivery-verbs.md
         pattern: 'A failed apply or a failed verification removes nothing'
-      - skill: planton
-        file: references/service.delivery-verbs.md
-        pattern: 'A mistake is fixed by pushing the fix'
 
   - id: developer-delete-keeping-database
     persona: developer
@@ -309,10 +320,12 @@ questions:
       JSON). Apply with `planton infra stack apply <stack> . --env <env>
       -m "<why>" --plan-digest <d>`: it plans again and applies only while
       the fresh plan is that one, otherwise it refuses saying the plan is
-      out of date. The digest consents to that plan's ordinary destroys;
-      a data-bearing destroy is still named with `--destroy`; `--yes` alone
-      consents to no destroy. Into a protected environment the apply files
-      a request and ends with exit 0 and the review lines.
+      out of date. The digest is consent given in advance to every Destroy
+      and Replace in that plan; `--yes` consents too, without pinning the
+      plan. With neither and no terminal, the apply refuses with the
+      command plus `--yes`, saying what the plan destroys and replaces.
+      Into a protected environment the apply files a request and ends with
+      exit 0 and the review lines.
     checks:
       - skill: planton
         file: references/infra.deployed-stacks.md
@@ -325,7 +338,10 @@ questions:
         pattern: '(?s)saying the plan is out of\s+date'
       - skill: planton
         file: references/infra.deployed-stacks.md
-        pattern: '`--yes` alone answers it but consents to no destroy'
+        pattern: '(?s)`--plan-digest` and `--yes` are\s+both consent given in advance to every Destroy and Replace row'
+      - skill: planton
+        file: references/infra.deployed-stacks.md
+        pattern: '(?s)"Add\s+--yes to Proceed Without Asking"'
       - skill: planton
         file: references/infra.stack-promotion.md
         pattern: '--dry-run -o markdown'
@@ -370,8 +386,8 @@ questions:
     answer: >
       `planton rerun <run-id>` takes any run's id (ij_, infpipe_,
       svcpipe_, extrun_) and follows the new run (`--no-follow` returns).
-      It is a mutation: confirm first; when it still destroys something it
-      asks, and `--yes` answers only after the person agreed. Exit 0 done
+      It is a mutation: confirm first; when it still destroys or replaces
+      something it asks, and `--yes` answers once the person agreed. Exit 0 done
       (or a request waiting for its approver), 1 failed or refused, 3 a
       person must decide. A stack run's rerun repeats its revision and is
       refused once a newer revision exists or the stack was undeployed;
@@ -390,3 +406,188 @@ questions:
       - skill: planton
         file: references/service.delivery-verbs.md
         pattern: '## A delivery run is never rerun'
+
+  - id: agent-stranger-reads-as-not-found
+    persona: coding agent
+    question: >
+      My script ran `planton get Service checkout-api` against another
+      team's organization and it exited 3. Does that mean they have no
+      service by that name?
+    answer: >
+      No. A record in an organization you are not part of answers exactly
+      like a record that does not exist: the same exit 3 and the same
+      sentence, by id or by organization and slug. Check the instance and
+      organization first with `planton context get`. Inside an
+      organization you belong to, a record you may not read is a refusal
+      instead: the Access Needed banner names the roles that could and who
+      can grant them, and the command exits 1.
+    checks:
+      - skill: planton
+        file: references/craft.planton-cli.md
+        pattern: 'A record in an organization you are not part of answers exactly like a record that does not exist'
+      - skill: planton
+        file: references/craft.planton-cli.md
+        pattern: 'a record you may not read is a refusal, not a miss'
+
+  - id: approver-opens-the-run-by-id
+    persona: release approver
+    question: >
+      I am only a Release Approver on prod. A run is waiting on me, but the
+      service's page refuses me and `planton service logs checkout-api 130`
+      fails. How do I read what I am approving?
+    answer: >
+      Approve on an environment lets you read every run that waits at a
+      gate there, or once did -- its record, logs and live status -- but
+      not the service, so the service page, its run list and the
+      `<service> <number>` handle refuse you. Name the run by its id
+      (svcpipe_...), which the waiting queue, Home's Waiting on You and the
+      gate notification carry: `planton service logs svcpipe_...`, then
+      `planton service resolve-env-manual-gate svcpipe_... prod approve`.
+    checks:
+      - skill: planton
+        file: references/service.reading-a-run.md
+        pattern: 'Approve on an environment lets a person read every run that waits at a gate in that environment, or once did'
+      - skill: planton
+        file: references/service.reading-a-run.md
+        pattern: 'Name the run by its id for them'
+
+  - id: admin-puts-the-company-logo-on-self-hosted
+    persona: platform engineer
+    question: >
+      We run Planton on our own cluster. Put our logo (acme.png, and a white
+      version, acme-white.png) on it, sign-in page included. Do I add it to
+      the PlantonPlatform?
+    answer: >
+      No -- the installation's logo is held by the product, not the
+      declaration. As an installation administrator run
+      `planton branding set-logo acme.png --dark-theme acme-white.png`: one
+      change sets the logo and its version for the dark theme, and every
+      surface of the installation draws it in place of Planton's mark. The
+      sign-in page is dark by design, so it shows the dark-theme version,
+      else the logo, else Planton's mark, read from the installation itself
+      -- no operator change and no identity-server restart.
+    checks:
+      - skill: planton
+        file: SKILL.md
+        pattern: 'What the product itself holds is changed through the product instead, never the declaration'
+      - skill: planton
+        file: references/self-hosted.branding.md
+        pattern: 'planton branding set-logo logo\.png --dark-theme light\.png'
+      - skill: planton
+        file: references/self-hosted.branding.md
+        pattern: '(?s)version\s+for\s+the\s+dark\s+theme,\s+else\s+the\s+logo,\s+else\s+Planton''s\s+mark'
+
+  - id: owner-puts-the-console-at-planton-acme-com
+    persona: platform engineer
+    question: >
+      We're on the Team plan. Put our Planton console at planton.acme.com.
+      Our acme.com zone is a Cloudflare zone we deployed through Planton.
+      What do you do?
+    answer: >
+      Confirm the organization by name and the change first, then
+      `planton custom-domain set planton.acme.com --no-wait -o json` (or
+      apply_custom_domain) and read the setup guide (`planton custom-domain
+      prompt -o json`) for the record and the zone. Before touching DNS,
+      look up whether Planton already manages that zone: list the
+      organization's infra components (`planton search infra-components
+      --all-envs -o json`, or list_infra_components) and find the
+      CloudflareDnsZone whose spec.zoneName is acme.com. It does, so propose
+      a CloudflareDnsRecord -- a CNAME from planton.acme.com to the
+      organization's label under plantonedge.com, proxied false, its zoneId
+      wired with valueFrom to the zone component -- show it, and apply it
+      through Planton on the person's yes. Then verify (`planton
+      custom-domain verify --wait --timeout 8m -o json`), never looking the name up
+      through a public resolver before it is Live; act on reading.diagnosis
+      (record_missing and record_not_yet_public mean wait), and repeat until
+      exit 0, the recorded state Live.
+    checks:
+      - skill: planton
+        file: SKILL.md
+        pattern: 'references/organization\.custom-domain\.md'
+      - skill: planton
+        file: references/organization.custom-domain.md
+        pattern: 'planton custom-domain set planton\.acme\.com --no-wait -o json'
+      - skill: planton
+        file: references/organization.custom-domain.md
+        pattern: '## Planton-managed DNS first'
+      - skill: planton
+        file: references/organization.custom-domain.md
+        pattern: 'planton search infra-components --all-envs -o json'
+      - skill: planton
+        file: references/organization.custom-domain.md
+        pattern: '\| `CloudflareDnsZone` \| `spec\.zoneName` \|'
+      - skill: planton
+        file: references/organization.custom-domain.md
+        pattern: 'kind: CloudflareDnsRecord'
+      - skill: planton
+        file: references/organization.custom-domain.md
+        pattern: 'never look the name up yourself'
+      - skill: planton
+        file: references/organization.custom-domain.md
+        pattern: 'planton custom-domain verify --wait --timeout 8m -o json'
+
+  - id: custom-domain-record-proxied
+    persona: coding agent
+    question: >
+      `planton custom-domain verify --wait -o json` exits 2 with cause
+      record_proxied for planton.acme.com. Our Cloudflare proxies that name.
+      What now?
+    answer: >
+      The name answers with Cloudflare's addresses, so public DNS can't see
+      where it points. Either set the record to DNS only with CNAME
+      flattening off, or, when the name must stay proxied, keep the CNAME
+      and add the TXT beside it (reading.diagnosis.records_to_add holds the
+      TXT, _planton-verification.planton.acme.com holding the organization's
+      label) -- through Planton when Planton manages the zone -- then verify
+      again. Nothing is removed.
+    checks:
+      - skill: planton
+        file: references/organization.custom-domain.md
+        pattern: '\| `record_proxied` \|.*DNS only with CNAME flattening off, or keep it proxied and add the TXT beside the CNAME'
+      - skill: planton
+        file: references/organization.custom-domain.md
+        pattern: 'Act on `reading\.diagnosis`'
+      - skill: planton
+        file: references/organization.custom-domain.md
+        pattern: '\*\*2\*\* not Live yet'
+
+  - id: custom-domain-blocked-by-caa
+    persona: platform engineer
+    question: >
+      Our custom domain says the certificate is blocked by a CAA record.
+      What do we change?
+    answer: >
+      Cause certificate_blocked_by_caa: a CAA record on the domain forbids
+      the certificate authorities Planton uses. Add CAA records allowing
+      letsencrypt.org and pki.goog (or remove the CAA record) -- as a
+      Planton change when the zone is a Planton-managed infra component --
+      then verify again. Never add a CAA record that leaves either out.
+    checks:
+      - skill: planton
+        file: references/organization.custom-domain.md
+        pattern: 'Add CAA records allowing `letsencrypt\.org` and `pki\.goog`, or remove the CAA record'
+      - skill: planton
+        file: references/organization.custom-domain.md
+        pattern: 'never add a CAA record that leaves out `letsencrypt\.org` and `pki\.goog`'
+
+  - id: app-at-app-acme-com-is-a-service-domain
+    persona: developer
+    question: >
+      Put my app at app.acme.com.
+    answer: >
+      That is a service's own hostname, not the organization's console
+      address, so the custom-domain verbs do not apply. A name outside the
+      environment's {label}.{env-domain} convention is composed as real
+      infra-catalog resources beside the service (the carrier with the
+      hostname authored, the DNS record, the certificate), wired with
+      valueFrom onto the service's deployed outputs.
+    checks:
+      - skill: planton
+        file: SKILL.md
+        pattern: 'Not this: the organization''s console address → `organization\.custom-domain\.md`'
+      - skill: planton
+        file: SKILL.md
+        pattern: 'Not this: a service''s own hostname → `service\.serving-domains-custom\.md`'
+      - skill: planton
+        file: references/service.serving-domains-custom.md
+        pattern: 'never as switches on the service record'

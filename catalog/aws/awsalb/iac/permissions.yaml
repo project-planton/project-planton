@@ -1,5 +1,5 @@
 # Least-privilege permissions the IaC runner's AWS principal needs to
-# provision, update, and destroy this component with the official modules.
+# provision, update, and destroy this component with the platform modules.
 # Every entry is `derived` (static analysis of the module sources, cited in
 # notes) until the live capture lane upgrades it to `proven`. Schema:
 # iac/catalogkindpermissions/v1.
@@ -24,6 +24,8 @@ spec:
         resources:
           - arn:aws:elasticloadbalancing:*:*:loadbalancer/app/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_lb -- creation, attribute updates (idle timeout, desync mitigation, logging attributes, deletion protection), capacity reservation, and tagging.
       - sid: DescribeLoadBalancers
         actions:
@@ -34,6 +36,8 @@ spec:
         resources:
           - "*"
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Read-side of aws_lb during plan/refresh. Elastic Load Balancing Describe APIs support no resource-level scoping, so the wildcard is the narrowest possible scope.
       - sid: ManageDnsAliases
         actions:
@@ -44,6 +48,8 @@ spec:
           - arn:aws:route53:::hostedzone/*
           - arn:aws:route53:::change/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_route53_record -- the optional alias records created when spec.dns is enabled. GetChange polls propagation status on the change id.
       - sid: AssociateWebAcl
         actions:
@@ -54,6 +60,8 @@ spec:
           - arn:aws:wafv2:*:*:regional/webacl/*/*
           - arn:aws:elasticloadbalancing:*:*:loadbalancer/app/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_wafv2_web_acl_association -- created only when spec.web_acl_arn is set. The wafv2 association actions scope to the web ACL and load balancer ARNs; the companion elasticloadbalancing:SetWebAcl grant lives in its own statement because it cannot be resource-scoped.
       - sid: SetWebAclOnLoadBalancer
         actions:
@@ -61,4 +69,6 @@ spec:
         resources:
           - "*"
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: WAFv2 association with an ALB additionally requires elasticloadbalancing:SetWebAcl. The service reference lists NO resource types for it (unlike the Describe and lifecycle actions, which scope), so IAM evaluates it against Resource "*" -- an ARN-scoped grant never matches and would deny the association at runtime. The wildcard is the narrowest possible scope.

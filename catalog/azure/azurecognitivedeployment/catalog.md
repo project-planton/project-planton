@@ -1,24 +1,24 @@
 # Azure Cognitive Deployment
 
-Deploys a model onto an Azure AI services account -- which actual model applications call (gpt-4o, text-embedding-3-large, ...), at which throughput class and capacity. The deployment's NAME is the model parameter applications pass to the account's endpoint. The spec carries the model (format, name, optional pinned version), the SKU (throughput class and capacity), the version-upgrade policy, and the responsible-AI policy selection.
+Deploys a model onto an Azure AI services account — which actual model applications call (gpt-4o, text-embedding-3-large, ...), at which throughput class and capacity. The deployment's NAME is the model parameter applications pass to the account's endpoint. The spec carries the model (format, name, optional pinned version), the SKU (throughput class and capacity), the version-upgrade policy, and the responsible-AI policy selection.
 
 ## What Gets Created
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **Model deployment** -- an ARM child of the account (`.../accounts/{account}/deployments/{name}`): the model (format/name/version), the SKU (throughput class + capacity), the version-upgrade policy, and the responsible-AI policy selection
+- **Model deployment** — an ARM child of the account (`.../accounts/{account}/deployments/{name}`): the model (format/name/version), the SKU (throughput class + capacity), the version-upgrade policy, and the responsible-AI policy selection
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **Azure Provider Connection** -- an active connection in the Connect module with credentials for the target Azure subscription.
-- **An AzureCognitiveAccount** of kind `OpenAI` or `AIServices` -- the deployment is created onto it.
+- **Azure Provider Connection** — an active connection in the Connect module with credentials for the target Azure subscription.
+- **An Azure Cognitive Account** of kind `OpenAI` or `AIServices` — the deployment is created onto it.
 
 ### Azure Subscription
 
-- **Model availability is regional** -- the ACCOUNT's region decides which models can deploy (GlobalStandard reaches the widest set).
-- **Capacity draws from per-subscription, per-region quota** -- a rejected create with a quota error is a quota request away, not a module defect.
+- **Model availability is regional** — the ACCOUNT's region decides which models can deploy (GlobalStandard reaches the widest set).
+- **Capacity draws from per-subscription, per-region quota** — a rejected create with a quota error is a quota request away, not a module defect.
 
 ## Deploy
 
@@ -60,7 +60,7 @@ This creates a pay-per-token GlobalStandard deployment of a mini-class chat mode
 
 ### InfraChart
 
-In an AI-platform chart the order is: account → **deployments** (one per model); applications consume the account's `endpoint` output plus each deployment's name. Wire the account with ValueFromRef so the InfraPipeline deploys it first:
+In an AI-platform chart the order is: account → **deployments** (one per model); applications consume the account's `endpoint` output plus each deployment's name. Wire the account with references so the InfraPipeline deploys it first:
 
 ```yaml
 spec:
@@ -77,23 +77,23 @@ The InfraPipeline resolves the dependency graph, provisions the account first, t
 
 These are the most important decisions when configuring the deployment. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**SKU name** -- the billing model. `Standard`/`GlobalStandard`/`DataZoneStandard` bill per token (capacity is a rate limit, no idle cost); the `...Batch` variants serve asynchronous batch jobs; the `...ProvisionedManaged` variants bill reserved PTU capacity CONTINUOUSLY while the deployment exists -- the expensive class.
+**SKU name** — the billing model. `Standard`/`GlobalStandard`/`DataZoneStandard` bill per token (capacity is a rate limit, no idle cost); the `...Batch` variants serve asynchronous batch jobs; the `...ProvisionedManaged` variants bill reserved PTU capacity CONTINUOUSLY while the deployment exists — the expensive class.
 
-**Capacity** -- thousands of tokens-per-minute (pay-per-token) or PTUs (provisioned). Updates in place; this is the scale knob.
+**Capacity** — thousands of tokens-per-minute (pay-per-token) or PTUs (provisioned). Updates in place; this is the scale knob.
 
-**Version policy** -- leave `model.version` unset to track Azure's default, or pin it with `versionUpgradeOption: NO_AUTO_UPGRADE` when compliance demands a frozen model.
+**Version policy** — leave `model.version` unset to track Azure's default, or pin it with `versionUpgradeOption: NO_AUTO_UPGRADE` when compliance demands a frozen model.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AzureCognitiveAccount** | `cognitiveAccountId` | `status.outputs.cognitive_account_id` |
+| **Azure Cognitive Account** | `cognitiveAccountId` | `status.outputs.cognitive_account_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -105,11 +105,11 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Chat (mini model)** -- a current mini-class chat model on GlobalStandard with modest capacity. Start from the **Chat (Mini Model)** preset. Model names age: Azure rejects catalog-"Deprecating" models for new deployments, so check `az cognitiveservices model list` for what is currently GenerallyAvailable.
+**Chat (mini model)** — a current mini-class chat model on GlobalStandard with modest capacity. Start from the **Chat (Mini Model)** preset. Model names age: Azure rejects catalog-"Deprecating" models for new deployments, so check `az cognitiveservices model list` for what is currently GenerallyAvailable.
 
-**Embeddings** -- text-embedding-3-large behind a rate limit. Start from the **Text Embeddings** preset.
+**Embeddings** — text-embedding-3-large behind a rate limit. Start from the **Text Embeddings** preset.
 
 ## Works With
 
-- [**Azure Cognitive Account**](/infra-catalog/azure-cognitive-account) -- the parent account (endpoint, keys, perimeter)
-- [**Azure Cognitive Account Project**](/infra-catalog/azure-cognitive-account-project) -- AI Foundry workspaces on the same account
+- [**Azure Cognitive Account**](/infra-catalog/azure-cognitive-account) — the parent account (endpoint, keys, perimeter)
+- [**Azure Cognitive Account Project**](/infra-catalog/azure-cognitive-account-project) — AI Foundry workspaces on the same account

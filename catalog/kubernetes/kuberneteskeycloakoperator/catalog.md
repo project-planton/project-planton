@@ -75,21 +75,21 @@ These are the most important decisions when configuring the Keycloak Operator in
 
 **There is no version field — deliberately** — the `KubernetesKeycloak` declaration kind's CR rendering is built against the CRD schema this bundle installs (release `26.7.0`). A user-selectable operator version would silently drift that schema away from what the declaration kind renders. The module pins the release; upgrades arrive as module updates, not spec edits.
 
-**The CRDs delete with this resource** — the 4 `k8s.keycloak.org` CRDs are ordinary manifest documents with no keep annotation: destroying the operator removes them, which CASCADE-DELETES every KubernetesKeycloak declaration (and its server) on the cluster. This is the OPPOSITE posture from kept-CRD operators like Gatekeeper or the GHA runner controller. Always destroy the Keycloak declarations FIRST, while the operator still runs to process their finalizers.
+**The CRDs delete with this resource** — the 4 `k8s.keycloak.org` CRDs are ordinary manifest documents with no keep annotation: destroying the operator removes them, which CASCADE-DELETES every Keycloak declaration (and its server) on the cluster. This is the OPPOSITE posture from kept-CRD operators like Gatekeeper or the GHA runner controller. Always destroy the Keycloak declarations FIRST, while the operator still runs to process their finalizers.
 
-**Watch scope is the one topological fork** — `cluster_wide: false` (the default) watches ONLY the operator's own namespace: KubernetesKeycloak resources must live beside it, and several teams can run isolated operator+Keycloak stacks in separate namespaces. `true` applies upstream's cluster-wide bundle variant (per-controller ClusterRoleBindings, `JOSDK_ALL_NAMESPACES`): run at most one per cluster — and know the upstream constraint that cluster-wide mode REFUSES custom ServiceAccounts on Keycloak pod templates.
+**Watch scope is the one topological fork** — `cluster_wide: false` (the default) watches ONLY the operator's own namespace: Keycloak resources must live beside it, and several teams can run isolated operator+Keycloak stacks in separate namespaces. `true` applies upstream's cluster-wide bundle variant (per-controller ClusterRoleBindings, `JOSDK_ALL_NAMESPACES`): run at most one per cluster — and know the upstream constraint that cluster-wide mode REFUSES custom ServiceAccounts on Keycloak pod templates.
 
 **Image overrides are the air-gap seam** — `operatorImage` overrides the operator container (default `quay.io/keycloak/keycloak-operator` at the pinned release); `defaultKeycloakImage` overrides the bundle's `RELATED_IMAGE_KEYCLOAK` — the DEFAULT server image the operator stamps into Keycloak StatefulSets whose declaration sets no image. Mirror the repository, keep the tag: a different tag drifts the operator away from the CRD schema this bundle installs.
 
-**Sizing and placement** — upstream ships real defaults for the operator container (requests `300m`/`450Mi`, limits `700m`/`450Mi`); empty `resources` keeps them. `scheduling.nodeSelector` and `scheduling.tolerations` steer the operator pod — scheduling for the Keycloak SERVER pods lives on each KubernetesKeycloak declaration instead.
+**Sizing and placement** — upstream ships real defaults for the operator container (requests `300m`/`450Mi`, limits `700m`/`450Mi`); empty `resources` keeps them. `scheduling.nodeSelector` and `scheduling.tolerations` steer the operator pod — scheduling for the Keycloak SERVER pods lives on each Keycloak declaration instead.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **KubernetesNamespace** | `namespace` | `spec.name` |
+| **Kubernetes Namespace** | `namespace` | `spec.name` |
 
 ### What This Kind Provides
 
@@ -97,11 +97,11 @@ After provisioning, `status.outputs` contains:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
-| `namespace` | Namespace the operator runs in — where namespaced-watch Keycloak declarations must also live | Composition, co-locating KubernetesKeycloak resources |
+| `namespace` | Namespace the operator runs in — where namespaced-watch Keycloak declarations must also live | Composition, co-locating Keycloak resources |
 | `deployment` | The operator Deployment name (upstream-fixed: `keycloak-operator`) | Debugging, monitoring |
 | `service` | The operator's metrics/health Service (upstream-fixed: `keycloak-operator`, port 80 → 8080) | Scrape configuration, health checks |
 
-The operator exports no Keycloak server handles of its own: each server's Services, endpoints, and admin credential Secret are the KubernetesKeycloak declaration's outputs — this installation is only the manager that reconciles them.
+The operator exports no Keycloak server handles of its own: each server's Services, endpoints, and admin credential Secret are the Keycloak declaration's outputs — this installation is only the manager that reconciles them.
 
 ## Common Patterns
 

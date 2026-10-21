@@ -123,9 +123,9 @@ These are the most important decisions when configuring a PostgreSQL cluster. Ex
 
 | Field | References | Purpose |
 |-------|-----------|---------|
-| `spec.namespace` | KubernetesNamespace (`spec.name`) | The namespace the cluster runs in |
-| `spec.storage.storageClass` / `spec.walStorage.storageClass` | KubernetesStorageClass (`status.outputs.storage_class_name`) | The storage class backing the data / WAL PVCs |
-| `spec.certificates.serverTlsSecret` | KubernetesCertificate (`status.outputs.secret_name`) | A cert-manager-issued server certificate |
+| `spec.namespace` | Kubernetes Namespace (`spec.name`) | The namespace the cluster runs in |
+| `spec.storage.storageClass` / `spec.walStorage.storageClass` | Kubernetes StorageClass (`status.outputs.storage_class_name`) | The storage class backing the data / WAL PVCs |
+| `spec.certificates.serverTlsSecret` | Cert Manager Certificate (`status.outputs.secret_name`) | A cert-manager-issued server certificate |
 
 ### What This Kind Provides
 

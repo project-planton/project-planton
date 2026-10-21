@@ -12,8 +12,6 @@ kind: InfraChart
 metadata:
   name: Runner CA
 spec:
-  selector:
-    kind: platform
   description: a binary secret whose data comes from the secret store
 `
 

@@ -24,8 +24,6 @@ kind: InfraChart
 metadata:
   name: VPC with Public Subnet
 spec:
-  selector:
-    kind: organization
   description: A VPC with one public subnet and internet egress.
 ```
 

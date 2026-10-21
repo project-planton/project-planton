@@ -1,13 +1,13 @@
 # Agent Sandbox
 
-Declares an agent-sandbox Sandbox: one isolated, stateful pod with a stable name, its own volumes and an optional headless Service, run by the agent-sandbox controller for an AI agent, a notebook or a dev environment. The controller keeps the pod running, suspends it on request while keeping its files, and tears it down when it expires. The spec is faithful to the upstream `agents.x-k8s.io/v1beta1` Sandbox (pinned to agent-sandbox v1.0.7), Kubernetes' full pod specification included, after a Planton envelope that places the object and sets its own labels -- this is how you declare a sandbox that should exist as long as its declaration does.
+Declares an agent-sandbox Sandbox: one isolated, stateful pod with a stable name, its own volumes and an optional headless Service, run by the agent-sandbox controller for an AI agent, a notebook or a dev environment. The controller keeps the pod running, suspends it on request while keeping its files, and tears it down when it expires. The spec is faithful to the upstream `agents.x-k8s.io/v1beta1` Sandbox (pinned to agent-sandbox v1.0.7), Kubernetes' full pod specification included, after a Planton envelope that places the object and sets its own labels — this is how you declare a sandbox that should exist as long as its declaration does.
 
 ## What Gets Created
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **A Sandbox** -- one namespaced object carrying the pod template, the volume claim templates, the lifecycle and the operating mode, which the agent-sandbox controller turns into a running sandbox.
-- **Kubernetes Labels** -- your own labels on the object, with resource metadata labels (resource name, kind, organization, environment) applied automatically on top.
+- **A Sandbox** — one namespaced object carrying the pod template, the volume claim templates, the lifecycle and the operating mode, which the agent-sandbox controller turns into a running sandbox.
+- **Kubernetes Labels** — your own labels on the object, with resource metadata labels (resource name, kind, organization, environment) applied automatically on top.
 
 The controller then creates, and owns, the sandbox's pod (named after it), one PersistentVolumeClaim per volume claim template, and with `service: true` a headless Service.
 
@@ -15,14 +15,14 @@ The controller then creates, and owns, the sandbox's pod (named after it), one P
 
 ### Planton Setup
 
-- **Kubernetes Provider Connection** -- an active connection in the Connect module with kubeconfig credentials for the target cluster. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline kubeconfig authentication.
+- **Kubernetes Provider Connection** — an active connection in the Connect module with kubeconfig credentials for the target cluster. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline kubeconfig authentication.
 
 ### Kubernetes Cluster
 
-- **Agent Sandbox Controller installed** -- it installs the Sandbox definition and runs every sandbox's pod.
-- **A sandboxing runtime, for untrusted code** -- gVisor nodes (GKE Sandbox) or Kata Containers, selected through the pod's runtime class.
-- **Target namespace exists** -- reference an existing one or create it first.
+- **Agent Sandbox Controller installed** — it installs the Sandbox definition and runs every sandbox's pod.
+- **A sandboxing runtime, for untrusted code** — gVisor nodes (GKE Sandbox) or Kata Containers, selected through the pod's runtime class.
+- **Target namespace exists** — reference an existing one or create it first.
 
 ## Deploy
 
@@ -116,19 +116,19 @@ These are the most important decisions when configuring a sandbox. Explore the f
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **KubernetesNamespace** | `namespace` | `spec.name` |
-| **KubernetesSecret** | `podTemplate.spec` -- `secretKeyRef`, `secretRef`, secret volumes and projections, `imagePullSecrets` | `status.outputs.secret_name` |
-| **KubernetesConfigMap** | `podTemplate.spec` -- `configMapKeyRef`, `configMapRef`, ConfigMap volumes and projections | `status.outputs.configmap_name` |
-| **KubernetesServiceAccount** | `podTemplate.spec.serviceAccountName` | `status.outputs.service_account_name` |
-| **KubernetesPriorityClass** | `podTemplate.spec.priorityClassName` | `status.outputs.priority_class_name` |
-| **KubernetesPersistentVolumeClaim** | `podTemplate.spec.volumes[].persistentVolumeClaim.claimName` | `status.outputs.pvc_name` |
-| **KubernetesStorageClass** | `volumeClaimTemplates[].spec.storageClassName` | `status.outputs.storage_class_name` |
+| **Kubernetes Namespace** | `namespace` | `spec.name` |
+| **Kubernetes Secret** | `podTemplate.spec` — `secretKeyRef`, `secretRef`, secret volumes and projections, `imagePullSecrets` | `status.outputs.secret_name` |
+| **Kubernetes ConfigMap** | `podTemplate.spec` — `configMapKeyRef`, `configMapRef`, ConfigMap volumes and projections | `status.outputs.configmap_name` |
+| **Kubernetes ServiceAccount** | `podTemplate.spec.serviceAccountName` | `status.outputs.service_account_name` |
+| **Kubernetes PriorityClass** | `podTemplate.spec.priorityClassName` | `status.outputs.priority_class_name` |
+| **Kubernetes PersistentVolumeClaim** | `podTemplate.spec.volumes[].persistentVolumeClaim.claimName` | `status.outputs.pvc_name` |
+| **Kubernetes StorageClass** | `volumeClaimTemplates[].spec.storageClassName` | `status.outputs.storage_class_name` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|-----------------------|
@@ -139,15 +139,15 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**An agent that is always there** -- a gVisor-isolated agent with a persistent workspace and a stable in-cluster name. Start from the **Always-On Agent Workbench** preset.
+**An agent that is always there** — a gVisor-isolated agent with a persistent workspace and a stable in-cluster name. Start from the **Always-On Agent Workbench** preset.
 
-**A notebook that sleeps when idle** -- a Jupyter sandbox you suspend between sessions, keeping its files. Start from the **Suspendable Notebook** preset.
+**A notebook that sleeps when idle** — a Jupyter sandbox you suspend between sessions, keeping its files. Start from the **Suspendable Notebook** preset.
 
-**A sandbox with a deadline** -- an isolated sandbox that ends itself at a set time and records that it did. Start from the **Time-Boxed Sandbox** preset.
+**A sandbox with a deadline** — an isolated sandbox that ends itself at a set time and records that it did. Start from the **Time-Boxed Sandbox** preset.
 
 ## Works With
 
-- [**Agent Sandbox Controller**](/infra-catalog/kubernetes-agent-sandbox-controller) -- installs the Sandbox definition, runs the sandbox's pod, and routes callers to it by name.
-- [**Agent Sandbox Template**](/infra-catalog/kubernetes-agent-sandbox-template) -- the same pod blueprint, for sandboxes a warm pool and claims create on demand.
-- [**Kubernetes Namespace**](/infra-catalog/kubernetes-namespace) -- the placement target the sandbox lives in.
-- [**Kubernetes Service Account**](/infra-catalog/kubernetes-service-account) -- the identity the sandbox's code runs as, with workload identity for cloud access.
+- [**Agent Sandbox Controller**](/infra-catalog/kubernetes-agent-sandbox-controller) — installs the Sandbox definition, runs the sandbox's pod, and routes callers to it by name.
+- [**Agent Sandbox Template**](/infra-catalog/kubernetes-agent-sandbox-template) — the same pod blueprint, for sandboxes a warm pool and claims create on demand.
+- [**Kubernetes Namespace**](/infra-catalog/kubernetes-namespace) — the placement target the sandbox lives in.
+- [**Kubernetes Service Account**](/infra-catalog/kubernetes-service-account) — the identity the sandbox's code runs as, with workload identity for cloud access.

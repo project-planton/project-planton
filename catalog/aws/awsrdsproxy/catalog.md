@@ -81,7 +81,7 @@ This creates a PostgreSQL proxy fronting the referenced instance, with IAM-token
 
 ### InfraChart
 
-When the proxy deploys alongside its database in one chart, wire the target via ValueFromRef:
+When the proxy deploys alongside its database in one chart, wire the target by reference:
 
 ```yaml
 spec:
@@ -133,18 +133,18 @@ These are the most important decisions when configuring a proxy. Explore the ful
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AwsIamRole** | `roleArn` | `status.outputs.role_arn` |
-| **AwsSubnet** | `vpcSubnetIds[]` / `endpoints[].vpcSubnetIds[]` | `status.outputs.subnet_id` |
-| **AwsSecurityGroup** | `vpcSecurityGroupIds[]` / `endpoints[].vpcSecurityGroupIds[]` | `status.outputs.security_group_id` |
-| **AwsSecretsManagerSecret** | `auth[].secretArn` | `status.outputs.secret_arn` |
-| **AwsRdsInstance** | `target.dbInstanceIdentifier` | `status.outputs.instance_identifier` |
-| **AwsRdsCluster** | `target.dbClusterIdentifier` | `status.outputs.cluster_identifier` |
+| **AWS IAM Role** | `roleArn` | `status.outputs.role_arn` |
+| **AWS Subnet** | `vpcSubnetIds[]` / `endpoints[].vpcSubnetIds[]` | `status.outputs.subnet_id` |
+| **AWS Security Group** | `vpcSecurityGroupIds[]` / `endpoints[].vpcSecurityGroupIds[]` | `status.outputs.security_group_id` |
+| **AWS Secrets Manager Secret** | `auth[].secretArn` | `status.outputs.secret_arn` |
+| **AWS RDS Instance** | `target.dbInstanceIdentifier` | `status.outputs.instance_identifier` |
+| **AWS RDS Cluster** | `target.dbClusterIdentifier` | `status.outputs.cluster_identifier` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

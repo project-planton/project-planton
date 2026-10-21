@@ -105,17 +105,17 @@ These are the most important decisions when configuring an Apache Solr cluster. 
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **KubernetesNamespace** | `namespace` | `spec.name` |
-| **KubernetesStorageClass** | `storage.persistent.storageClass` / `zookeeper.provided.persistence.storageClass` | `status.outputs.storage_class_name` |
-| **KubernetesSecret** | `security.basicAuthSecret` | `metadata.name` |
+| **Kubernetes Namespace** | `namespace` | `spec.name` |
+| **Kubernetes StorageClass** | `storage.persistent.storageClass` / `zookeeper.provided.persistence.storageClass` | `status.outputs.storage_class_name` |
+| **Kubernetes Secret** | `security.basicAuthSecret` | `metadata.name` |
 
 The TLS keystore fields (`tls.pkcs12Secret`, `tls.keystorePasswordSecret`, truststore variants), `security.bootstrapSecurityJson`, and backup-repository credentials are name+key references to EXISTING Secrets in the install namespace — not foreign keys.
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

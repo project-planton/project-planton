@@ -56,7 +56,7 @@ This blocks a single IPv4 address on every zone in the account. Do not set `zone
 
 ### InfraChart
 
-For a zone-scoped rule with the zone deployed in the same InfraPipeline, wire the reference with ValueFromRef:
+For a zone-scoped rule with the zone deployed in the same InfraPipeline, wire the reference:
 
 ```yaml
 spec:
@@ -94,13 +94,13 @@ These are the most important decisions when configuring an IP Access rule. Explo
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **CloudflareDnsZone** (zone-scoped rules) | `zoneId` | `status.outputs.zone_id` |
+| **Cloudflare DNS Zone** (zone-scoped rules) | `zoneId` | `status.outputs.zone_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -120,6 +120,6 @@ Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
 ## Works With
 
-- [**Cloudflare DNS Zone**](/infra-catalog/cloudflare-dns-zone) — the zone a zone-scoped rule applies to; wire `zoneId` via ValueFromRef
+- [**Cloudflare DNS Zone**](/infra-catalog/cloudflare-dns-zone) — the zone a zone-scoped rule applies to; wire `zoneId` by reference
 - [**Cloudflare Ruleset**](/infra-catalog/cloudflare-ruleset) — expression-based WAF and custom rules when a single static selector is not enough
 - [**Cloudflare Bot Management**](/infra-catalog/cloudflare-bot-management) — zone-wide bot scoring; reach for this kind when the decision is a static IP/ASN/country selector

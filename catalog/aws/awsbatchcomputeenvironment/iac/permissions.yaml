@@ -1,5 +1,5 @@
 # Least-privilege permissions the IaC runner's AWS principal needs to
-# provision, update, and destroy this component with the official modules.
+# provision, update, and destroy this component with the platform modules.
 # Every entry is `derived` (static analysis of the module sources, cited in
 # notes) until the live capture lane upgrades it to `proven`. Schema:
 # iac/catalogkindpermissions/v1.
@@ -21,6 +21,8 @@ spec:
         resources:
           - arn:aws:batch:*:*:compute-environment/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_batch_compute_environment / batch.ComputeEnvironment, the module's single resource. Unlike many creates, CreateComputeEnvironment IS scopable -- the ARN embeds the caller-chosen environment name, so even creation authorizes against the compute-environment ARN pattern. In-place updates flow through UpdateComputeEnvironment only inside AWS's update envelope (service-linked role plus a progressive/capacity-optimized allocation strategy); outside it the provider replaces the environment, exercising delete-and-create.
       - sid: DescribeComputeEnvironments
         actions:
@@ -28,6 +30,8 @@ spec:
         resources:
           - "*"
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Plan/refresh reads. The service reference lists NO resource type for DescribeComputeEnvironments, so IAM evaluates it against Resource "*" -- an ARN-scoped grant never matches and would deny refresh at runtime. The wildcard is the narrowest possible scope.
       - sid: PassBatchRoles
         actions:
@@ -35,6 +39,8 @@ spec:
         resources:
           - arn:aws:iam::*:role/*
         provenance: derived
+        reach: target
+        privilege: uses_identity
         notes: Creating or updating the environment passes every role the manifest references -- service_role when a custom one is set, the role inside the required instance_role profile for EC2/SPOT environments (passing an instance profile authorizes as PassRole on its contained role), and spot_iam_fleet_role for BEST_FIT Spot environments. Add an iam:PassedToService condition (batch.amazonaws.com; ec2.amazonaws.com for the instance role, spotfleet.amazonaws.com for the fleet role) and narrow to the actual role ARNs in a hardened deployment.
       - sid: CreateBatchServiceLinkedRole
         actions:
@@ -42,4 +48,6 @@ spec:
         resources:
           - arn:aws:iam::*:role/aws-service-role/batch.amazonaws.com/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: The recommended manifest shape leaves service_role unset, and the first such environment in an account makes AWS create the AWSServiceRoleForBatch service-linked role on the caller's behalf -- a one-time act per account. Scoped to Batch's service-linked-role path; drop this statement once the role exists (or when every environment pins a custom service_role).

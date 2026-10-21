@@ -1,7 +1,7 @@
 # Control profile: this component's posture against every control in the
 # central catalog (catalog/_compliance/controls-catalog.yaml). Every control
 # is examined; not_applicable states why. Evidence is verifiable against the
-# spec contract, the official modules, and Cloudflare's own documentation
+# spec contract, the platform modules, and Cloudflare's own documentation
 # (D1 data security and Time Travel pages, retrieved 2026-08-22). Schema:
 # compliance/catalogkindcontrolprofile/v1.
 apiVersion: compliance.planton.dev/v1
@@ -73,7 +73,7 @@ spec:
       notes: The shipped preset (01-standard) omits read_replication, so replication is off by default. The spec's own warning applies -- enabling it requires the querying Worker to use the D1 Sessions API for sequential consistency.
     - control_id: deletion-protection
       status: not_applicable
-      notes: Neither the Cloudflare D1 API nor either official module exposes a deletion-protection flag for databases; deletion succeeds whenever the credential allows it.
+      notes: Neither the Cloudflare D1 API nor either platform module exposes a deletion-protection flag for databases; deletion succeeds whenever the credential allows it.
     - control_id: managed-patching
       status: enforced_by_default
       evidence:

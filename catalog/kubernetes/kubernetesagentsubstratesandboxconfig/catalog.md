@@ -1,13 +1,13 @@
 # Agent Substrate Sandbox Config
 
-Declares an Agent Substrate SandboxConfig: the exact sandbox runtime an actor boots with -- the gVisor release, or a microVM's hypervisor, kernel and root filesystem -- as versions of files checked by SHA-256, rolled forward and back by moving the default. Actor templates name the config, and their actors boot and restore with its default version; worker pools resolve it and keep it from deletion. The spec is faithful to the upstream `ate.dev/v1alpha1` SandboxConfig (pinned to Agent Substrate v0.5.0) -- this is how a team pins, rolls out and rolls back the runtime its agents run in.
+Declares an Agent Substrate SandboxConfig: the exact sandbox runtime an actor boots with — the gVisor release, or a microVM's hypervisor, kernel and root filesystem — as versions of files checked by SHA-256, rolled forward and back by moving the default. Actor templates name the config, and their actors boot and restore with its default version; worker pools resolve it and keep it from deletion. The spec is faithful to the upstream `ate.dev/v1alpha1` SandboxConfig (pinned to Agent Substrate v0.5.0) — this is how a team pins, rolls out and rolls back the runtime its agents run in.
 
 ## What Gets Created
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **A SandboxConfig** -- one cluster-scoped object naming its sandbox class, its default version and every version's files.
-- **Kubernetes Labels** -- your own labels on the object, with resource metadata labels (resource name, kind, organization, environment) applied automatically on top.
+- **A SandboxConfig** — one cluster-scoped object naming its sandbox class, its default version and every version's files.
+- **Kubernetes Labels** — your own labels on the object, with resource metadata labels (resource name, kind, organization, environment) applied automatically on top.
 
 The config costs nothing by itself. Worker pools that run it download its files onto every worker node and cache them by hash.
 
@@ -15,13 +15,13 @@ The config costs nothing by itself. Worker pools that run it download its files 
 
 ### Planton Setup
 
-- **Kubernetes Provider Connection** -- an active connection in the Connect module with kubeconfig credentials for the target cluster. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline kubeconfig authentication.
+- **Kubernetes Provider Connection** — an active connection in the Connect module with kubeconfig credentials for the target cluster. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline kubeconfig authentication.
 
 ### Kubernetes Cluster
 
-- **Agent Substrate installed** -- it installs the SandboxConfig definition and the admission policy that holds each class to its files.
-- **The runtime files reachable** -- the public gVisor releases need internet egress from the nodes; microVM files belong in a bucket the control plane's storage plugin serves.
+- **Agent Substrate installed** — it installs the SandboxConfig definition and the admission policy that holds each class to its files.
+- **The runtime files reachable** — the public gVisor releases need internet egress from the nodes; microVM files belong in a bucket the control plane's storage plugin serves.
 
 ## Deploy
 
@@ -100,13 +100,13 @@ These are the most important decisions when configuring a sandbox config. Explor
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **KubernetesAgentSubstrate** | (prerequisite: the definition and admission policy) | -- |
+| **Agent Substrate** | (prerequisite: the definition and admission policy) | — |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|-----------------------|
@@ -117,14 +117,14 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Your own gVisor pin** -- one validated gVisor release, independent of the control plane's. Start from the **Pinned gVisor Release** preset.
+**Your own gVisor pin** — one validated gVisor release, independent of the control plane's. Start from the **Pinned gVisor Release** preset.
 
-**A rollout with a way back** -- a new release as the default, the previous one kept for rollback. Start from the **Staged gVisor Rollout** preset.
+**A rollout with a way back** — a new release as the default, the previous one kept for rollback. Start from the **Staged gVisor Rollout** preset.
 
-**MicroVM sandboxes** -- cloud-hypervisor with Kata's guest kernel and root filesystem, from your bucket. Start from the **MicroVM Runtime** preset.
+**MicroVM sandboxes** — cloud-hypervisor with Kata's guest kernel and root filesystem, from your bucket. Start from the **MicroVM Runtime** preset.
 
 ## Works With
 
-- [**Agent Substrate Worker Pool**](/infra-catalog/kubernetes-agent-substrate-worker-pool) -- resolves the config and keeps it from deletion while it runs.
-- [**Agent Substrate**](/infra-catalog/kubernetes-agent-substrate) -- the control plane: the definition, the admission policy and the shipped `gvisor-default`.
-- [**Agent Substrate CSI Driver Config**](/infra-catalog/kubernetes-agent-substrate-csi-driver-config) -- your storage for the actors' external volumes.
+- [**Agent Substrate Worker Pool**](/infra-catalog/kubernetes-agent-substrate-worker-pool) — resolves the config and keeps it from deletion while it runs.
+- [**Agent Substrate**](/infra-catalog/kubernetes-agent-substrate) — the control plane: the definition, the admission policy and the shipped `gvisor-default`.
+- [**Agent Substrate CSI Driver Config**](/infra-catalog/kubernetes-agent-substrate-csi-driver-config) — your storage for the actors' external volumes.

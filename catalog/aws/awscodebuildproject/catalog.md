@@ -1,28 +1,28 @@
 # AWS CodeBuild Project
 
-Deploys a CodeBuild project with configurable source providers, build environments, artifact destinations, and an optional webhook for source-triggered builds. The service role, encryption key, artifact and cache buckets, log destinations, and VPC networking all accept ValueFromRef wiring, so a build project composes with its IAM, storage, and network dependencies in one InfraChart — including VPC connectivity for builds that reach private resources.
+Deploys a CodeBuild project with configurable source providers, build environments, artifact destinations, and an optional webhook for source-triggered builds. The service role, encryption key, artifact and cache buckets, log destinations, and VPC networking all accept references, so a build project composes with its IAM, storage, and network dependencies in one InfraChart — including VPC connectivity for builds that reach private resources.
 
 ## What Gets Created
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **CodeBuild Project** -- a build project configured with the specified source provider, build container image, compute type, environment variables, artifact output, and optional VPC networking, caching, and log destinations
-- **CodeBuild Webhook** -- created only when `webhook` is configured; registers a webhook with the source provider (GitHub, Bitbucket, GitLab, CodeCommit) to trigger builds on push or pull request events
-- **AWS Tags** -- resource metadata tags (organization, environment, resource kind, resource ID) applied automatically for tracking and governance
+- **CodeBuild Project** — a build project configured with the specified source provider, build container image, compute type, environment variables, artifact output, and optional VPC networking, caching, and log destinations
+- **CodeBuild Webhook** — created only when `webhook` is configured; registers a webhook with the source provider (GitHub, Bitbucket, GitLab, CodeCommit) to trigger builds on push or pull request events
+- **AWS Tags** — resource metadata tags (organization, environment, resource kind, resource ID) applied automatically for tracking and governance
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **AWS Provider Connection** -- an active connection in the Connect module with credentials for the target AWS account. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline credentials or cross-account trust authentication modes.
+- **AWS Provider Connection** — an active connection in the Connect module with credentials for the target AWS account. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline credentials or cross-account trust authentication modes.
 
 ### AWS Account
 
-- **An IAM service role** with permissions for source access, log writing, artifact storage, and any additional AWS services invoked during the build. Provide the ARN directly or reference an AwsIamRole Infra Component via ValueFromRef.
-- **An S3 bucket** (optional) -- required when artifact type is S3 or when S3 caching or S3 log delivery is enabled. Provide the bucket name directly or reference an AwsS3Bucket Infra Component.
-- **A KMS key** (optional) -- for encrypting build artifacts with a customer-managed key instead of the AWS-managed S3 key. Provide the ARN directly or reference an AwsKmsKey Infra Component.
-- **VPC subnets and security groups** (optional) -- required when the build needs access to private resources (RDS, ElastiCache, internal APIs). Provide IDs directly or reference AwsVpc and AwsSecurityGroup Infra Components.
+- **An IAM service role** with permissions for source access, log writing, artifact storage, and any additional AWS services invoked during the build. Provide the ARN directly or reference an AWS IAM Role Infra Component.
+- **An S3 bucket** (optional) — required when artifact type is S3 or when S3 caching or S3 log delivery is enabled. Provide the bucket name directly or reference an AWS S3 Bucket Infra Component.
+- **A KMS key** (optional) — for encrypting build artifacts with a customer-managed key instead of the AWS-managed S3 key. Provide the ARN directly or reference an AWS KMS Key Infra Component.
+- **VPC subnets and security groups** (optional) — required when the build needs access to private resources (RDS, ElastiCache, internal APIs). Provide IDs directly or reference AWS VPC and AWS Security Group Infra Components.
 
 ## Deploy
 
@@ -64,7 +64,7 @@ This creates a CI-only CodeBuild project pulling from GitHub with a small Linux 
 
 ### InfraChart
 
-When deploying as part of a multi-resource environment, use ValueFromRef to wire the CodeBuild project to an IAM role, KMS key, and VPC deployed in the same InfraPipeline:
+When deploying as part of a multi-resource environment, use references to wire the CodeBuild project to an IAM role, KMS key, and VPC deployed in the same InfraPipeline:
 
 ```yaml
 spec:
@@ -102,36 +102,36 @@ The InfraPipeline resolves the dependency graph, deploys the IAM role, KMS key, 
 
 These are the most important decisions when configuring a CodeBuild project. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Source type** -- Determines where build input comes from. Use `GITHUB`, `BITBUCKET`, or `GITLAB` for webhook-triggered CI. Use `CODEPIPELINE` when the project is a stage in an AWS CodePipeline (both `source.type` and `artifacts.type` must be CODEPIPELINE). Use `S3` for archive-based builds.
+**Source type** — Determines where build input comes from. Use `GITHUB`, `BITBUCKET`, or `GITLAB` for webhook-triggered CI. Use `CODEPIPELINE` when the project is a stage in an AWS CodePipeline (both `source.type` and `artifacts.type` must be CODEPIPELINE). Use `S3` for archive-based builds.
 
-**Compute type and environment** -- `BUILD_GENERAL1_SMALL` (3 GB, 2 vCPUs) handles most test suites. Use `BUILD_GENERAL1_LARGE` (15 GB, 8 vCPUs) for Docker builds. Enable `environment.privilegedMode` when the build needs Docker daemon access. Lambda compute types (`BUILD_LAMBDA_*`) provide faster cold starts for lightweight builds. On Linux container and EC2 environment types, `environment.hostKernel` selects the build host's kernel line (`LINUX_KERNEL_4`, `LINUX_KERNEL_6`, or `LINUX_KERNEL_LATEST`) for builds that depend on newer kernel features (eBPF, io_uring); omit it to let AWS choose.
+**Compute type and environment** — `BUILD_GENERAL1_SMALL` (3 GB, 2 vCPUs) handles most test suites. Use `BUILD_GENERAL1_LARGE` (15 GB, 8 vCPUs) for Docker builds. Enable `environment.privilegedMode` when the build needs Docker daemon access. Lambda compute types (`BUILD_LAMBDA_*`) provide faster cold starts for lightweight builds. On Linux container and EC2 environment types, `environment.hostKernel` selects the build host's kernel line (`LINUX_KERNEL_4`, `LINUX_KERNEL_6`, or `LINUX_KERNEL_LATEST`) for builds that depend on newer kernel features (eBPF, io_uring); omit it to let AWS choose.
 
-**Build caching** -- Set `cache.type` to `LOCAL` with `LOCAL_DOCKER_LAYER_CACHE` for Docker builds or `S3` for shared caches across concurrent builds. Local caching is faster but ephemeral.
+**Build caching** — Set `cache.type` to `LOCAL` with `LOCAL_DOCKER_LAYER_CACHE` for Docker builds or `S3` for shared caches across concurrent builds. Local caching is faster but ephemeral.
 
-**Webhook configuration** -- Omit `webhook` for CodePipeline-triggered or manual-only projects. Configure filter groups to control which branches and event types trigger builds.
+**Webhook configuration** — Omit `webhook` for CodePipeline-triggered or manual-only projects. Configure filter groups to control which branches and event types trigger builds.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AwsIamRole** | `serviceRole` | `status.outputs.role_arn` |
-| **AwsIamRole** (optional) | `resourceAccessRole` | `status.outputs.role_arn` |
-| **AwsIamRole** (optional) | `buildBatchConfig.serviceRole` | `status.outputs.role_arn` |
-| **AwsKmsKey** (optional) | `encryptionKey` | `status.outputs.key_arn` |
-| **AwsS3Bucket** (optional) | `artifacts.location` | `status.outputs.bucket_id` |
-| **AwsS3Bucket** (optional) | `cache.location` | `status.outputs.bucket_id` |
-| **AwsCloudwatchLogGroup** (optional) | `logsConfig.cloudwatchLogs.groupName` | `status.outputs.log_group_name` |
-| **AwsS3Bucket** (optional) | `logsConfig.s3Logs.bucket` | `status.outputs.bucket_id` |
-| **AwsVpc** (optional) | `vpcConfig.vpcId` | `status.outputs.vpc_id` |
-| **AwsSubnet** (optional) | `vpcConfig.subnetIds` | `status.outputs.subnet_id` |
-| **AwsSecurityGroup** (optional) | `vpcConfig.securityGroupIds` | `status.outputs.security_group_id` |
-| **AwsSecurityGroup** (optional) | `environment.dockerServer.securityGroupIds` | `status.outputs.security_group_id` |
+| **AWS IAM Role** | `serviceRole` | `status.outputs.role_arn` |
+| **AWS IAM Role** (optional) | `resourceAccessRole` | `status.outputs.role_arn` |
+| **AWS IAM Role** (optional) | `buildBatchConfig.serviceRole` | `status.outputs.role_arn` |
+| **AWS KMS Key** (optional) | `encryptionKey` | `status.outputs.key_arn` |
+| **AWS S3 Bucket** (optional) | `artifacts.location` | `status.outputs.bucket_id` |
+| **AWS S3 Bucket** (optional) | `cache.location` | `status.outputs.bucket_id` |
+| **AWS CloudWatch Log Group** (optional) | `logsConfig.cloudwatchLogs.groupName` | `status.outputs.log_group_name` |
+| **AWS S3 Bucket** (optional) | `logsConfig.s3Logs.bucket` | `status.outputs.bucket_id` |
+| **AWS VPC** (optional) | `vpcConfig.vpcId` | `status.outputs.vpc_id` |
+| **AWS Subnet** (optional) | `vpcConfig.subnetIds` | `status.outputs.subnet_id` |
+| **AWS Security Group** (optional) | `vpcConfig.securityGroupIds` | `status.outputs.security_group_id` |
+| **AWS Security Group** (optional) | `environment.dockerServer.securityGroupIds` | `status.outputs.security_group_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -148,18 +148,18 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**GitHub CI pipeline** -- GitHub source with webhook triggers on push and pull requests, small compute, no artifacts. Standard configuration for automated testing with build status reported back to GitHub. Start from the **GitHub CI (Linux)** preset.
+**GitHub CI pipeline** — GitHub source with webhook triggers on push and pull requests, small compute, no artifacts. Standard configuration for automated testing with build status reported back to GitHub. Start from the **GitHub CI (Linux)** preset.
 
-**Docker image builder** -- GitHub source with privileged mode, large compute, local Docker layer caching, and environment variables for ECR push. Optimized for container image builds with fast incremental rebuilds. Start from the **Docker Build with ECR Push** preset.
+**Docker image builder** — GitHub source with privileged mode, large compute, local Docker layer caching, and environment variables for ECR push. Optimized for container image builds with fast incremental rebuilds. Start from the **Docker Build with ECR Push** preset.
 
-**CodePipeline build stage** -- CODEPIPELINE source and artifact types with no webhook. Designed to run as a stage within an AWS CodePipeline where the pipeline handles source fetching and artifact passing. Start from the **CodePipeline Build Stage** preset.
+**CodePipeline build stage** — CODEPIPELINE source and artifact types with no webhook. Designed to run as a stage within an AWS CodePipeline where the pipeline handles source fetching and artifact passing. Start from the **CodePipeline Build Stage** preset.
 
 ## Works With
 
-- [**AWS CodePipeline**](/infra-catalog/aws-code-pipeline) -- runs this project as a build stage, consuming the `project_name` output in its CodeBuild action configuration
-- [**AWS IAM Role**](/infra-catalog/aws-iam-role) -- provides the service role for source access, log writing, and artifact storage
-- [**AWS KMS Key**](/infra-catalog/aws-kms-key) -- provides a customer-managed key for build artifact encryption
-- [**AWS S3 Bucket**](/infra-catalog/aws-s3-bucket) -- provides storage for artifacts, build cache, and S3 log delivery
-- [**AWS CloudWatch Log Group**](/infra-catalog/aws-cloudwatch-log-group) -- provides a custom log group for build output
-- [**AWS VPC**](/infra-catalog/aws-vpc) -- provides VPC and subnets for builds needing private resource access
-- [**AWS Security Group**](/infra-catalog/aws-security-group) -- controls network access for VPC-connected builds
+- [**AWS CodePipeline**](/infra-catalog/aws-code-pipeline) — runs this project as a build stage, consuming the `project_name` output in its CodeBuild action configuration
+- [**AWS IAM Role**](/infra-catalog/aws-iam-role) — provides the service role for source access, log writing, and artifact storage
+- [**AWS KMS Key**](/infra-catalog/aws-kms-key) — provides a customer-managed key for build artifact encryption
+- [**AWS S3 Bucket**](/infra-catalog/aws-s3-bucket) — provides storage for artifacts, build cache, and S3 log delivery
+- [**AWS CloudWatch Log Group**](/infra-catalog/aws-cloudwatch-log-group) — provides a custom log group for build output
+- [**AWS VPC**](/infra-catalog/aws-vpc) — provides VPC and subnets for builds needing private resource access
+- [**AWS Security Group**](/infra-catalog/aws-security-group) — controls network access for VPC-connected builds

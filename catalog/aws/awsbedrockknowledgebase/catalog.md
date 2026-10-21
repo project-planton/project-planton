@@ -77,7 +77,7 @@ This creates a vector knowledge base on S3 Vectors with Titan V2 embeddings at 2
 
 ### InfraChart
 
-When the knowledge base deploys alongside its role and source bucket in one chart, wire the references via ValueFromRef:
+When the knowledge base deploys alongside its role and source bucket in one chart, wire the references:
 
 ```yaml
 spec:
@@ -128,27 +128,27 @@ These are the most important decisions when configuring a knowledge base. Explor
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AwsIamRole** | `roleArn` | `status.outputs.role_arn` |
-| **AwsS3Bucket** | `dataSources[].s3.bucketArn` | `status.outputs.bucket_arn` |
-| **AwsOpenSearchServerlessCollection** | `storage.opensearchServerless.collectionArn` | `status.outputs.collection_arn` |
-| **AwsOpenSearchDomain** | `storage.opensearchManaged.domainArn` | `status.outputs.domain_arn` |
-| **AwsRdsCluster** | `storage.rds.resourceArn` | `status.outputs.arn` |
-| **AwsS3VectorBucket** | `storage.s3Vectors.vectorBucketArn` | `status.outputs.vector_bucket_arn` |
-| **AwsSecretsManagerSecret** | SaaS store and connector `credentialsSecretArn` fields | `status.outputs.secret_arn` |
-| **AwsRedshiftCluster** | `sql.provisioned.clusterIdentifier` | `status.outputs.cluster_identifier` |
-| **AwsRedshiftServerlessWorkgroup** | `sql.serverless.workgroupArn` | `status.outputs.arn` |
-| **AwsKmsKey** | `managed.kmsKeyArn`, `dataSources[].kmsKeyArn` | `status.outputs.key_arn` |
-| **AwsLambda** | `dataSources[].vectorIngestion.customTransformation.lambdaArn` | `status.outputs.function_arn` |
+| **AWS IAM Role** | `roleArn` | `status.outputs.role_arn` |
+| **AWS S3 Bucket** | `dataSources[].s3.bucketArn` | `status.outputs.bucket_arn` |
+| **AWS OpenSearch Serverless Collection** | `storage.opensearchServerless.collectionArn` | `status.outputs.collection_arn` |
+| **AWS OpenSearch Domain** | `storage.opensearchManaged.domainArn` | `status.outputs.domain_arn` |
+| **AWS RDS Cluster** | `storage.rds.resourceArn` | `status.outputs.arn` |
+| **AWS S3 Vector Bucket** | `storage.s3Vectors.vectorBucketArn` | `status.outputs.vector_bucket_arn` |
+| **AWS Secrets Manager Secret** | SaaS store and connector `credentialsSecretArn` fields | `status.outputs.secret_arn` |
+| **AWS Redshift Cluster** | `sql.provisioned.clusterIdentifier` | `status.outputs.cluster_identifier` |
+| **AWS Redshift Serverless Workgroup** | `sql.serverless.workgroupArn` | `status.outputs.arn` |
+| **AWS KMS Key** | `managed.kmsKeyArn`, `dataSources[].kmsKeyArn` | `status.outputs.key_arn` |
+| **AWS Lambda** | `dataSources[].vectorIngestion.customTransformation.lambdaArn` | `status.outputs.function_arn` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
-| `knowledge_base_id` | The unique knowledge base identifier | An AwsBedrockAgent's `knowledgeBaseAssociations[].knowledgeBaseId`; a flow's knowledge-base node |
+| `knowledge_base_id` | The unique knowledge base identifier | An AWS Bedrock Agent's `knowledgeBaseAssociations[].knowledgeBaseId`; a flow's knowledge-base node |
 | `knowledge_base_arn` | The knowledge base's ARN | IAM policies scoping retrieval and management access |
 | `data_source_ids` | Data source IDs keyed by each `dataSources` entry's name | Ingestion pipelines targeting `StartIngestionJob` at a specific source |
 

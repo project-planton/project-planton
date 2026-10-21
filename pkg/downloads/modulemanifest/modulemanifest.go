@@ -1,5 +1,5 @@
 // Package modulemanifest is the grammar of a release's module manifest: the
-// one document that says which bytes every official IaC module of a release
+// one document that says which bytes every platform IaC module of a release
 // is, and what each module's digest is.
 //
 // A release publishes the manifest at releases/<tag>/modules/manifest.json

@@ -63,7 +63,7 @@ This creates one TRACE-level code-based evaluator that scores runs with the refe
 
 ### InfraChart
 
-When the evaluation bundle deploys alongside its scorer function in one chart, wire the Lambda reference via ValueFromRef:
+When the evaluation bundle deploys alongside its scorer function in one chart, wire the Lambda reference:
 
 ```yaml
 spec:
@@ -103,22 +103,22 @@ These are the most important decisions when configuring an evaluation bundle. Ex
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AwsLambda** | `evaluators[].codeBased.lambdaArn` | `status.outputs.function_arn` |
-| **AwsKmsKey** | `evaluators[].kmsKeyArn` | `status.outputs.key_arn` |
-| **AwsIamRole** | `harnesses[].executionRoleArn`, `onlineEvaluationConfigs[].executionRoleArn` | `status.outputs.role_arn` |
-| **AwsSecretsManagerSecret** | `harnesses[].model.gemini.apiKeyArn`, `harnesses[].model.openai.apiKeyArn` | `status.outputs.secret_arn` |
-| **AwsBedrockAgentCoreGateway** | `harnesses[].tools[].agentcoreGateway.gatewayArn` | `status.outputs.gateway_arn` |
-| **AwsBedrockAgentCoreMemory** | `harnesses[].memory.memoryArn` | `status.outputs.memory_arn` |
-| **AwsBedrockAgentCoreRuntime** | `harnesses[].runtimeEnvironment.agentRuntimeArn` | `status.outputs.agent_runtime_arn` |
-| **AwsCloudwatchLogGroup** | `onlineEvaluationConfigs[].dataSource.logGroupNames` | `status.outputs.log_group_name` |
+| **AWS Lambda** | `evaluators[].codeBased.lambdaArn` | `status.outputs.function_arn` |
+| **AWS KMS Key** | `evaluators[].kmsKeyArn` | `status.outputs.key_arn` |
+| **AWS IAM Role** | `harnesses[].executionRoleArn`, `onlineEvaluationConfigs[].executionRoleArn` | `status.outputs.role_arn` |
+| **AWS Secrets Manager Secret** | `harnesses[].model.gemini.apiKeyArn`, `harnesses[].model.openai.apiKeyArn` | `status.outputs.secret_arn` |
+| **AWS Bedrock AgentCore Gateway** | `harnesses[].tools[].agentcoreGateway.gatewayArn` | `status.outputs.gateway_arn` |
+| **AWS Bedrock AgentCore Memory** | `harnesses[].memory.memoryArn` | `status.outputs.memory_arn` |
+| **AWS Bedrock AgentCore Runtime** | `harnesses[].runtimeEnvironment.agentRuntimeArn` | `status.outputs.agent_runtime_arn` |
+| **AWS CloudWatch Log Group** | `onlineEvaluationConfigs[].dataSource.logGroupNames` | `status.outputs.log_group_name` |
 
-Harness runtime-environment networking and private endpoints also take references — **AwsVpc**, **AwsSubnet**, **AwsSecurityGroup**, and **AwsEfsAccessPoint** — through the VPC config, managed-endpoint, and filesystem fields.
+Harness runtime-environment networking and private endpoints also take references — **AWS VPC**, **AWS Subnet**, **AWS Security Group**, and **AWS EFS Access Point** — through the VPC config, managed-endpoint, and filesystem fields.
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

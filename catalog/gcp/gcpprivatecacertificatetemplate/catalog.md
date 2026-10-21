@@ -1,20 +1,20 @@
 # GCP Private CA Certificate Template
 
-Define a certificate shape once -- a TLS server, an mTLS client, a SPIFFE workload -- and let every team issue certificates that match it from any private CA pool in the region, without repeating the X.509 details or trusting each request to get them right.
+Define a certificate shape once — a TLS server, an mTLS client, a SPIFFE workload — and let every team issue certificates that match it from any private CA pool in the region, without repeating the X.509 details or trusting each request to get them right.
 
 ## What Gets Created
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **API enablement** -- `privateca.googleapis.com` on the project (never disabled on destroy)
-- **Certificate template** -- a `privateca_certificate_template` with its predefined values, identity constraints, passthrough extensions, and maximum lifetime
+- **API enablement** — `privateca.googleapis.com` on the project (never disabled on destroy)
+- **Certificate template** — a `privateca_certificate_template` with its predefined values, identity constraints, passthrough extensions, and maximum lifetime
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **GCP Provider Connection** -- an active connection in the Connect module with CA Service template admin permissions (`roles/privateca.templateAdmin`) on the project. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
+- **GCP Provider Connection** — an active connection in the Connect module with CA Service template admin permissions (`roles/privateca.templateAdmin`) on the project. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
 
 ### Required Dependencies
 
@@ -65,23 +65,23 @@ Certificates reference the template from `certificateTemplate`.
 
 These are the most important decisions when configuring this component. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Predefined values** -- the X.509 fields every certificate issued with the template carries, whatever the request says.
+**Predefined values** — the X.509 fields every certificate issued with the template carries, whatever the request says.
 
-**Identity constraints** -- whether the request's subject and SANs pass through, and a CEL rule they must satisfy.
+**Identity constraints** — whether the request's subject and SANs pass through, and a CEL rule they must satisfy.
 
-**Passthrough extensions** -- which extensions a request may add; everything else is dropped.
+**Passthrough extensions** — which extensions a request may add; everything else is dropped.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **GcpProject** | `projectId` | `status.outputs.project_id` |
+| **GCP Project** | `projectId` | `status.outputs.project_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|-----------------------|
@@ -91,11 +91,11 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**TLS server leaf** -- server authentication with the requested DNS names. Start from the **TLS Server Leaf** preset.
+**TLS server leaf** — server authentication with the requested DNS names. Start from the **TLS Server Leaf** preset.
 
-**mTLS client** -- client authentication with SPIFFE URIs only. Start from the **mTLS Client** preset.
+**mTLS client** — client authentication with SPIFFE URIs only. Start from the **mTLS Client** preset.
 
 ## Works With
 
-- [**GCP Private CA Certificate**](/infra-catalog/gcp-private-ca-certificate) -- certificates issued with it
-- [**GCP Private CA Pool**](/infra-catalog/gcp-private-ca-pool) -- the pools it issues from
+- [**GCP Private CA Certificate**](/infra-catalog/gcp-private-ca-certificate) — certificates issued with it
+- [**GCP Private CA Pool**](/infra-catalog/gcp-private-ca-pool) — the pools it issues from

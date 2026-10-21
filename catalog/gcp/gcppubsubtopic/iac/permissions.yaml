@@ -1,5 +1,5 @@
 # Least-privilege permissions the IaC runner's GCP principal needs to
-# provision, update, and destroy this component with the official modules.
+# provision, update, and destroy this component with the platform modules.
 # Every entry is `derived` (static analysis of the module sources, cited in
 # notes) until the live capture lane upgrades it to `proven`. Schema:
 # iac/catalogkindpermissions/v1.
@@ -16,6 +16,8 @@ spec:
           - serviceusage.services.get
           - serviceusage.services.list
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers google_project_service enabling pubsub.googleapis.com on the target project. disable_on_destroy is false in the module, so the disable permission is never needed.
       - purpose: ManageTopic
         permissions:
@@ -24,11 +26,15 @@ spec:
           - pubsub.topics.update
           - pubsub.topics.delete
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers google_pubsub_topic -- create, read/refresh, in-place updates (CMEK key, retention, storage policy, schema settings, ingestion, transforms, labels are all mutable; topic_name and project changes replace), and destroy. Two runtime prerequisites are NOT deployer permissions and are granted to Google's own agents instead -- for CMEK the Pub/Sub service agent needs roles/cloudkms.cryptoKeyEncrypterDecrypter on the referenced key, and for ingestion the configured gcp_service_account needs its source-side access (e.g. read on the Cloud Storage bucket) -- or publishes and ingestion fail after a successful deploy.
       - purpose: AttachSchema
         permissions:
           - pubsub.schemas.attach
         provenance: derived
+        reach: target
+        privilege: ordinary
         condition:
           spec_field_set: schema_settings
         notes: Attaching the schema schema_settings references for publish-time validation is authorized on the schema side by pubsub.schemas.attach on the referenced schema (which may live in another project).
@@ -37,6 +43,8 @@ spec:
           - pubsub.topics.createTagBinding
           - resourcemanager.tagValueBindings.create
         provenance: derived
+        reach: target
+        privilege: ordinary
         condition:
           spec_field_set: resource_manager_tags
         notes: Attaching a tag at create time authorizes on both sides, the binding on the topic and the use of each named tag value (tag values are org-level resources, so the tagValueBindings grant lives there). Tags bind at create time only; a tag change replaces the topic and detaches every subscription, re-running these checks.

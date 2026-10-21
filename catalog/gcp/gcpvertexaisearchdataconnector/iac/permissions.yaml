@@ -1,5 +1,5 @@
 # Least-privilege permissions the IaC runner's GCP principal needs to
-# provision, update, and destroy this component with the official modules.
+# provision, update, and destroy this component with the platform modules.
 # Every entry is `derived` (static analysis of the module sources, cited in
 # notes) until the live capture lane upgrades it to `proven`. Schema:
 # iac/catalogkindpermissions/v1.
@@ -16,6 +16,8 @@ spec:
           - serviceusage.services.get
           - serviceusage.services.list
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers google_project_service enabling discoveryengine.googleapis.com on the target project. disable_on_destroy is false in the module, so the disable permission is never needed.
       - purpose: ManageDataConnector
         permissions:
@@ -27,4 +29,6 @@ spec:
           - discoveryengine.dataStores.get
           - discoveryengine.operations.get
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers google_discovery_engine_data_connector (Pulumi discoveryengine.DataConnector) -- the set-up call (discoveryengine.locations.setUpDataConnector; GCP defines no collections.create) that creates the collection and its data stores, read/refresh of the connector and the stores it created, the in-place PATCHes (schedule, parameters, modes, action side), destroy of the collection under deletion_policy DELETE (ABANDON and PREVENT call no API), and the long-running operations the provider polls. The Discovery Engine service agent, not the runner, reads the source credentials from Secret Manager.

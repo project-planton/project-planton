@@ -26,7 +26,7 @@ type Provenance int32
 
 const (
 	Provenance_provenance_unspecified Provenance = 0
-	// Derived by static analysis of the official module sources: the entry
+	// Derived by static analysis of the platform module sources: the entry
 	// covers the module's declared resources but has not been observed
 	// against a live cloud account.
 	Provenance_derived Provenance = 1
@@ -74,6 +74,142 @@ func (x Provenance) Number() protoreflect.EnumNumber {
 // Deprecated: Use Provenance.Descriptor instead.
 func (Provenance) EnumDescriptor() ([]byte, []int) {
 	return file_iac_catalogkindpermissions_v1_spec_proto_rawDescGZIP(), []int{0}
+}
+
+// PermissionReach says where in the provider's resource hierarchy an
+// entry's permissions are granted. A connection is set up against one
+// target -- a GCP project, an AWS account -- and a role on that target
+// cannot hold a permission that authorizes above it, so every reader
+// renders, grants and checks each reach on its own: a connection's role
+// holds the target's entries, an organization-level grant holds the
+// organization's, and a check never asks the target about a permission it
+// cannot answer for. The value is a fact about the permissions, read from
+// the provider's own scope-typed inventory where it publishes one (GCP's
+// testable-permissions list), and the inventory gate holds every entry to
+// it. Unspecified is refused.
+type PermissionReach int32
+
+const (
+	PermissionReach_permission_reach_unspecified PermissionReach = 0
+	// The connection's own target: the GCP project, the AWS account.
+	PermissionReach_target PermissionReach = 1
+	// Above the target: a GCP organization or folder; AWS Organizations,
+	// which answers only in the organization's management account.
+	PermissionReach_organization PermissionReach = 2
+	// A GCP billing account.
+	PermissionReach_billing_account PermissionReach = 3
+)
+
+// Enum value maps for PermissionReach.
+var (
+	PermissionReach_name = map[int32]string{
+		0: "permission_reach_unspecified",
+		1: "target",
+		2: "organization",
+		3: "billing_account",
+	}
+	PermissionReach_value = map[string]int32{
+		"permission_reach_unspecified": 0,
+		"target":                       1,
+		"organization":                 2,
+		"billing_account":              3,
+	}
+)
+
+func (x PermissionReach) Enum() *PermissionReach {
+	p := new(PermissionReach)
+	*p = x
+	return p
+}
+
+func (x PermissionReach) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (PermissionReach) Descriptor() protoreflect.EnumDescriptor {
+	return file_iac_catalogkindpermissions_v1_spec_proto_enumTypes[1].Descriptor()
+}
+
+func (PermissionReach) Type() protoreflect.EnumType {
+	return &file_iac_catalogkindpermissions_v1_spec_proto_enumTypes[1]
+}
+
+func (x PermissionReach) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use PermissionReach.Descriptor instead.
+func (PermissionReach) EnumDescriptor() ([]byte, []int) {
+	return file_iac_catalogkindpermissions_v1_spec_proto_rawDescGZIP(), []int{1}
+}
+
+// PermissionPrivilege says what an entry lets the principal do beyond
+// creating, changing and deleting resources. It is what a connection's
+// permission choices are drawn along: deploying is granted by default,
+// running a resource as an identity that already exists is part of
+// deploying (a Cloud Run service runs as a service account, a Lambda
+// function assumes its execution role), and granting access to others is
+// asked for explicitly -- a principal that can grant access can grant
+// itself anything. An entry's privilege is the highest of its
+// permissions'; the inventory gate derives it from each provider's list of
+// privileged permissions, so the field can never drift from the
+// permissions it describes. Unspecified is refused.
+type PermissionPrivilege int32
+
+const (
+	PermissionPrivilege_permission_privilege_unspecified PermissionPrivilege = 0
+	// Creates, reads, changes and deletes resources.
+	PermissionPrivilege_ordinary PermissionPrivilege = 1
+	// Lets a resource run as an identity that already exists: GCP
+	// iam.serviceAccounts.actAs, AWS iam:PassRole, Azure's user-assigned
+	// identity assign action.
+	PermissionPrivilege_uses_identity PermissionPrivilege = 2
+	// Grants access to others: changes an IAM policy, creates a role, a user
+	// or a key, or assigns a role.
+	PermissionPrivilege_grants_access PermissionPrivilege = 3
+)
+
+// Enum value maps for PermissionPrivilege.
+var (
+	PermissionPrivilege_name = map[int32]string{
+		0: "permission_privilege_unspecified",
+		1: "ordinary",
+		2: "uses_identity",
+		3: "grants_access",
+	}
+	PermissionPrivilege_value = map[string]int32{
+		"permission_privilege_unspecified": 0,
+		"ordinary":                         1,
+		"uses_identity":                    2,
+		"grants_access":                    3,
+	}
+)
+
+func (x PermissionPrivilege) Enum() *PermissionPrivilege {
+	p := new(PermissionPrivilege)
+	*p = x
+	return p
+}
+
+func (x PermissionPrivilege) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (PermissionPrivilege) Descriptor() protoreflect.EnumDescriptor {
+	return file_iac_catalogkindpermissions_v1_spec_proto_enumTypes[2].Descriptor()
+}
+
+func (PermissionPrivilege) Type() protoreflect.EnumType {
+	return &file_iac_catalogkindpermissions_v1_spec_proto_enumTypes[2]
+}
+
+func (x PermissionPrivilege) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use PermissionPrivilege.Descriptor instead.
+func (PermissionPrivilege) EnumDescriptor() ([]byte, []int) {
+	return file_iac_catalogkindpermissions_v1_spec_proto_rawDescGZIP(), []int{2}
 }
 
 // CatalogKindPermissionsSpec holds per-provider permission manifests. A
@@ -327,7 +463,11 @@ type AwsStatement struct {
 	// wildcard defenses.
 	Notes string `protobuf:"bytes,5,opt,name=notes,proto3" json:"notes,omitempty"`
 	// Absent: every deployment of the kind needs this entry.
-	Condition     *PermissionCondition `protobuf:"bytes,6,opt,name=condition,proto3" json:"condition,omitempty"`
+	Condition *PermissionCondition `protobuf:"bytes,6,opt,name=condition,proto3" json:"condition,omitempty"`
+	// Where the actions are granted: the account, or AWS Organizations.
+	Reach PermissionReach `protobuf:"varint,7,opt,name=reach,proto3,enum=dev.planton.iac.catalogkindpermissions.v1.PermissionReach" json:"reach,omitempty"`
+	// What the actions let the principal do beyond managing resources.
+	Privilege     PermissionPrivilege `protobuf:"varint,8,opt,name=privilege,proto3,enum=dev.planton.iac.catalogkindpermissions.v1.PermissionPrivilege" json:"privilege,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -404,13 +544,47 @@ func (x *AwsStatement) GetCondition() *PermissionCondition {
 	return nil
 }
 
+func (x *AwsStatement) GetReach() PermissionReach {
+	if x != nil {
+		return x.Reach
+	}
+	return PermissionReach_permission_reach_unspecified
+}
+
+func (x *AwsStatement) GetPrivilege() PermissionPrivilege {
+	if x != nil {
+		return x.Privilege
+	}
+	return PermissionPrivilege_permission_privilege_unspecified
+}
+
 // GcpPermissions is the least-privilege permission material for the
 // runner's GCP principal.
 type GcpPermissions struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Groups        []*GcpPermissionGroup  `protobuf:"bytes,1,rep,name=groups,proto3" json:"groups,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state  protoimpl.MessageState `protogen:"open.v1"`
+	Groups []*GcpPermissionGroup  `protobuf:"bytes,1,rep,name=groups,proto3" json:"groups,omitempty"`
+	// The kinds whose deployments turn on the Google APIs this kind's
+	// resources live in, for a kind that turns none on itself -- a Cloud SQL
+	// database lives in the API its instance's kind turns on. Every kind
+	// turns on what it needs at first deploy, and a connection's setup turns
+	// on only the APIs Planton itself operates on (IAM, Resource Manager,
+	// Service Usage), so a kind touching any other service either holds
+	// serviceusage.services.enable or names here the kinds that turn its
+	// services on; the permissions gate refuses a kind that does neither, and
+	// a named kind that does not touch the service. Kind names as the catalog
+	// spells them (e.g. "GcpCloudSql"). Empty when the kind turns its own
+	// APIs on, or touches only the operating ones.
+	ApiEnabledBy []string `protobuf:"bytes,2,rep,name=api_enabled_by,json=apiEnabledBy,proto3" json:"api_enabled_by,omitempty"`
+	// The Google APIs this kind's calls need turned on in the project of the
+	// identity making them, e.g. "orgpolicy.googleapis.com". A resource that
+	// lives in no project -- an organization policy, a folder's firewall
+	// policy, a billing budget -- is managed through calls Google charges to
+	// the caller's own project, which only the connection knows, so the
+	// connection's setup turns these on there when it is granted the reach
+	// the kind needs. Empty for a kind whose resources live in a project.
+	CallerProjectServices []string `protobuf:"bytes,3,rep,name=caller_project_services,json=callerProjectServices,proto3" json:"caller_project_services,omitempty"`
+	unknownFields         protoimpl.UnknownFields
+	sizeCache             protoimpl.SizeCache
 }
 
 func (x *GcpPermissions) Reset() {
@@ -450,6 +624,20 @@ func (x *GcpPermissions) GetGroups() []*GcpPermissionGroup {
 	return nil
 }
 
+func (x *GcpPermissions) GetApiEnabledBy() []string {
+	if x != nil {
+		return x.ApiEnabledBy
+	}
+	return nil
+}
+
+func (x *GcpPermissions) GetCallerProjectServices() []string {
+	if x != nil {
+		return x.CallerProjectServices
+	}
+	return nil
+}
+
 // GcpPermissionGroup is one coherent set of IAM permissions (the units a
 // custom role is built from).
 type GcpPermissionGroup struct {
@@ -464,9 +652,23 @@ type GcpPermissionGroup struct {
 	// For derived entries: which module resources this group covers.
 	Notes string `protobuf:"bytes,4,opt,name=notes,proto3" json:"notes,omitempty"`
 	// Absent: every deployment of the kind needs this entry.
-	Condition     *PermissionCondition `protobuf:"bytes,5,opt,name=condition,proto3" json:"condition,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	Condition *PermissionCondition `protobuf:"bytes,5,opt,name=condition,proto3" json:"condition,omitempty"`
+	// Where the permissions are granted: the project, the organization, or
+	// a billing account. A group holds permissions of one reach.
+	Reach PermissionReach `protobuf:"varint,6,opt,name=reach,proto3,enum=dev.planton.iac.catalogkindpermissions.v1.PermissionReach" json:"reach,omitempty"`
+	// What the permissions let the principal do beyond managing resources.
+	Privilege PermissionPrivilege `protobuf:"varint,7,opt,name=privilege,proto3,enum=dev.planton.iac.catalogkindpermissions.v1.PermissionPrivilege" json:"privilege,omitempty"`
+	// The predefined role granted for this group instead of placing its
+	// permissions in a custom role, as "roles/<name>". Set exactly when a
+	// custom role cannot carry the group: Google publishes some of its
+	// permissions as unsupported in custom roles, or the group's reach is a
+	// billing account (a billing account takes a custom role only from its
+	// own organization, which a connection's organization often is not). The
+	// inventory gate proves the role holds every permission of the group and
+	// refuses the basic roles (owner, editor, viewer).
+	PredefinedRole string `protobuf:"bytes,8,opt,name=predefined_role,json=predefinedRole,proto3" json:"predefined_role,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *GcpPermissionGroup) Reset() {
@@ -534,6 +736,27 @@ func (x *GcpPermissionGroup) GetCondition() *PermissionCondition {
 	return nil
 }
 
+func (x *GcpPermissionGroup) GetReach() PermissionReach {
+	if x != nil {
+		return x.Reach
+	}
+	return PermissionReach_permission_reach_unspecified
+}
+
+func (x *GcpPermissionGroup) GetPrivilege() PermissionPrivilege {
+	if x != nil {
+		return x.Privilege
+	}
+	return PermissionPrivilege_permission_privilege_unspecified
+}
+
+func (x *GcpPermissionGroup) GetPredefinedRole() string {
+	if x != nil {
+		return x.PredefinedRole
+	}
+	return ""
+}
+
 // AzurePermissions is the least-privilege RBAC material for the runner's
 // Azure principal.
 type AzurePermissions struct {
@@ -596,7 +819,11 @@ type AzureActionGroup struct {
 	// For derived entries: which module resources this group covers.
 	Notes string `protobuf:"bytes,5,opt,name=notes,proto3" json:"notes,omitempty"`
 	// Absent: every deployment of the kind needs this entry.
-	Condition     *PermissionCondition `protobuf:"bytes,6,opt,name=condition,proto3" json:"condition,omitempty"`
+	Condition *PermissionCondition `protobuf:"bytes,6,opt,name=condition,proto3" json:"condition,omitempty"`
+	// What the actions let the principal do beyond managing resources. Azure
+	// entries carry no reach: every catalog kind is granted at the
+	// connection's subscription.
+	Privilege     PermissionPrivilege `protobuf:"varint,7,opt,name=privilege,proto3,enum=dev.planton.iac.catalogkindpermissions.v1.PermissionPrivilege" json:"privilege,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -671,6 +898,13 @@ func (x *AzureActionGroup) GetCondition() *PermissionCondition {
 		return x.Condition
 	}
 	return nil
+}
+
+func (x *AzureActionGroup) GetPrivilege() PermissionPrivilege {
+	if x != nil {
+		return x.Privilege
+	}
+	return PermissionPrivilege_permission_privilege_unspecified
 }
 
 // CloudflarePermissions is the least-privilege API-token material for the
@@ -1591,7 +1825,7 @@ const file_iac_catalogkindpermissions_v1_spec_proto_rawDesc = "" +
 	"\x0eAwsPermissions\x12W\n" +
 	"\n" +
 	"statements\x18\x01 \x03(\v27.dev.planton.iac.catalogkindpermissions.v1.AwsStatementR\n" +
-	"statements\"\xa3\x02\n" +
+	"statements\"\xd3\x03\n" +
 	"\fAwsStatement\x12\x10\n" +
 	"\x03sid\x18\x01 \x01(\tR\x03sid\x12\x18\n" +
 	"\aactions\x18\x02 \x03(\tR\aactions\x12\x1c\n" +
@@ -1600,9 +1834,13 @@ const file_iac_catalogkindpermissions_v1_spec_proto_rawDesc = "" +
 	"provenance\x18\x04 \x01(\x0e25.dev.planton.iac.catalogkindpermissions.v1.ProvenanceR\n" +
 	"provenance\x12\x14\n" +
 	"\x05notes\x18\x05 \x01(\tR\x05notes\x12\\\n" +
-	"\tcondition\x18\x06 \x01(\v2>.dev.planton.iac.catalogkindpermissions.v1.PermissionConditionR\tcondition\"g\n" +
+	"\tcondition\x18\x06 \x01(\v2>.dev.planton.iac.catalogkindpermissions.v1.PermissionConditionR\tcondition\x12P\n" +
+	"\x05reach\x18\a \x01(\x0e2:.dev.planton.iac.catalogkindpermissions.v1.PermissionReachR\x05reach\x12\\\n" +
+	"\tprivilege\x18\b \x01(\x0e2>.dev.planton.iac.catalogkindpermissions.v1.PermissionPrivilegeR\tprivilege\"\xc5\x01\n" +
 	"\x0eGcpPermissions\x12U\n" +
-	"\x06groups\x18\x01 \x03(\v2=.dev.planton.iac.catalogkindpermissions.v1.GcpPermissionGroupR\x06groups\"\x9b\x02\n" +
+	"\x06groups\x18\x01 \x03(\v2=.dev.planton.iac.catalogkindpermissions.v1.GcpPermissionGroupR\x06groups\x12$\n" +
+	"\x0eapi_enabled_by\x18\x02 \x03(\tR\fapiEnabledBy\x126\n" +
+	"\x17caller_project_services\x18\x03 \x03(\tR\x15callerProjectServices\"\xf4\x03\n" +
 	"\x12GcpPermissionGroup\x12\x18\n" +
 	"\apurpose\x18\x01 \x01(\tR\apurpose\x12 \n" +
 	"\vpermissions\x18\x02 \x03(\tR\vpermissions\x12U\n" +
@@ -1610,9 +1848,12 @@ const file_iac_catalogkindpermissions_v1_spec_proto_rawDesc = "" +
 	"provenance\x18\x03 \x01(\x0e25.dev.planton.iac.catalogkindpermissions.v1.ProvenanceR\n" +
 	"provenance\x12\x14\n" +
 	"\x05notes\x18\x04 \x01(\tR\x05notes\x12\\\n" +
-	"\tcondition\x18\x05 \x01(\v2>.dev.planton.iac.catalogkindpermissions.v1.PermissionConditionR\tcondition\"g\n" +
+	"\tcondition\x18\x05 \x01(\v2>.dev.planton.iac.catalogkindpermissions.v1.PermissionConditionR\tcondition\x12P\n" +
+	"\x05reach\x18\x06 \x01(\x0e2:.dev.planton.iac.catalogkindpermissions.v1.PermissionReachR\x05reach\x12\\\n" +
+	"\tprivilege\x18\a \x01(\x0e2>.dev.planton.iac.catalogkindpermissions.v1.PermissionPrivilegeR\tprivilege\x12'\n" +
+	"\x0fpredefined_role\x18\b \x01(\tR\x0epredefinedRole\"g\n" +
 	"\x10AzurePermissions\x12S\n" +
-	"\x06groups\x18\x01 \x03(\v2;.dev.planton.iac.catalogkindpermissions.v1.AzureActionGroupR\x06groups\"\xb4\x02\n" +
+	"\x06groups\x18\x01 \x03(\v2;.dev.planton.iac.catalogkindpermissions.v1.AzureActionGroupR\x06groups\"\x92\x03\n" +
 	"\x10AzureActionGroup\x12\x18\n" +
 	"\apurpose\x18\x01 \x01(\tR\apurpose\x12\x18\n" +
 	"\aactions\x18\x02 \x03(\tR\aactions\x12!\n" +
@@ -1621,7 +1862,8 @@ const file_iac_catalogkindpermissions_v1_spec_proto_rawDesc = "" +
 	"provenance\x18\x04 \x01(\x0e25.dev.planton.iac.catalogkindpermissions.v1.ProvenanceR\n" +
 	"provenance\x12\x14\n" +
 	"\x05notes\x18\x05 \x01(\tR\x05notes\x12\\\n" +
-	"\tcondition\x18\x06 \x01(\v2>.dev.planton.iac.catalogkindpermissions.v1.PermissionConditionR\tcondition\"p\n" +
+	"\tcondition\x18\x06 \x01(\v2>.dev.planton.iac.catalogkindpermissions.v1.PermissionConditionR\tcondition\x12\\\n" +
+	"\tprivilege\x18\a \x01(\x0e2>.dev.planton.iac.catalogkindpermissions.v1.PermissionPrivilegeR\tprivilege\"p\n" +
 	"\x15CloudflarePermissions\x12W\n" +
 	"\x06groups\x18\x01 \x03(\v2?.dev.planton.iac.catalogkindpermissions.v1.CloudflareTokenGroupR\x06groups\"\xa5\x02\n" +
 	"\x14CloudflareTokenGroup\x12\x18\n" +
@@ -1695,7 +1937,18 @@ const file_iac_catalogkindpermissions_v1_spec_proto_rawDesc = "" +
 	"\x16provenance_unspecified\x10\x00\x12\v\n" +
 	"\aderived\x10\x01\x12\n" +
 	"\n" +
-	"\x06proven\x10\x02B\xd8\x02\n" +
+	"\x06proven\x10\x02*f\n" +
+	"\x0fPermissionReach\x12 \n" +
+	"\x1cpermission_reach_unspecified\x10\x00\x12\n" +
+	"\n" +
+	"\x06target\x10\x01\x12\x10\n" +
+	"\forganization\x10\x02\x12\x13\n" +
+	"\x0fbilling_account\x10\x03*o\n" +
+	"\x13PermissionPrivilege\x12$\n" +
+	" permission_privilege_unspecified\x10\x00\x12\f\n" +
+	"\bordinary\x10\x01\x12\x11\n" +
+	"\ruses_identity\x10\x02\x12\x11\n" +
+	"\rgrants_access\x10\x03B\xd8\x02\n" +
 	"-com.dev.planton.iac.catalogkindpermissions.v1B\tSpecProtoP\x01ZSgithub.com/plantonhq/planton/iac/catalogkindpermissions/v1;catalogkindpermissionsv1\xa2\x02\x04DPIC\xaa\x02)Dev.Planton.Iac.Catalogkindpermissions.V1\xca\x02)Dev\\Planton\\Iac\\Catalogkindpermissions\\V1\xe2\x025Dev\\Planton\\Iac\\Catalogkindpermissions\\V1\\GPBMetadata\xea\x02-Dev::Planton::Iac::Catalogkindpermissions::V1b\x06proto3"
 
 var (
@@ -1710,73 +1963,80 @@ func file_iac_catalogkindpermissions_v1_spec_proto_rawDescGZIP() []byte {
 	return file_iac_catalogkindpermissions_v1_spec_proto_rawDescData
 }
 
-var file_iac_catalogkindpermissions_v1_spec_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
+var file_iac_catalogkindpermissions_v1_spec_proto_enumTypes = make([]protoimpl.EnumInfo, 3)
 var file_iac_catalogkindpermissions_v1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 20)
 var file_iac_catalogkindpermissions_v1_spec_proto_goTypes = []any{
 	(Provenance)(0),                    // 0: dev.planton.iac.catalogkindpermissions.v1.Provenance
-	(*CatalogKindPermissionsSpec)(nil), // 1: dev.planton.iac.catalogkindpermissions.v1.CatalogKindPermissionsSpec
-	(*PermissionCondition)(nil),        // 2: dev.planton.iac.catalogkindpermissions.v1.PermissionCondition
-	(*AwsPermissions)(nil),             // 3: dev.planton.iac.catalogkindpermissions.v1.AwsPermissions
-	(*AwsStatement)(nil),               // 4: dev.planton.iac.catalogkindpermissions.v1.AwsStatement
-	(*GcpPermissions)(nil),             // 5: dev.planton.iac.catalogkindpermissions.v1.GcpPermissions
-	(*GcpPermissionGroup)(nil),         // 6: dev.planton.iac.catalogkindpermissions.v1.GcpPermissionGroup
-	(*AzurePermissions)(nil),           // 7: dev.planton.iac.catalogkindpermissions.v1.AzurePermissions
-	(*AzureActionGroup)(nil),           // 8: dev.planton.iac.catalogkindpermissions.v1.AzureActionGroup
-	(*CloudflarePermissions)(nil),      // 9: dev.planton.iac.catalogkindpermissions.v1.CloudflarePermissions
-	(*CloudflareTokenGroup)(nil),       // 10: dev.planton.iac.catalogkindpermissions.v1.CloudflareTokenGroup
-	(*DigitalOceanPermissions)(nil),    // 11: dev.planton.iac.catalogkindpermissions.v1.DigitalOceanPermissions
-	(*DigitalOceanScopeGroup)(nil),     // 12: dev.planton.iac.catalogkindpermissions.v1.DigitalOceanScopeGroup
-	(*DigitalOceanSpacesGrant)(nil),    // 13: dev.planton.iac.catalogkindpermissions.v1.DigitalOceanSpacesGrant
-	(*Auth0Permissions)(nil),           // 14: dev.planton.iac.catalogkindpermissions.v1.Auth0Permissions
-	(*Auth0ScopeGroup)(nil),            // 15: dev.planton.iac.catalogkindpermissions.v1.Auth0ScopeGroup
-	(*StripePermissions)(nil),          // 16: dev.planton.iac.catalogkindpermissions.v1.StripePermissions
-	(*StripePermissionGroup)(nil),      // 17: dev.planton.iac.catalogkindpermissions.v1.StripePermissionGroup
-	(*StripeResourcePermission)(nil),   // 18: dev.planton.iac.catalogkindpermissions.v1.StripeResourcePermission
-	(*KubernetesPermissions)(nil),      // 19: dev.planton.iac.catalogkindpermissions.v1.KubernetesPermissions
-	(*KubernetesRule)(nil),             // 20: dev.planton.iac.catalogkindpermissions.v1.KubernetesRule
+	(PermissionReach)(0),               // 1: dev.planton.iac.catalogkindpermissions.v1.PermissionReach
+	(PermissionPrivilege)(0),           // 2: dev.planton.iac.catalogkindpermissions.v1.PermissionPrivilege
+	(*CatalogKindPermissionsSpec)(nil), // 3: dev.planton.iac.catalogkindpermissions.v1.CatalogKindPermissionsSpec
+	(*PermissionCondition)(nil),        // 4: dev.planton.iac.catalogkindpermissions.v1.PermissionCondition
+	(*AwsPermissions)(nil),             // 5: dev.planton.iac.catalogkindpermissions.v1.AwsPermissions
+	(*AwsStatement)(nil),               // 6: dev.planton.iac.catalogkindpermissions.v1.AwsStatement
+	(*GcpPermissions)(nil),             // 7: dev.planton.iac.catalogkindpermissions.v1.GcpPermissions
+	(*GcpPermissionGroup)(nil),         // 8: dev.planton.iac.catalogkindpermissions.v1.GcpPermissionGroup
+	(*AzurePermissions)(nil),           // 9: dev.planton.iac.catalogkindpermissions.v1.AzurePermissions
+	(*AzureActionGroup)(nil),           // 10: dev.planton.iac.catalogkindpermissions.v1.AzureActionGroup
+	(*CloudflarePermissions)(nil),      // 11: dev.planton.iac.catalogkindpermissions.v1.CloudflarePermissions
+	(*CloudflareTokenGroup)(nil),       // 12: dev.planton.iac.catalogkindpermissions.v1.CloudflareTokenGroup
+	(*DigitalOceanPermissions)(nil),    // 13: dev.planton.iac.catalogkindpermissions.v1.DigitalOceanPermissions
+	(*DigitalOceanScopeGroup)(nil),     // 14: dev.planton.iac.catalogkindpermissions.v1.DigitalOceanScopeGroup
+	(*DigitalOceanSpacesGrant)(nil),    // 15: dev.planton.iac.catalogkindpermissions.v1.DigitalOceanSpacesGrant
+	(*Auth0Permissions)(nil),           // 16: dev.planton.iac.catalogkindpermissions.v1.Auth0Permissions
+	(*Auth0ScopeGroup)(nil),            // 17: dev.planton.iac.catalogkindpermissions.v1.Auth0ScopeGroup
+	(*StripePermissions)(nil),          // 18: dev.planton.iac.catalogkindpermissions.v1.StripePermissions
+	(*StripePermissionGroup)(nil),      // 19: dev.planton.iac.catalogkindpermissions.v1.StripePermissionGroup
+	(*StripeResourcePermission)(nil),   // 20: dev.planton.iac.catalogkindpermissions.v1.StripeResourcePermission
+	(*KubernetesPermissions)(nil),      // 21: dev.planton.iac.catalogkindpermissions.v1.KubernetesPermissions
+	(*KubernetesRule)(nil),             // 22: dev.planton.iac.catalogkindpermissions.v1.KubernetesRule
 }
 var file_iac_catalogkindpermissions_v1_spec_proto_depIdxs = []int32{
-	3,  // 0: dev.planton.iac.catalogkindpermissions.v1.CatalogKindPermissionsSpec.aws:type_name -> dev.planton.iac.catalogkindpermissions.v1.AwsPermissions
-	5,  // 1: dev.planton.iac.catalogkindpermissions.v1.CatalogKindPermissionsSpec.gcp:type_name -> dev.planton.iac.catalogkindpermissions.v1.GcpPermissions
-	7,  // 2: dev.planton.iac.catalogkindpermissions.v1.CatalogKindPermissionsSpec.azure:type_name -> dev.planton.iac.catalogkindpermissions.v1.AzurePermissions
-	19, // 3: dev.planton.iac.catalogkindpermissions.v1.CatalogKindPermissionsSpec.kubernetes:type_name -> dev.planton.iac.catalogkindpermissions.v1.KubernetesPermissions
-	9,  // 4: dev.planton.iac.catalogkindpermissions.v1.CatalogKindPermissionsSpec.cloudflare:type_name -> dev.planton.iac.catalogkindpermissions.v1.CloudflarePermissions
-	11, // 5: dev.planton.iac.catalogkindpermissions.v1.CatalogKindPermissionsSpec.digital_ocean:type_name -> dev.planton.iac.catalogkindpermissions.v1.DigitalOceanPermissions
-	14, // 6: dev.planton.iac.catalogkindpermissions.v1.CatalogKindPermissionsSpec.auth0:type_name -> dev.planton.iac.catalogkindpermissions.v1.Auth0Permissions
-	16, // 7: dev.planton.iac.catalogkindpermissions.v1.CatalogKindPermissionsSpec.stripe:type_name -> dev.planton.iac.catalogkindpermissions.v1.StripePermissions
-	4,  // 8: dev.planton.iac.catalogkindpermissions.v1.AwsPermissions.statements:type_name -> dev.planton.iac.catalogkindpermissions.v1.AwsStatement
+	5,  // 0: dev.planton.iac.catalogkindpermissions.v1.CatalogKindPermissionsSpec.aws:type_name -> dev.planton.iac.catalogkindpermissions.v1.AwsPermissions
+	7,  // 1: dev.planton.iac.catalogkindpermissions.v1.CatalogKindPermissionsSpec.gcp:type_name -> dev.planton.iac.catalogkindpermissions.v1.GcpPermissions
+	9,  // 2: dev.planton.iac.catalogkindpermissions.v1.CatalogKindPermissionsSpec.azure:type_name -> dev.planton.iac.catalogkindpermissions.v1.AzurePermissions
+	21, // 3: dev.planton.iac.catalogkindpermissions.v1.CatalogKindPermissionsSpec.kubernetes:type_name -> dev.planton.iac.catalogkindpermissions.v1.KubernetesPermissions
+	11, // 4: dev.planton.iac.catalogkindpermissions.v1.CatalogKindPermissionsSpec.cloudflare:type_name -> dev.planton.iac.catalogkindpermissions.v1.CloudflarePermissions
+	13, // 5: dev.planton.iac.catalogkindpermissions.v1.CatalogKindPermissionsSpec.digital_ocean:type_name -> dev.planton.iac.catalogkindpermissions.v1.DigitalOceanPermissions
+	16, // 6: dev.planton.iac.catalogkindpermissions.v1.CatalogKindPermissionsSpec.auth0:type_name -> dev.planton.iac.catalogkindpermissions.v1.Auth0Permissions
+	18, // 7: dev.planton.iac.catalogkindpermissions.v1.CatalogKindPermissionsSpec.stripe:type_name -> dev.planton.iac.catalogkindpermissions.v1.StripePermissions
+	6,  // 8: dev.planton.iac.catalogkindpermissions.v1.AwsPermissions.statements:type_name -> dev.planton.iac.catalogkindpermissions.v1.AwsStatement
 	0,  // 9: dev.planton.iac.catalogkindpermissions.v1.AwsStatement.provenance:type_name -> dev.planton.iac.catalogkindpermissions.v1.Provenance
-	2,  // 10: dev.planton.iac.catalogkindpermissions.v1.AwsStatement.condition:type_name -> dev.planton.iac.catalogkindpermissions.v1.PermissionCondition
-	6,  // 11: dev.planton.iac.catalogkindpermissions.v1.GcpPermissions.groups:type_name -> dev.planton.iac.catalogkindpermissions.v1.GcpPermissionGroup
-	0,  // 12: dev.planton.iac.catalogkindpermissions.v1.GcpPermissionGroup.provenance:type_name -> dev.planton.iac.catalogkindpermissions.v1.Provenance
-	2,  // 13: dev.planton.iac.catalogkindpermissions.v1.GcpPermissionGroup.condition:type_name -> dev.planton.iac.catalogkindpermissions.v1.PermissionCondition
-	8,  // 14: dev.planton.iac.catalogkindpermissions.v1.AzurePermissions.groups:type_name -> dev.planton.iac.catalogkindpermissions.v1.AzureActionGroup
-	0,  // 15: dev.planton.iac.catalogkindpermissions.v1.AzureActionGroup.provenance:type_name -> dev.planton.iac.catalogkindpermissions.v1.Provenance
-	2,  // 16: dev.planton.iac.catalogkindpermissions.v1.AzureActionGroup.condition:type_name -> dev.planton.iac.catalogkindpermissions.v1.PermissionCondition
-	10, // 17: dev.planton.iac.catalogkindpermissions.v1.CloudflarePermissions.groups:type_name -> dev.planton.iac.catalogkindpermissions.v1.CloudflareTokenGroup
-	0,  // 18: dev.planton.iac.catalogkindpermissions.v1.CloudflareTokenGroup.provenance:type_name -> dev.planton.iac.catalogkindpermissions.v1.Provenance
-	2,  // 19: dev.planton.iac.catalogkindpermissions.v1.CloudflareTokenGroup.condition:type_name -> dev.planton.iac.catalogkindpermissions.v1.PermissionCondition
-	12, // 20: dev.planton.iac.catalogkindpermissions.v1.DigitalOceanPermissions.groups:type_name -> dev.planton.iac.catalogkindpermissions.v1.DigitalOceanScopeGroup
-	13, // 21: dev.planton.iac.catalogkindpermissions.v1.DigitalOceanPermissions.spaces_grants:type_name -> dev.planton.iac.catalogkindpermissions.v1.DigitalOceanSpacesGrant
-	0,  // 22: dev.planton.iac.catalogkindpermissions.v1.DigitalOceanScopeGroup.provenance:type_name -> dev.planton.iac.catalogkindpermissions.v1.Provenance
-	2,  // 23: dev.planton.iac.catalogkindpermissions.v1.DigitalOceanScopeGroup.condition:type_name -> dev.planton.iac.catalogkindpermissions.v1.PermissionCondition
-	0,  // 24: dev.planton.iac.catalogkindpermissions.v1.DigitalOceanSpacesGrant.provenance:type_name -> dev.planton.iac.catalogkindpermissions.v1.Provenance
-	2,  // 25: dev.planton.iac.catalogkindpermissions.v1.DigitalOceanSpacesGrant.condition:type_name -> dev.planton.iac.catalogkindpermissions.v1.PermissionCondition
-	15, // 26: dev.planton.iac.catalogkindpermissions.v1.Auth0Permissions.groups:type_name -> dev.planton.iac.catalogkindpermissions.v1.Auth0ScopeGroup
-	0,  // 27: dev.planton.iac.catalogkindpermissions.v1.Auth0ScopeGroup.provenance:type_name -> dev.planton.iac.catalogkindpermissions.v1.Provenance
-	2,  // 28: dev.planton.iac.catalogkindpermissions.v1.Auth0ScopeGroup.condition:type_name -> dev.planton.iac.catalogkindpermissions.v1.PermissionCondition
-	17, // 29: dev.planton.iac.catalogkindpermissions.v1.StripePermissions.groups:type_name -> dev.planton.iac.catalogkindpermissions.v1.StripePermissionGroup
-	18, // 30: dev.planton.iac.catalogkindpermissions.v1.StripePermissionGroup.permissions:type_name -> dev.planton.iac.catalogkindpermissions.v1.StripeResourcePermission
-	0,  // 31: dev.planton.iac.catalogkindpermissions.v1.StripePermissionGroup.provenance:type_name -> dev.planton.iac.catalogkindpermissions.v1.Provenance
-	2,  // 32: dev.planton.iac.catalogkindpermissions.v1.StripePermissionGroup.condition:type_name -> dev.planton.iac.catalogkindpermissions.v1.PermissionCondition
-	20, // 33: dev.planton.iac.catalogkindpermissions.v1.KubernetesPermissions.rules:type_name -> dev.planton.iac.catalogkindpermissions.v1.KubernetesRule
-	0,  // 34: dev.planton.iac.catalogkindpermissions.v1.KubernetesRule.provenance:type_name -> dev.planton.iac.catalogkindpermissions.v1.Provenance
-	2,  // 35: dev.planton.iac.catalogkindpermissions.v1.KubernetesRule.condition:type_name -> dev.planton.iac.catalogkindpermissions.v1.PermissionCondition
-	36, // [36:36] is the sub-list for method output_type
-	36, // [36:36] is the sub-list for method input_type
-	36, // [36:36] is the sub-list for extension type_name
-	36, // [36:36] is the sub-list for extension extendee
-	0,  // [0:36] is the sub-list for field type_name
+	4,  // 10: dev.planton.iac.catalogkindpermissions.v1.AwsStatement.condition:type_name -> dev.planton.iac.catalogkindpermissions.v1.PermissionCondition
+	1,  // 11: dev.planton.iac.catalogkindpermissions.v1.AwsStatement.reach:type_name -> dev.planton.iac.catalogkindpermissions.v1.PermissionReach
+	2,  // 12: dev.planton.iac.catalogkindpermissions.v1.AwsStatement.privilege:type_name -> dev.planton.iac.catalogkindpermissions.v1.PermissionPrivilege
+	8,  // 13: dev.planton.iac.catalogkindpermissions.v1.GcpPermissions.groups:type_name -> dev.planton.iac.catalogkindpermissions.v1.GcpPermissionGroup
+	0,  // 14: dev.planton.iac.catalogkindpermissions.v1.GcpPermissionGroup.provenance:type_name -> dev.planton.iac.catalogkindpermissions.v1.Provenance
+	4,  // 15: dev.planton.iac.catalogkindpermissions.v1.GcpPermissionGroup.condition:type_name -> dev.planton.iac.catalogkindpermissions.v1.PermissionCondition
+	1,  // 16: dev.planton.iac.catalogkindpermissions.v1.GcpPermissionGroup.reach:type_name -> dev.planton.iac.catalogkindpermissions.v1.PermissionReach
+	2,  // 17: dev.planton.iac.catalogkindpermissions.v1.GcpPermissionGroup.privilege:type_name -> dev.planton.iac.catalogkindpermissions.v1.PermissionPrivilege
+	10, // 18: dev.planton.iac.catalogkindpermissions.v1.AzurePermissions.groups:type_name -> dev.planton.iac.catalogkindpermissions.v1.AzureActionGroup
+	0,  // 19: dev.planton.iac.catalogkindpermissions.v1.AzureActionGroup.provenance:type_name -> dev.planton.iac.catalogkindpermissions.v1.Provenance
+	4,  // 20: dev.planton.iac.catalogkindpermissions.v1.AzureActionGroup.condition:type_name -> dev.planton.iac.catalogkindpermissions.v1.PermissionCondition
+	2,  // 21: dev.planton.iac.catalogkindpermissions.v1.AzureActionGroup.privilege:type_name -> dev.planton.iac.catalogkindpermissions.v1.PermissionPrivilege
+	12, // 22: dev.planton.iac.catalogkindpermissions.v1.CloudflarePermissions.groups:type_name -> dev.planton.iac.catalogkindpermissions.v1.CloudflareTokenGroup
+	0,  // 23: dev.planton.iac.catalogkindpermissions.v1.CloudflareTokenGroup.provenance:type_name -> dev.planton.iac.catalogkindpermissions.v1.Provenance
+	4,  // 24: dev.planton.iac.catalogkindpermissions.v1.CloudflareTokenGroup.condition:type_name -> dev.planton.iac.catalogkindpermissions.v1.PermissionCondition
+	14, // 25: dev.planton.iac.catalogkindpermissions.v1.DigitalOceanPermissions.groups:type_name -> dev.planton.iac.catalogkindpermissions.v1.DigitalOceanScopeGroup
+	15, // 26: dev.planton.iac.catalogkindpermissions.v1.DigitalOceanPermissions.spaces_grants:type_name -> dev.planton.iac.catalogkindpermissions.v1.DigitalOceanSpacesGrant
+	0,  // 27: dev.planton.iac.catalogkindpermissions.v1.DigitalOceanScopeGroup.provenance:type_name -> dev.planton.iac.catalogkindpermissions.v1.Provenance
+	4,  // 28: dev.planton.iac.catalogkindpermissions.v1.DigitalOceanScopeGroup.condition:type_name -> dev.planton.iac.catalogkindpermissions.v1.PermissionCondition
+	0,  // 29: dev.planton.iac.catalogkindpermissions.v1.DigitalOceanSpacesGrant.provenance:type_name -> dev.planton.iac.catalogkindpermissions.v1.Provenance
+	4,  // 30: dev.planton.iac.catalogkindpermissions.v1.DigitalOceanSpacesGrant.condition:type_name -> dev.planton.iac.catalogkindpermissions.v1.PermissionCondition
+	17, // 31: dev.planton.iac.catalogkindpermissions.v1.Auth0Permissions.groups:type_name -> dev.planton.iac.catalogkindpermissions.v1.Auth0ScopeGroup
+	0,  // 32: dev.planton.iac.catalogkindpermissions.v1.Auth0ScopeGroup.provenance:type_name -> dev.planton.iac.catalogkindpermissions.v1.Provenance
+	4,  // 33: dev.planton.iac.catalogkindpermissions.v1.Auth0ScopeGroup.condition:type_name -> dev.planton.iac.catalogkindpermissions.v1.PermissionCondition
+	19, // 34: dev.planton.iac.catalogkindpermissions.v1.StripePermissions.groups:type_name -> dev.planton.iac.catalogkindpermissions.v1.StripePermissionGroup
+	20, // 35: dev.planton.iac.catalogkindpermissions.v1.StripePermissionGroup.permissions:type_name -> dev.planton.iac.catalogkindpermissions.v1.StripeResourcePermission
+	0,  // 36: dev.planton.iac.catalogkindpermissions.v1.StripePermissionGroup.provenance:type_name -> dev.planton.iac.catalogkindpermissions.v1.Provenance
+	4,  // 37: dev.planton.iac.catalogkindpermissions.v1.StripePermissionGroup.condition:type_name -> dev.planton.iac.catalogkindpermissions.v1.PermissionCondition
+	22, // 38: dev.planton.iac.catalogkindpermissions.v1.KubernetesPermissions.rules:type_name -> dev.planton.iac.catalogkindpermissions.v1.KubernetesRule
+	0,  // 39: dev.planton.iac.catalogkindpermissions.v1.KubernetesRule.provenance:type_name -> dev.planton.iac.catalogkindpermissions.v1.Provenance
+	4,  // 40: dev.planton.iac.catalogkindpermissions.v1.KubernetesRule.condition:type_name -> dev.planton.iac.catalogkindpermissions.v1.PermissionCondition
+	41, // [41:41] is the sub-list for method output_type
+	41, // [41:41] is the sub-list for method input_type
+	41, // [41:41] is the sub-list for extension type_name
+	41, // [41:41] is the sub-list for extension extendee
+	0,  // [0:41] is the sub-list for field type_name
 }
 
 func init() { file_iac_catalogkindpermissions_v1_spec_proto_init() }
@@ -1789,7 +2049,7 @@ func file_iac_catalogkindpermissions_v1_spec_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_iac_catalogkindpermissions_v1_spec_proto_rawDesc), len(file_iac_catalogkindpermissions_v1_spec_proto_rawDesc)),
-			NumEnums:      1,
+			NumEnums:      3,
 			NumMessages:   20,
 			NumExtensions: 0,
 			NumServices:   0,

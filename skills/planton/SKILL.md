@@ -1,25 +1,16 @@
 ---
 name: planton
-description: Planton's craft for infrastructure, service delivery, organization activity, and self-hosted administration, for coding agents including Codex, Cursor, and Claude Code. Use to compose or troubleshoot Infra Charts and deployed infrastructure; register, deploy, promote or roll back services; set up CI/CD; explain what changed, unread failures, or decisions awaiting the caller; review saved edits and proposed deployments; administer a PlantonPlatform and company directory; or start, restart and diagnose the local instance Planton Desktop runs. Activity reads separate historical changes, personal inspection, and current approval eligibility. Never mutate uninvited, never approve a deployment gate, never leave the workspace given. Not for authoring kind schemas.
+description: Planton's craft for infrastructure, service delivery, organization activity, and self-hosted administration, for coding agents including Codex, Cursor, and Claude Code. Use to compose or troubleshoot Infra Charts and deployed infrastructure; register, deploy, promote or roll back services; set up CI/CD; explain what changed, unread failures, or decisions awaiting the caller; review saved edits and proposed deployments; administer a PlantonPlatform and company directory; put an organization's console at its own address (planton.<company>); or start, restart and diagnose the local instance Planton Desktop runs. Activity reads separate historical changes, personal inspection, and current approval eligibility. Never mutate uninvited, approve only on the person's word and never a run they started, never leave the workspace given. Not for authoring kind schemas.
 ---
 
 # Planton
 
-You hold both of the platform's product domains in one craft.
-**Infrastructure**: an Infra Chart is to cloud infrastructure what a Helm
-chart is to Kubernetes -- a reusable, parameterized blueprint bundling many
-catalog objects (each one of a catalog kind -- an atomic unit like a VPC,
-cluster, or database, defined by a strict schema) into one architecture users deploy
-with their own values. **Service delivery**: a Service is the unit of
-push-to-deploy -- a git repository becomes a running workload on the user's
-own cloud (see "Service delivery" below). You compose as plain files, and
-you verify with compilers and reports -- you never have to be right on the
-first try; you have to run the loop until it is green.
+You hold both of the platform's product domains in one craft. **Infrastructure**: an Infra Chart is to cloud infrastructure what a Helm chart is to Kubernetes -- a reusable, parameterized blueprint bundling many catalog objects (each one of a catalog kind -- an atomic unit like a VPC, cluster, or database, defined by a strict schema) into one architecture users deploy with their own values. **Service delivery**: a Service is the unit of push-to-deploy -- a git repository becomes a running workload on the user's own cloud (see "Service delivery" below).
+You compose as plain files and verify with compilers and reports -- you never have to be right on the first try; you have to run the loop until it is green.
 
 ## Hard boundaries (never)
 
-These are law, not craft. Craft rules -- the ones that prevent build-failure
-classes -- live in "Rules that prevent whole failure classes" below.
+These are law, not craft. Craft rules -- the ones that prevent build-failure classes -- live in "Rules that prevent whole failure classes" below.
 
 - **The workspace you were given is the entire filesystem** -- the
   attached folder on a Planton surface, the repository in a coding agent.
@@ -31,11 +22,14 @@ classes -- live in "Rules that prevent whole failure classes" below.
   or Desktop fires the operating system's privacy prompts against the host
   app -- which reads as spying and destroys the trust the product runs on.
 - **Never mutate running infrastructure uninvited.** Cloud state, cluster
-  contents, and platform records change only on the user's explicit ask, one
-  confirmation per mutation -- `references/cloud.exploration.md` governs both.
-- **Never approve a deployment gate, anywhere, for anyone.** Approval is a
-  human decision; you only carry out a stack request's decision the person
-  stated after reading its plan (`references/infra.deployed-stacks.md`).
+  contents, and platform records change only on the user's explicit ask and
+  yes; their word to carry on without asking (for this task) is that yes,
+  and afterwards you say exactly what was destroyed or replaced --
+  `references/cloud.exploration.md` governs both.
+- **Approve only on the person's word, never a run they started.** Carry out
+  the decision they stated, or approve under their word to carry on; never
+  on your own judgment, and never a run your own person started, even as its
+  only approver -- the platform refuses it (`references/infra.deployed-stacks.md`).
   Never work around a refusal -- every refusal names its path, so relay it.
 
 ## Choose the work
@@ -44,6 +38,10 @@ For activity, unread failures, pending reviews, or "what changed", read
 `references/craft.organization-activity.md` first. Follow its read-only
 workflow and capability checks; do not enter chart composition or probe with
 a chart build. A request to review a saved edit is not permission to deploy it.
+
+To put the organization's console at its own address ("set up planton.acme.com as
+our custom domain"), read `references/organization.custom-domain.md` and follow
+its loop; it writes no files, so the chart workflow below does not apply.
 
 ## Know your instruments (check once, first)
 
@@ -84,9 +82,7 @@ missing instrument is a fact you adapt to, not a problem you report.
    Never block, never refuse to compose: an unverified chart built from
    grounded schemas is worth far more than no chart.
 
-Whichever arm you are on, the arm is YOUR concern: the user never hears
-tool inventories, and when a step is genuinely impossible where you run,
-say what you DID and where the step happens -- never what you lack.
+Whichever arm you are on, the arm is YOUR concern: the user never hears tool inventories, and when a step is genuinely impossible where you run, say what you DID and where the step happens -- never what you lack.
 
 ## Chart anatomy and the folder check
 
@@ -308,8 +304,7 @@ explain-after -- short, plain, in the PERSON's register
 4. **The refinement questions** -- two or three at most, chosen by what
    would most change the architecture (`references/craft.discovery.md`).
 
-Refinements loop through Phases 2-4. An assumption the user confirms stops
-being an assumption; a new one gets named.
+Refinements loop through Phases 2-4. An assumption the user confirms stops being an assumption; a new one gets named.
 
 ### Phase 5 -- Handoff (mutations; require human approval)
 
@@ -402,7 +397,7 @@ repository identity (`references/service.external-ci.md`). Every door needs a Gi
 
 Some people run Planton on their own cluster: a **PlantonPlatform** resource the **Planton operator** converges everything from, with a **PlantonIdentityProvider** beside it when a company directory is connected. You will know from `planton instance show` (`deployment_kind: self_hosted`) or their words ("our Planton", "the operator"). Hold these:
 
-- **The declaration is the only handle.** Every fact is on the platform's status and every change is an edit to its spec, applied through the same read-then-confirm protocol as any mutation (`references/cloud.exploration.md`). Never edit, scale, or delete an object the operator rendered; it converges it back within a pass.
+- **The declaration is the handle for what the operator runs.** Every fact about the running install is on the platform's status and every change to it is an edit to its spec, applied through the same read-then-confirm protocol as any mutation (`references/cloud.exploration.md`). Never edit, scale, or delete an object the operator rendered; it converges it back within a pass. What the product itself holds is changed through the product instead, never the declaration: who a directory group maps to (`planton directory map`) and the installation's logo (`planton branding set-logo`, `references/self-hosted.branding.md`).
 - **Refusals are sentences.** A version below the operator's floor, a contradictory `spec.email`, a failed directory check: the operator names the field and nothing running changes. Relay the sentence; never guess.
 - **The local administrator is the break-glass.** It stays local, never mapped, reachable at `kc_idp_hint=local` on every surface when the directory is primary.
 - **Membership follows the directory.** Access is a mapping from a group to a role; nobody edits a mirrored team by hand; offboarding is the arm's window, never an admin's action.
@@ -452,7 +447,7 @@ Read the file whose "Read when" matches the moment; never answer from memory wha
 | `references/service.reading-a-run.md` | Reading one run and reporting it in the user's words: build vs delivery shapes, status vocabulary, per-task errors, gates, mirrored external CI runs |
 | `references/service.briefing-a-service.md` | "Brief me" on a service the person is looking at (standing context says `Surface: a service's detail page`), or "how is my service doing": the room's facts and what they save, the read order, attention-first shape, calibration, when to leave the records for the repository, and what each surface can do with the files |
 | `references/service.build-failures.md` | A build failed or is stuck: the six failure classes by where they surface (compile verdicts, a connection before any pod, no runner, a task that ran, never finalized), who fixes each, the exact edit, when a rerun is wrong |
-| `references/service.fixing-a-failed-run.md` | "Help me fix it" on a run's page (standing context says `Surface: a service run's page`): the failure the visible turn carries, the fix-it read order, the consequence before the cause, a GitHub Actions run read through Planton, the fix's shape, the quiet brief on a run that did not fail -- a parked run's brief never approves |
+| `references/service.fixing-a-failed-run.md` | "Help me fix it" on a run's page (standing context says `Surface: a service run's page`): the failure the visible turn carries, the fix-it read order, the consequence before the cause, a GitHub Actions run read through Planton, the fix's shape, the quiet brief on a run that did not fail -- reading a parked run never approves it |
 | `references/service.reading-a-repository.md` | Reading the service's actual files: the platform-mediated read (list/read files at a commit, validate the pipeline from the repository), the sandbox clone at the run's commit with a one-time token, which commit to read when explaining a failure, finding a repository before it is registered, every refusal's next step |
 | `references/service.opening-a-pull-request.md` | A fix is known and the person wants it applied ("open the PR", "merge it"): the one write door -- show the exact files and the pull request's text, ask, then open it on a platform branch with the receipt; whether it builds on its own; merging only on the explicit ask, pinned to the head they saw; every refusal's next step |
 | `references/service.managed-pipelines.md` | What a Planton-managed build runs: the platform tracks, the catalog tasks a repository pipeline reuses by plain name, the param contract and bindable workspaces, the `platform-content` pin, the compile verdicts, the images a build cluster pulls |
@@ -464,7 +459,7 @@ Read the file whose "Read when" matches the moment; never answer from memory wha
 | `references/service.pulling-private-images.md` | A pod in `ImagePullBackOff`, "do I need a pull secret", a run's pull sentence, a GHCR registry connected through a sign-in, or a Cloud Run / App Runner / Lambda target: the three ways a workload pulls, what the deploy fills from the registry connection and when it fills nothing, the GHCR pull token, the own-registry-only runtimes, the refusal and remedy sentences, previews and rotation, what never to suggest |
 | `references/service.serving-domains.md` | A service on the customer's own domain: the environment's serving-domain declaration, the hostname label, fill-blank injection, the `domain_serving` check |
 | `references/service.serving-domains-targets.md` | Per-target carrier truths (worker, ingress, HTTPRoute, Cloud Run domain mapping, ECS/ALB) and the remediation ladder for a failed `domain_serving` check |
-| `references/service.serving-domains-custom.md` | Anything outside `{label}.{env-domain}`: apex, arbitrary FQDNs, multi-host, CDN fronting -- composed-infrastructure recipes with `valueFrom` bridges |
+| `references/service.serving-domains-custom.md` | Anything outside `{label}.{env-domain}`: apex, arbitrary FQDNs, multi-host, CDN fronting -- composed-infrastructure recipes with `valueFrom` bridges. Not this: the organization's console address → `organization.custom-domain.md` |
 | `references/service.local-env-vars.md` | Running a service locally with real config (`planton service env run\|pull\|check`), dev flavors, `.env.local` layering |
 | `references/service.configuring-deployments.md` | Reading and changing what a service is DECLARED to deploy: the two writers, the surgical get-then-apply loop, which resources sit on the service and which on an Infra Stack ("if this service were deleted, should it go too?" -- its route, workload, and own ConfigMaps yes; the shared gateway, zone, and namespace no), the three-step move of a route out of an Infra Stack, target environments, the deployments switch |
 | `references/service.kustomize-authoring.md` | Moving a service's configuration into its repository (eject/init/checkout), the `_kustomize` tree conventions |
@@ -484,6 +479,13 @@ Read the file whose "Read when" matches the moment; never answer from memory wha
 | `references/self-hosted.identity-primary-and-break-glass.md` | Making the directory the only sign-in; `/login?local=1`, `planton login --local`; "what if Entra is down" |
 | `references/self-hosted.identity-mapping.md` | Giving a directory group access; `planton directory` and the MCP tools; the blast-radius preview; reading sync health |
 | `references/self-hosted.identity-offboarding.md` | How fast a departed person is out, per arm; the sync's laws; the email-less refusal; invited directory users; alert email |
+| `references/self-hosted.branding.md` | Putting the company's logo on a self-hosted Planton (`planton branding show\|set-logo\|clear-logo`); the version for the dark theme; why the sign-in page still shows Planton's mark; an organization's own logo on planton.ai |
+
+### Organization (`organization.*`)
+
+| File | Read when |
+|---|---|
+| `references/organization.custom-domain.md` | The organization's console at its own address (planton.acme.com): setting, checking, fixing or removing its custom domain (`planton custom-domain`, the MCP twins), a pending or needs-attention cause and its fix, adding the record through a Planton-managed DNS zone first, the key scope. Not this: a service's own hostname → `service.serving-domains-custom.md` |
 
 ### Working craft (`craft.*`, `catalog.*`)
 

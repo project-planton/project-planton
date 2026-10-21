@@ -6,23 +6,23 @@ Creates a Compute Engine Managed Instance Group — a self-healing, optionally a
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **Instance template** -- the immutable VM shape (machine type, disks, networking, identity, scheduling); every template change rotates to a fresh template natively
-- **Instance group manager** -- the fleet controller: size, canary versions, rolling updates, auto-healing, stateful disks/IPs, standby pools
-- **Autoscaler** (when `autoscaler` is set) -- CPU / LB-capacity / custom-metric / schedule-driven scaling between min and max replicas
-- **Per-instance configs** (per `perInstanceConfigs` entry) -- stateful name/disk/IP overrides pinned to individual instances
-- **Resize requests** (per `resizeRequests` entry) -- queued one-shot capacity asks (Dynamic Workload Scheduler)
-- **Compute Engine API enablement** -- `compute.googleapis.com` enabled in the target project (never disabled on destroy)
+- **Instance template** — the immutable VM shape (machine type, disks, networking, identity, scheduling); every template change rotates to a fresh template natively
+- **Instance group manager** — the fleet controller: size, canary versions, rolling updates, auto-healing, stateful disks/IPs, standby pools
+- **Autoscaler** (when `autoscaler` is set) — CPU / LB-capacity / custom-metric / schedule-driven scaling between min and max replicas
+- **Per-instance configs** (per `perInstanceConfigs` entry) — stateful name/disk/IP overrides pinned to individual instances
+- **Resize requests** (per `resizeRequests` entry) — queued one-shot capacity asks (Dynamic Workload Scheduler)
+- **Compute Engine API enablement** — `compute.googleapis.com` enabled in the target project (never disabled on destroy)
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **GCP Provider Connection** -- an active connection in the Connect module with credentials for the target GCP project.
-- **Planton Runner** -- required when using Runner-based credential delivery.
+- **GCP Provider Connection** — an active connection in the Connect module with credentials for the target GCP project.
+- **Planton Runner** — required when using Runner-based credential delivery.
 
 ### GCP Project
 
-- **A GCP project** to host the group (directly or via a GcpProject reference) and a **VPC network** the fleet attaches to.
+- **A GCP project** to host the group (directly or via a GCP Project reference) and a **VPC network** the fleet attaches to.
 - **IAM**: the deploying identity needs `roles/compute.admin` (or narrower instance-group/template roles), plus `iam.serviceAccounts.actAs` on the template's service account when one is set.
 
 ## Deploy
@@ -80,7 +80,7 @@ This creates a regional fleet of e2-small Debian 12 VMs scaling between 2 and 10
 
 ### InfraChart
 
-The serving backbone in one chart: this group, a GcpHealthCheck wired into `autoHealing`, and a GcpBackendService consuming the `instance_group` output — the whole HTTPS-LB family composes behind it:
+The serving backbone in one chart: this group, a GCP Health Check wired into `autoHealing`, and a GCP Backend Service consuming the `instance_group` output — the whole HTTPS-LB family composes behind it:
 
 ```yaml
 spec:
@@ -106,43 +106,43 @@ The InfraPipeline deploys the network and health check first, then the group; th
 
 These are the most important decisions when configuring a managed instance group. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**zone / region** -- exactly one. Zonal is simplest; regional spreads VMs across the region's zones so a zone outage takes down only part of the fleet (add `distributionPolicy` to shape the spread).
+**zone / region** — exactly one. Zonal is simplest; regional spreads VMs across the region's zones so a zone outage takes down only part of the fleet (add `distributionPolicy` to shape the spread).
 
-**template** -- the VM shape. IMMUTABLE in GCP: every change here rotates the template and rolls the group per `updatePolicy` (labels are the one in-place exception). Keep fleets private (no `accessConfigs`) behind Cloud NAT.
+**template** — the VM shape. IMMUTABLE in GCP: every change here rotates the template and rolls the group per `updatePolicy` (labels are the one in-place exception). Keep fleets private (no `accessConfigs`) behind Cloud NAT.
 
-**autoscaler vs targetSize** -- one or the other, never both (they fight over the size on every apply). The autoscaler scales on CPU, load-balancer serving capacity, custom Cloud Monitoring metrics, or calendar schedules; `scaleInControl` caps how fast it shrinks.
+**autoscaler vs targetSize** — one or the other, never both (they fight over the size on every apply). The autoscaler scales on CPU, load-balancer serving capacity, custom Cloud Monitoring metrics, or calendar schedules; `scaleInControl` caps how fast it shrinks.
 
-**updatePolicy** -- `PROACTIVE` + `REPLACE` with a surge budget is the standard production rollout; `OPPORTUNISTIC` for fleets where changes should wait for natural churn. `RECREATE` preserves instance names (stateful) but needs an unavailability budget above zero.
+**updatePolicy** — `PROACTIVE` + `REPLACE` with a surge budget is the standard production rollout; `OPPORTUNISTIC` for fleets where changes should wait for natural churn. `RECREATE` preserves instance names (stateful) but needs an unavailability budget above zero.
 
-**autoHealing** -- recreate VMs that fail an application health check (a GcpHealthCheck reference). Size `initialDelaySec` to the app's cold start or the group repair-loops slow-booting instances.
+**autoHealing** — recreate VMs that fail an application health check (a GCP Health Check reference). Size `initialDelaySec` to the app's cold start or the group repair-loops slow-booting instances.
 
-**statefulDisks / perInstanceConfigs** -- the stateful story: preserved disks and per-instance identity that survive recreation. Stateful groups want `RECREATE` replacement and (regional) `instanceRedistributionType: NONE`.
+**statefulDisks / perInstanceConfigs** — the stateful story: preserved disks and per-instance identity that survive recreation. Stateful groups want `RECREATE` replacement and (regional) `instanceRedistributionType: NONE`.
 
-**deletionPolicy** -- what a destroy does to the whole stack: `DELETE` (default), `PREVENT` (destroy fails), or `ABANDON` (leave everything running unmanaged).
+**deletionPolicy** — what a destroy does to the whole stack: `DELETE` (default), `PREVENT` (destroy fails), or `ABANDON` (leave everything running unmanaged).
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **GcpProject** (optional) | `projectId` | `status.outputs.project_id` |
-| **GcpVpcNetwork** (per NIC) | `template.networkInterfaces[].network` | `status.outputs.network_self_link` |
-| **GcpSubnetwork** (per NIC) | `template.networkInterfaces[].subnetwork` | `status.outputs.subnetwork_self_link` |
-| **GcpHealthCheck** (optional) | `autoHealing.healthCheck` | `status.outputs.self_link` |
-| **GcpServiceAccount** (optional) | `template.serviceAccount.email` | `status.outputs.email` |
-| **GcpKmsKey** (optional) | `template.disks[].diskEncryption.kmsKey` | `status.outputs.key_id` |
-| **GcpComputeImage** (optional) | `template.disks[].sourceImage` | `status.outputs.self_link` |
-| **GcpComputeDisk** (optional) | `template.disks[].source`, `perInstanceConfigs[].preservedState.disks[].source` | `status.outputs.self_link` |
-| **GcpAddress** (optional) | `perInstanceConfigs[].preservedState.externalIps[].address` | `status.outputs.address` |
+| **GCP Project** (optional) | `projectId` | `status.outputs.project_id` |
+| **GCP VPC Network** (per NIC) | `template.networkInterfaces[].network` | `status.outputs.network_self_link` |
+| **GCP Subnetwork** (per NIC) | `template.networkInterfaces[].subnetwork` | `status.outputs.subnetwork_self_link` |
+| **GCP Health Check** (optional) | `autoHealing.healthCheck` | `status.outputs.self_link` |
+| **GCP Service Account** (optional) | `template.serviceAccount.email` | `status.outputs.email` |
+| **GCP KMS Key** (optional) | `template.disks[].diskEncryption.kmsKey` | `status.outputs.key_id` |
+| **GCP Compute Image** (optional) | `template.disks[].sourceImage` | `status.outputs.self_link` |
+| **GCP Compute Disk** (optional) | `template.disks[].source`, `perInstanceConfigs[].preservedState.disks[].source` | `status.outputs.self_link` |
+| **GCP Address** (optional) | `perInstanceConfigs[].preservedState.externalIps[].address` | `status.outputs.address` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
-| `instance_group` | Full instance-group URL | A GcpBackendService backend's `group` — the LB edge |
+| `instance_group` | Full instance-group URL | A GCP Backend Service backend's `group` — the LB edge |
 | `self_link` | Group manager self link | gcloud commands, monitoring scopes |
 | `current_template_self_link` | The active template's link | Deploy tracking — changes on every rotation |
 | `mig_name` | The group name | Display, per-group metrics filters |
@@ -152,17 +152,17 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Autoscaled web tier** -- regional group, CPU-target autoscaler, proactive rolling updates, named port for the backend service. Start from the **Autoscaled Web Tier** preset.
+**Autoscaled web tier** — regional group, CPU-target autoscaler, proactive rolling updates, named port for the backend service. Start from the **Autoscaled Web Tier** preset.
 
-**Regional HA with auto-healing** -- spread across zones, application-level health-check repairs, conservative scale-in. Start from the **Regional HA Group** preset.
+**Regional HA with auto-healing** — spread across zones, application-level health-check repairs, conservative scale-in. Start from the **Regional HA Group** preset.
 
-**Stateful fleet** -- preserved disks and instance identity through recreation (brokers, databases-on-VM). Start from the **Stateful Group** preset.
+**Stateful fleet** — preserved disks and instance identity through recreation (brokers, databases-on-VM). Start from the **Stateful Group** preset.
 
 ## Works With
 
-- [**GCP Backend Service**](/infra-catalog/gcp-backend-service) -- consumes the `instance_group` output as a backend
-- [**GCP Health Check**](/infra-catalog/gcp-health-check) -- drives auto-healing and LB health
-- [**GCP VPC Network**](/infra-catalog/gcp-vpc-network) / [**GCP Subnetwork**](/infra-catalog/gcp-subnetwork) -- the fleet's network home
-- [**GCP Service Account**](/infra-catalog/gcp-service-account) -- the VMs' workload identity
-- [**GCP KMS Key**](/infra-catalog/gcp-kms-key) -- CMEK for the fleet's disks
-- [**GCP Compute Instance**](/infra-catalog/gcp-compute-instance) -- the single-VM sibling for pets rather than cattle
+- [**GCP Backend Service**](/infra-catalog/gcp-backend-service) — consumes the `instance_group` output as a backend
+- [**GCP Health Check**](/infra-catalog/gcp-health-check) — drives auto-healing and LB health
+- [**GCP VPC Network**](/infra-catalog/gcp-vpc-network) / [**GCP Subnetwork**](/infra-catalog/gcp-subnetwork) — the fleet's network home
+- [**GCP Service Account**](/infra-catalog/gcp-service-account) — the VMs' workload identity
+- [**GCP KMS Key**](/infra-catalog/gcp-kms-key) — CMEK for the fleet's disks
+- [**GCP Compute Instance**](/infra-catalog/gcp-compute-instance) — the single-VM sibling for pets rather than cattle

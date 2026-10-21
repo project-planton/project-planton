@@ -6,16 +6,16 @@ Sets how an existing Auth0 tenant's login flow behaves: Universal Login or the C
 
 Nothing new: a tenant has one set of prompt settings, and Auth0 has no way to create or delete it. When you deploy this Infra Component, the IaC module sets the prompt settings of the tenant your Auth0 connection's credential belongs to:
 
-- **Login experience** -- `new` (Universal Login) or `classic` (the legacy Lock-based pages)
-- **Identifier first** -- the email or username on a first screen, the password on a second
-- **Device biometrics first** -- Touch ID, Face ID or Windows Hello offered before the password
+- **Login experience** — `new` (Universal Login) or `classic` (the legacy Lock-based pages)
+- **Identifier first** — the email or username on a first screen, the password on a second
+- **Device biometrics first** — Touch ID, Face ID or Windows Hello offered before the password
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **Auth0 Provider Connection** -- an active connection in the Connect module with the tenant's domain, client ID, and client secret. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline credential authentication.
+- **Auth0 Provider Connection** — an active connection in the Connect module with the tenant's domain, client ID, and client secret. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline credential authentication.
 
 ### Auth0 Account
 
@@ -54,15 +54,15 @@ The tenant's login page asks for the email first, then the password or the compa
 
 These are the decisions that matter. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Unset is unmanaged** -- Every field is optional; a field you leave out is never sent, and the tenant keeps its current value. Set at least one.
+**Unset is unmanaged** — Every field is optional; a field you leave out is never sent, and the tenant keeps its current value. Set at least one.
 
-**Universal Login first** -- Branding, themes, custom text and partials style only the `new` experience. On `classic` they apply but nobody sees them.
+**Universal Login first** — Branding, themes, custom text and partials style only the `new` experience. On `classic` they apply but nobody sees them.
 
-**Identifier first routes enterprise users** -- With `identifierFirst`, the email's domain decides the next step: an enterprise connection's identity provider, or the password screen.
+**Identifier first routes enterprise users** — With `identifierFirst`, the email's domain decides the next step: an enterprise connection's identity provider, or the password screen.
 
-**Device biometrics need their factor** -- `webauthnPlatformFirstFactor: true` is accepted only when WebAuthn with device biometrics is enabled as a multi-factor method; pair it with `identifierFirst: true`.
+**Device biometrics need their factor** — `webauthnPlatformFirstFactor: true` is accepted only when WebAuthn with device biometrics is enabled as a multi-factor method; pair it with `identifierFirst: true`.
 
-**Destroy leaves the settings in place** -- Auth0 has no delete for the prompt settings, so destroying this Infra Component stops managing them and keeps their last-applied values.
+**Destroy leaves the settings in place** — Auth0 has no delete for the prompt settings, so destroying this Infra Component stops managing them and keeps their last-applied values.
 
 ## Outputs and Dependencies
 
@@ -84,12 +84,12 @@ After provisioning, `status.outputs` contains the settings as the tenant carries
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Identifier-first login** -- Universal Login asking for the email first, so enterprise users reach their identity provider. Start from the **Identifier-First Login** preset.
+**Identifier-first login** — Universal Login asking for the email first, so enterprise users reach their identity provider. Start from the **Identifier-First Login** preset.
 
-**Device biometrics first** -- The same flow, with the device's own authenticator offered before the password. Start from the **Device Biometrics First** preset.
+**Device biometrics first** — The same flow, with the device's own authenticator offered before the password. Start from the **Device Biometrics First** preset.
 
 ## Works With
 
-- [**Auth0 Connection**](/infra-catalog/auth0-connection) -- the enterprise connections identifier-first login routes to.
-- [**Auth0 Tenant Settings**](/infra-catalog/auth0-tenant-settings) -- the name and logo the login page shows.
-- [**Auth0 Prompt Custom Text**](/infra-catalog/auth0-prompt-custom-text) -- the words each prompt shows, on the `new` experience.
+- [**Auth0 Connection**](/infra-catalog/auth0-connection) — the enterprise connections identifier-first login routes to.
+- [**Auth0 Tenant Settings**](/infra-catalog/auth0-tenant-settings) — the name and logo the login page shows.
+- [**Auth0 Prompt Custom Text**](/infra-catalog/auth0-prompt-custom-text) — the words each prompt shows, on the `new` experience.

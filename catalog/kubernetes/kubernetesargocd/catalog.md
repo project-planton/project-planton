@@ -1,6 +1,6 @@
 # Argo CD
 
-Deploys Argo CD — the declarative GitOps continuous-delivery engine for Kubernetes — from the official `argo-cd` Helm chart. Argo CD watches Git repositories and keeps cluster state converged with what the repositories declare; this component installs and shapes the control plane itself at chart grain: every Argo CD component individually sized, the Redis cache as an explicit three-way choice, SSO and RBAC as first-class blocks, and an honest first-login story. The grain is deliberate: **this kind deploys the control plane; declaring what it deploys is not its job.** Once Argo CD runs, Applications, AppProjects and ApplicationSets are plain custom resources — declare them via KubernetesManifest, a chart, or Argo CD's own UI/CLI. Exposure is composed too: the server stays ClusterIP, and Ingress or Gateway kinds publish it over the exported `server_service` handle.
+Deploys Argo CD — the declarative GitOps continuous-delivery engine for Kubernetes — from the official argo-cd Helm chart. Argo CD watches Git repositories and keeps cluster state converged with what the repositories declare; this component installs and shapes the control plane itself at chart grain: every Argo CD component individually sized, the Redis cache as an explicit three-way choice, SSO and RBAC as first-class blocks, and an honest first-login story. The grain is deliberate: **this kind deploys the control plane; declaring what it deploys is not its job.** Once Argo CD runs, Applications, AppProjects and ApplicationSets are plain custom resources — declare them via Kubernetes Manifest, a chart, or Argo CD's own UI/CLI. Exposure is composed too: the server stays ClusterIP, and Ingress or Gateway kinds publish it over the exported `server_service` handle.
 
 ## What Gets Created
 
@@ -80,9 +80,9 @@ These are the most important decisions when configuring an Argo CD control plane
 
 **Components scale for different reasons.** The repo server saturates first — every sync clones and renders there; scale it (replicas or an autoscaler) when sync latency grows. Controller replicas are **shards across target clusters**, not load-balanced copies — sharding a single-cluster install buys nothing. Server and repo server both take an optional autoscaling block (min/max default 1/5, max ≥ min enforced); a CPU HPA without a CPU request never scales.
 
-**The Redis choice is a three-arm decision.** Declare nothing and the chart runs its single-pod bundled cache — right for dev and small installs. The `ha` arm runs a 3-node Sentinel cluster (replicas ≥ 3; remember the anti-affinity needs three nodes). The `external` arm points at an endpoint you operate — its `host` composes by reference from a KubernetesValkey's exported service; optional credentials ride a named Secret, never the manifest.
+**The Redis choice is a three-arm decision.** Declare nothing and the chart runs its single-pod bundled cache — right for dev and small installs. The `ha` arm runs a 3-node Sentinel cluster (replicas ≥ 3; remember the anti-affinity needs three nodes). The `external` arm points at an endpoint you operate — its `host` composes by reference from a Valkey's exported service; optional credentials ride a named Secret, never the manifest.
 
-**SSO is direct OIDC, dex connectors, or deliberately both.** The `oidc` block does provider-native OIDC: name, issuer, client ID, and the client secret as a **name + key reference** to an existing Secret — the credential never rides the manifest, and the referenced Secret must carry the `app.kubernetes.io/part-of: argocd` label or Argo CD refuses to read it (compose it from KubernetesSecret or KubernetesExternalSecret). Leave the reference empty for a public-client PKCE flow. `dexConfig` carries dex connector YAML for protocols OIDC alone cannot speak (SAML, LDAP, GitHub teams) — it requires the dex component enabled, and its secrets use Argo CD's `$<secret-name>:<key>` indirection, never inline. Configuring both puts two SSO buttons on the login screen — legitimate during a migration, a misconfiguration otherwise.
+**SSO is direct OIDC, dex connectors, or deliberately both.** The `oidc` block does provider-native OIDC: name, issuer, client ID, and the client secret as a **name + key reference** to an existing Secret — the credential never rides the manifest, and the referenced Secret must carry the `app.kubernetes.io/part-of: argocd` label or Argo CD refuses to read it (compose it from Kubernetes Secret or External Secret). Leave the reference empty for a public-client PKCE flow. `dexConfig` carries dex connector YAML for protocols OIDC alone cannot speak (SAML, LDAP, GitHub teams) — it requires the dex component enabled, and its secrets use Argo CD's `$<secret-name>:<key>` indirection, never inline. Configuring both puts two SSO buttons on the login screen — legitimate during a migration, a misconfiguration otherwise.
 
 **RBAC defaults to invisible.** An empty `policyDefault` means authenticated users see nothing until a `policyCsv` rule grants access — the safe default for a shared instance; `role:readonly` is the friendlier alternative. `scopes` defaults to `[groups]`, mapping the identity provider's group claims into policy subjects. `execEnabled` opens an interactive shell into live containers through the API server — a deliberate grant paired with an RBAC `exec` rule, never a default.
 
@@ -100,16 +100,16 @@ These are the most important decisions when configuring an Argo CD control plane
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **KubernetesNamespace** | `namespace` | `spec.name` |
-| **KubernetesValkey** | `redis.external.host` | `status.outputs.service` |
+| **Kubernetes Namespace** | `namespace` | `spec.name` |
+| **Valkey** | `redis.external.host` | `status.outputs.service` |
 
-The OIDC client secret, external-Redis credentials, and image pull secrets are referenced by Secret NAME (plain strings), not ValueFromRef — compose those Secrets next to the install.
+The OIDC client secret, external-Redis credentials, and image pull secrets are referenced by Secret NAME (plain strings), not references — compose those Secrets next to the install.
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

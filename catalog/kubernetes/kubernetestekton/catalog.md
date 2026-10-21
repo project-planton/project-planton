@@ -1,8 +1,8 @@
 # Tekton
 
-Declares the cluster's Tekton installation — which components run (Pipelines, Triggers, Dashboard, Chains), where they install, the pipeline feature flags and execution defaults, and the cleanup policy — as a `TektonConfig` custom resource that the Tekton Operator reconciles into running components and keeps converged.
+Declares the cluster's Tekton installation — which components run (Pipelines, Triggers, Dashboard, Chains), where they install, the pipeline feature flags and execution defaults, and the cleanup policy — as a TektonConfig custom resource that the Tekton Operator reconciles into running components and keeps converged.
 
-This kind shapes the **engine**, never your pipelines: Tasks, Pipelines, and their runs are plain custom resources once this converges — declare them via Kubernetes Manifest resources, your platform, or the Tekton CLI. Exactly one KubernetesTekton per cluster is allowed (the operator's own admission rule), and the operator (declared with **Tekton Operator**) must be installed first.
+This kind shapes the **engine**, never your pipelines: Tasks, Pipelines, and their runs are plain custom resources once this converges — declare them via Kubernetes Manifest resources, your platform, or the Tekton CLI. Exactly one Tekton per cluster is allowed (the operator's own admission rule), and the operator (declared with **Tekton Operator**) must be installed first.
 
 ## What Gets Created
 
@@ -66,7 +66,7 @@ These are the most important decisions when configuring a Tekton installation. E
 
 **`targetNamespace` is IMMUTABLE and operator-owned** — the operator's webhook rejects changing it on an existing installation (destroy and recreate to move), and teardown DELETES the namespace with the components (Tekton Results archival finalizers can hold it Terminating for a while). Empty = `tekton-pipelines`.
 
-**One CloudEvents sink per cluster** — `pipeline.cloudEventsSinkUrl` is Tekton's single, cluster-global event destination: every run in every namespace reports there, and per-namespace sinks do not exist. It lands as the `sink` of Tekton's `config-events` ConfigMap (format `tektonv1`), never in the deprecated `default-cloud-events-sink` key of `config-defaults`. Planton's own runners need none -- a build-capable runner watches its build namespace's PipelineRuns and TaskRuns directly and reports to its own control plane -- so a cluster serving several Planton control planes leaves this unset. Set it only for an event consumer of your own, with a fan-out service at the URL if more than one consumer needs the stream (each event carries its source namespace). Must be an `http://` or `https://` URL.
+**One CloudEvents sink per cluster** — `pipeline.cloudEventsSinkUrl` is Tekton's single, cluster-global event destination: every run in every namespace reports there, and per-namespace sinks do not exist. It lands as the `sink` of Tekton's `config-events` ConfigMap (format `tektonv1`), never in the deprecated `default-cloud-events-sink` key of `config-defaults`. Planton's own runners need none — a build-capable runner watches its build namespace's PipelineRuns and TaskRuns directly and reports to its own control plane — so a cluster serving several Planton control planes leaves this unset. Set it only for an event consumer of your own, with a fan-out service at the URL if more than one consumer needs the stream (each event carries its source namespace). Must be an `http://` or `https://` URL.
 
 **Feature flags are tri-states** — every pipeline feature flag left unset keeps Tekton's own default for the pinned release; a pinned value holds even if a future release changes its default. `keepPodOnCancel` is alpha-gated (takes effect only with `enableApiFields: alpha`); `resultsFrom: sidecar-logs` pairs with `maxResultSize`.
 
@@ -74,11 +74,11 @@ These are the most important decisions when configuring a Tekton installation. E
 
 **Tekton HA is sharding** — `performance.replicas` and `performance.buckets` are one decision: extra replicas only take work when buckets shards it across them (upstream bucket maximum 10). The usual throughput ceiling is the controller's Kubernetes API budget — raise `kubeApiQps`/`kubeApiBurst` together with run volume.
 
-**The dashboard has NO built-in authentication** — in its default writable mode, anyone who reaches it can run and delete pipelines. Set `dashboard.readonly`, and expose the ClusterIP Service only through first-class kinds (KubernetesIngress, Gateway API kinds) with an authenticating layer — or keep it unexposed and use the exported port-forward command.
+**The dashboard has NO built-in authentication** — in its default writable mode, anyone who reaches it can run and delete pipelines. Set `dashboard.readonly`, and expose the ClusterIP Service only through first-class kinds (Kubernetes Ingress, Gateway API kinds) with an authenticating layer — or keep it unexposed and use the exported port-forward command.
 
 **No pruner = unbounded growth** — completed runs keep their pods until something deletes them. Declare the pruner with a required cron `schedule`, at least one of `pipelinerun`/`taskrun`, and EXACTLY one retention rule — `keep` (newest N) or `keepSince` (younger than N minutes), never both (the operator's webhook enforces it).
 
-**Destroy while the operator lives** — deleting this resource makes the operator tear down every component, and the deletion BLOCKS until that finishes. Never destroy the KubernetesTektonOperator resource first — the teardown finalizers strand without a running operator.
+**Destroy while the operator lives** — deleting this resource makes the operator tear down every component, and the deletion BLOCKS until that finishes. Never destroy the Tekton Operator resource first — the teardown finalizers strand without a running operator.
 
 ## Outputs and Dependencies
 
@@ -88,13 +88,13 @@ This kind's spec is self-contained — no fields reference other resources' outp
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
 | `namespace` | Namespace the Tekton components run in (`tekton-pipelines` unless overridden) | Composition, debugging |
 | `profile` | The installed profile (`lite`, `basic`, or `all`) | Operational tooling |
-| `dashboard_service` | Name of the dashboard Service (`tekton-dashboard`) in the target namespace; empty unless profile is `all` | Backend handle for KubernetesIngress / KubernetesHttpRoute exposure |
+| `dashboard_service` | Name of the dashboard Service (`tekton-dashboard`) in the target namespace; empty unless profile is `all` | Backend handle for Kubernetes Ingress / Kubernetes HTTPRoute exposure |
 | `dashboard_kube_endpoint` | In-cluster endpoint of the dashboard; empty unless profile is `all` | In-cluster integrations |
 | `port_forward_command` | Command to port-forward the dashboard to a workstation; empty unless profile is `all` | Workstation access without exposure |
 

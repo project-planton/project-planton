@@ -59,7 +59,7 @@ This probes `acme.com/health` over HTTP every 60 seconds (Cloudflare's default i
 
 ### InfraChart
 
-When the zone is deployed in the same InfraPipeline, wire the reference with ValueFromRef:
+When the zone is deployed in the same InfraPipeline, wire the reference:
 
 ```yaml
 spec:
@@ -97,13 +97,13 @@ These are the most important decisions when configuring a health check. Explore 
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **CloudflareDnsZone** | `zoneId` | `status.outputs.zone_id` |
+| **Cloudflare DNS Zone** | `zoneId` | `status.outputs.zone_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

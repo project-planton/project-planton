@@ -130,8 +130,7 @@ type KubernetesPlantonPlatformSpec struct {
 	Identity *KubernetesPlantonPlatformIdentity `protobuf:"bytes,9,opt,name=identity,proto3" json:"identity,omitempty"`
 	// *
 	// First-boot seeding: the initial organization and environment, extra
-	// admins, the IaC provisioner the in-cluster runner uses, and where the
-	// platform's managed secrets live.
+	// admins, and where the platform's managed secrets live.
 	Bootstrap *KubernetesPlantonPlatformBootstrap `protobuf:"bytes,10,opt,name=bootstrap,proto3" json:"bootstrap,omitempty"`
 	// *
 	// The in-cluster deployment runner — how this platform deploys real
@@ -3022,14 +3021,11 @@ type KubernetesPlantonPlatformBootstrap struct {
 	// included).
 	Admins []string `protobuf:"bytes,3,rep,name=admins,proto3" json:"admins,omitempty"`
 	// *
-	// The IaC provisioner the in-cluster runner deploys with.
-	IacProvisioner *string `protobuf:"bytes,4,opt,name=iac_provisioner,json=iacProvisioner,proto3,oneof" json:"iac_provisioner,omitempty"`
-	// *
 	// The bootstrap organization's declared default secret backend: the
 	// bundled secrets manager ("platform") or a cloud backend. Unset, the
 	// platform picks the one it can serve — the bundled vault when it runs,
 	// otherwise its own database under the secrets key.
-	SecretBackend *KubernetesPlantonPlatformSecretBackend `protobuf:"bytes,5,opt,name=secret_backend,json=secretBackend,proto3" json:"secret_backend,omitempty"`
+	SecretBackend *KubernetesPlantonPlatformSecretBackend `protobuf:"bytes,4,opt,name=secret_backend,json=secretBackend,proto3" json:"secret_backend,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -3083,13 +3079,6 @@ func (x *KubernetesPlantonPlatformBootstrap) GetAdmins() []string {
 		return x.Admins
 	}
 	return nil
-}
-
-func (x *KubernetesPlantonPlatformBootstrap) GetIacProvisioner() string {
-	if x != nil && x.IacProvisioner != nil {
-		return *x.IacProvisioner
-	}
-	return ""
 }
 
 func (x *KubernetesPlantonPlatformBootstrap) GetSecretBackend() *KubernetesPlantonPlatformSecretBackend {
@@ -4477,7 +4466,7 @@ type KubernetesPlantonPlatformControlPlane struct {
 	// DEPLOY-TIME identity.
 	ServiceAccountAnnotations map[string]string `protobuf:"bytes,4,rep,name=service_account_annotations,json=serviceAccountAnnotations,proto3" json:"service_account_annotations,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	// *
-	// Override of the release the platform downloads official IaC module
+	// Override of the release the platform downloads platform IaC module
 	// artifacts from (vX.Y.Z; both engines ride one tag). Leave it unset:
 	// the platform resolves modules at its own catalog release — the same
 	// pin its schemas and chart bundle come from — so a kind it accepts
@@ -5165,14 +5154,12 @@ const file_catalog_kubernetes_kubernetesplantonplatform_v1alpha1_spec_proto_rawD
 	"\tresources\x18\x03 \x01(\v2*.dev.planton.kubernetes.ContainerResourcesB\x1e\xba\xfb\xa4\x02\x19\n" +
 	"\b\x12\x061536Mi\x12\r\n" +
 	"\x04250m\x12\x05512MiR\tresourcesB\b\n" +
-	"\x06_realm\"\xb7\x04\n" +
+	"\x06_realm\"\xd3\x03\n" +
 	"\"KubernetesPlantonPlatformBootstrap\x12\x84\x01\n" +
 	"\forganization\x18\x01 \x01(\v2`.dev.planton.kubernetes.kubernetesplantonplatform.v1alpha1.KubernetesPlantonPlatformBootstrapOrgR\forganization\x12\x82\x01\n" +
 	"\venvironment\x18\x02 \x01(\v2`.dev.planton.kubernetes.kubernetesplantonplatform.v1alpha1.KubernetesPlantonPlatformBootstrapEnvR\venvironment\x12\x16\n" +
-	"\x06admins\x18\x03 \x03(\tR\x06admins\x12N\n" +
-	"\x0fiac_provisioner\x18\x04 \x01(\tB \xbaH\x15r\x13R\x00R\x04tofuR\tterraform\x8a\xa6\x1d\x04tofuH\x00R\x0eiacProvisioner\x88\x01\x01\x12\x88\x01\n" +
-	"\x0esecret_backend\x18\x05 \x01(\v2a.dev.planton.kubernetes.kubernetesplantonplatform.v1alpha1.KubernetesPlantonPlatformSecretBackendR\rsecretBackendB\x12\n" +
-	"\x10_iac_provisioner\"j\n" +
+	"\x06admins\x18\x03 \x03(\tR\x06admins\x12\x88\x01\n" +
+	"\x0esecret_backend\x18\x04 \x01(\v2a.dev.planton.kubernetes.kubernetesplantonplatform.v1alpha1.KubernetesPlantonPlatformSecretBackendR\rsecretBackend\"j\n" +
 	"%KubernetesPlantonPlatformBootstrapOrg\x12$\n" +
 	"\x04slug\x18\x01 \x01(\tB\v\x8a\xa6\x1d\adefaultH\x00R\x04slug\x88\x01\x01\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04nameB\a\n" +
@@ -5534,7 +5521,6 @@ func file_catalog_kubernetes_kubernetesplantonplatform_v1alpha1_spec_proto_init(
 	file_catalog_kubernetes_kubernetesplantonplatform_v1alpha1_spec_proto_msgTypes[29].OneofWrappers = []any{}
 	file_catalog_kubernetes_kubernetesplantonplatform_v1alpha1_spec_proto_msgTypes[30].OneofWrappers = []any{}
 	file_catalog_kubernetes_kubernetesplantonplatform_v1alpha1_spec_proto_msgTypes[31].OneofWrappers = []any{}
-	file_catalog_kubernetes_kubernetesplantonplatform_v1alpha1_spec_proto_msgTypes[32].OneofWrappers = []any{}
 	file_catalog_kubernetes_kubernetesplantonplatform_v1alpha1_spec_proto_msgTypes[33].OneofWrappers = []any{}
 	file_catalog_kubernetes_kubernetesplantonplatform_v1alpha1_spec_proto_msgTypes[34].OneofWrappers = []any{}
 	file_catalog_kubernetes_kubernetesplantonplatform_v1alpha1_spec_proto_msgTypes[37].OneofWrappers = []any{}

@@ -77,7 +77,7 @@ This creates a table bucket holding one `analytics` namespace with a four-column
 
 ### InfraChart
 
-When the bucket deploys alongside its encryption key in one chart, wire the key reference via ValueFromRef:
+When the bucket deploys alongside its encryption key in one chart, wire the key reference:
 
 ```yaml
 spec:
@@ -117,16 +117,16 @@ These are the most important decisions when configuring a table bucket. Explore 
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AwsKmsKey** (optional) | `encryption.kmsKeyArn` | `status.outputs.key_arn` |
-| **AwsKmsKey** (optional, per table) | `namespaces[].tables[].encryption.kmsKeyArn` | `status.outputs.key_arn` |
-| **AwsIamRole** (with replication) | `replication.role` | `status.outputs.role_arn` |
-| **AwsIamRole** (per-table replication) | `namespaces[].tables[].replication.role` | `status.outputs.role_arn` |
+| **AWS KMS Key** (optional) | `encryption.kmsKeyArn` | `status.outputs.key_arn` |
+| **AWS KMS Key** (optional, per table) | `namespaces[].tables[].encryption.kmsKeyArn` | `status.outputs.key_arn` |
+| **AWS IAM Role** (with replication) | `replication.role` | `status.outputs.role_arn` |
+| **AWS IAM Role** (per-table replication) | `namespaces[].tables[].replication.role` | `status.outputs.role_arn` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

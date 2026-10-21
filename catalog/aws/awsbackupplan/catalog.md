@@ -71,7 +71,7 @@ This creates a plan with one rule firing daily at 05:00 UTC into the referenced 
 
 ### InfraChart
 
-When the plan deploys alongside its vault and role in one chart, wire the references via ValueFromRef:
+When the plan deploys alongside its vault and role in one chart, wire the references:
 
 ```yaml
 spec:
@@ -121,24 +121,24 @@ These are the most important decisions when configuring a backup plan. Explore t
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AwsBackupVault** | `rules[].targetVaultName` | `status.outputs.vault_name` |
-| **AwsBackupVault** | `rules[].targetLogicallyAirGappedBackupVaultArn` | `status.outputs.vault_arn` |
-| **AwsBackupVault** | `rules[].copyActions[].destinationVaultArn` | `status.outputs.vault_arn` |
-| **AwsIamRole** | `selections[].iamRoleArn` | `status.outputs.role_arn` |
-| **AwsIamRole** | `scanSetting.scannerRoleArn` | `status.outputs.role_arn` |
+| **AWS Backup Vault** | `rules[].targetVaultName` | `status.outputs.vault_name` |
+| **AWS Backup Vault** | `rules[].targetLogicallyAirGappedBackupVaultArn` | `status.outputs.vault_arn` |
+| **AWS Backup Vault** | `rules[].copyActions[].destinationVaultArn` | `status.outputs.vault_arn` |
+| **AWS IAM Role** | `selections[].iamRoleArn` | `status.outputs.role_arn` |
+| **AWS IAM Role** | `scanSetting.scannerRoleArn` | `status.outputs.role_arn` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
 | `plan_id` | The plan's AWS-generated UUID — its real identity at AWS and the provider's import ID | Addressing the plan in AWS CLI/API operations and imports |
 | `plan_arn` | The plan's ARN | IAM policies scoping backup administration to specific plans |
 
-`plan_version` (a new ID on every plan update) and `selection_ids` (AWS-generated selection IDs keyed by selection name, importable as `{plan_id}|{selection_id}`) are also exported; they are operational echoes for auditing and import, not composition inputs — no catalog kind consumes them via ValueFromRef.
+`plan_version` (a new ID on every plan update) and `selection_ids` (AWS-generated selection IDs keyed by selection name, importable as `{plan_id}|{selection_id}`) are also exported; they are operational echoes for auditing and import, not composition inputs — no catalog kind references them.
 
 ## Common Patterns
 

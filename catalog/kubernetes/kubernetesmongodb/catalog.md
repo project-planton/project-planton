@@ -131,11 +131,11 @@ These are the most important decisions when configuring a MongoDB cluster. Explo
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **KubernetesNamespace** | `namespace` | `spec.name` |
-| **KubernetesStorageClass** | `replicaSets[].storage.storageClass` / `sharding.configServer.storage.storageClass` | `status.outputs.storage_class_name` |
-| **KubernetesClusterIssuer** | `tls.issuer` (or a namespaced KubernetesIssuer when `issuerKind: Issuer`) | `metadata.name` |
+| **Kubernetes Namespace** | `namespace` | `spec.name` |
+| **Kubernetes StorageClass** | `replicaSets[].storage.storageClass` / `sharding.configServer.storage.storageClass` | `status.outputs.storage_class_name` |
+| **Cert Manager Cluster Issuer** | `tls.issuer` (or a namespaced Cert Manager Issuer when `issuerKind: Issuer`) | `metadata.name` |
 
 ### What This Kind Provides
 

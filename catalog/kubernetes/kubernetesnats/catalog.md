@@ -1,33 +1,33 @@
 # NATS
 
-Deploys NATS -- the lightweight, high-speed messaging system (pub/sub, request/reply, queue groups) with JetStream persistence for streams, consumers and key-value/object stores -- from the official `nats` Helm chart. Supports full-mesh clustering for HA and replicated streams, per-user authentication with module-generated passwords exported in a Kubernetes Secret, multi-tenant accounts with isolated subject namespaces, TLS on the client listener from an existing certificate Secret, WebSocket/MQTT/leafnode listeners, Prometheus metrics, and the nats-box utility pod.
+Deploys NATS — the lightweight, high-speed messaging system (pub/sub, request/reply, queue groups) with JetStream persistence for streams, consumers and key-value/object stores — from the official nats Helm chart. Supports full-mesh clustering for HA and replicated streams, per-user authentication with module-generated passwords exported in a Kubernetes Secret, multi-tenant accounts with isolated subject namespaces, TLS on the client listener from an existing certificate Secret, WebSocket/MQTT/leafnode listeners, Prometheus metrics, and the nats-box utility pod.
 
 ## What Gets Created
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **Kubernetes Namespace** -- created only when `createNamespace` is `true`; otherwise deploys into an existing namespace
-- **NATS Helm Release** -- the server StatefulSet with a config hot-reload sidecar, creating:
+- **Kubernetes Namespace** — created only when `createNamespace` is `true`; otherwise deploys into an existing namespace
+- **NATS Helm Release** — the server StatefulSet with a config hot-reload sidecar, creating:
   - StatefulSet for the NATS server pods (one server by default; a full-mesh cluster when `cluster.enabled` is `true`)
-  - JetStream persistent volumes for stream data (JetStream is ON by default here -- the raw chart leaves it off)
+  - JetStream persistent volumes for stream data (JetStream is ON by default here — the raw chart leaves it off)
   - Kubernetes Services: the client Service (port 4222, ClusterIP by default) and the headless Service for per-server addressing
   - nats-box utility pod (deployed by default) with the `nats` CLI pre-wired for this deployment
   - prometheus-nats-exporter sidecar and an optional PodMonitor (when `metrics` is configured)
-- **Auth Secret** -- created only when `auth` declares users or accounts; the module GENERATES a password per username and exports each under its own key in the `<name>-auth` Secret -- no credential ever lands in the rendered config or Helm values
-- **Kubernetes Labels** -- resource metadata labels (resource name, kind, organization, environment) applied automatically for tracking
+- **Auth Secret** — created only when `auth` declares users or accounts; the module GENERATES a password per username and exports each under its own key in the `<name>-auth` Secret — no credential ever lands in the rendered config or Helm values
+- **Kubernetes Labels** — resource metadata labels (resource name, kind, organization, environment) applied automatically for tracking
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **Kubernetes Provider Connection** -- an active connection in the Connect module with kubeconfig credentials for the target Kubernetes cluster. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline kubeconfig authentication.
+- **Kubernetes Provider Connection** — an active connection in the Connect module with kubeconfig credentials for the target Kubernetes cluster. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline kubeconfig authentication.
 
 ### Kubernetes Cluster
 
 - **A Kubernetes cluster** with sufficient resources for the server pods.
-- **A storage class** capable of dynamic PV provisioning for the JetStream file store (unless JetStream is explicitly disabled). Leave `jetStream.storageClass` empty for the cluster default, or reference a KubernetesStorageClass.
-- **An existing TLS Secret** (only when securing the client listener) -- a standard `kubernetes.io/tls` Secret in the install namespace; a cert-manager KubernetesCertificate composes naturally and its exported Secret name can be referenced directly.
+- **A storage class** capable of dynamic PV provisioning for the JetStream file store (unless JetStream is explicitly disabled). Leave `jetStream.storageClass` empty for the cluster default, or reference a Kubernetes StorageClass.
+- **An existing TLS Secret** (only when securing the client listener) — a standard `kubernetes.io/tls` Secret in the install namespace; a cert-manager Cert Manager Certificate composes naturally and its exported Secret name can be referenced directly.
 
 ## Deploy
 
@@ -76,7 +76,7 @@ This creates a 3-server NATS cluster with RAFT-based JetStream placement, 20Gi p
 
 ### InfraChart
 
-When deploying as part of a multi-resource environment, use ValueFromRef to wire the NATS deployment to a namespace managed by another Infra Component:
+When deploying as part of a multi-resource environment, use references to wire the NATS deployment to a namespace managed by another Infra Component:
 
 ```yaml
 spec:
@@ -94,29 +94,29 @@ The InfraPipeline deploys the namespace first, then provisions the NATS cluster 
 
 These are the most important decisions when configuring NATS. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Clustering** -- Empty `cluster` means a single server: a complete deployment for dev and modest workloads. For production, enable clustering with an ODD count (3 or 5) -- JetStream placement uses RAFT groups, and odd counts tolerate the most failures per server added. Replicated (R3) streams need at least 3 servers.
+**Clustering** — Empty `cluster` means a single server: a complete deployment for dev and modest workloads. For production, enable clustering with an ODD count (3 or 5) — JetStream placement uses RAFT groups, and odd counts tolerate the most failures per server added. Replicated (R3) streams need at least 3 servers.
 
-**JetStream** -- ON by default here (the raw chart leaves it off): each server gets a persistent volume sized by `jetStream.diskSize` (10Gi by default), so published messages survive pod restarts. `memoryStoreMaxSize` enables the fast, ephemeral in-memory tier -- keep the server's memory limit comfortably above it. Disable JetStream only for pure fire-and-forget pub/sub.
+**JetStream** — ON by default here (the raw chart leaves it off): each server gets a persistent volume sized by `jetStream.diskSize` (10Gi by default), so published messages survive pod restarts. `memoryStoreMaxSize` enables the fast, ephemeral in-memory tier — keep the server's memory limit comfortably above it. Disable JetStream only for pure fire-and-forget pub/sub.
 
-**Authentication** -- With `auth` unset, the server accepts UNAUTHENTICATED connections: fine inside a trusted cluster network, never for anything reachable from outside. Declare flat `users` (one shared subject namespace) or multi-tenant `accounts` (isolated namespaces), never both. Passwords are always module-generated and exported in the `<name>-auth` Secret, one key per username. A publish ALLOWLIST fences everything else -- a user who needs JetStream must include `$JS.API.>` and `$JS.ACK.>` (stream operations are requests published to those subjects, and the server silently drops denied publishes, so a fenced user's stream calls hang rather than fail loudly).
+**Authentication** — With `auth` unset, the server accepts UNAUTHENTICATED connections: fine inside a trusted cluster network, never for anything reachable from outside. Declare flat `users` (one shared subject namespace) or multi-tenant `accounts` (isolated namespaces), never both. Passwords are always module-generated and exported in the `<name>-auth` Secret, one key per username. A publish ALLOWLIST fences everything else — a user who needs JetStream must include `$JS.API.>` and `$JS.ACK.>` (stream operations are requests published to those subjects, and the server silently drops denied publishes, so a fenced user's stream calls hang rather than fail loudly).
 
-**MQTT and JetStream** -- The MQTT bridge stores its sessions and retained messages in JetStream; the server refuses to start MQTT with JetStream explicitly disabled.
+**MQTT and JetStream** — The MQTT bridge stores its sessions and retained messages in JetStream; the server refuses to start MQTT with JetStream explicitly disabled.
 
-**External access** -- By default, NATS is accessible only within the Kubernetes cluster through the exported client endpoint. Set `service.type` to `loadBalancer` with the cloud's LB annotations for external clients, or enable the `websocket` listener behind first-class exposure kinds (Ingress, Gateway API). Declare authentication and TLS before exposing.
+**External access** — By default, NATS is accessible only within the Kubernetes cluster through the exported client endpoint. Set `service.type` to `loadBalancer` with the cloud's LB annotations for external clients, or enable the `websocket` listener behind first-class exposure kinds (Ingress, Gateway API). Declare authentication and TLS before exposing.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **KubernetesNamespace** | `namespace` | `spec.name` |
-| **KubernetesStorageClass** | `jetStream.storageClass` | `metadata.name` |
-| **KubernetesCertificate** | `tls.secretName` | `status.outputs.secret_name` |
+| **Kubernetes Namespace** | `namespace` | `spec.name` |
+| **Kubernetes StorageClass** | `jetStream.storageClass` | `metadata.name` |
+| **Cert Manager Certificate** | `tls.secretName` | `status.outputs.secret_name` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -132,13 +132,13 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Single server for development** -- One NATS server with JetStream on by default, the nats-box pod for the `nats` CLI, and no authentication (any in-cluster client connects). Fast to provision. Start from the **Dev preset**.
+**Single server for development** — One NATS server with JetStream on by default, the nats-box pod for the `nats` CLI, and no authentication (any in-cluster client connects). Fast to provision. Start from the **Dev preset**.
 
-**Clustered for production** -- Three servers with RAFT-based JetStream placement, sized file stores, least-privilege authenticated users with module-generated passwords, and the Prometheus exporter scraped by an operator PodMonitor. Start from the **Production preset**.
+**Clustered for production** — Three servers with RAFT-based JetStream placement, sized file stores, least-privilege authenticated users with module-generated passwords, and the Prometheus exporter scraped by an operator PodMonitor. Start from the **Production preset**.
 
 ## Works With
 
-- [**Kubernetes Namespace**](/infra-catalog/kubernetes-namespace) -- provides the namespace for the NATS deployment
-- [**Kubernetes StorageClass**](/infra-catalog/kubernetes-storage-class) -- backs the JetStream volumes with provisioned-IOPS storage
-- [**Cert Manager Certificate**](/infra-catalog/kubernetes-certificate) -- issues the TLS Secret for the client listener, with rotation handled by cert-manager
-- [**kube-prometheus-stack**](/infra-catalog/kubernetes-kube-prometheus-stack) -- provides the Prometheus Operator that scrapes the exporter's PodMonitor
+- [**Kubernetes Namespace**](/infra-catalog/kubernetes-namespace) — provides the namespace for the NATS deployment
+- [**Kubernetes StorageClass**](/infra-catalog/kubernetes-storage-class) — backs the JetStream volumes with provisioned-IOPS storage
+- [**Cert Manager Certificate**](/infra-catalog/kubernetes-certificate) — issues the TLS Secret for the client listener, with rotation handled by cert-manager
+- [**kube-prometheus-stack**](/infra-catalog/kubernetes-kube-prometheus-stack) — provides the Prometheus Operator that scrapes the exporter's PodMonitor

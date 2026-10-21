@@ -1,20 +1,20 @@
 # GCP GKE Fleet Membership
 
-Brings an existing GKE cluster into a fleet so team scopes and fleet features can use it -- the explicit registration for clusters that did not join the fleet when they were created.
+Brings an existing GKE cluster into a fleet so team scopes and fleet features can use it — the explicit registration for clusters that did not join the fleet when they were created.
 
 ## What Gets Created
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **API enablement** -- the Fleet API on the fleet host project
-- **Membership** -- the cluster's registration with the fleet
+- **API enablement** — the Fleet API on the fleet host project
+- **Membership** — the cluster's registration with the fleet
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **GCP Provider Connection** -- an active connection in the Connect module with fleet admin permissions, and read access to the cluster, on the fleet host project. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
+- **GCP Provider Connection** — an active connection in the Connect module with fleet admin permissions, and read access to the cluster, on the fleet host project. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
 
 ## Deploy
 
@@ -57,22 +57,22 @@ Reference the fleet's `status.outputs.project_id` from `projectId` and the clust
 
 These are the most important decisions when configuring a membership. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Which path** -- use this block only for clusters that did not set `fleetProject` at creation.
+**Which path** — use this block only for clusters that did not set `fleetProject` at creation.
 
-**Fleet Workload Identity** -- set `issuer` so the cluster's workloads use fleet identities.
+**Fleet Workload Identity** — set `issuer` so the cluster's workloads use fleet identities.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **GcpGkeFleet** | `projectId` | `status.outputs.project_id` |
-| **GcpGkeCluster** | `gkeCluster` | `status.outputs.cluster_id` |
+| **GCP GKE Fleet** | `projectId` | `status.outputs.project_id` |
+| **GCP GKE Cluster** | `gkeCluster` | `status.outputs.cluster_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -84,12 +84,12 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Register a cluster** -- start from the **Register a GKE Cluster** preset.
+**Register a cluster** — start from the **Register a GKE Cluster** preset.
 
-**Cross-project with Workload Identity** -- start from the **With Fleet Workload Identity** preset.
+**Cross-project with Workload Identity** — start from the **With Fleet Workload Identity** preset.
 
 ## Works With
 
-- [**GCP GKE Fleet**](/infra-catalog/gcp-gke-fleet) -- the fleet the cluster joins
-- [**GCP GKE Cluster**](/infra-catalog/gcp-gke-cluster) -- the cluster to register
-- [**GCP GKE Fleet Scope**](/infra-catalog/gcp-gke-fleet-scope) -- give the cluster to a team
+- [**GCP GKE Fleet**](/infra-catalog/gcp-gke-fleet) — the fleet the cluster joins
+- [**GCP GKE Cluster**](/infra-catalog/gcp-gke-cluster) — the cluster to register
+- [**GCP GKE Fleet Scope**](/infra-catalog/gcp-gke-fleet-scope) — give the cluster to a team

@@ -96,13 +96,13 @@ These are the most important decisions when configuring an AI Gateway. Explore t
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **CloudflareSecretsStore** (optional) | `storeId` | `status.outputs.store_id` |
+| **Cloudflare Secrets Store** (optional) | `storeId` | `status.outputs.store_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

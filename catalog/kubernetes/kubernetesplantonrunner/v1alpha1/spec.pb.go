@@ -29,7 +29,7 @@ const (
 // **KubernetesPlantonRunnerSpec** declares a standing Planton runner on a
 // Kubernetes cluster — an always-on worker that receives deploy operations
 // from the Planton control plane and executes them from INSIDE the
-// cluster's network. The module installs the official `planton-runner`
+// cluster's network. The module installs Planton's `planton-runner`
 // Helm chart (OCI, ghcr.io/plantonhq/charts) as a real Helm release, so
 // the deployed runner is byte-identical to a hand-installed one.
 //
@@ -97,14 +97,14 @@ type KubernetesPlantonRunnerSpec struct {
 	// endpoints) arrives in the join response.
 	ControlPlaneEndpoint string `protobuf:"bytes,5,opt,name=control_plane_endpoint,json=controlPlaneEndpoint,proto3" json:"control_plane_endpoint,omitempty"`
 	// *
-	// The runner build to deploy: an image tag of the official runner
+	// The runner build to deploy: an image tag of Planton's runner
 	// container image. "latest" tracks the newest release; pin a specific
 	// version tag for change control.
 	RunnerVersion *string `protobuf:"bytes,6,opt,name=runner_version,json=runnerVersion,proto3,oneof" json:"runner_version,omitempty"`
 	// *
 	// The container image repository the runner is pulled from. Override
-	// only for air-gapped or mirrored registries hosting a copy of the
-	// official image; the digest-identical mirror is your responsibility.
+	// only for air-gapped or mirrored registries hosting a copy of
+	// Planton's runner image; the digest-identical mirror is your responsibility.
 	ImageRepository *string `protobuf:"bytes,7,opt,name=image_repository,json=imageRepository,proto3,oneof" json:"image_repository,omitempty"`
 	// *
 	// The planton-runner chart version to install. Defaults to the version

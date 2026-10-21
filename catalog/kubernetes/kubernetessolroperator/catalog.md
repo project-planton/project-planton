@@ -1,6 +1,6 @@
 # Apache Solr Operator
 
-Installs the Apache Solr Operator — the Apache Solr project's own operator for running SolrCloud on Kubernetes — from the official `solr-operator` Helm chart. The operator reconciles `SolrCloud` custom resources (declared with **Apache Solr**) into running Solr clusters with managed rolling updates, scaling with replica movement, and backup repositories.
+Installs the Apache Solr Operator — the Apache Solr project's own operator for running SolrCloud on Kubernetes — from the official solr-operator Helm chart. The operator reconciles `SolrCloud` custom resources (declared with **Apache Solr**) into running Solr clusters with managed rolling updates, scaling with replica movement, and backup repositories.
 
 This kind installs and configures the **engine**. Solr clusters themselves are declared with **Apache Solr** resources — one per cluster — which this operator reconciles.
 
@@ -86,15 +86,15 @@ These are the most important decisions when configuring an Apache Solr Operator 
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **KubernetesNamespace** | `namespace` | `spec.name` |
-| **KubernetesSecret** | `mtls.clientCertSecret` | `metadata.name` |
-| **KubernetesSecret** | `mtls.caCertSecret` | `metadata.name` |
+| **Kubernetes Namespace** | `namespace` | `spec.name` |
+| **Kubernetes Secret** | `mtls.clientCertSecret` | `metadata.name` |
+| **Kubernetes Secret** | `mtls.caCertSecret` | `metadata.name` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

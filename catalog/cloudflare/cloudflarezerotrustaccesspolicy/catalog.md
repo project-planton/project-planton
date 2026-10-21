@@ -6,19 +6,19 @@ Deploys a reusable Cloudflare Zero Trust Access policy: a decision (allow / deny
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **Access Policy** -- a reusable policy with a decision, three rule lists (`include`/`exclude`/`require`) of the 26 Cloudflare rule criteria, an optional session duration, approval workflow, browser-isolation and purpose-justification flags, RDP connection rules, and per-policy MFA
+- **Access Policy** — a reusable policy with a decision, three rule lists (`include`/`exclude`/`require`) of the 26 Cloudflare rule criteria, an optional session duration, approval workflow, browser-isolation and purpose-justification flags, RDP connection rules, and per-policy MFA
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **Cloudflare Provider Connection** -- an active connection in the Connect module with a Cloudflare API token that has Access (Zero Trust) edit permission. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline API token authentication.
+- **Cloudflare Provider Connection** — an active connection in the Connect module with a Cloudflare API token that has Access (Zero Trust) edit permission. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline API token authentication.
 
 ### Cloudflare Account
 
-- **Zero Trust enabled** -- the account must have Cloudflare Zero Trust (Access) set up.
-- **Access groups (optional)** -- the `group` rule references a CloudflareZeroTrustAccessGroup; create one first (or reference an existing group ID) to reuse membership.
+- **Zero Trust enabled** — the account must have Cloudflare Zero Trust (Access) set up.
+- **Access groups (optional)** — the `group` rule references a Cloudflare Zero Trust Access Group; create one first (or reference an existing group ID) to reuse membership.
 
 ## Deploy
 
@@ -77,43 +77,43 @@ The InfraPipeline resolves the dependency graph, deploys the group and policy fi
 
 These are the most important decisions when configuring a policy. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Decision** -- What happens when the rules match: `allow` grants, `deny` blocks, `non_identity` permits service tokens / mTLS without a user, and `bypass` skips Access entirely (e.g. health checks). Bypass removes enforcement -- use it only for unauthenticated paths.
+**Decision** — What happens when the rules match: `allow` grants, `deny` blocks, `non_identity` permits service tokens / mTLS without a user, and `bypass` skips Access entirely (e.g. health checks). Bypass removes enforcement — use it only for unauthenticated paths.
 
-**Include / Exclude / Require rules** -- The same 26-criterion rule model as Access groups: include is an OR (at least one required), exclude is a NOT (wins over include), require is an AND.
+**Include / Exclude / Require rules** — The same 26-criterion rule model as Access groups: include is an OR (at least one required), exclude is a NOT (wins over include), require is an AND.
 
-**Session duration** -- How long a session is valid before re-authentication (e.g. `30m`, `24h`); `0s` forces auth on every request. Defaults to 24h.
+**Session duration** — How long a session is valid before re-authentication (e.g. `30m`, `24h`); `0s` forces auth on every request. Defaults to 24h.
 
-**Governance** -- Optional approval workflow (one or more approval groups, each needing a number of approvals), browser-isolation enforcement, and a purpose-justification prompt.
+**Governance** — Optional approval workflow (one or more approval groups, each needing a number of approvals), browser-isolation enforcement, and a purpose-justification prompt.
 
-**Connection & MFA** -- Optional RDP clipboard constraints (text-only or blocked) for infrastructure targets, and per-policy MFA (allowed authenticators, disable, re-prompt interval).
+**Connection & MFA** — Optional RDP clipboard constraints (text-only or blocked) for infrastructure targets, and per-policy MFA (allowed authenticators, disable, re-prompt interval).
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **CloudflareZeroTrustAccessGroup** | `include[].group.id` | `status.outputs.group_id` |
+| **Cloudflare Zero Trust Access Group** | `include[].group.id` | `status.outputs.group_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
-| `policy_id` | The Cloudflare-assigned identifier of the policy | Referenced by a CloudflareZeroTrustAccessApplication's policies list |
+| `policy_id` | The Cloudflare-assigned identifier of the policy | Referenced by a Cloudflare Zero Trust Access Application's policies list |
 
 ## Common Patterns
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Allow a team** -- decision `allow`, include a `group` rule referencing an Access group. Start from the **Allow staff** preset.
+**Allow a team** — decision `allow`, include a `group` rule referencing an Access group. Start from the **Allow staff** preset.
 
-**Break-glass with approval** -- decision `allow`, require approval with a security approval group and per-policy MFA. Start from the **Admins with approval and MFA** preset.
+**Break-glass with approval** — decision `allow`, require approval with a security approval group and per-policy MFA. Start from the **Admins with approval and MFA** preset.
 
-**Health-check bypass** -- decision `bypass`, include an IP rule for your monitoring range.
+**Health-check bypass** — decision `bypass`, include an IP rule for your monitoring range.
 
 ## Works With
 
-- [**Cloudflare Zero Trust Access Group**](/infra-catalog/cloudflare-zero-trust-access-group) -- referenced by this policy's `group` rule
-- [**Cloudflare Zero Trust Access Application**](/infra-catalog/cloudflare-zero-trust-access-application) -- attaches this policy via its policies list
+- [**Cloudflare Zero Trust Access Group**](/infra-catalog/cloudflare-zero-trust-access-group) — referenced by this policy's `group` rule
+- [**Cloudflare Zero Trust Access Application**](/infra-catalog/cloudflare-zero-trust-access-application) — attaches this policy via its policies list

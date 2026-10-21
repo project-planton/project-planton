@@ -1,5 +1,5 @@
 # Least-privilege permissions the IaC runner's Azure principal needs to
-# provision, update, and destroy this component with the official modules.
+# provision, update, and destroy this component with the platform modules.
 # Every entry is `derived` (static analysis of the module sources, cited in
 # notes) until the live capture lane upgrades it to `proven`. Schema:
 # iac/catalogkindpermissions/v1.
@@ -16,4 +16,5 @@ spec:
           - Microsoft.EventHub/namespaces/schemagroups/write
           - Microsoft.EventHub/namespaces/schemagroups/delete
         provenance: derived
+        privilege: ordinary
         notes: Covers azurerm_eventhub_namespace_schema_group -- create under the namespace (namespace_id), read/refresh, and destroy; there are no in-place updates because every field is ForceNew. Azure's operation inventory spells the segment lowercase (schemagroups).

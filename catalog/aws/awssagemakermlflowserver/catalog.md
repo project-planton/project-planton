@@ -1,6 +1,6 @@
 # AWS SageMaker MLflow Server
 
-Deploys an Amazon SageMaker MLflow tracking server — the classic managed MLflow deployment for experiments, runs, and model tracking, sized `Small`, `Medium`, or `Large` and billed hourly from the moment it reaches Created. Artifacts land in your S3 bucket through the server's IAM role; size resizes in place, while the role and the MLflow version pin are replace-on-change. Lifecycle operations are slow by design — creation and deletion each run roughly 17–25 minutes — so plan replacements as half-hour-plus events. For per-use billing with no idle charge, the serverless successor is the AWS SageMaker MLflow App.
+Deploys an Amazon SageMaker MLflow tracking server — the classic managed MLflow deployment for experiments, runs, and model tracking, sized Small, Medium, or Large and billed hourly from the moment it reaches Created. Artifacts land in your S3 bucket through the server's IAM role; size resizes in place, while the role and the MLflow version pin are replace-on-change. Lifecycle operations are slow by design — creation and deletion each run roughly 17–25 minutes — so plan replacements as half-hour-plus events. For per-use billing with no idle charge, the serverless successor is the AWS SageMaker MLflow App.
 
 ## What Gets Created
 
@@ -55,7 +55,7 @@ This creates a `Small` tracking server (up to ~25 users) storing artifacts under
 
 ### InfraChart
 
-When the server deploys alongside its artifact-store role in one chart, wire the role reference via ValueFromRef:
+When the server deploys alongside its artifact-store role in one chart, wire the role reference:
 
 ```yaml
 spec:
@@ -75,7 +75,7 @@ The InfraPipeline resolves the dependency graph, creates the role first, then th
 
 These are the most important decisions when configuring a tracking server. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Server or serverless app** — This server bills hourly around the clock whether anyone logs a run or not, and every lifecycle operation takes ~17–25 minutes. If the team tracks intermittently, the serverless AwsSagemakerMlflowApp — per-use billing, nothing while idle — is the better fit. Choose the server for sustained heavy tracking where dedicated capacity earns its meter.
+**Server or serverless app** — This server bills hourly around the clock whether anyone logs a run or not, and every lifecycle operation takes ~17–25 minutes. If the team tracks intermittently, the serverless AWS SageMaker MLflow App — per-use billing, nothing while idle — is the better fit. Choose the server for sustained heavy tracking where dedicated capacity earns its meter.
 
 **Start Small; resize in place** — `size` sets the hourly rate (`Small` ~25 users, `Medium` ~50, `Large` ~100) and upgrades are a maintenance-window style in-place operation, not a replacement. There is no penalty for starting at Small and growing.
 
@@ -91,13 +91,13 @@ These are the most important decisions when configuring a tracking server. Explo
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AwsIamRole** | `roleArn` | `status.outputs.role_arn` |
+| **AWS IAM Role** | `roleArn` | `status.outputs.role_arn` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

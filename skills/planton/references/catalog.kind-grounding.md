@@ -139,7 +139,7 @@ no network? The explain report alone is sufficient for correct composition.
    platform-tools arm this fetch is not "deeper" grounding — it IS the
    grounding path (the explain report's equal, rendered from the same
    schemas). Fetch it into your workspace and read it there.
-2. **Official presets** — worked, valid manifests for common shapes:
+2. **Platform presets** — worked, valid manifests for common shapes:
    `catalog/<provider>/<kind>/presets/` (at the kind root).
    Read a preset when you need a realistic starting point for a kind you
    have not authored before.

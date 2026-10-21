@@ -3,8 +3,6 @@ kind: InfraChart
 metadata:
   name: GCP Cloud Run HTTPS Load Balancer
 spec:
-  selector:
-    kind: platform
   description: >-
     A production HTTPS front door for Cloud Run: a global external load
     balancer with a static IP, a Google-managed certificate, a serverless

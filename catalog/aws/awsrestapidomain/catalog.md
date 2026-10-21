@@ -1,6 +1,6 @@
 # AWS REST API Domain
 
-Deploys an API Gateway custom domain for REST APIs — callers hit `https://api.example.com/orders` instead of the execute-api endpoint, TLS terminates on your certificate, and base-path mappings fan the hostname's paths out across APIs and stages. A domain outlives any one API and maps many, which is why it is its own kind rather than a field on the REST API. The bundle covers the domain, its base-path mappings, and — for PRIVATE domains — the VPC-endpoint access associations; DNS stays outside, composed through the alias-target outputs.
+Deploys an API Gateway custom domain for REST APIs — callers hit https://api.example.com/orders instead of the execute-api endpoint, TLS terminates on your certificate, and base-path mappings fan the hostname's paths out across APIs and stages. A domain outlives any one API and maps many, which is why it is its own kind rather than a field on the REST API. The bundle covers the domain, its base-path mappings, and — for PRIVATE domains — the VPC-endpoint access associations; DNS stays outside, composed through the alias-target outputs.
 
 ## What Gets Created
 
@@ -69,7 +69,7 @@ This creates a REGIONAL custom domain on your ACM certificate with `https://api.
 
 ### InfraChart
 
-When the domain deploys alongside the API it fronts in one chart, wire the API reference via ValueFromRef:
+When the domain deploys alongside the API it fronts in one chart, wire the API reference:
 
 ```yaml
 spec:
@@ -118,16 +118,16 @@ These are the most important decisions when configuring a custom domain. Explore
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AwsCertManagerCert** | `certificateArn`, `ownershipVerificationCertificateArn` | `status.outputs.cert_arn` |
-| **AwsRestApiGateway** | `basePathMappings[].restApiId` | `status.outputs.rest_api_id` |
-| **AwsRestApiGateway** | `basePathMappings[].stageName` | `status.outputs.stage_name` |
-| **AwsVpcEndpoint** | `accessAssociations[].vpcEndpointId` | `status.outputs.vpc_endpoint_id` |
+| **AWS ACM Certificate** | `certificateArn`, `ownershipVerificationCertificateArn` | `status.outputs.cert_arn` |
+| **AWS REST API Gateway** | `basePathMappings[].restApiId` | `status.outputs.rest_api_id` |
+| **AWS REST API Gateway** | `basePathMappings[].stageName` | `status.outputs.stage_name` |
+| **AWS VPC Endpoint** | `accessAssociations[].vpcEndpointId` | `status.outputs.vpc_endpoint_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

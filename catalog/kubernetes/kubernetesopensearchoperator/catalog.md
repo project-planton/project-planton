@@ -1,6 +1,6 @@
 # OpenSearch Operator
 
-Installs the OpenSearch Kubernetes Operator — the opensearch-project's operator for running OpenSearch (the Apache-2.0 search and analytics engine) on Kubernetes — from the official `opensearch-operator` Helm chart. The operator reconciles `OpenSearchCluster` custom resources (declared with **OpenSearch**) into running search clusters with managed TLS, security bootstrap, safe rolling upgrades, and OpenSearch Dashboards.
+Installs the OpenSearch Kubernetes Operator — the opensearch-project's operator for running OpenSearch (the Apache-2.0 search and analytics engine) on Kubernetes — from the official opensearch-operator Helm chart. The operator reconciles `OpenSearchCluster` custom resources (declared with **OpenSearch**) into running search clusters with managed TLS, security bootstrap, safe rolling upgrades, and OpenSearch Dashboards.
 
 This kind installs and configures the **engine**. Search clusters themselves are declared with OpenSearch resources — one per cluster — which this operator reconciles.
 
@@ -55,7 +55,7 @@ This installs the stable operator with a cluster-wide watch, module-owned CRDs, 
 
 ### InfraChart
 
-When deploying as part of a multi-resource environment, use ValueFromRef to compose the operator with a managed namespace:
+When deploying as part of a multi-resource environment, use references to compose the operator with a managed namespace:
 
 ```yaml
 spec:
@@ -85,13 +85,13 @@ These are the most important decisions when configuring an OpenSearch Operator i
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **KubernetesNamespace** | `namespace` | `spec.name` |
+| **Kubernetes Namespace** | `namespace` | `spec.name` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

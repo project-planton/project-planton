@@ -1,5 +1,5 @@
 # Least-privilege permissions the IaC runner's GCP principal needs to
-# provision, update, and destroy this component with the official modules.
+# provision, update, and destroy this component with the platform modules.
 # Every entry is `derived` (static analysis of the module sources, cited in
 # notes) until the live capture lane upgrades it to `proven`. Schema:
 # iac/catalogkindpermissions/v1.
@@ -16,6 +16,8 @@ spec:
           - serviceusage.services.get
           - serviceusage.services.list
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers google_project_service enabling compute.googleapis.com on the target project. disable_on_destroy is false in the module, so the disable permission is never needed.
       - purpose: ManageRegionNetworkEndpointGroup
         permissions:
@@ -24,12 +26,16 @@ spec:
           - compute.regionNetworkEndpointGroups.delete
           - compute.regionOperations.get
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers google_compute_region_network_endpoint_group -- create, read/refresh, destroy, and polling the regional operation every mutation returns. Every field is immutable (ForceNew), so no update-shaped permission exists to grant; the attachNetworkEndpoints/detachNetworkEndpoints verbs in this family are for endpoint-managed NEG types the module never creates.
       - purpose: UseReferencedNetwork
         permissions:
           - compute.networks.use
           - compute.subnetworks.use
         provenance: derived
+        reach: target
+        privilege: ordinary
         condition:
           spec_field_set: network
         notes: Service-side checks, not module API calls -- GCP's regionNetworkEndpointGroups.insert reference documents compute.networks.use on the referenced network and compute.subnetworks.use on the referenced subnetwork. network applies to PRIVATE_SERVICE_CONNECT, INTERNET, and GCE_VM_IP_PORTMAP NEGs; SERVERLESS NEGs (the spec default, preset 01) reference no VPC and need neither.
@@ -38,6 +44,8 @@ spec:
           - compute.networks.use
           - compute.subnetworks.use
         provenance: derived
+        reach: target
+        privilege: ordinary
         condition:
           spec_field_set: subnetwork
         notes: Service-side checks, not module API calls -- GCP's regionNetworkEndpointGroups.insert reference documents compute.networks.use on the referenced network and compute.subnetworks.use on the referenced subnetwork. subnetwork applies to PRIVATE_SERVICE_CONNECT and GCE_VM_IP_PORTMAP NEGs; SERVERLESS NEGs (the spec default, preset 01) reference no VPC and need neither.

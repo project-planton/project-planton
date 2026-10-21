@@ -6,26 +6,26 @@ Deploys an HTTP API on Amazon API Gateway (v2) with route-to-integration wiring,
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **HTTP API** -- an API Gateway v2 HTTP API with optional CORS settings, description, version label, IP address type (IPv4 or dual-stack), and default-endpoint control
-- **Stage** -- a deployment stage (defaults to `$default` with auto-deploy enabled) with optional access logging, throttling, detailed CloudWatch metrics, per-route setting overrides, and stage variables
-- **Integrations** -- backend targets for each route: Lambda proxy, HTTP proxy (public, or private through a VPC link), or first-class AWS service actions (SQS, EventBridge, Step Functions, Kinesis, AppConfig) with no Lambda glue; routes sharing the same configuration are automatically deduplicated into a single integration resource
-- **Routes** -- request pattern mappings (e.g., `GET /users`, `$default`) wired to their backend integrations with optional authorization and OpenAPI operation names
-- **Authorizers** -- created only when authorizers are defined; supports JWT authorizers (Cognito, Auth0, OIDC) and Lambda REQUEST authorizers
-- **AWS Tags** -- resource metadata tags (organization, environment, resource kind, resource ID) applied automatically for tracking and governance
+- **HTTP API** — an API Gateway v2 HTTP API with optional CORS settings, description, version label, IP address type (IPv4 or dual-stack), and default-endpoint control
+- **Stage** — a deployment stage (defaults to `$default` with auto-deploy enabled) with optional access logging, throttling, detailed CloudWatch metrics, per-route setting overrides, and stage variables
+- **Integrations** — backend targets for each route: Lambda proxy, HTTP proxy (public, or private through a VPC link), or first-class AWS service actions (SQS, EventBridge, Step Functions, Kinesis, AppConfig) with no Lambda glue; routes sharing the same configuration are automatically deduplicated into a single integration resource
+- **Routes** — request pattern mappings (e.g., `GET /users`, `$default`) wired to their backend integrations with optional authorization and OpenAPI operation names
+- **Authorizers** — created only when authorizers are defined; supports JWT authorizers (Cognito, Auth0, OIDC) and Lambda REQUEST authorizers
+- **AWS Tags** — resource metadata tags (organization, environment, resource kind, resource ID) applied automatically for tracking and governance
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **AWS Provider Connection** -- an active connection in the Connect module with credentials for the target AWS account. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline credentials or cross-account trust authentication modes.
+- **AWS Provider Connection** — an active connection in the Connect module with credentials for the target AWS account. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline credentials or cross-account trust authentication modes.
 
 ### AWS Account
 
 - **A Lambda function or HTTP endpoint** for each route integration. For Lambda proxy integrations (`AWS_PROXY`), provide the function ARN. For HTTP proxy integrations (`HTTP_PROXY`), provide the upstream URL.
-- **A CloudWatch Log Group** (optional) for access logging. Provide the ARN directly or reference an AwsCloudwatchLogGroup Infra Component via ValueFromRef.
-- **A Lambda authorizer function** (optional) for REQUEST-type authorizers. Provide the function ARN directly or reference an AwsLambda Infra Component via ValueFromRef.
-- **An IAM role** (optional) for Lambda authorizer invocation. Required when using REQUEST authorizers. Provide the ARN directly or reference an AwsIamRole Infra Component via ValueFromRef.
+- **A CloudWatch Log Group** (optional) for access logging. Provide the ARN directly or reference an AWS CloudWatch Log Group Infra Component.
+- **A Lambda authorizer function** (optional) for REQUEST-type authorizers. Provide the function ARN directly or reference an AWS Lambda Infra Component.
+- **An IAM role** (optional) for Lambda authorizer invocation. Required when using REQUEST authorizers. Provide the ARN directly or reference an AWS IAM Role Infra Component.
 
 ## Deploy
 
@@ -62,7 +62,7 @@ This creates an HTTP API with a single catch-all route forwarding all requests t
 
 ### InfraChart
 
-When deploying as part of a multi-resource environment, use ValueFromRef to wire authorizers and access logging to resources deployed in the same InfraPipeline:
+When deploying as part of a multi-resource environment, use references to wire authorizers and access logging to resources deployed in the same InfraPipeline:
 
 ```yaml
 spec:
@@ -95,38 +95,38 @@ The InfraPipeline resolves the dependency graph, deploys the log group, Lambda f
 
 These are the most important decisions when configuring an HTTP API Gateway. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Route design** -- Each route maps a request pattern (`GET /users`, `POST /orders/{id}`, `$default`) to a backend integration. Use specific routes for API Gateway-level routing, or a single `$default` catch-all to delegate routing to the Lambda function. At least one route is required.
+**Route design** — Each route maps a request pattern (`GET /users`, `POST /orders/{id}`, `$default`) to a backend integration. Use specific routes for API Gateway-level routing, or a single `$default` catch-all to delegate routing to the Lambda function. At least one route is required.
 
-**Integration type** -- `AWS_PROXY` forwards requests to a Lambda function as a proxy event (the `payloadFormatVersion` defaults to `2.0`; `1.0` is legacy and the only format for non-Lambda backends). `HTTP_PROXY` forwards requests to an upstream HTTP endpoint. Setting `integrationSubtype` (e.g. `SQS-SendMessage`, `StepFunctions-StartExecution`) turns an `AWS_PROXY` integration into a direct AWS service action: the action's parameters go in `requestParameters`, `credentialsArn` names the IAM role API Gateway assumes, and no `integrationUri` is set.
+**Integration type** — `AWS_PROXY` forwards requests to a Lambda function as a proxy event (the `payloadFormatVersion` defaults to `2.0`; `1.0` is legacy and the only format for non-Lambda backends). `HTTP_PROXY` forwards requests to an upstream HTTP endpoint. Setting `integrationSubtype` (e.g. `SQS-SendMessage`, `StepFunctions-StartExecution`) turns an `AWS_PROXY` integration into a direct AWS service action: the action's parameters go in `requestParameters`, `credentialsArn` names the IAM role API Gateway assumes, and no `integrationUri` is set.
 
-**Private integrations** -- Set `connectionType: VPC_LINK` with `connectionId` referencing an AwsHttpApiVpcLink to reach a private ALB, NLB, or Cloud Map service inside a VPC over `HTTP_PROXY`. `tlsServerNameToVerify` overrides certificate verification (SNI) when the private target terminates TLS with a public-domain certificate.
+**Private integrations** — Set `connectionType: VPC_LINK` with `connectionId` referencing an AWS HTTP API VPC Link to reach a private ALB, NLB, or Cloud Map service inside a VPC over `HTTP_PROXY`. `tlsServerNameToVerify` overrides certificate verification (SNI) when the private target terminates TLS with a public-domain certificate.
 
-**Authorization** -- Routes support `NONE` (public), `JWT` (Cognito, Auth0, or any OIDC provider), `AWS_IAM` (SigV4), and `CUSTOM` (a Lambda REQUEST authorizer decides per call). JWT authorizers validate tokens at the edge without invoking Lambda; their `issuer` can reference an AwsCognitoUserPool and each audience an AwsCognitoUserPoolClient. Routes bind authorizers by name, and the authorization type must match the authorizer's kind (JWT routes bind JWT authorizers, CUSTOM routes bind REQUEST authorizers).
+**Authorization** — Routes support `NONE` (public), `JWT` (Cognito, Auth0, or any OIDC provider), `AWS_IAM` (SigV4), and `CUSTOM` (a Lambda REQUEST authorizer decides per call). JWT authorizers validate tokens at the edge without invoking Lambda; their `issuer` can reference an AWS Cognito User Pool and each audience an AWS Cognito User Pool Client. Routes bind authorizers by name, and the authorization type must match the authorizer's kind (JWT routes bind JWT authorizers, CUSTOM routes bind REQUEST authorizers).
 
-**CORS** -- Configure `corsConfiguration` when the API is called from web browsers on a different domain. Specify allowed origins, methods, headers, and credential support. Omit entirely for server-to-server APIs.
+**CORS** — Configure `corsConfiguration` when the API is called from web browsers on a different domain. Specify allowed origins, methods, headers, and credential support. Omit entirely for server-to-server APIs.
 
-**Throttling and metrics** -- Set `stage.defaultThrottle` with `burstLimit` and `rateLimit` to protect backend services from traffic spikes, and `stage.detailedMetricsEnabled` for per-route CloudWatch dimensions. `stage.routeSettings` overrides either per route (e.g. a lower rate on an expensive search route) — each entry must target a declared route key.
+**Throttling and metrics** — Set `stage.defaultThrottle` with `burstLimit` and `rateLimit` to protect backend services from traffic spikes, and `stage.detailedMetricsEnabled` for per-route CloudWatch dimensions. `stage.routeSettings` overrides either per route (e.g. a lower rate on an expensive search route) — each entry must target a declared route key.
 
-**Response shaping** -- `responseParameters` on an integration transforms what callers receive per backend status code (overwrite the status, inject or strip headers); `requestParameters` on proxy integrations applies the same mapping instructions to the upstream request.
+**Response shaping** — `responseParameters` on an integration transforms what callers receive per backend status code (overwrite the status, inject or strip headers); `requestParameters` on proxy integrations applies the same mapping instructions to the upstream request.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AwsLambda** | `routes[].integration.integrationUri` | `status.outputs.function_arn` |
-| **AwsHttpApiVpcLink** (optional) | `routes[].integration.connectionId` | `status.outputs.vpc_link_id` |
-| **AwsIamRole** (optional) | `routes[].integration.credentialsArn` | `status.outputs.role_arn` |
-| **AwsCloudwatchLogGroup** (optional) | `stage.accessLog.destinationArn` | `status.outputs.log_group_arn` |
-| **AwsLambda** (optional) | `authorizers[].authorizerUri` | `status.outputs.function_arn` |
-| **AwsIamRole** (optional) | `authorizers[].authorizerCredentialsArn` | `status.outputs.role_arn` |
-| **AwsCognitoUserPool** (optional) | `authorizers[].jwtConfiguration.issuer` | `status.outputs.issuer` |
-| **AwsCognitoUserPoolClient** (optional) | `authorizers[].jwtConfiguration.audiences[]` | `status.outputs.client_id` |
+| **AWS Lambda** | `routes[].integration.integrationUri` | `status.outputs.function_arn` |
+| **AWS HTTP API VPC Link** (optional) | `routes[].integration.connectionId` | `status.outputs.vpc_link_id` |
+| **AWS IAM Role** (optional) | `routes[].integration.credentialsArn` | `status.outputs.role_arn` |
+| **AWS CloudWatch Log Group** (optional) | `stage.accessLog.destinationArn` | `status.outputs.log_group_arn` |
+| **AWS Lambda** (optional) | `authorizers[].authorizerUri` | `status.outputs.function_arn` |
+| **AWS IAM Role** (optional) | `authorizers[].authorizerCredentialsArn` | `status.outputs.role_arn` |
+| **AWS Cognito User Pool** (optional) | `authorizers[].jwtConfiguration.issuer` | `status.outputs.issuer` |
+| **AWS Cognito User Pool Client** (optional) | `authorizers[].jwtConfiguration.audiences[]` | `status.outputs.client_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -141,18 +141,18 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Single Lambda catch-all** -- A `$default` route forwarding all requests to one Lambda function. The Lambda handles routing internally. Ideal for prototyping or frameworks like Express.js or FastAPI running in Lambda. Start from the **Default Route to Lambda** preset.
+**Single Lambda catch-all** — A `$default` route forwarding all requests to one Lambda function. The Lambda handles routing internally. Ideal for prototyping or frameworks like Express.js or FastAPI running in Lambda. Start from the **Default Route to Lambda** preset.
 
-**Multi-route REST API** -- Separate routes per HTTP method and path with CORS enabled for browser access. Each route targets a dedicated Lambda function. Suited for production APIs with clear endpoint separation. Start from the **Multi-Route Lambda API with CORS** preset.
+**Multi-route REST API** — Separate routes per HTTP method and path with CORS enabled for browser access. Each route targets a dedicated Lambda function. Suited for production APIs with clear endpoint separation. Start from the **Multi-Route Lambda API with CORS** preset.
 
-**JWT-protected API** -- Routes secured with a JWT authorizer validating tokens from Cognito, Auth0, or any OIDC provider. Mix public and protected routes with OAuth scope requirements. Start from the **JWT Authorized API with Cognito** preset.
+**JWT-protected API** — Routes secured with a JWT authorizer validating tokens from Cognito, Auth0, or any OIDC provider. Mix public and protected routes with OAuth scope requirements. Start from the **JWT Authorized API with Cognito** preset.
 
 ## Works With
 
-- [**AWS Lambda**](/infra-catalog/aws-lambda) -- provides backend functions for route integrations and REQUEST authorizers
-- [**AWS HTTP API VPC Link**](/infra-catalog/aws-http-api-vpc-link) -- provides the network attachment for private integrations to ALB/NLB/Cloud Map targets inside a VPC
-- [**AWS HTTP API Domain**](/infra-catalog/aws-http-api-domain) -- fronts this API with a custom domain; its API mappings reference this API's `api_id` and `stage_name` outputs
-- [**AWS Cognito User Pool**](/infra-catalog/aws-cognito-user-pool) -- provides the JWT issuer for token validation
-- [**AWS Cognito User Pool Client**](/infra-catalog/aws-cognito-user-pool-client) -- provides app client IDs as JWT audiences
-- [**AWS IAM Role**](/infra-catalog/aws-iam-role) -- provides invocation roles for Lambda authorizers and AWS service actions
-- [**AWS CloudWatch Log Group**](/infra-catalog/aws-cloudwatch-log-group) -- provides the destination for API access logs
+- [**AWS Lambda**](/infra-catalog/aws-lambda) — provides backend functions for route integrations and REQUEST authorizers
+- [**AWS HTTP API VPC Link**](/infra-catalog/aws-http-api-vpc-link) — provides the network attachment for private integrations to ALB/NLB/Cloud Map targets inside a VPC
+- [**AWS HTTP API Domain**](/infra-catalog/aws-http-api-domain) — fronts this API with a custom domain; its API mappings reference this API's `api_id` and `stage_name` outputs
+- [**AWS Cognito User Pool**](/infra-catalog/aws-cognito-user-pool) — provides the JWT issuer for token validation
+- [**AWS Cognito User Pool Client**](/infra-catalog/aws-cognito-user-pool-client) — provides app client IDs as JWT audiences
+- [**AWS IAM Role**](/infra-catalog/aws-iam-role) — provides invocation roles for Lambda authorizers and AWS service actions
+- [**AWS CloudWatch Log Group**](/infra-catalog/aws-cloudwatch-log-group) — provides the destination for API access logs

@@ -3,7 +3,7 @@
 // terraform half.
 //
 // The binaries beside this artifact (pulumibinary) serve execution; source
-// serves the flows that need the module's code itself — ejecting an official
+// serves the flows that need the module's code itself — ejecting an platform
 // module into a user-owned copy, and rendering module source without a git
 // clone. Cache layout mirrors the sibling caches:
 // ~/.planton/pulumi/sources/{version}/{kind}/.

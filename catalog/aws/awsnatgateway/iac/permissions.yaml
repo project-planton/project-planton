@@ -1,5 +1,5 @@
 # Least-privilege permissions the IaC runner's AWS principal needs to
-# provision, update, and destroy this component with the official modules.
+# provision, update, and destroy this component with the platform modules.
 # Every entry is `derived` (static analysis of the module sources, cited in
 # notes) until the live capture lane upgrades it to `proven`. Schema:
 # iac/catalogkindpermissions/v1.
@@ -20,6 +20,8 @@ spec:
           - arn:aws:ec2:*:*:natgateway/*
           - arn:aws:ec2:*:*:elastic-ip/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_nat_gateway -- the module's only resource. Elastic IP association happens inside CreateNatGateway (no separate AssociateAddress call), so the create also needs the referenced allocation's elastic-ip ARN in scope.
       - sid: DescribeNatGateways
         actions:
@@ -28,4 +30,6 @@ spec:
         resources:
           - "*"
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Read-side of aws_nat_gateway during plan/refresh, plus DescribeAvailabilityZones for regional availability_mode -- the one permission the kind's own docs call out explicitly. EC2 Describe APIs support no resource-level scoping, so the wildcard is the narrowest possible scope.

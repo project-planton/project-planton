@@ -1,5 +1,5 @@
 # Least-privilege permissions the IaC runner's Azure principal needs to
-# provision, update, and destroy this component with the official modules.
+# provision, update, and destroy this component with the platform modules.
 # Every entry is `derived` (static analysis of the module sources, cited in
 # notes) until the live capture lane upgrades it to `proven`. Schema:
 # iac/catalogkindpermissions/v1.
@@ -16,11 +16,13 @@ spec:
           - Microsoft.Cache/redis/write
           - Microsoft.Cache/redis/delete
         provenance: derived
+        privilege: ordinary
         notes: Covers azurerm_redis_cache (Terraform) and redis.Cache (Pulumi) -- create, read/refresh, in-place updates, and destroy. Action spellings are the official Microsoft.Cache operations; the committed action-inventory snapshot (pkg/iac/actioninventory/azure.yaml) carries the Microsoft.Cache namespace and lists every action here.
       - purpose: ListAccessKeys
         actions:
           - Microsoft.Cache/redis/listKeys/action
         provenance: derived
+        privilege: ordinary
         notes: Both modules export the cache's access keys and connection outputs, and the providers list keys on create and refresh to populate them.
       - purpose: ManageFirewallRules
         actions:
@@ -28,6 +30,7 @@ spec:
           - Microsoft.Cache/redis/firewallRules/write
           - Microsoft.Cache/redis/firewallRules/delete
         provenance: derived
+        privilege: ordinary
         notes: Required only when firewall_rules declares allowlist entries -- azurerm_redis_firewall_rule / redis.FirewallRule manage each range as its own resource.
       - purpose: ManagePatchSchedules
         actions:
@@ -35,9 +38,11 @@ spec:
           - Microsoft.Cache/redis/patchSchedules/write
           - Microsoft.Cache/redis/patchSchedules/delete
         provenance: derived
+        privilege: ordinary
         notes: Required only when patch_schedules declares maintenance windows -- the providers manage the patch_schedule block through the cache's patchSchedules sub-resource API.
       - purpose: JoinInjectedSubnet
         actions:
           - Microsoft.Network/virtualNetworks/subnets/join/action
         provenance: derived
+        privilege: ordinary
         notes: Required only for Premium VNet injection (subnet_id set) -- placing the cache's nodes into the subnet is a SERVICE-side check that demands join on the subnet in the subnet's own scope, which may live in another resource group.

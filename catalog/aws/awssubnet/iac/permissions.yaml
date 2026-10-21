@@ -1,5 +1,5 @@
 # Least-privilege permissions the IaC runner's AWS principal needs to
-# provision, update, and destroy this component with the official modules.
+# provision, update, and destroy this component with the platform modules.
 # Every entry is `derived` (static analysis of the module sources, cited in
 # notes) until the live capture lane upgrades it to `proven`. Schema:
 # iac/catalogkindpermissions/v1.
@@ -24,6 +24,8 @@ spec:
           - arn:aws:ec2:*:*:vpc/*
           - arn:aws:ec2:*:*:ipam-pool/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_subnet / ec2.Subnet -- creation with AZ placement and IPv4/IPv6 addressing (explicit CIDRs or IPAM allocations), the in-place attribute updates (map_public_ip_on_launch, DNS64, resource-name DNS records, hostname type via ModifySubnetAttribute), IPv6 CIDR changes (disassociate + associate), tagging, and deletion. The service reference authorizes CreateSubnet on BOTH the subnet and vpc ARN formats (an under-scoped create denies provisioning), and IPAM-allocated subnets additionally authorize against the ipam-pool ARN.
       - sid: ManageOwnedRouteTable
         actions:
@@ -40,6 +42,8 @@ spec:
           - arn:aws:ec2:*:*:route-table/*
           - arn:aws:ec2:*:*:vpc/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_route_table / ec2.RouteTable, created only when the subnet OWNS its table (inline routes and/or propagating_vgws). Inline route entries reconcile through CreateRoute / ReplaceRoute / DeleteRoute, and VGW propagation toggles through the Enable/DisableVgwRoutePropagation pair -- all authorizing on the route-table ARN. CreateRouteTable, like CreateSubnet, authorizes on both the route-table and vpc formats.
       - sid: AssociateRouteTable
         actions:
@@ -50,12 +54,17 @@ spec:
           - arn:aws:ec2:*:*:route-table/*
           - arn:aws:ec2:*:*:subnet/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_route_table_association / ec2.RouteTableAssociation -- binding the subnet to its owned table or to the external route_table_id, moving the association between tables in place, and unbinding at teardown. Association APIs authorize on both the route-table and subnet ARN formats.
       - sid: DescribeSubnetsAndRouteTables
         actions:
           - ec2:DescribeSubnets
           - ec2:DescribeRouteTables
+          - ec2:DescribeNetworkInterfaces
         resources:
           - "*"
         provenance: derived
-        notes: Read-side during plan/refresh for the subnet, the owned table, and the association state. EC2 Describe APIs support no resource-level scoping (empty Resources lists in the service reference), so the wildcard is the narrowest possible scope.
+        reach: target
+        privilege: ordinary
+        notes: Read-side during plan/refresh for the subnet, the owned table, and the association state. Destroying a subnet first lists the network interfaces left in it (the provider waits out the ones AWS services leave behind before DeleteSubnet), so a destroy is refused without DescribeNetworkInterfaces, observed on a live teardown. EC2 Describe APIs support no resource-level scoping (empty Resources lists in the service reference), so the wildcard is the narrowest possible scope.

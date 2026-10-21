@@ -6,19 +6,19 @@ Deploys a Kubernetes NetworkPolicy — the in-cluster firewall. The policy selec
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **Kubernetes NetworkPolicy** -- a networking/v1 NetworkPolicy in the specified namespace carrying the pod selector, governed directions, and the ingress/egress allow rules (selectors, namespace selectors, and CIDR blocks with carve-outs)
-- **Kubernetes Labels** -- resource metadata labels (resource name, kind, organization, environment) applied automatically for tracking
+- **Kubernetes NetworkPolicy** — a networking/v1 NetworkPolicy in the specified namespace carrying the pod selector, governed directions, and the ingress/egress allow rules (selectors, namespace selectors, and CIDR blocks with carve-outs)
+- **Kubernetes Labels** — resource metadata labels (resource name, kind, organization, environment) applied automatically for tracking
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **Kubernetes Provider Connection** -- an active connection in the Connect module with kubeconfig credentials for the target cluster. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline kubeconfig authentication.
+- **Kubernetes Provider Connection** — an active connection in the Connect module with kubeconfig credentials for the target cluster. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline kubeconfig authentication.
 
 ### Kubernetes Cluster
 
-- **A CNI that enforces NetworkPolicy** -- Calico, Cilium, or a cloud CNI with policy enforcement enabled. On a cluster whose CNI ignores policies (including default kind clusters), the object exists but ALL traffic still flows.
+- **A CNI that enforces NetworkPolicy** — Calico, Cilium, or a cloud CNI with policy enforcement enabled. On a cluster whose CNI ignores policies (including default kind clusters), the object exists but ALL traffic still flows.
 - The target namespace must already exist (the module does not create it).
 
 ## Deploy
@@ -56,7 +56,7 @@ This denies ALL traffic to and from every pod in `backend-services` — the lock
 
 ### InfraChart
 
-When deploying as part of a multi-resource environment, use ValueFromRef to wire the policy to a namespace managed by another Infra Component:
+When deploying as part of a multi-resource environment, use references to wire the policy to a namespace managed by another Infra Component:
 
 ```yaml
 spec:
@@ -78,29 +78,29 @@ The InfraPipeline deploys the namespace first, then applies the policy into it.
 
 These are the most important decisions when configuring a Kubernetes NetworkPolicy. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Selection is the isolation** -- A pod selector with `matchAll: true` (or none at all) selects ALL pods in the namespace (the default-deny building block); labels narrow it to one workload. Every Planton workload stamps the `app` label (set to its name) on its pods, so `matchLabels: {app: checkout}` governs exactly that workload.
+**Selection is the isolation** — A pod selector with `matchAll: true` (or none at all) selects ALL pods in the namespace (the default-deny building block); labels narrow it to one workload. Every Planton workload stamps the `app` label (set to its name) on its pods, so `matchLabels: {app: checkout}` governs exactly that workload.
 
-**Declare directions explicitly** -- When `policyTypes` is omitted, Kubernetes infers: ingress always, egress only when egress rules exist. Every isolation intent should set it explicitly — a deny-all-egress policy MUST say egress (there is no rule to infer it from), and an egress-only policy that omits it also isolates ingress.
+**Declare directions explicitly** — When `policyTypes` is omitted, Kubernetes infers: ingress always, egress only when egress rules exist. Every isolation intent should set it explicitly — a deny-all-egress policy MUST say egress (there is no rule to infer it from), and an egress-only policy that omits it also isolates ingress.
 
-**Rules are additive ORs** -- Traffic is allowed when it matches ANY rule's peers AND that rule's ports. Within a rule, empty peers mean ALL sources/destinations and empty ports mean ALL ports — an entirely empty rule allows everything in its direction.
+**Rules are additive ORs** — Traffic is allowed when it matches ANY rule's peers AND that rule's ports. Within a rule, empty peers mean ALL sources/destinations and empty ports mean ALL ports — an entirely empty rule allows everything in its direction.
 
-**Peers combine precisely** -- A pod selector alone matches the policy's OWN namespace; a namespace selector alone matches ALL pods in matching namespaces; both together are ONE AND'd condition (different from two separate peers). IP blocks stand alone and are for traffic outside the cluster — pod IPs are ephemeral.
+**Peers combine precisely** — A pod selector alone matches the policy's OWN namespace; a namespace selector alone matches ALL pods in matching namespaces; both together are ONE AND'd condition (different from two separate peers). IP blocks stand alone and are for traffic outside the cluster — pod IPs are ephemeral.
 
-**Remember DNS** -- Deny-all-egress breaks name resolution first. Pair it with an allow-DNS rule: UDP + TCP port 53 to the cluster DNS pods (`kube-system` namespace, `k8s-app: kube-dns` pods).
+**Remember DNS** — Deny-all-egress breaks name resolution first. Pair it with an allow-DNS rule: UDP + TCP port 53 to the cluster DNS pods (`kube-system` namespace, `k8s-app: kube-dns` pods).
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **KubernetesNamespace** | `namespace` | `spec.name` |
+| **Kubernetes Namespace** | `namespace` | `spec.name` |
 
 An omitted `namespace` means the cluster's `default` namespace.
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -112,16 +112,16 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Namespace lockdown** -- Default-deny both directions, then targeted allows per flow. Start from the **Default Deny All** preset.
+**Namespace lockdown** — Default-deny both directions, then targeted allows per flow. Start from the **Default Deny All** preset.
 
-**Trusted namespace interior** -- All pods accept traffic from the SAME namespace, nothing else. Start from the **Allow Same Namespace** preset.
+**Trusted namespace interior** — All pods accept traffic from the SAME namespace, nothing else. Start from the **Allow Same Namespace** preset.
 
-**Cross-namespace ingress** -- Admit one namespace's traffic by its automatic `kubernetes.io/metadata.name` label. Start from the **Allow From Namespace** preset.
+**Cross-namespace ingress** — Admit one namespace's traffic by its automatic `kubernetes.io/metadata.name` label. Start from the **Allow From Namespace** preset.
 
-**The DNS companion** -- The allow-DNS egress rule every locked-down namespace needs. Start from the **Allow DNS Egress** preset.
+**The DNS companion** — The allow-DNS egress rule every locked-down namespace needs. Start from the **Allow DNS Egress** preset.
 
 ## Works With
 
-- [**Kubernetes Namespace**](/infra-catalog/kubernetes-namespace) -- reference the namespace so Infra Charts create it and this policy in dependency order
-- [**Kubernetes Deployment**](/infra-catalog/kubernetes-deployment) -- its `app` label is the selection contract; its `selector_labels` output carries the full set
-- [**Cilium**](/infra-catalog/kubernetes-cilium) -- a CNI that enforces these policies (and extends them with its own richer policy language)
+- [**Kubernetes Namespace**](/infra-catalog/kubernetes-namespace) — reference the namespace so Infra Charts create it and this policy in dependency order
+- [**Kubernetes Deployment**](/infra-catalog/kubernetes-deployment) — its `app` label is the selection contract; its `selector_labels` output carries the full set
+- [**Cilium**](/infra-catalog/kubernetes-cilium) — a CNI that enforces these policies (and extends them with its own richer policy language)

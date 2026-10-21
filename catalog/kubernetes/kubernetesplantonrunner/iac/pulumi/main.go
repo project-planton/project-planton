@@ -1,6 +1,6 @@
 // Package main provides the Pulumi program entrypoint for the Kubernetes
-// Planton Runner: a standing, outbound-only runner installed from the
-// official planton-runner Helm chart that executes deploy and cloud
+// Planton Runner: a standing, outbound-only runner installed from
+// Planton's planton-runner Helm chart that executes deploy and cloud
 // operations from inside the cluster's network.
 package main
 

@@ -199,11 +199,13 @@ Like qa** opens Promote.
 ## What Promote, Roll Back, Upgrade and Reconcile all take
 
 - The plan, show, consent and apply steps of `planton infra stack apply`:
-  at a terminal it shows the plan and asks once; `--plan-digest <digest>`
-  applies only the plan a person reviewed and consents to its ordinary
-  destroys; `--yes` answers the question but consents to no destroy;
-  `--destroy`, `--keep` and `--adopt` name choices. A refusal names the
-  flag to add.
+  at a terminal it shows the plan, says what it destroys and replaces, and
+  asks once; `--plan-digest <digest>` applies only the plan a person
+  reviewed, and `--yes` applies the fresh plan; either consents to every
+  Destroy and Replace it shows, and the apply prints what it destroyed and
+  replaced. `--keep` and `--adopt` name choices; `--destroy` only turns a
+  carried Keep back into a Destroy. Without a terminal and with neither,
+  it refuses and prints the command with `--yes` added.
 - `--dry-run` stops at the plan. `--detailed-exitcode` adds exit `4` when
   applying would change something. `-o json|markdown|yaml` prints the plan
   for a program, a pull request or a record.
@@ -255,7 +257,9 @@ answers where the stack stands; `diff_infra_stack` compares.
 **Consent is the same as any apply.** Never promote, roll back or upgrade
 because a stage is behind, because Update Available shows, or because a
 run failed. Show the plan in the user's words — what travels, what stays,
-every Destroy by name, its cost, what else it affects, the roll back's
-caveats — and apply only on their yes for that plan. Into a protected
-environment the apply files a request; deciding it is a person's act,
-never yours (`infra.deployed-stacks.md`).
+every Destroy and Replace by name, its cost, what else it affects, the
+roll back's caveats — and apply only on their yes for that plan, or under
+their word to carry on without asking (then say exactly what was destroyed
+or replaced). Into a protected environment the apply files a request;
+deciding it is a person's act, carried out only on their word and never on
+a run your own person started (`infra.deployed-stacks.md`).

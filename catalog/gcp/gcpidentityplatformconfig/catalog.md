@@ -6,16 +6,16 @@ Configures a project's Identity Platform — the sign-in methods (email/password
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **Identity Platform Config** -- the `identity_platform_config` PROJECT SINGLETON with sign-in methods, MFA, blocking functions, quotas, and multi-tenancy settings
-- **Identity provider configs** -- one composed resource per entry in `defaultSupportedIdps` (Google, Facebook, ...), `oauthIdpConfigs` (custom OIDC), and `inboundSamlConfigs` (enterprise SSO)
-- **Identity Toolkit API enablement** -- `identitytoolkit.googleapis.com` enabled in the target project (never disabled on destroy)
+- **Identity Platform Config** — the `identity_platform_config` PROJECT SINGLETON with sign-in methods, MFA, blocking functions, quotas, and multi-tenancy settings
+- **Identity provider configs** — one composed resource per entry in `defaultSupportedIdps` (Google, Facebook, ...), `oauthIdpConfigs` (custom OIDC), and `inboundSamlConfigs` (enterprise SSO)
+- **Identity Toolkit API enablement** — `identitytoolkit.googleapis.com` enabled in the target project (never disabled on destroy)
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **GCP Provider Connection** -- an active connection in the Connect module with credentials for the target GCP project. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **IdP credentials** -- each provider's `clientId`/`clientSecret` comes from that provider's own developer console — consent-screen OAuth clients have no programmatic creation path. Secrets are supplied as managed secrets.
+- **GCP Provider Connection** — an active connection in the Connect module with credentials for the target GCP project. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **IdP credentials** — each provider's `clientId`/`clientSecret` comes from that provider's own developer console — consent-screen OAuth clients have no programmatic creation path. Secrets are supplied as managed secrets.
 
 ### GCP Project
 
@@ -57,7 +57,7 @@ This initializes Identity Platform on the project and enables email/password sig
 
 ### InfraChart
 
-When deploying as part of a multi-resource environment, the config references its project and blocking functions via ValueFromRef:
+When deploying as part of a multi-resource environment, the config references its project and blocking functions:
 
 ```yaml
 spec:
@@ -82,28 +82,28 @@ The InfraPipeline deploys the project and function first, then initializes Ident
 
 These are the most important decisions when configuring a project's Identity Platform. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Sign-in arms** -- each of `email`, `phoneNumber`, and `anonymous` you set is sent explicitly, including `enabled: false` — a disable in the manifest actively disables the method. Arms you omit stay unmanaged.
+**Sign-in arms** — each of `email`, `phoneNumber`, and `anonymous` you set is sent explicitly, including `enabled: false` — a disable in the manifest actively disables the method. Arms you omit stay unmanaged.
 
-**Identity providers** -- three lists compose the project's IdP surface: `defaultSupportedIdps` for well-known providers (by `idpId`, e.g. `google.com`), `oauthIdpConfigs` for custom OIDC (`oidc.`-prefixed names), and `inboundSamlConfigs` for enterprise SAML (`saml.`-prefixed names). Client secrets are managed secrets end to end.
+**Identity providers** — three lists compose the project's IdP surface: `defaultSupportedIdps` for well-known providers (by `idpId`, e.g. `google.com`), `oauthIdpConfigs` for custom OIDC (`oidc.`-prefixed names), and `inboundSamlConfigs` for enterprise SAML (`saml.`-prefixed names). Client secrets are managed secrets end to end.
 
-**Multi-tenancy gate** -- `multiTenant.allowTenants: true` is the prerequisite for every GcpIdentityPlatformTenant in the project; tenants cannot exist without it.
+**Multi-tenancy gate** — `multiTenant.allowTenants: true` is the prerequisite for every GCP Identity Platform Tenant in the project; tenants cannot exist without it.
 
-**SMS region policy** -- exactly one of `allowByDefault` (deny list) or `allowlistOnly` (allow list); the allow list is the tighter toll-fraud posture.
+**SMS region policy** — exactly one of `allowByDefault` (deny list) or `allowlistOnly` (allow list); the allow list is the tighter toll-fraud posture.
 
-**Deletion policy** -- governs ONLY the composed IdP configs. The config singleton itself cannot be deleted; destroy always abandons it in place.
+**Deletion policy** — governs ONLY the composed IdP configs. The config singleton itself cannot be deleted; destroy always abandons it in place.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **GcpProject** (optional) | `projectId` | `status.outputs.project_id` |
-| **GcpCloudFunction** (optional) | `blockingFunctions.triggers[].functionUri` | `status.outputs.function_url` |
+| **GCP Project** (optional) | `projectId` | `status.outputs.project_id` |
+| **GCP Cloud Function** (optional) | `blockingFunctions.triggers[].functionUri` | `status.outputs.function_url` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -115,14 +115,14 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Email + password** -- the minimal working sign-in surface; no external credentials. Start from the **Email + Password** preset.
+**Email + password** — the minimal working sign-in surface; no external credentials. Start from the **Email + Password** preset.
 
-**Social sign-in** -- add Google (or another well-known provider) with the OAuth client from that provider's console. Start from the **Google Sign-in** preset.
+**Social sign-in** — add Google (or another well-known provider) with the OAuth client from that provider's console. Start from the **Google Sign-in** preset.
 
-**Enterprise SSO** -- inbound SAML from Okta/Azure AD/etc., typically with MFA enabled and authorized domains pinned. Start from the **Enterprise SAML** preset.
+**Enterprise SSO** — inbound SAML from Okta/Azure AD/etc., typically with MFA enabled and authorized domains pinned. Start from the **Enterprise SAML** preset.
 
 ## Works With
 
-- [**GCP Identity Platform Tenant**](/infra-catalog/gcp-identity-platform-tenant) -- isolated per-customer user pools, gated on `multiTenant.allowTenants` here
-- [**GCP Project**](/infra-catalog/gcp-project) -- provides the billing-enabled project that gets initialized
-- [**GCP Cloud Function**](/infra-catalog/gcp-cloud-function) -- the blocking-function endpoints invoked during sign-up/sign-in
+- [**GCP Identity Platform Tenant**](/infra-catalog/gcp-identity-platform-tenant) — isolated per-customer user pools, gated on `multiTenant.allowTenants` here
+- [**GCP Project**](/infra-catalog/gcp-project) — provides the billing-enabled project that gets initialized
+- [**GCP Cloud Function**](/infra-catalog/gcp-cloud-function) — the blocking-function endpoints invoked during sign-up/sign-in

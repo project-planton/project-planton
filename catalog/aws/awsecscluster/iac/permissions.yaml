@@ -1,5 +1,5 @@
 # Least-privilege permissions the IaC runner's AWS principal needs to
-# provision, update, and destroy this component with the official modules.
+# provision, update, and destroy this component with the platform modules.
 # Every entry is `derived` (static analysis of the module sources, cited in
 # notes) until the live capture lane upgrades it to `proven`. Schema:
 # iac/catalogkindpermissions/v1.
@@ -22,8 +22,10 @@ spec:
           - ecs:ListTagsForResource
         resources:
           - arn:aws:ecs:*:*:cluster/*
-        provenance: derived
-        notes: Covers aws_ecs_cluster (settings, execute-command and managed-storage configuration) and aws_ecs_cluster_capacity_providers, which attaches the strategy to the cluster ARN.
+        provenance: proven
+        reach: target
+        privilege: ordinary
+        notes: "Covers aws_ecs_cluster (settings, execute-command and managed-storage configuration) and aws_ecs_cluster_capacity_providers, which attaches the strategy to the cluster ARN. Proven 2026-10-20 on dev by the least-privilege lane: an identity holding exactly the kind's rendered permissions deployed, updated and destroyed it."
       - sid: ManageCapacityProviders
         actions:
           - ecs:CreateCapacityProvider
@@ -32,12 +34,16 @@ spec:
           - ecs:DeleteCapacityProvider
         resources:
           - arn:aws:ecs:*:*:capacity-provider/*
-        provenance: derived
-        notes: Covers both aws_ecs_capacity_provider resources -- the ASG-backed providers (ec2_capacity_providers) and the managed-instances providers.
+        provenance: proven
+        reach: target
+        privilege: ordinary
+        notes: "Covers both aws_ecs_capacity_provider resources -- the ASG-backed providers (ec2_capacity_providers) and the managed-instances providers. Proven 2026-10-20 on dev by the least-privilege lane: an identity holding exactly the kind's rendered permissions deployed, updated and destroyed it."
       - sid: PassCapacityRoles
         actions:
           - iam:PassRole
         resources:
           - arn:aws:iam::*:role/*
-        provenance: derived
-        notes: Required only for managed_instances_capacity_providers -- creating one passes the ECS infrastructure role and the instances' profile role to ECS. Scope to the actual role ARNs in a hardened deployment.
+        provenance: proven
+        reach: target
+        privilege: uses_identity
+        notes: "Required only for managed_instances_capacity_providers -- creating one passes the ECS infrastructure role and the instances' profile role to ECS. Scope to the actual role ARNs in a hardened deployment. Proven 2026-10-20 on dev by the least-privilege lane: an identity holding exactly the kind's rendered permissions deployed, updated and destroyed it."

@@ -17,7 +17,7 @@ When you deploy this Infra Component, the IaC module provisions:
 
 ### AWS Account
 
-- **The layer content zip in S3** — in a bucket in the same region, laid out the way the runtimes expect (`python/`, `nodejs/node_modules/`, `java/lib/`, ...); Lambda unpacks the archive into `/opt`. Stage it with your build pipeline, an AwsS3Bucket, or an AwsS3ObjectSet.
+- **The layer content zip in S3** — in a bucket in the same region, laid out the way the runtimes expect (`python/`, `nodejs/node_modules/`, `java/lib/`, ...); Lambda unpacks the archive into `/opt`. Stage it with your build pipeline, an AWS S3 Bucket, or an AWS S3 Object Set.
 - **For organization-wide sharing** — your AWS Organization's `o-...` id, from the AWS Organizations console.
 
 ## Deploy
@@ -64,7 +64,7 @@ This publishes version 1 of the `shared-python-utils` layer from the referenced 
 
 ### InfraChart
 
-When the layer deploys alongside its artifact bucket in one chart, wire the bucket via ValueFromRef:
+When the layer deploys alongside its artifact bucket in one chart, wire the bucket by reference:
 
 ```yaml
 spec:
@@ -100,17 +100,17 @@ These are the most important decisions when configuring a layer. Explore the ful
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AwsS3Bucket** | `code.bucket` | `status.outputs.bucket_id` |
+| **AWS S3 Bucket** | `code.bucket` | `status.outputs.bucket_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
-| `layer_version_arn` | The published version's ARN (`...:layer:name:version`) | The `layers` list on AwsLambda functions — what consumers attach |
+| `layer_version_arn` | The published version's ARN (`...:layer:name:version`) | The `layers` list on AWS Lambda functions — what consumers attach |
 | `layer_arn` | The unversioned layer ARN — the identity persisting across versions | IAM policies and tooling that address the layer independent of version |
 
 `version` (the published version number), `code_sha256` (the archive digest as Lambda stored it), and `permission_revision_ids` are also exported for audit and change verification rather than composition.

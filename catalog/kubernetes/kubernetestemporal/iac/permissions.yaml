@@ -1,4 +1,4 @@
-# Least-privilege permissions for the official kubernetestemporal modules
+# Least-privilege permissions for the platform kubernetestemporal modules
 # (iac/tf and iac/pulumi -- behaviorally equivalent). Derived from the
 # resources the modules create directly plus everything the pinned temporal
 # chart (go.temporal.io/helm-charts, default 1.6.0) renders inside the Helm

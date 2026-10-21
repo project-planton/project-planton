@@ -1,7 +1,7 @@
 # Control profile: this component's posture against every control in the
 # central catalog (catalog/_compliance/controls-catalog.yaml). Every control
 # is examined; not_applicable states why. Evidence is verifiable against the
-# spec contract and the official modules. Schema:
+# spec contract and the platform modules. Schema:
 # compliance/catalogkindcontrolprofile/v1.
 apiVersion: compliance.planton.dev/v1
 kind: CatalogKindControlProfile
@@ -88,7 +88,7 @@ spec:
       notes: The account exposes no zone-placement surface -- availability inside a region is Microsoft's service operation under the SLA, not a configuration. Cross-region resilience is composed from a second account in another region behind your own routing.
     - control_id: deletion-protection
       status: not_applicable
-      notes: "No refuse-deletion flag exists on the account (Azure resource locks are subscription-side governance outside the manifest), but deletion is a SOFT delete: the account becomes a recoverable, purgeable ghost that keeps holding its name -- the Key Vault recycle-bin pattern. The official modules purge the ghost on destroy (the provider's own purge_soft_delete_on_destroy default), so a Planton destroy is final; an out-of-band portal delete is recoverable until purged."
+      notes: "No refuse-deletion flag exists on the account (Azure resource locks are subscription-side governance outside the manifest), but deletion is a SOFT delete: the account becomes a recoverable, purgeable ghost that keeps holding its name -- the Key Vault recycle-bin pattern. The platform modules purge the ghost on destroy (the provider's own purge_soft_delete_on_destroy default), so a Planton destroy is final; an out-of-band portal delete is recoverable until purged."
     - control_id: managed-patching
       status: enforced_by_default
       evidence:

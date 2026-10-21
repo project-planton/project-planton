@@ -6,20 +6,20 @@ Deploys the zone's snippet routing table: the ordered list of expressions decidi
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **Snippet Rules** -- one `cloudflare_snippet_rules` on the zone, whose `rules` list is the whole routing table, evaluated in order against Cloudflare's Rules language (the same wirefilter expressions rulesets use)
+- **Snippet Rules** — one `cloudflare_snippet_rules` on the zone, whose `rules` list is the whole routing table, evaluated in order against Cloudflare's Rules language (the same wirefilter expressions rulesets use)
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **Cloudflare Provider Connection** -- an active connection in the Connect module with a Cloudflare API token that has Snippets Edit on the target zone. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline API token authentication.
+- **Cloudflare Provider Connection** — an active connection in the Connect module with a Cloudflare API token that has Snippets Edit on the target zone. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline API token authentication.
 
 ### Cloudflare Account
 
-- **A Cloudflare zone** -- provide the zone ID directly or wire `zoneId` to a Cloudflare DNS Zone resource by reference.
-- **The snippets the rules invoke** -- each rule's `snippetName` must exist in the zone; a missing name fails at apply, not at validation. Create the Cloudflare Snippet resources first.
-- **Sole ownership of the zone's snippet-rule table** -- a second manifest, a dashboard edit, or another team's rules against the same zone will be silently overwritten by this manifest's next apply.
+- **A Cloudflare zone** — provide the zone ID directly or wire `zoneId` to a Cloudflare DNS Zone resource by reference.
+- **The snippets the rules invoke** — each rule's `snippetName` must exist in the zone; a missing name fails at apply, not at validation. Create the Cloudflare Snippet resources first.
+- **Sole ownership of the zone's snippet-rule table** — a second manifest, a dashboard edit, or another team's rules against the same zone will be silently overwritten by this manifest's next apply.
 
 ## Deploy
 
@@ -94,10 +94,10 @@ These are the most important decisions when configuring snippet rules. Explore t
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **CloudflareDnsZone** | `zoneId` | `status.outputs.zone_id` |
-| **CloudflareSnippet** | `rules[].snippetName` | `status.outputs.snippet_name` |
+| **Cloudflare DNS Zone** | `zoneId` | `status.outputs.zone_id` |
+| **Cloudflare Snippet** | `rules[].snippetName` | `status.outputs.snippet_name` |
 
 ### What This Kind Provides
 
@@ -107,14 +107,14 @@ This kind has no consumable outputs: `status.outputs` only echoes the zone ID ba
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Path-prefix route** -- One rule invoking a redirect snippet when the path starts with `/legacy`; pair it with the Cloudflare Snippet **Redirect snippet** preset, which creates `redirect_legacy`. Start from the **Path-prefix route** preset.
+**Path-prefix route** — One rule invoking a redirect snippet when the path starts with `/legacy`; pair it with the Cloudflare Snippet **Redirect snippet** preset, which creates `redirect_legacy`. Start from the **Path-prefix route** preset.
 
-**One table, many snippets** -- The steady state for a zone using snippets seriously: a single manifest listing every route in evaluation order, each row wired to its snippet by reference so renames and redeploys cannot drift the table.
+**One table, many snippets** — The steady state for a zone using snippets seriously: a single manifest listing every route in evaluation order, each row wired to its snippet by reference so renames and redeploys cannot drift the table.
 
-**Staged rollout** -- Add the new rule with `enabled: false`, apply, verify the expression against live traffic expectations, then flip the flag. The table never leaves manifest control, and rollback is the same one-line change.
+**Staged rollout** — Add the new rule with `enabled: false`, apply, verify the expression against live traffic expectations, then flip the flag. The table never leaves manifest control, and rollback is the same one-line change.
 
 ## Works With
 
-- [**Cloudflare Snippet**](/infra-catalog/cloudflare-snippet) -- the code this table invokes by name; create the snippet first.
-- [**Cloudflare Ruleset**](/infra-catalog/cloudflare-ruleset) -- the other expression table on the zone (WAF, cache, redirects), same Rules language, different engine.
-- [**Cloudflare DNS Zone**](/infra-catalog/cloudflare-dns-zone) -- the zone scope; wire `zoneId` via ValueFromRef.
+- [**Cloudflare Snippet**](/infra-catalog/cloudflare-snippet) — the code this table invokes by name; create the snippet first.
+- [**Cloudflare Ruleset**](/infra-catalog/cloudflare-ruleset) — the other expression table on the zone (WAF, cache, redirects), same Rules language, different engine.
+- [**Cloudflare DNS Zone**](/infra-catalog/cloudflare-dns-zone) — the zone scope; wire `zoneId` by reference.

@@ -134,7 +134,7 @@ endpoints) arrives in the join response.
 
 `string` · optional (explicit presence)
 
-The runner build to deploy: an image tag of the official runner
+The runner build to deploy: an image tag of Planton's runner
 container image. "latest" tracks the newest release; pin a specific
 version tag for change control. New instances pull the tag on every
 (re)start.
@@ -146,8 +146,8 @@ version tag for change control. New instances pull the tag on every
 `string` · optional (explicit presence)
 
 The container image repository the runner is pulled from. Override
-only for air-gapped or mirrored registries hosting a copy of the
-official image; the digest-identical mirror is your responsibility.
+only for air-gapped or mirrored registries hosting a copy of
+Planton's runner image; the digest-identical mirror is your responsibility.
 
 - default: `ghcr.io/plantonhq/planton/runner`
 

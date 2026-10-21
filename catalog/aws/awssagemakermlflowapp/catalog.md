@@ -55,7 +55,7 @@ This creates a serverless MLflow app storing artifacts under the given S3 prefix
 
 ### InfraChart
 
-When the app deploys alongside its role and domain in one chart, wire both references via ValueFromRef:
+When the app deploys alongside its role and domain in one chart, wire both references:
 
 ```yaml
 spec:
@@ -79,7 +79,7 @@ The InfraPipeline resolves the dependency graph, creates the role and domain fir
 
 These are the most important decisions when configuring an MLflow app. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**App or tracking server** — This kind is the serverless MLflow 3.x deployment: billed per use, no idle charge, nothing to size. The classic dedicated-capacity server (AwsSagemakerMlflowServer) bills hourly with roughly 25-minute lifecycle operations. Default to the app for new deployments — per-use billing beats an always-on meter for all but sustained heavy tracking, and there is no capacity to outgrow. The app does NOT attach to a tracking server; it stands alone.
+**App or tracking server** — This kind is the serverless MLflow 3.x deployment: billed per use, no idle charge, nothing to size. The classic dedicated-capacity server (AWS SageMaker MLflow Server) bills hourly with roughly 25-minute lifecycle operations. Default to the app for new deployments — per-use billing beats an always-on meter for all but sustained heavy tracking, and there is no capacity to outgrow. The app does NOT attach to a tracking server; it stands alone.
 
 **Get the role right the first time** — `roleArn` is the ONE change that replaces the app; the name, artifact store, domains, registration mode, and maintenance window all update in place. A replacement means a new app ARN, which invalidates anything keyed on the old one.
 
@@ -95,14 +95,14 @@ These are the most important decisions when configuring an MLflow app. Explore t
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AwsIamRole** | `roleArn` | `status.outputs.role_arn` |
-| **AwsSagemakerDomain** | `defaultDomainIds[]` | `status.outputs.domain_id` |
+| **AWS IAM Role** | `roleArn` | `status.outputs.role_arn` |
+| **AWS SageMaker Domain** | `defaultDomainIds[]` | `status.outputs.domain_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

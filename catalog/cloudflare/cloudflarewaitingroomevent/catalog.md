@@ -17,7 +17,7 @@ When you deploy this Infra Component, the IaC module provisions:
 
 ### Cloudflare Account
 
-- **A waiting room** — `waitingRoomId` names the room the event runs on; deploy a CloudflareWaitingRoom first and reference its output.
+- **A waiting room** — `waitingRoomId` names the room the event runs on; deploy a Cloudflare Waiting Room first and reference its output.
 - **The room's zone** — `zoneId` is required alongside the room ID, and the two must agree; an event on room A in zone B fails at the API.
 - **The Waiting Rooms Advanced add-on** (only for Advanced overrides) — an event's `customPageHtml` fails at apply if the zone lacks the add-on, same as on the room.
 
@@ -56,7 +56,7 @@ This creates a four-hour window with no overrides — the room queues with its o
 
 ### InfraChart
 
-When the room and zone are deployed in the same InfraPipeline, wire both references with ValueFromRef:
+When the room and zone are deployed in the same InfraPipeline, wire both references:
 
 ```yaml
 spec:
@@ -97,14 +97,14 @@ These are the most important decisions when configuring a waiting room event. Ex
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **CloudflareWaitingRoom** | `waitingRoomId` | `status.outputs.waiting_room_id` |
-| **CloudflareDnsZone** | `zoneId` | `status.outputs.zone_id` |
+| **Cloudflare Waiting Room** | `waitingRoomId` | `status.outputs.waiting_room_id` |
+| **Cloudflare DNS Zone** | `zoneId` | `status.outputs.zone_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

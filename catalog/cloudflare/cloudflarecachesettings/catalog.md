@@ -22,7 +22,7 @@ When you deploy this Infra Component, the IaC module provisions one zone-scoped 
 
 ### Cloudflare Account
 
-- **An active zone** for `zoneId` — manage it with a CloudflareDnsZone and reference its `zone_id` output, or pass an externally managed zone ID directly.
+- **An active zone** for `zoneId` — manage it with a Cloudflare DNS Zone and reference its `zone_id` output, or pass an externally managed zone ID directly.
 - **Plan entitlements for the paid features** (only for `cacheReserve` / `argoSmartRouting`) — the account must have Cache Reserve and Argo available before the apply can enable them.
 - **A variant-producing pipeline** (only for `cacheVariants`) — variants tell the cache which alternate content types are acceptable; something like Polish with WebP must actually produce them.
 
@@ -57,7 +57,7 @@ This enables Smart Tiered Cache on the zone and manages nothing else — every o
 
 ### InfraChart
 
-When the zone is deployed in the same InfraPipeline, wire the reference with ValueFromRef:
+When the zone is deployed in the same InfraPipeline, wire the reference:
 
 ```yaml
 spec:
@@ -94,9 +94,9 @@ These are the most important decisions when configuring cache settings. Explore 
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **CloudflareDnsZone** | `zoneId` | `status.outputs.zone_id` |
+| **Cloudflare DNS Zone** | `zoneId` | `status.outputs.zone_id` |
 
 ### What This Kind Provides
 
@@ -114,7 +114,7 @@ Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
 ## Works With
 
-- [**Cloudflare DNS Zone**](/infra-catalog/cloudflare-dns-zone) — the anchor; wire `zoneId` via ValueFromRef so the dependency is explicit in the graph
+- [**Cloudflare DNS Zone**](/infra-catalog/cloudflare-dns-zone) — the anchor; wire `zoneId` by reference so the dependency is explicit in the graph
 - [**Cloudflare Ruleset**](/infra-catalog/cloudflare-ruleset) — per-URL TTLs, cache keys, and bypass rules layered on top of the zone-wide posture set here
 - [**Cloudflare Zone Settings**](/infra-catalog/cloudflare-zone-settings) — the sibling settings kind for general zone toggles (SSL mode, minification, security level)
 - [**Cloudflare Zone TLS Settings**](/infra-catalog/cloudflare-zone-tls-settings) — the sibling settings kind for the zone's TLS posture

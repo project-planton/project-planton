@@ -18,7 +18,7 @@ func TestFilesCarriesEveryArtifact(t *testing.T) {
 	files := Files(acme)
 
 	for _, p := range []string{
-		PathThemeProperties, PathStylesCSS, PathLogoSVG, PathInterFontWOFF2,
+		PathThemeProperties, PathStylesCSS, PathInterFontWOFF2,
 		PathEmailThemeProperties, PathEmailHTMLLayout, PathEmailTextLayout, PathEmailMessages,
 		"email/html/password-reset.ftl", "email/text/password-reset.ftl",
 		"email/html/executeActions.ftl", "email/text/executeActions.ftl",
@@ -211,7 +211,7 @@ func TestStylesCarryTheDesignTokens(t *testing.T) {
 		"error":             "--planton-error: #f85149",
 		"focus accent":      "--planton-focus-border: #696741",
 		"font self-hosting": "url('../fonts/inter-latin.woff2')",
-		"logo self-hosting": "url('../img/planton-logo.svg')",
+		"installation logo": "url('/storage/v1/branding/sign-in.png')",
 		"no photo backdrop": "--keycloak-bg-logo-url: none",
 	} {
 		if !strings.Contains(css, value) {
@@ -231,16 +231,6 @@ func TestFontIsRealWOFF2(t *testing.T) {
 	font := Files(acme)[PathInterFontWOFF2]
 	if !bytes.HasPrefix(font, []byte("wOF2")) {
 		t.Fatalf("embedded font does not start with the woff2 magic bytes")
-	}
-}
-
-func TestLogoIsTheConsoleMark(t *testing.T) {
-	svg := string(Files(acme)[PathLogoSVG])
-	if !strings.Contains(svg, `fill="#FBFBFB"`) {
-		t.Errorf("logo is not the white (dark-background) mark")
-	}
-	if !strings.Contains(svg, `viewBox="0 0 28 32"`) {
-		t.Errorf("logo geometry differs from the console asset")
 	}
 }
 

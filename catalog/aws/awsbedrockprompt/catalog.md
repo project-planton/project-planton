@@ -68,7 +68,7 @@ This creates a prompt with two candidate formulations — a Nova Micro text vari
 
 ### InfraChart
 
-When a variant executes through a Bedrock agent, wire the alias reference via ValueFromRef:
+When a variant executes through a Bedrock agent, wire the alias reference:
 
 ```yaml
 spec:
@@ -110,19 +110,19 @@ These are the most important decisions when configuring a prompt. Explore the fu
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AwsBedrockAgent** | `variants[].agentAliasArn` | `status.outputs.alias_arns.<alias-name>` |
-| **AwsKmsKey** | `customerEncryptionKeyArn` | `status.outputs.key_arn` |
+| **AWS Bedrock Agent** | `variants[].agentAliasArn` | `status.outputs.alias_arns.<alias-name>` |
+| **AWS KMS Key** | `customerEncryptionKeyArn` | `status.outputs.key_arn` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
 | `prompt_id` | The unique prompt identifier | Application configuration for invoking the prompt |
-| `prompt_arn` | The prompt's ARN | An AwsBedrockFlow prompt node's `promptArn`; IAM policies |
+| `prompt_arn` | The prompt's ARN | An AWS Bedrock Flow prompt node's `promptArn`; IAM policies |
 
 `draft_version` is the constant "DRAFT" — a record of the mutable working version, not a composition input.
 

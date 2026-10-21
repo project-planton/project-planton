@@ -6,19 +6,19 @@ Deploys a cluster-scoped Kubernetes StorageClass — an entry on the cluster's s
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **Kubernetes StorageClass** -- a storage.k8s.io/v1 StorageClass carrying the provisioner, parameters, reclaim and binding policies, expandability, topology restrictions, and the optional default-class annotation
-- **Kubernetes Labels** -- resource metadata labels (resource name, kind, organization, environment) applied automatically for tracking
+- **Kubernetes StorageClass** — a storage.k8s.io/v1 StorageClass carrying the provisioner, parameters, reclaim and binding policies, expandability, topology restrictions, and the optional default-class annotation
+- **Kubernetes Labels** — resource metadata labels (resource name, kind, organization, environment) applied automatically for tracking
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **Kubernetes Provider Connection** -- an active connection in the Connect module with kubeconfig credentials for the target cluster. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline kubeconfig authentication.
+- **Kubernetes Provider Connection** — an active connection in the Connect module with kubeconfig credentials for the target cluster. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline kubeconfig authentication.
 
 ### Kubernetes Cluster
 
-- **The CSI driver must be installed** -- a class naming an absent provisioner leaves every claim of that class Pending forever.
+- **The CSI driver must be installed** — a class naming an absent provisioner leaves every claim of that class Pending forever.
 - When claiming the cluster default, demote the managed cluster's built-in default first (EKS ships gp2/gp3, GKE standard-rwo, AKS default).
 
 ## Deploy
@@ -58,25 +58,25 @@ This creates an encrypted gp3 class with zonal-correct binding and expansion ena
 
 These are the most important decisions when configuring a Kubernetes StorageClass. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Parameters speak the driver's language** -- The map passes through verbatim: EBS CSI takes `type: gp3, iops: "6000", encrypted: "true"`; GCE PD CSI takes `type: pd-ssd`; Azure Disk CSI takes `skuName: Premium_LRS`. Invalid keys surface as provisioning failures on the first claim. Values naming secrets are Secret references, never material.
+**Parameters speak the driver's language** — The map passes through verbatim: EBS CSI takes `type: gp3, iops: "6000", encrypted: "true"`; GCE PD CSI takes `type: pd-ssd`; Azure Disk CSI takes `skuName: Premium_LRS`. Invalid keys surface as provisioning failures on the first claim. Values naming secrets are Secret references, never material.
 
-**Most of the class is frozen** -- Provisioner, parameters, reclaim policy, and binding mode are immutable at the API; editing them replaces the class. Volumes already provisioned are untouched by a replacement — only future claims see new settings.
+**Most of the class is frozen** — Provisioner, parameters, reclaim policy, and binding mode are immutable at the API; editing them replaces the class. Volumes already provisioned are untouched by a replacement — only future claims see new settings.
 
-**Binding mode decides zone correctness** -- Immediate (the default) provisions on claim creation; on multi-zone clusters the disk may land where the pod cannot schedule. WaitForFirstConsumer provisions where the pod actually lands — the right choice for zonal storage, and its claims staying Pending until consumed is correct behavior.
+**Binding mode decides zone correctness** — Immediate (the default) provisions on claim creation; on multi-zone clusters the disk may land where the pod cannot schedule. WaitForFirstConsumer provisions where the pod actually lands — the right choice for zonal storage, and its claims staying Pending until consumed is correct behavior.
 
-**Reclaim fate** -- Delete (the default) removes the backing disk with its claim; Retain parks it (data and bill intact) for manual reclamation. The policy stamps at PROVISION time.
+**Reclaim fate** — Delete (the default) removes the backing disk with its claim; Retain parks it (data and bill intact) for manual reclamation. The policy stamps at PROVISION time.
 
-**Enable expansion** -- It costs nothing on drivers that support it and turns "the database outgrew its disk" into a one-field claim edit instead of a migration.
+**Enable expansion** — It costs nothing on drivers that support it and turns "the database outgrew its disk" into a one-field claim edit instead of a migration.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-This kind has no foreign-key dependencies -- it is cluster-scoped and references nothing.
+This kind has no foreign-key dependencies — it is cluster-scoped and references nothing.
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -88,9 +88,9 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Tuned cloud SSD tiers** -- Encrypted, expandable, zonal-correct classes per cloud. Start from the **AWS EBS gp3**, **GCP PD SSD**, or **Azure Premium** presets.
+**Tuned cloud SSD tiers** — Encrypted, expandable, zonal-correct classes per cloud. Start from the **AWS EBS gp3**, **GCP PD SSD**, or **Azure Premium** presets.
 
 ## Works With
 
-- [**Kubernetes PersistentVolumeClaim**](/infra-catalog/kubernetes-persistent-volume-claim) -- claims order from the menu by this class's name (and can reference it declaratively on this platform).
-- [**Kubernetes StatefulSet**](/infra-catalog/kubernetes-stateful-set) -- volume claim templates name the class for per-replica storage.
+- [**Kubernetes PersistentVolumeClaim**](/infra-catalog/kubernetes-persistent-volume-claim) — claims order from the menu by this class's name (and can reference it declaratively on this platform).
+- [**Kubernetes StatefulSet**](/infra-catalog/kubernetes-stateful-set) — volume claim templates name the class for per-replica storage.

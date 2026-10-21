@@ -6,15 +6,15 @@ Creates a CLUSTER-scoped External Secrets Operator store — one backend connect
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **ClusterSecretStore** -- the cluster-scoped ESO custom resource, named after `metadata.name` (ExternalSecrets reference it by that name with kind ClusterSecretStore)
-- **Credential Secret** (only for declared static credentials) -- materialized in the secrets namespace with a deterministic name; the credential never appears inside the store resource itself. Keyless postures materialize nothing.
+- **ClusterSecretStore** — the cluster-scoped ESO custom resource, named after `metadata.name` (ExternalSecrets reference it by that name with kind ClusterSecretStore)
+- **Credential Secret** (only for declared static credentials) — materialized in the secrets namespace with a deterministic name; the credential never appears inside the store resource itself. Keyless postures materialize nothing.
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **Kubernetes Provider Connection** -- an active connection in the Connect module with credentials for the target cluster.
-- **External Secrets Operator** -- deployed on the cluster; this store is a CR that operator reconciles.
+- **Kubernetes Provider Connection** — an active connection in the Connect module with credentials for the target cluster.
+- **External Secrets Operator** — deployed on the cluster; this store is a CR that operator reconciles.
 
 ### Kubernetes Cluster
 
@@ -83,31 +83,31 @@ The InfraPipeline deploys the operator and the ServiceAccount first, then create
 
 These are the most important decisions when configuring the store. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**The secrets namespace** -- a cluster-scoped store reads its referenced credential Secrets from one explicit namespace (`secretsNamespace`); the operator's install namespace is the convention. Reference your External Secrets Operator resource to inherit its namespace output — the reference also draws the dependency edge.
+**The secrets namespace** — a cluster-scoped store reads its referenced credential Secrets from one explicit namespace (`secretsNamespace`); the operator's install namespace is the convention. Reference your External Secrets Operator resource to inherit its namespace output — the reference also draws the dependency edge.
 
-**Three authentication postures** -- keyless via a referenced ServiceAccount (per-store identities — the multi-team production posture), keyless via the operator's ambient identity (leave the auth block empty), or declared static credentials (materialized as a Kubernetes Secret; the value binds as a `$secret/<slug>` reference, never plaintext). For a cluster-scoped store, a referenced ServiceAccount needs its namespace stated explicitly.
+**Three authentication postures** — keyless via a referenced ServiceAccount (per-store identities — the multi-team production posture), keyless via the operator's ambient identity (leave the auth block empty), or declared static credentials (materialized as a Kubernetes Secret; the value binds as a `$secret/<slug>` reference, never plaintext). For a cluster-scoped store, a referenced ServiceAccount needs its namespace stated explicitly.
 
-**The access fence** -- with no `conditions`, EVERY namespace may sync from this store. Conditions allow namespaces by exact name, label selector, or name regex; everything unions, and there is no deny rule. A store holding production credentials should not be readable from every dev namespace.
+**The access fence** — with no `conditions`, EVERY namespace may sync from this store. Conditions allow namespaces by exact name, label selector, or name regex; everything unions, and there is no deny rule. A store holding production credentials should not be readable from every dev namespace.
 
-**One store per backend per posture** -- an `aws-prod` store and an `aws-dev` store with different identities beat one store every environment shares; the store's identity bounds what any ExternalSecret using it can sync.
+**One store per backend per posture** — an `aws-prod` store and an `aws-dev` store with different identities beat one store every environment shares; the store's identity bounds what any ExternalSecret using it can sync.
 
-**Tuning is the store's clock** -- `config.refreshInterval` re-validates the CONNECTION on a cycle; how often each synced secret refreshes is per-ExternalSecret. `controllerClass` only matters with several operator installations.
+**Tuning is the store's clock** — `config.refreshInterval` re-validates the CONNECTION on a cycle; how often each synced secret refreshes is per-ExternalSecret. `controllerClass` only matters with several operator installations.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **KubernetesExternalSecretsOperator** | `secretsNamespace` | `status.outputs.namespace` |
-| **KubernetesServiceAccount** | `config.aws.serviceAccountName` (each backend has its own) | `status.outputs.service_account_name` |
-| **AwsIamRole** | `config.aws.role` | `status.outputs.role_arn` |
-| **GcpProject** | `config.gcpSecretManager.projectId` | `status.outputs.project_id` |
-| **AzureKeyVault** | `config.azureKeyVault.vaultUrl` | `status.outputs.vault_uri` |
+| **External Secrets Operator** | `secretsNamespace` | `status.outputs.namespace` |
+| **Kubernetes ServiceAccount** | `config.aws.serviceAccountName` (each backend has its own) | `status.outputs.service_account_name` |
+| **AWS IAM Role** | `config.aws.role` | `status.outputs.role_arn` |
+| **GCP Project** | `config.gcpSecretManager.projectId` | `status.outputs.project_id` |
+| **Azure Key Vault** | `config.azureKeyVault.vaultUrl` | `status.outputs.vault_uri` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -118,17 +118,17 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**AWS Secrets Manager via IRSA** -- keyless reads through a referenced ServiceAccount's IAM role binding. Start from the **AWS Secrets Manager with IRSA (Keyless)** preset.
+**AWS Secrets Manager via IRSA** — keyless reads through a referenced ServiceAccount's IAM role binding. Start from the **AWS Secrets Manager with IRSA (Keyless)** preset.
 
-**GCP Secret Manager via Workload Identity** -- keyless reads through a GKE Workload Identity binding. Start from the **GCP Secret Manager with Workload Identity (Keyless)** preset.
+**GCP Secret Manager via Workload Identity** — keyless reads through a GKE Workload Identity binding. Start from the **GCP Secret Manager with Workload Identity (Keyless)** preset.
 
-**Azure Key Vault via Workload Identity** -- keyless reads through an AKS federated credential. Start from the **Azure Key Vault with Workload Identity (Keyless)** preset.
+**Azure Key Vault via Workload Identity** — keyless reads through an AKS federated credential. Start from the **Azure Key Vault with Workload Identity (Keyless)** preset.
 
-**Vault with Kubernetes auth** -- the ServiceAccount token is exchanged for a Vault token; no Vault credential stored on the cluster. Start from the **Vault KV with Kubernetes Auth (Keyless)** preset.
+**Vault with Kubernetes auth** — the ServiceAccount token is exchanged for a Vault token; no Vault credential stored on the cluster. Start from the **Vault KV with Kubernetes Auth (Keyless)** preset.
 
 ## Works With
 
-- [**External Secrets Operator**](/infra-catalog/kubernetes-external-secrets-operator) -- must be on the cluster first; cluster-scoped stores reference its namespace output as their secrets home.
-- [**External Secret**](/infra-catalog/kubernetes-external-secret) -- declares each secret to sync through this store (kind ClusterSecretStore).
-- [**Secret Store**](/infra-catalog/kubernetes-secret-store) -- the namespaced twin, for connections that belong to one team.
-- [**Kubernetes ServiceAccount**](/infra-catalog/kubernetes-service-account) -- carries the IRSA / Workload Identity binding the keyless postures reference as the reader identity.
+- [**External Secrets Operator**](/infra-catalog/kubernetes-external-secrets-operator) — must be on the cluster first; cluster-scoped stores reference its namespace output as their secrets home.
+- [**External Secret**](/infra-catalog/kubernetes-external-secret) — declares each secret to sync through this store (kind ClusterSecretStore).
+- [**Secret Store**](/infra-catalog/kubernetes-secret-store) — the namespaced twin, for connections that belong to one team.
+- [**Kubernetes ServiceAccount**](/infra-catalog/kubernetes-service-account) — carries the IRSA / Workload Identity binding the keyless postures reference as the reader identity.

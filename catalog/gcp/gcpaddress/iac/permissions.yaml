@@ -1,5 +1,5 @@
 # Least-privilege permissions the IaC runner's GCP principal needs to
-# provision, update, and destroy this component with the official modules.
+# provision, update, and destroy this component with the platform modules.
 # Every entry is `derived` (static analysis of the module sources, cited in
 # notes) until the live capture lane upgrades it to `proven`. Schema:
 # iac/catalogkindpermissions/v1.
@@ -16,6 +16,8 @@ spec:
           - serviceusage.services.get
           - serviceusage.services.list
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers google_project_service enabling compute.googleapis.com on the target project. disable_on_destroy is false in the module, so the disable permission is never needed.
       - purpose: ManageAddress
         permissions:
@@ -23,12 +25,16 @@ spec:
           - compute.addresses.setLabels
           - compute.regionOperations.get
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers google_compute_address reads, label changes (labels are the reservation's one mutable surface -- everything else forces replacement), and polling the region operation every mutation returns.
       - purpose: ReserveExternalAddress
         permissions:
           - compute.addresses.create
           - compute.addresses.delete
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Reserving and releasing an EXTERNAL address (address_type unset or EXTERNAL -- the default).
       - purpose: ReserveInternalAddress
         permissions:
@@ -36,4 +42,6 @@ spec:
           - compute.addresses.deleteInternal
           - compute.subnetworks.use
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: INTERNAL reservations authorize under the dedicated *Internal permission variants, NOT the external create/delete (both pairs verified against IAM's testable-permissions inventory). subnetworks.use covers GCE_ENDPOINT and DNS_RESOLVER placements that draw the address from a subnetwork (the 03-internal-gce-endpoint preset does).

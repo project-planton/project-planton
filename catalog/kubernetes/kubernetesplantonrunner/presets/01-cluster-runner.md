@@ -1,6 +1,6 @@
 # Cluster Runner
 
-This preset installs the standard in-cluster runner: the official
+This preset installs the standard in-cluster runner: Planton's
 `planton-runner` Helm chart in its own namespace, an always-on worker
 that receives deploy operations from the control plane and executes them
 from inside the cluster's network. Two decisions -- a namespace and a

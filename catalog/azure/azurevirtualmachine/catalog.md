@@ -1,17 +1,17 @@
 # Azure Virtual Machine
 
-Deploys an Azure Virtual Machine — the compute instance itself: its size, boot image, OS profile, OS disk, managed identity, placement, and security posture. The VM is deliberately just the machine, matching Azure's own model: its network presence lives on referenced **AzureNetworkInterface** resources, its data volumes on referenced **AzureManagedDisk** resources, and its identities on referenced **AzureUserAssignedIdentity** resources — everything it composes with is wired through ValueFromRef, never created inline.
+Deploys an Azure Virtual Machine — the compute instance itself: its size, boot image, OS profile, OS disk, managed identity, placement, and security posture. The VM is deliberately just the machine, matching Azure's own model: its network presence lives on referenced **Azure Network Interface** resources, its data volumes on referenced **Azure Managed Disk** resources, and its identities on referenced **Azure User Assigned Identity** resources — everything it composes with is wired by reference, never created inline.
 
 ## What Gets Created
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **Linux or Windows Virtual Machine** -- exactly one OS profile (the spec enforces it): the VM with its size, boot source, admin credentials, patch mode, and licensing
-- **OS Disk** -- the one deliberately inline disk, born and dying with the VM: caching, storage SKU, optional explicit size, optional ephemeral mode, and encryption posture
-- **Data Disk Attachments** -- created only when `dataDiskAttachments` entries are configured; each mounts a referenced AzureManagedDisk at a LUN with a host-caching mode (the disk and its data outlive the VM)
-- **VM Applications** -- created only when `galleryApplications` entries are configured; versioned packages from an Azure Compute Gallery installed at deployment
-- **Key Vault Certificates** -- created only when `secrets` entries are configured; certificates installed onto the VM at provisioning from a deployment-enabled vault
-- **Azure Tags** -- resource metadata tags (organization, environment, resource kind, resource ID) applied automatically and merged with the user tags
+- **Linux or Windows Virtual Machine** — exactly one OS profile (the spec enforces it): the VM with its size, boot source, admin credentials, patch mode, and licensing
+- **OS Disk** — the one deliberately inline disk, born and dying with the VM: caching, storage SKU, optional explicit size, optional ephemeral mode, and encryption posture
+- **Data Disk Attachments** — created only when `dataDiskAttachments` entries are configured; each mounts a referenced Azure Managed Disk at a LUN with a host-caching mode (the disk and its data outlive the VM)
+- **VM Applications** — created only when `galleryApplications` entries are configured; versioned packages from an Azure Compute Gallery installed at deployment
+- **Key Vault Certificates** — created only when `secrets` entries are configured; certificates installed onto the VM at provisioning from a deployment-enabled vault
+- **Azure Tags** — resource metadata tags (organization, environment, resource kind, resource ID) applied automatically and merged with the user tags
 
 The network interface, managed data disks, and user-assigned identities are NOT created here — they are first-class Infra Components this VM references.
 
@@ -19,13 +19,13 @@ The network interface, managed data disks, and user-assigned identities are NOT 
 
 ### Planton Setup
 
-- **Azure Provider Connection** -- an active connection in the Connect module with credentials for the target Azure subscription. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
+- **Azure Provider Connection** — an active connection in the Connect module with credentials for the target Azure subscription. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
 
 ### Azure Subscription
 
-- **An Azure Resource Group** where the VM will be created. Provide the name directly or reference an AzureResourceGroup Infra Component via ValueFromRef.
-- **At least one Network Interface** in the same region. Reference an AzureNetworkInterface Infra Component via ValueFromRef (its subnet, IPs, and NSG are configured there), or provide an ARM ID.
+- **An Azure Resource Group** where the VM will be created. Provide the name directly or reference an Azure Resource Group Infra Component.
+- **At least one Network Interface** in the same region. Reference an Azure Network Interface Infra Component (its subnet, IPs, and NSG are configured there), or provide an ARM ID.
 - **An SSH public key** (Linux) or an **admin password** (Windows). Passwords are secret material — store them as org secrets and reference them; the platform rejects plaintext.
 
 ## Deploy
@@ -79,7 +79,7 @@ This creates an Ubuntu 24.04 LTS VM (Standard_D2s_v5 — 2 vCPUs, 8 GiB), Premiu
 
 ### InfraChart
 
-When deploying as part of a multi-resource environment, use ValueFromRef to wire the VM to its dependencies:
+When deploying as part of a multi-resource environment, use references to wire the VM to its dependencies:
 
 ```yaml
 spec:
@@ -109,44 +109,44 @@ The InfraPipeline resolves the dependency graph, deploys the resource group, NIC
 
 These are the most important decisions when configuring a Virtual Machine. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Boot source** -- exactly one of three: `sourceImageReference` (marketplace/platform image by publisher/offer/sku/version), `sourceImageId` (a custom or Compute Gallery image by ARM ID), or `osManagedDiskId` (boot from an EXISTING referenced OS disk — the golden-disk path, which forbids all authentication fields because the disk carries its users).
+**Boot source** — exactly one of three: `sourceImageReference` (marketplace/platform image by publisher/offer/sku/version), `sourceImageId` (a custom or Compute Gallery image by ARM ID), or `osManagedDiskId` (boot from an EXISTING referenced OS disk — the golden-disk path, which forbids all authentication fields because the disk carries its users).
 
-**Operating system** -- `osProfile` carries exactly one of `linux` or `windows`, each with its own contract: Linux is SSH-first (`sshPublicKeys`; password auth disabled by Azure default), Windows is password-based with WinRM and unattend.xml as its management channels. Patch modes use per-OS vocabularies.
+**Operating system** — `osProfile` carries exactly one of `linux` or `windows`, each with its own contract: Linux is SSH-first (`sshPublicKeys`; password auth disabled by Azure default), Windows is password-based with WinRM and unattend.xml as its management channels. Patch modes use per-OS vocabularies.
 
-**VM size** -- `size` fixes vCPUs, memory, temp disk, NIC/disk caps, and hourly cost. `Standard_D2s_v5` is the balanced production entry point. Resizing later updates in place but reboots the VM.
+**VM size** — `size` fixes vCPUs, memory, temp disk, NIC/disk caps, and hourly cost. `Standard_D2s_v5` is the balanced production entry point. Resizing later updates in place but reboots the VM.
 
-**Networking** -- at least one entry in `networkInterfaceIds`; the FIRST is the primary. Subnet placement, public IPs, and NSG filtering all live on the referenced AzureNetworkInterface — not on the VM.
+**Networking** — at least one entry in `networkInterfaceIds`; the FIRST is the primary. Subnet placement, public IPs, and NSG filtering all live on the referenced Azure Network Interface — not on the VM.
 
-**Managed identity** -- `identity.type: SYSTEM_ASSIGNED` gives workloads keyless access to Azure services; the principal ID surfaces in the outputs for AzureRoleAssignment grants. User-assigned flavors reference AzureUserAssignedIdentity resources.
+**Managed identity** — `identity.type: SYSTEM_ASSIGNED` gives workloads keyless access to Azure services; the principal ID surfaces in the outputs for Azure Role Assignment grants. User-assigned flavors reference Azure User Assigned Identity resources.
 
-**Spot capacity** -- the presence of `spot` makes the VM evictable (up to ~90% off, 30 seconds' notice): set `evictionPolicy` (DEALLOCATE or DELETE) and optionally cap `maxBidPrice` (-1 pays up to the on-demand price). Pair it with `terminationNotification` for a drain signal.
+**Spot capacity** — the presence of `spot` makes the VM evictable (up to ~90% off, 30 seconds' notice): set `evictionPolicy` (DEALLOCATE or DELETE) and optionally cap `maxBidPrice` (-1 pays up to the on-demand price). Pair it with `terminationNotification` for a drain signal.
 
-**Security posture** -- `security.secureBootEnabled` + `security.vtpmEnabled` is trusted launch (free, the production posture for Gen2 images); `osDisk.securityEncryptionType` upgrades to a confidential VM on capable sizes.
+**Security posture** — `security.secureBootEnabled` + `security.vtpmEnabled` is trusted launch (free, the production posture for Gen2 images); `osDisk.securityEncryptionType` upgrades to a confidential VM on capable sizes.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AzureResourceGroup** | `resourceGroup` | `status.outputs.resource_group_name` |
-| **AzureNetworkInterface** | `networkInterfaceIds` | `status.outputs.network_interface_id` |
-| **AzureManagedDisk** | `osManagedDiskId`, `dataDiskAttachments[].managedDiskId` | `status.outputs.disk_id` |
-| **AzureUserAssignedIdentity** (optional) | `identity.identityIds` | `status.outputs.identity_id` |
-| **AzureVirtualMachineScaleSet** (optional) | `availability.virtualMachineScaleSetId` | `status.outputs.scale_set_id` |
-| **AzureDiskEncryptionSet** (optional) | `osDisk.diskEncryptionSetId`, `osDisk.secureVmDiskEncryptionSetId` | `status.outputs.disk_encryption_set_id` |
-| **AzureKeyVault** (optional) | `secrets[].keyVaultId` | `status.outputs.key_vault_id` |
+| **Azure Resource Group** | `resourceGroup` | `status.outputs.resource_group_name` |
+| **Azure Network Interface** | `networkInterfaceIds` | `status.outputs.network_interface_id` |
+| **Azure Managed Disk** | `osManagedDiskId`, `dataDiskAttachments[].managedDiskId` | `status.outputs.disk_id` |
+| **Azure User Assigned Identity** (optional) | `identity.identityIds` | `status.outputs.identity_id` |
+| **Azure Virtual Machine Scale Set** (optional) | `availability.virtualMachineScaleSetId` | `status.outputs.scale_set_id` |
+| **Azure Disk Encryption Set** (optional) | `osDisk.diskEncryptionSetId`, `osDisk.secureVmDiskEncryptionSetId` | `status.outputs.disk_encryption_set_id` |
+| **Azure Key Vault** (optional) | `secrets[].keyVaultId` | `status.outputs.key_vault_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
 | `vm_id` | Azure Resource Manager ID of the Virtual Machine | Monitor diagnostic settings, Azure Policy assignments, backup policies |
 | `private_ip_address` | Private IP of the primary NIC | Application configuration, internal DNS records |
 | `public_ip_address` | Public IP of the primary NIC (when one is configured NIC-side) | SSH/RDP access, DNS A records |
-| `system_assigned_identity_principal_id` | Principal ID of the system-assigned identity (when enabled) | AzureRoleAssignment grants on Azure resources |
+| `system_assigned_identity_principal_id` | Principal ID of the system-assigned identity (when enabled) | Azure Role Assignment grants on Azure resources |
 
 The VM also surfaces `vm_name`, `computer_name`, and `virtual_machine_guid` (the 128-bit GUID licensing and inventory systems key on, stable across restarts) for reference; no downstream Infra Component consumes them.
 
@@ -154,18 +154,18 @@ The VM also surfaces `vm_name`, `computer_name`, and `virtual_machine_guid` (the
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Ubuntu SSH server** -- a zonal Ubuntu 24.04 LTS VM authenticated by SSH keys only, attached to a referenced network interface, with managed boot diagnostics. Suitable for application servers, jump boxes, and development VMs. Start from the **Ubuntu Server with SSH Keys** preset.
+**Ubuntu SSH server** — a zonal Ubuntu 24.04 LTS VM authenticated by SSH keys only, attached to a referenced network interface, with managed boot diagnostics. Suitable for application servers, jump boxes, and development VMs. Start from the **Ubuntu Server with SSH Keys** preset.
 
-**Windows Server with trusted launch** -- Windows Server 2022 with secure boot + vTPM, the admin password sourced from a secret reference, and Azure Hybrid Benefit licensing. Start from the **Windows Server with Trusted Launch** preset.
+**Windows Server with trusted launch** — Windows Server 2022 with secure boot + vTPM, the admin password sourced from a secret reference, and Azure Hybrid Benefit licensing. Start from the **Windows Server with Trusted Launch** preset.
 
-**Spot worker with a data disk** -- an evictable spot VM with a termination notification for drain, a referenced managed data disk at LUN 0, and DEALLOCATE eviction so the disks persist. Start from the **Spot Worker with a Persistent Data Disk** preset.
+**Spot worker with a data disk** — an evictable spot VM with a termination notification for drain, a referenced managed data disk at LUN 0, and DEALLOCATE eviction so the disks persist. Start from the **Spot Worker with a Persistent Data Disk** preset.
 
 ## Works With
 
-- [**Azure Resource Group**](/infra-catalog/azure-resource-group) -- provides the resource group where the VM is created
-- [**Azure Network Interface**](/infra-catalog/azure-network-interface) -- provides the VM's network presence (subnet, IPs, NSG)
-- [**Azure Managed Disk**](/infra-catalog/azure-managed-disk) -- provides boot and data disks that outlive the machine
-- [**Azure User Assigned Identity**](/infra-catalog/azure-user-assigned-identity) -- provides shared workload identities
-- [**Azure Role Assignment**](/infra-catalog/azure-role-assignment) -- grants the VM's identities access to Azure resources
-- [**Azure Key Vault**](/infra-catalog/azure-key-vault) -- provides certificates installed at provisioning
-- [**Azure Disk Encryption Set**](/infra-catalog/azure-disk-encryption-set) -- provides customer-managed keys for the OS disk
+- [**Azure Resource Group**](/infra-catalog/azure-resource-group) — provides the resource group where the VM is created
+- [**Azure Network Interface**](/infra-catalog/azure-network-interface) — provides the VM's network presence (subnet, IPs, NSG)
+- [**Azure Managed Disk**](/infra-catalog/azure-managed-disk) — provides boot and data disks that outlive the machine
+- [**Azure User Assigned Identity**](/infra-catalog/azure-user-assigned-identity) — provides shared workload identities
+- [**Azure Role Assignment**](/infra-catalog/azure-role-assignment) — grants the VM's identities access to Azure resources
+- [**Azure Key Vault**](/infra-catalog/azure-key-vault) — provides certificates installed at provisioning
+- [**Azure Disk Encryption Set**](/infra-catalog/azure-disk-encryption-set) — provides customer-managed keys for the OS disk

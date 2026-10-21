@@ -1,5 +1,5 @@
 # Least-privilege permissions the IaC runner's GCP principal needs to
-# provision, update, and destroy this component with the official modules.
+# provision, update, and destroy this component with the platform modules.
 # Every entry is `derived` (static analysis of the module sources, cited in
 # notes) until the live capture lane upgrades it to `proven`. Schema:
 # iac/catalogkindpermissions/v1.
@@ -16,6 +16,8 @@ spec:
           - serviceusage.services.get
           - serviceusage.services.list
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers google_project_service (Terraform) / projects.Service (Pulumi) enabling logging.googleapis.com on the target project. The Terraform module pins disable_on_destroy=false and the Pulumi module leaves the field unset -- the provider's own reference states false OR UNSET leaves the service enabled on destroy (at the pinned release), so neither engine calls the disable path and no disable permission is needed.
       - purpose: ManageLogMetric
         permissions:
@@ -24,4 +26,6 @@ spec:
           - logging.logMetrics.update
           - logging.logMetrics.delete
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: "Covers google_logging_metric (Terraform) / logging.Metric (Pulumi) -- create, read/refresh, in-place updates (filter, descriptor, extractors, bucket options, disabled), and destroy. Google's roles/logging.configWriter bundles these; this manifest is the least-privilege set. Reading the metric's resulting time series is a CONSUMER concern (Monitoring viewer roles), not a deployer permission."

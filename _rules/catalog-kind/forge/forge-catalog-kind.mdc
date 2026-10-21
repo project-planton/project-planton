@@ -725,7 +725,25 @@ them and the `lint.catalog-data` lane holds their content to schema:
    the way a policy author would group them. Derive from the module's
    declared resources and mark every entry `derived` (notes cite the
    terraform resource types it covers); the live capture lane upgrades
-   entries to `proven`. Defend every wildcard in notes.
+   entries to `proven`. Defend every wildcard in notes. Every AWS statement
+   and GCP group also says where it is granted (`reach`: `target` -- the
+   connection's project or account -- `organization`, or `billing_account`;
+   a group holds permissions of one reach, so split one that mixes them),
+   and every AWS, GCP and Azure entry says what it lets the principal do
+   (`privilege`: `ordinary`, `uses_identity` for actAs / PassRole / identity
+   assign, `grants_access` for account-wide IAM, roles, users, keys and role
+   assignments -- the highest of its permissions' on
+   `pkg/iac/actioninventory/privileged.yaml`). Connections grant by these:
+   `ordinary` and `uses_identity` by default, `grants_access` and the reaches
+   above the target only when asked for. A GCP group a custom role cannot
+   carry (a billing-account reach, or a permission Google publishes as
+   unsupported in custom roles) names its `predefined_role`. A GCP kind
+   turns its own APIs on (`serviceusage.services.enable` and the module's
+   API enablement), names in `gcp.api_enabled_by` the kinds that do (a
+   child of an API-enabling parent), or -- for a resource that lives in no
+   project -- names the APIs in `gcp.caller_project_services`; the gates
+   derive every one of these from the providers' own inventories and refuse
+   a wrong value.
 
 `catalog/aws/awsalb` and `catalog/aws/awsdynamodb` are the reference
 examples. Validate with `go test ./pkg/finops/... ./pkg/compliance/...

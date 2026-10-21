@@ -51,7 +51,7 @@ This creates a hostname-identified site measuring `www.acme.com` with the full b
 
 ### InfraChart
 
-When measuring a zone deployed in the same InfraPipeline, wire `zoneTag` with ValueFromRef:
+When measuring a zone deployed in the same InfraPipeline, wire `zoneTag` with references:
 
 ```yaml
 spec:
@@ -86,13 +86,13 @@ These are the most important decisions when configuring a Web Analytics site. Ex
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **CloudflareDnsZone** (zone-measured sites) | `zoneTag` | `status.outputs.zone_id` |
+| **Cloudflare DNS Zone** (zone-measured sites) | `zoneTag` | `status.outputs.zone_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

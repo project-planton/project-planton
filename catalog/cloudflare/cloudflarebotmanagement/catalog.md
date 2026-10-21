@@ -17,7 +17,7 @@ When you deploy this Infra Component, the IaC module provisions:
 
 ### Cloudflare Account
 
-- **A zone** for `zoneId` — typically a CloudflareDnsZone whose `zone_id` output this resource references.
+- **A zone** for `zoneId` — typically a Cloudflare DNS Zone whose `zone_id` output this resource references.
 - **The right zone plan for gated fields** — `fightMode` is free; the `sbfm*` fields need Pro/Business (`sbfmLikelyAutomated` needs Business+); `autoUpdateModel`, `suppressSessionScore`, and `bmCookieEnabled` need Enterprise Bot Management. `enableJs` is writable on every plan — and required on-or-with `fightMode` when the zone's JavaScript detections are off (Cloudflare rejects Fight Mode alone with a 400 otherwise). Setting a field the plan does not include fails at the API, and non-entitled zones omit those fields from responses, which surfaces as perpetual refresh drift.
 
 ## Deploy
@@ -52,7 +52,7 @@ This turns on Bot Fight Mode and touches nothing else — every other Bot Manage
 
 ### InfraChart
 
-When the zone is deployed in the same InfraPipeline, wire the reference with ValueFromRef:
+When the zone is deployed in the same InfraPipeline, wire the reference:
 
 ```yaml
 spec:
@@ -89,9 +89,9 @@ These are the most important decisions when configuring Bot Management. Explore 
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **CloudflareDnsZone** | `zoneId` | `status.outputs.zone_id` |
+| **Cloudflare DNS Zone** | `zoneId` | `status.outputs.zone_id` |
 
 ### What This Kind Provides
 

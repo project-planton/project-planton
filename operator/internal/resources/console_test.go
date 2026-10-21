@@ -58,6 +58,20 @@ func TestConsoleDeployment_APIEndpoint(t *testing.T) {
 	}
 }
 
+// The console's own server reaches the control plane's gRPC-Web door at its
+// in-cluster address, under the same API path namespace the browser uses.
+func TestConsoleDeployment_APIInternalEndpoint(t *testing.T) {
+	cfg := ConsoleConfig{Resources: Effective(SizingConsole, nil), CRName: "planton", Namespace: "default", Version: "v1.0.0", Replicas: 1}
+	env := map[string]string{}
+	for _, e := range ConsoleDeployment(cfg).Spec.Template.Spec.Containers[0].Env {
+		env[e.Name] = e.Value
+	}
+	want := "http://planton-control-plane.default.svc.cluster.local:8081" + APIPathPrefix
+	if env["API_INTERNAL_ENDPOINT"] != want {
+		t.Errorf("API_INTERNAL_ENDPOINT = %q, want %q", env["API_INTERNAL_ENDPOINT"], want)
+	}
+}
+
 // The console must bind all interfaces (HOSTNAME=0.0.0.0). Next.js standalone binds
 // process.env.HOSTNAME, which Kubernetes sets to the pod name -> pod IP only, refusing
 // loopback and breaking kubectl port-forward. Regression guard.
@@ -195,6 +209,11 @@ func TestConsoleDeployment_PublicURL(t *testing.T) {
 	}
 	if env["NEXTAUTH_URL"] != publicURL {
 		t.Errorf("NEXTAUTH_URL = %s, want the public URL", env["NEXTAUTH_URL"])
+	}
+	// The console's server stays in-cluster: a public name need not resolve
+	// or hairpin from inside the cluster.
+	if want := "http://planton-control-plane.default.svc.cluster.local:8081" + APIPathPrefix; env["API_INTERNAL_ENDPOINT"] != want {
+		t.Errorf("API_INTERNAL_ENDPOINT = %q, want the in-cluster address %q even with a public URL", env["API_INTERNAL_ENDPOINT"], want)
 	}
 }
 

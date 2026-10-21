@@ -1,38 +1,38 @@
 # Langfuse
 
-Deploys Langfuse, the open-source LLM engineering platform for tracing, prompt management, evaluations and datasets, on Kubernetes from the official `langfuse` Helm chart. One release runs the web server (UI, public API and the OTLP ingestion endpoint) and the worker (queue consumers that load events into ClickHouse and run evaluations, exports and retention) against four stores you compose by reference: Postgres, ClickHouse, a Redis-protocol store and object storage. The chart's bundled copies of those stores never ship from this kind. Every secret reaches Langfuse through a module-owned Secret, never through Helm values, and by default the install comes up with a seeded organization, project and API key pair, so an SDK can send its first trace the moment the release is ready.
+Deploys Langfuse, the open-source LLM engineering platform for tracing, prompt management, evaluations and datasets, on Kubernetes from the official Langfuse Helm chart. One release runs the web server (UI, public API and the OTLP ingestion endpoint) and the worker (queue consumers that load events into ClickHouse and run evaluations, exports and retention) against four stores you compose by reference: Postgres, ClickHouse, a Redis-protocol store and object storage. The chart's bundled copies of those stores never ship from this kind. Every secret reaches Langfuse through a module-owned Secret, never through Helm values, and by default the install comes up with a seeded organization, project and API key pair, so an SDK can send its first trace the moment the release is ready.
 
 ## What Gets Created
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **Kubernetes Namespace** -- created only when `createNamespace` is `true`; otherwise Langfuse installs into an existing namespace, which is the usual shape because the stores' Secrets must live there too
-- **The instance Secret** (`<name>-secrets`) -- every sensitive value the spec declares (store connection URLs, the SMTP URL, single sign-on client secrets, blob storage keys, the AI provider key, the license key) plus what the module generates when the spec leaves it empty: the API-key salt, the 64-hex-character encryption key, the NextAuth session secret, the seeded project key pair and the seeded admin's password
-- **The Helm release** -- the official `langfuse` chart with its four bundled stores pinned off, rendering:
-  - The web Deployment and Service (`<name>-web`, port 3000) -- the UI, the public API, the ingestion API and the OTLP endpoint; Postgres and ClickHouse migrations run when it starts
-  - The worker Deployment (`<name>-worker`) -- queue consumers, evaluations, batch exports and data retention
-  - The ServiceAccount (`<name>`), unless `serviceAccount.existingName` names one -- annotated for EKS, GKE or AKS workload identity when `serviceAccount.workloadIdentity` is set
+- **Kubernetes Namespace** — created only when `createNamespace` is `true`; otherwise Langfuse installs into an existing namespace, which is the usual shape because the stores' Secrets must live there too
+- **The instance Secret** (`<name>-secrets`) — every sensitive value the spec declares (store connection URLs, the SMTP URL, single sign-on client secrets, blob storage keys, the AI provider key, the license key) plus what the module generates when the spec leaves it empty: the API-key salt, the 64-hex-character encryption key, the NextAuth session secret, the seeded project key pair and the seeded admin's password
+- **The Helm release** — the official `langfuse` chart with its four bundled stores pinned off, rendering:
+  - The web Deployment and Service (`<name>-web`, port 3000) — the UI, the public API, the ingestion API and the OTLP endpoint; Postgres and ClickHouse migrations run when it starts
+  - The worker Deployment (`<name>-worker`) — queue consumers, evaluations, batch exports and data retention
+  - The ServiceAccount (`<name>`), unless `serviceAccount.existingName` names one — annotated for EKS, GKE or AKS workload identity when `serviceAccount.workloadIdentity` is set
   - Per workload, only when declared: a HorizontalPodAutoscaler, a KEDA ScaledObject, a VerticalPodAutoscaler and a PodDisruptionBudget
-  - The chart's own `<name>-app` Secret -- created empty, because the module supplies the salt, encryption key and session secret itself
-- **Kubernetes Labels** -- resource metadata labels (resource name, kind, organization, environment) applied automatically for tracking
+  - The chart's own `<name>-app` Secret — created empty, because the module supplies the salt, encryption key and session secret itself
+- **Kubernetes Labels** — resource metadata labels (resource name, kind, organization, environment) applied automatically for tracking
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **Kubernetes Provider Connection** -- an active connection in the Connect module with kubeconfig credentials for the target cluster. Map it as the default for your environment, or name it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when credentials are delivered through a Runner; not needed for inline kubeconfig authentication.
+- **Kubernetes Provider Connection** — an active connection in the Connect module with kubeconfig credentials for the target cluster. Map it as the default for your environment, or name it explicitly when creating the Infra Component.
+- **Planton Runner** — required when credentials are delivered through a Runner; not needed for inline kubeconfig authentication.
 
 ### Kubernetes Cluster
 
-- **Kubernetes 1.28 or newer** -- the floor chart 2.x declares.
-- **The four stores, in Langfuse's namespace** -- a Kubernetes Secret reference cannot cross namespaces, and every store password reaches the pods through one. Compose the stores into the same namespace (the `self-hosted-langfuse` InfraChart does), or copy their Secrets there.
-- **A Postgres database Langfuse owns** -- PostgreSQL 15 or newer in UTC. On a composed PostgreSQL, declare the `langfuse` database at bootstrap (`initdb.database`) with the Langfuse user as owner: migrations run as that user on every start.
-- **A ClickHouse user that can reach the server** -- ClickHouse 25.12 or newer. On a composed ClickHouse, declare the user's `networks` (for example `0.0.0.0/0` and `::/0`): without them the user is fenced to ClickHouse's own pods and Langfuse is refused with what looks like a wrong-password error. Cluster mode (`clickhouse.cluster.enabled`, on by default) needs ClickHouse Keeper.
-- **A Redis-protocol store with `maxmemory-policy noeviction`** -- under any eviction policy, queued ingestion jobs are silently dropped.
-- **A bucket that already exists** -- every ingested event is written to object storage before the worker reads it.
+- **Kubernetes 1.28 or newer** — the floor chart 2.x declares.
+- **The four stores, in Langfuse's namespace** — a Kubernetes Secret reference cannot cross namespaces, and every store password reaches the pods through one. Compose the stores into the same namespace (the `self-hosted-langfuse` InfraChart does), or copy their Secrets there.
+- **A Postgres database Langfuse owns** — PostgreSQL 15 or newer in UTC. On a composed PostgreSQL, declare the `langfuse` database at bootstrap (`initdb.database`) with the Langfuse user as owner: migrations run as that user on every start.
+- **A ClickHouse user that can reach the server** — ClickHouse 25.12 or newer. On a composed ClickHouse, declare the user's `networks` (for example `0.0.0.0/0` and `::/0`): without them the user is fenced to ClickHouse's own pods and Langfuse is refused with what looks like a wrong-password error. Cluster mode (`clickhouse.cluster.enabled`, on by default) needs ClickHouse Keeper.
+- **A Redis-protocol store with `maxmemory-policy noeviction`** — under any eviction policy, queued ingestion jobs are silently dropped.
+- **A bucket that already exists** — every ingested event is written to object storage before the worker reads it.
 - **KEDA** (only for `autoscaling.keda`) and **the VerticalPodAutoscaler** (only for `autoscaling.vpa`) installed in the cluster.
-- **A name within budget** -- keep `metadata.name` at 52 characters or fewer: the chart's longest child name is `<name>-worker-pdb`. Both modules fail before applying when the name is longer.
+- **A name within budget** — keep `metadata.name` at 52 characters or fewer: the chart's longest child name is `<name>-worker-pdb`. Both modules fail before applying when the name is longer.
 
 ## Deploy
 
@@ -180,7 +180,7 @@ These are the most important decisions when configuring Langfuse. Explore the fu
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |---|---|---|
 | Kubernetes Namespace | `namespace` | `spec.name` |
 | PostgreSQL | `postgres.host` | `status.outputs.rw_service` |
@@ -213,11 +213,11 @@ The media and batch-export targets accept the same references as the event targe
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |---|---|---|
-| `service` | The web Service name | The backend of a KubernetesHttpRoute or KubernetesIngress that exposes Langfuse |
+| `service` | The web Service name | The backend of a Kubernetes HTTPRoute or Kubernetes Ingress that exposes Langfuse |
 | `endpoint` | The in-cluster base URL of the web server | `LANGFUSE_HOST` for applications in the same cluster that send traces through a Langfuse SDK |
 | `otel_endpoint` | The OTLP endpoint (`<endpoint>/api/public/otel`) | The exporter endpoint of an OpenTelemetry Collector or an OTLP-instrumented application |
 | `project_public_key` | The seeded project's public key | `LANGFUSE_PUBLIC_KEY` for applications that send traces |
@@ -237,12 +237,12 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 ## Works With
 
-- [**PostgreSQL**](/infra-catalog/kubernetes-postgres) -- the Postgres store; the `postgres` foreign-key defaults point at its read-write Service and application credential Secret
-- [**ClickHouse**](/infra-catalog/kubernetes-click-house) -- the trace store; declare the Langfuse user with `networks`, and the `clickhouse` foreign-key defaults do the rest
-- [**Valkey**](/infra-catalog/kubernetes-valkey) -- the queue and cache store, run with `noeviction`
-- [**SeaweedFS**](/infra-catalog/kubernetes-seaweed-fs) -- in-cluster S3-compatible object storage for events, media and exports
-- [**CloudNativePG Operator**](/infra-catalog/kubernetes-cloud-native-pg-operator) and [**Altinity ClickHouse Operator**](/infra-catalog/kubernetes-altinity-operator) -- the operators behind the composed Postgres and ClickHouse
-- [**AWS S3 Bucket**](/infra-catalog/aws-s3-bucket), [**Cloudflare R2 Bucket**](/infra-catalog/cloudflare-r2-bucket), [**GCP GCS Bucket**](/infra-catalog/gcp-gcs-bucket) and [**Azure Storage Container**](/infra-catalog/azure-storage-container) -- cloud object storage targets
-- [**KEDA**](/infra-catalog/kubernetes-keda) -- the runtime behind `autoscaling.keda` on either workload
-- [**Kubernetes HTTPRoute**](/infra-catalog/kubernetes-http-route) and [**Kubernetes Ingress**](/infra-catalog/kubernetes-ingress) -- exposure over the `service` output, at the host `externalUrl` names
-- [**Kubernetes Namespace**](/infra-catalog/kubernetes-namespace) -- the namespace Langfuse and its stores share
+- [**PostgreSQL**](/infra-catalog/kubernetes-postgres) — the Postgres store; the `postgres` foreign-key defaults point at its read-write Service and application credential Secret
+- [**ClickHouse**](/infra-catalog/kubernetes-click-house) — the trace store; declare the Langfuse user with `networks`, and the `clickhouse` foreign-key defaults do the rest
+- [**Valkey**](/infra-catalog/kubernetes-valkey) — the queue and cache store, run with `noeviction`
+- [**SeaweedFS**](/infra-catalog/kubernetes-seaweed-fs) — in-cluster S3-compatible object storage for events, media and exports
+- [**CloudNativePG Operator**](/infra-catalog/kubernetes-cloud-native-pg-operator) and [**Altinity ClickHouse Operator**](/infra-catalog/kubernetes-altinity-operator) — the operators behind the composed Postgres and ClickHouse
+- [**AWS S3 Bucket**](/infra-catalog/aws-s3-bucket), [**Cloudflare R2 Bucket**](/infra-catalog/cloudflare-r2-bucket), [**GCP GCS Bucket**](/infra-catalog/gcp-gcs-bucket) and [**Azure Storage Container**](/infra-catalog/azure-storage-container) — cloud object storage targets
+- [**KEDA**](/infra-catalog/kubernetes-keda) — the runtime behind `autoscaling.keda` on either workload
+- [**Kubernetes HTTPRoute**](/infra-catalog/kubernetes-http-route) and [**Kubernetes Ingress**](/infra-catalog/kubernetes-ingress) — exposure over the `service` output, at the host `externalUrl` names
+- [**Kubernetes Namespace**](/infra-catalog/kubernetes-namespace) — the namespace Langfuse and its stores share

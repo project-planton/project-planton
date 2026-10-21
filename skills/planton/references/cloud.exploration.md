@@ -92,18 +92,24 @@ explicitly asks you to change something:
 1. **State the exact command or tool call** you intend to run and what it
    will change (blast radius in one plain sentence).
 2. **Wait for a clear yes.** A vague "sure, go ahead" earlier in the
-   conversation does not cover a new mutation — one confirmation per
-   mutation, never a blanket approval for a chain of them.
+   conversation does not cover a new mutation: each mutation gets its own
+   yes. The one exception is consent given in advance: if the person told
+   you to carry on without asking (for this task), that is their agreement
+   to the mutations the task needs, and you go ahead without stopping.
 3. **Run it, then report what actually happened** — including partial
-   failures. Never summarize an error away.
+   failures, and exactly what was destroyed or replaced. Never summarize an
+   error away.
 
 A `planton` command that asks for a yes before it changes something never
 answers for you: run without a terminal, it refuses with exit 1, says nothing
 happened ("Nothing was revoked."), and names the flag that answers ahead of
-time (`--force` or `--yes`) with the full command line. That refusal is not a
-failure to route around. The person's yes from step 2 is what the flag stands
-for, so rerun with it only for the mutation they confirmed, and report the
-refusal as "not done" when you do not.
+time (`--yes`) with the full command line. That refusal is not a failure to
+route around. The person's yes from step 2 (or their word to carry on) is
+what the flag stands for, so rerun with it only for the mutation they agreed
+to, and report the refusal as "not done" when you do not. `--force` never
+stands for a yes: where a command has it, it overrides a refusal (`planton
+delete --force` deletes a record while its infrastructure keeps running),
+and that command still asks.
 
 Prefer the platform-tracked path for anything Planton manages: a resource
 deployed by a chart should change through the chart (edit + redeploy) or

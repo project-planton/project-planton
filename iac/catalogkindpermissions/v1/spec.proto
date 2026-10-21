@@ -37,13 +37,62 @@ message CatalogKindPermissionsSpec {
 // Provenance says how a permission entry was established.
 enum Provenance {
   provenance_unspecified = 0;
-  // Derived by static analysis of the official module sources: the entry
+  // Derived by static analysis of the platform module sources: the entry
   // covers the module's declared resources but has not been observed
   // against a live cloud account.
   derived = 1;
-  // Observed from live provisioning runs (API-call capture during e2e).
-  // The strongest claim: the run happened, these calls were made.
+  // Proven by a live run: an identity holding exactly these permissions --
+  // nothing more -- deployed, updated and destroyed this kind through
+  // Planton. The strongest claim: the entries are enough, observed against a
+  // real cloud account. (Not that every entry was called: a provider's logs
+  // record writes but not most reads, so sufficiency is what a run can show.)
   proven = 2;
+}
+
+// PermissionReach says where in the provider's resource hierarchy an
+// entry's permissions are granted. A connection is set up against one
+// target -- a GCP project, an AWS account -- and a role on that target
+// cannot hold a permission that authorizes above it, so every reader
+// renders, grants and checks each reach on its own: a connection's role
+// holds the target's entries, an organization-level grant holds the
+// organization's, and a check never asks the target about a permission it
+// cannot answer for. The value is a fact about the permissions, read from
+// the provider's own scope-typed inventory where it publishes one (GCP's
+// testable-permissions list), and the inventory gate holds every entry to
+// it. Unspecified is refused.
+enum PermissionReach {
+  permission_reach_unspecified = 0;
+  // The connection's own target: the GCP project, the AWS account.
+  target = 1;
+  // Above the target: a GCP organization or folder; AWS Organizations,
+  // which answers only in the organization's management account.
+  organization = 2;
+  // A GCP billing account.
+  billing_account = 3;
+}
+
+// PermissionPrivilege says what an entry lets the principal do beyond
+// creating, changing and deleting resources. It is what a connection's
+// permission choices are drawn along: deploying is granted by default,
+// running a resource as an identity that already exists is part of
+// deploying (a Cloud Run service runs as a service account, a Lambda
+// function assumes its execution role), and granting access to others is
+// asked for explicitly -- a principal that can grant access can grant
+// itself anything. An entry's privilege is the highest of its
+// permissions'; the inventory gate derives it from each provider's list of
+// privileged permissions, so the field can never drift from the
+// permissions it describes. Unspecified is refused.
+enum PermissionPrivilege {
+  permission_privilege_unspecified = 0;
+  // Creates, reads, changes and deletes resources.
+  ordinary = 1;
+  // Lets a resource run as an identity that already exists: GCP
+  // iam.serviceAccounts.actAs, AWS iam:PassRole, Azure's user-assigned
+  // identity assign action.
+  uses_identity = 2;
+  // Grants access to others: changes an IAM policy, creates a role, a user
+  // or a key, or assigns a role.
+  grants_access = 3;
 }
 
 // PermissionCondition says an entry is needed only when the kind's
@@ -96,12 +145,36 @@ message AwsStatement {
   string notes = 5;
   // Absent: every deployment of the kind needs this entry.
   PermissionCondition condition = 6;
+  // Where the actions are granted: the account, or AWS Organizations.
+  PermissionReach reach = 7;
+  // What the actions let the principal do beyond managing resources.
+  PermissionPrivilege privilege = 8;
 }
 
 // GcpPermissions is the least-privilege permission material for the
 // runner's GCP principal.
 message GcpPermissions {
   repeated GcpPermissionGroup groups = 1;
+  // The kinds whose deployments turn on the Google APIs this kind's
+  // resources live in, for a kind that turns none on itself -- a Cloud SQL
+  // database lives in the API its instance's kind turns on. Every kind
+  // turns on what it needs at first deploy, and a connection's setup turns
+  // on only the APIs Planton itself operates on (IAM, Resource Manager,
+  // Service Usage), so a kind touching any other service either holds
+  // serviceusage.services.enable or names here the kinds that turn its
+  // services on; the permissions gate refuses a kind that does neither, and
+  // a named kind that does not touch the service. Kind names as the catalog
+  // spells them (e.g. "GcpCloudSql"). Empty when the kind turns its own
+  // APIs on, or touches only the operating ones.
+  repeated string api_enabled_by = 2;
+  // The Google APIs this kind's calls need turned on in the project of the
+  // identity making them, e.g. "orgpolicy.googleapis.com". A resource that
+  // lives in no project -- an organization policy, a folder's firewall
+  // policy, a billing budget -- is managed through calls Google charges to
+  // the caller's own project, which only the connection knows, so the
+  // connection's setup turns these on there when it is granted the reach
+  // the kind needs. Empty for a kind whose resources live in a project.
+  repeated string caller_project_services = 3;
 }
 
 // GcpPermissionGroup is one coherent set of IAM permissions (the units a
@@ -118,6 +191,20 @@ message GcpPermissionGroup {
   string notes = 4;
   // Absent: every deployment of the kind needs this entry.
   PermissionCondition condition = 5;
+  // Where the permissions are granted: the project, the organization, or
+  // a billing account. A group holds permissions of one reach.
+  PermissionReach reach = 6;
+  // What the permissions let the principal do beyond managing resources.
+  PermissionPrivilege privilege = 7;
+  // The predefined role granted for this group instead of placing its
+  // permissions in a custom role, as "roles/<name>". Set exactly when a
+  // custom role cannot carry the group: Google publishes some of its
+  // permissions as unsupported in custom roles, or the group's reach is a
+  // billing account (a billing account takes a custom role only from its
+  // own organization, which a connection's organization often is not). The
+  // inventory gate proves the role holds every permission of the group and
+  // refuses the basic roles (owner, editor, viewer).
+  string predefined_role = 8;
 }
 
 // AzurePermissions is the least-privilege RBAC material for the runner's
@@ -142,6 +229,10 @@ message AzureActionGroup {
   string notes = 5;
   // Absent: every deployment of the kind needs this entry.
   PermissionCondition condition = 6;
+  // What the actions let the principal do beyond managing resources. Azure
+  // entries carry no reach: every catalog kind is granted at the
+  // connection's subscription.
+  PermissionPrivilege privilege = 7;
 }
 
 // CloudflarePermissions is the least-privilege API-token material for the

@@ -5,7 +5,7 @@ package moduleverify
 
 // A secret home is part of a module's contract: the platform refuses a secret in a field every
 // viewer reads and sends the author to the home, so a module that never reads the home deploys
-// without the value the author was told to put there. This suite pins that every official module
+// without the value the author was told to put there. This suite pins that every platform module
 // of every kind declaring a home reads it in both engines, and that the check fires, per engine,
 // on a module that does not -- a gate that cannot fail teaches false confidence.
 
@@ -39,7 +39,7 @@ func TestDeclaredSecretHomes_ReadFromTheKindsSchema(t *testing.T) {
 	t.Fatalf("GcpCloudRun declares env[].value's home as env[].secret_value; found %+v", homes)
 }
 
-func TestVerify_SecretHomes_EveryOfficialModuleReadsItsKindsHomes(t *testing.T) {
+func TestVerify_SecretHomes_EveryPlatformModuleReadsItsKindsHomes(t *testing.T) {
 	root := repoRoot(t)
 	kindsWithHomes := 0
 	for _, kind := range catalogkindreflect.KindsList() {

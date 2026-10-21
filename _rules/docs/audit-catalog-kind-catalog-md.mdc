@@ -32,7 +32,8 @@ Before auditing, read (version dir shown as `v1alpha1/`; use the kind's actual v
 The catalog bundle parses this file's head for display metadata:
 
 - The H1 must be the human display name ("AWS S3 Bucket", never `AwsS3Bucket`).
-- The first sentence of the opening paragraph must stand alone as the kind's one-line description.
+- The first sentence of the opening paragraph must stand alone as the kind's one-line description, in plain text (no code ticks, links, or emphasis).
+- Prose and table cells use a real em dash, name kinds by their display names, and say "reference" in words; PascalCase kind names and `ValueFromRef` appear only in code (`pkg/catalogpage` enforces all three).
 - **Critical issue** if either fails — this is machine-consumed, not style.
 - **Critical issue** if the opening paragraph carries the banned tic ("Integrates with Planton's {X} Provider Connection for credential management").
 
@@ -67,7 +68,7 @@ Verify the exact section set and order:
 - Every spec field mentioned exists in spec.proto and is camelCase.
 - Every output in the Provides table exists in outputs.proto and is snake_case.
 - Every What Gets Created bullet is backed by module code; conditional resources state their governing condition; no listed resource is absent from the module.
-- Table headers are exactly `| Dependency | Field | ValueFromRef Path |` (Consumes) and `| Output | Description | Common Downstream Use |` (Provides). Prose fallbacks are legitimate on BOTH sides: Consumes when there are no foreign key dependencies, Provides when `status.outputs` carries nothing consumable (input echoes only) — the prose must say why.
+- Table headers are exactly `| Dependency | Field | Reference Path |` (Consumes) and `| Output | Description | Common Downstream Use |` (Provides). Prose fallbacks are legitimate on BOTH sides: Consumes when there are no foreign key dependencies, Provides when `status.outputs` carries nothing consumable (input echoes only) — the prose must say why.
 
 ### Step 5: Manifest Verification
 

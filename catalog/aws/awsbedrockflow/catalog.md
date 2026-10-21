@@ -99,7 +99,7 @@ This creates a three-node summarization pipeline: input document in, one Nova Mi
 
 ### InfraChart
 
-When the flow deploys alongside the resources its nodes reference, wire them via ValueFromRef — here a prompt node consuming a managed prompt:
+When the flow deploys alongside the resources its nodes reference, wire them — here a prompt node consuming a managed prompt:
 
 ```yaml
 spec:
@@ -138,7 +138,7 @@ These are the most important decisions when configuring a flow. Explore the full
 
 **Socket types are contracts** — a String output feeding an Object-typed input fails validation at create. Align the node IO types before reaching for expressions; `$.data` passes the whole upstream value through, and narrower JSONPath expressions select fields from Object-typed sockets.
 
-**Inline prompts or referenced prompts** — a prompt node either defines its template inline or references an AwsBedrockPrompt by `promptArn`. Inline keeps the flow self-contained; a referenced prompt is versioned and shared across flows, so template edits ship without touching the graph. The inline tree deliberately mirrors the prompt kind's — moving between the two is a mechanical change.
+**Inline prompts or referenced prompts** — a prompt node either defines its template inline or references an AWS Bedrock Prompt by `promptArn`. Inline keeps the flow self-contained; a referenced prompt is versioned and shared across flows, so template edits ship without touching the graph. The inline tree deliberately mirrors the prompt kind's — moving between the two is a mechanical change.
 
 **The execution role aggregates every node's permissions** — one role covers model invocation, agent-alias invocation, knowledge-base retrieval, and Lambda invoke for the entire graph. Audit it whenever you add a node class; a missing permission surfaces at run time, not at deploy.
 
@@ -154,20 +154,20 @@ These are the most important decisions when configuring a flow. Explore the full
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AwsIamRole** | `executionRoleArn` | `status.outputs.role_arn` |
-| **AwsKmsKey** | `customerEncryptionKeyArn` | `status.outputs.key_arn` |
-| **AwsBedrockAgent** | `definition.nodes[].agent.agentAliasArn` | `status.outputs.alias_arns.<alias-name>` |
-| **AwsBedrockPrompt** | `definition.nodes[].prompt.promptArn` | `status.outputs.prompt_arn` |
-| **AwsBedrockKnowledgeBase** | `definition.nodes[].knowledgeBase.knowledgeBaseId` | `status.outputs.knowledge_base_id` |
-| **AwsBedrockGuardrail** | `definition.nodes[].prompt.guardrail.guardrailId`, `definition.nodes[].knowledgeBase.guardrail.guardrailId` | `status.outputs.guardrail_id` |
-| **AwsLambda** | `definition.nodes[].lambdaFunction.lambdaArn` | `status.outputs.function_arn` |
-| **AwsS3Bucket** | `definition.nodes[].retrieval.bucketName`, `definition.nodes[].storage.bucketName` | `status.outputs.bucket_id` |
+| **AWS IAM Role** | `executionRoleArn` | `status.outputs.role_arn` |
+| **AWS KMS Key** | `customerEncryptionKeyArn` | `status.outputs.key_arn` |
+| **AWS Bedrock Agent** | `definition.nodes[].agent.agentAliasArn` | `status.outputs.alias_arns.<alias-name>` |
+| **AWS Bedrock Prompt** | `definition.nodes[].prompt.promptArn` | `status.outputs.prompt_arn` |
+| **AWS Bedrock Knowledge Base** | `definition.nodes[].knowledgeBase.knowledgeBaseId` | `status.outputs.knowledge_base_id` |
+| **AWS Bedrock Guardrail** | `definition.nodes[].prompt.guardrail.guardrailId`, `definition.nodes[].knowledgeBase.guardrail.guardrailId` | `status.outputs.guardrail_id` |
+| **AWS Lambda** | `definition.nodes[].lambdaFunction.lambdaArn` | `status.outputs.function_arn` |
+| **AWS S3 Bucket** | `definition.nodes[].retrieval.bucketName`, `definition.nodes[].storage.bucketName` | `status.outputs.bucket_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

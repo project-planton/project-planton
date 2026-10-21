@@ -58,7 +58,7 @@ This creates a SecureString at `/prod/orders/db-password` encrypted under the re
 
 ### InfraChart
 
-When the parameter deploys alongside its encryption key in one chart, wire the key reference via ValueFromRef:
+When the parameter deploys alongside its encryption key in one chart, wire the key reference:
 
 ```yaml
 spec:
@@ -97,13 +97,13 @@ These are the most important decisions when configuring a parameter. Explore the
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AwsKmsKey** | `keyId` | `status.outputs.key_arn` |
+| **AWS KMS Key** | `keyId` | `status.outputs.key_arn` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

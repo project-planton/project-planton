@@ -1,4 +1,4 @@
-# Least-privilege permissions for the official kubernetestrino modules
+# Least-privilege permissions for the platform kubernetestrino modules
 # (iac/tf and iac/pulumi -- behaviorally equivalent). Derived from the
 # resources the modules create directly plus everything the pinned trino
 # chart (trinodb, 1.42.2) renders inside the Helm release.

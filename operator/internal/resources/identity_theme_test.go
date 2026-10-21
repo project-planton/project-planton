@@ -26,7 +26,7 @@ func TestIdentityThemeConfigMap(t *testing.T) {
 	}
 	// Keys are the flattened theme paths, so both theme types can carry a
 	// theme.properties of their own.
-	for _, key := range []string{"login__theme.properties", "email__theme.properties", "login__resources__css__planton.css", "login__resources__img__planton-logo.svg"} {
+	for _, key := range []string{"login__theme.properties", "email__theme.properties", "login__resources__css__planton.css"} {
 		if _, ok := cm.Data[key]; !ok {
 			t.Errorf("%s missing from Data", key)
 		}
@@ -72,7 +72,6 @@ func TestIdentityDeployment_ThemeMountsAndRestartHash(t *testing.T) {
 		"/opt/keycloak/themes/planton/login/theme.properties":                  "login__theme.properties",
 		"/opt/keycloak/themes/planton/email/theme.properties":                  "email__theme.properties",
 		"/opt/keycloak/themes/planton/login/resources/css/planton.css":         "login__resources__css__planton.css",
-		"/opt/keycloak/themes/planton/login/resources/img/planton-logo.svg":    "login__resources__img__planton-logo.svg",
 		"/opt/keycloak/themes/planton/login/resources/fonts/inter-latin.woff2": "login__resources__fonts__inter-latin.woff2",
 	}
 	found := 0

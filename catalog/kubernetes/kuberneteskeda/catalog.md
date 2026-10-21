@@ -6,16 +6,16 @@ Installs KEDA — Kubernetes Event-Driven Autoscaling — from the official Helm
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **Helm Release** -- the `keda-operator` Deployment, the `keda-operator-metrics-apiserver` Deployment (registers the cluster-wide `v1beta1.external.metrics.k8s.io` APIService), the `keda-admission-webhooks` Deployment, and RBAC
-- **CRDs** -- ScaledObject, ScaledJob, TriggerAuthentication, and companions — annotated to survive uninstall by default, so removing the release does not cascade-delete every scaling declaration in the cluster
-- **ServiceAccount** -- the `keda-operator` identity, optionally annotated for keyless cloud metric access (EKS IRSA, Azure Workload Identity, GCP Workload Identity)
-- **Namespace** (optional) -- created with standard governance labels when `createNamespace` is true (`keda` is the upstream convention)
+- **Helm Release** — the `keda-operator` Deployment, the `keda-operator-metrics-apiserver` Deployment (registers the cluster-wide `v1beta1.external.metrics.k8s.io` APIService), the `keda-admission-webhooks` Deployment, and RBAC
+- **CRDs** — ScaledObject, ScaledJob, TriggerAuthentication, and companions — annotated to survive uninstall by default, so removing the release does not cascade-delete every scaling declaration in the cluster
+- **ServiceAccount** — the `keda-operator` identity, optionally annotated for keyless cloud metric access (EKS IRSA, Azure Workload Identity, GCP Workload Identity)
+- **Namespace** (optional) — created with standard governance labels when `createNamespace` is true (`keda` is the upstream convention)
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **Kubernetes Provider Connection** -- an active connection in the Connect module with credentials for the target cluster. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Kubernetes Provider Connection** — an active connection in the Connect module with credentials for the target cluster. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
 
 ### Kubernetes Cluster
 
@@ -77,31 +77,31 @@ The InfraPipeline deploys the issuer first, then installs KEDA with certificates
 
 These are the most important decisions when configuring KEDA. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**The namespace is effectively permanent** -- kept CRDs (the default) retain the release's namespace in their ownership metadata, so moving the installation later means deleting the CRDs — which cascades to every ScaledObject and TriggerAuthentication in the cluster. `keda` is the convention.
+**The namespace is effectively permanent** — kept CRDs (the default) retain the release's namespace in their ownership metadata, so moving the installation later means deleting the CRDs — which cascades to every ScaledObject and TriggerAuthentication in the cluster. `keda` is the convention.
 
-**CRD lifecycle** -- CRDs install with the release and survive uninstall by default: the scaling declarations are the cluster's, not the release's. Deleting them on uninstall is the one genuinely destructive dial.
+**CRD lifecycle** — CRDs install with the release and survive uninstall by default: the scaling declarations are the cluster's, not the release's. Deleting them on uninstall is the one genuinely destructive dial.
 
-**Cloud identity for keyless scalers** -- the `podIdentity` arms bind the `keda-operator` service account to a cloud identity so scalers read cloud metric sources (SQS, Azure Monitor, Stackdriver) with zero stored keys. The arms are INDEPENDENT — a multi-cloud cluster may enable more than one.
+**Cloud identity for keyless scalers** — the `podIdentity` arms bind the `keda-operator` service account to a cloud identity so scalers read cloud metric sources (SQS, Azure Monitor, Stackdriver) with zero stored keys. The arms are INDEPENDENT — a multi-cloud cluster may enable more than one.
 
-**Internal TLS** -- KEDA's components speak TLS internally; cert-manager can own those certificates in place of the self-generated ones once autoscaling is load-bearing.
+**Internal TLS** — KEDA's components speak TLS internally; cert-manager can own those certificates in place of the self-generated ones once autoscaling is load-bearing.
 
-**One external-metrics provider per cluster** -- the APIService is a singleton. If something else already serves external metrics (a Prometheus adapter), the two cannot coexist.
+**One external-metrics provider per cluster** — the APIService is a singleton. If something else already serves external metrics (a Prometheus adapter), the two cannot coexist.
 
-**The escape hatch** -- `helmValues` carries additional chart values as a YAML document, merged LAST over everything the typed fields render — never the substitute for typed fields, never a place for secrets.
+**The escape hatch** — `helmValues` carries additional chart values as a YAML document, merged LAST over everything the typed fields render — never the substitute for typed fields, never a place for secrets.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **KubernetesNamespace** | `namespace` | `spec.name` |
-| **KubernetesIssuer** | `certificates.certManagerIssuer.issuer.name` | `status.outputs.issuer_name` |
-| **KubernetesClusterIssuer** | `certificates.certManagerIssuer.clusterIssuer.name` | `status.outputs.cluster_issuer_name` |
+| **Kubernetes Namespace** | `namespace` | `spec.name` |
+| **Cert Manager Issuer** | `certificates.certManagerIssuer.issuer.name` | `status.outputs.issuer_name` |
+| **Cert Manager Cluster Issuer** | `certificates.certManagerIssuer.clusterIssuer.name` | `status.outputs.cluster_issuer_name` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -113,16 +113,16 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Standard install** -- conventional `keda` namespace, pinned chart, CRDs managed by the release. Start from the **Cluster Standard** preset.
+**Standard install** — conventional `keda` namespace, pinned chart, CRDs managed by the release. Start from the **Cluster Standard** preset.
 
-**EKS with IRSA scalers** -- IRSA binds the operator to an IAM role so AWS scalers (SQS, CloudWatch) read metrics with zero stored keys. Start from the **EKS with IRSA for AWS Scalers** preset.
+**EKS with IRSA scalers** — IRSA binds the operator to an IAM role so AWS scalers (SQS, CloudWatch) read metrics with zero stored keys. Start from the **EKS with IRSA for AWS Scalers** preset.
 
-**Load-bearing autoscaling** -- standby operator replicas, `system-cluster-critical` priority, cert-manager TLS, and Prometheus telemetry. Start from the **HA Production** preset.
+**Load-bearing autoscaling** — standby operator replicas, `system-cluster-critical` priority, cert-manager TLS, and Prometheus telemetry. Start from the **HA Production** preset.
 
 ## Works With
 
-- [**Kubernetes Deployment**](/infra-catalog/kubernetes-deployment) -- the workloads ScaledObjects and ScaledJobs scale, including to zero (the same holds for StatefulSets and Jobs)
-- [**Cert Manager**](/infra-catalog/kubernetes-cert-manager) -- can own KEDA's internal TLS certificates in place of the self-generated ones
-- [**Cert Manager Issuer**](/infra-catalog/kubernetes-issuer) -- the issuer KEDA's certificates reference when cert-manager owns them
-- [**Metrics Server**](/infra-catalog/kubernetes-metrics-server) -- the complementary pipeline: metrics-server covers instantaneous CPU/memory, KEDA covers event-driven and external signals
-- [**Kubernetes HorizontalPodAutoscaler**](/infra-catalog/kubernetes-horizontal-pod-autoscaler) -- KEDA drives HPAs under the hood; hand-authored HPAs must not target the same workload a ScaledObject manages
+- [**Kubernetes Deployment**](/infra-catalog/kubernetes-deployment) — the workloads ScaledObjects and ScaledJobs scale, including to zero (the same holds for StatefulSets and Jobs)
+- [**Cert Manager**](/infra-catalog/kubernetes-cert-manager) — can own KEDA's internal TLS certificates in place of the self-generated ones
+- [**Cert Manager Issuer**](/infra-catalog/kubernetes-issuer) — the issuer KEDA's certificates reference when cert-manager owns them
+- [**Metrics Server**](/infra-catalog/kubernetes-metrics-server) — the complementary pipeline: metrics-server covers instantaneous CPU/memory, KEDA covers event-driven and external signals
+- [**Kubernetes HorizontalPodAutoscaler**](/infra-catalog/kubernetes-horizontal-pod-autoscaler) — KEDA drives HPAs under the hood; hand-authored HPAs must not target the same workload a ScaledObject manages

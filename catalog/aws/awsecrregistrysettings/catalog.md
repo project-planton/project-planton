@@ -1,6 +1,6 @@
 # AWS ECR Registry Settings
 
-Configures the registry-level ECR posture for one AWS region: what scans your images and when, where they replicate, which upstream registries pull through transparently, what auto-created repositories look like, and which automation roles stay out of pull-time metrics. AWS keeps exactly one private registry per account and region, so this is a settings singleton — deploy at most one instance per region, or two instances fight over the same registry objects. Individual repositories are the AwsEcrRepo kind; everything here governs the registry all repositories in the region share.
+Configures the registry-level ECR posture for one AWS region: what scans your images and when, where they replicate, which upstream registries pull through transparently, what auto-created repositories look like, and which automation roles stay out of pull-time metrics. AWS keeps exactly one private registry per account and region, so this is a settings singleton — deploy at most one instance per region, or two instances fight over the same registry objects. Individual repositories are the AWS ECR Repository kind; everything here governs the registry all repositories in the region share.
 
 ## What Gets Created
 
@@ -78,7 +78,7 @@ This configures two pull-through caches — authenticated Docker Hub under `dock
 
 ### InfraChart
 
-When the registry posture deploys alongside its credential secret and CI role in one chart, wire them via ValueFromRef:
+When the registry posture deploys alongside its credential secret and CI role in one chart, wire them by reference:
 
 ```yaml
 spec:
@@ -114,21 +114,21 @@ These are the most important decisions when configuring registry settings. Explo
 
 **Exclude your automation roles from pull-time metrics early** — Lifecycle policies that expire by days-since-last-pull are silently defeated by automation: replication, cache refreshes, and CI pulls all refresh the metric. Register those principals in `pullTimeUpdateExclusions` from day one — retrofitting after images carry wrong last-pull stamps cannot rewrite history.
 
-**Registry policy is not repository policy** — `registryPolicy` grants registry-level actions only (replication in, cache sharing); grants on individual repositories belong on AwsEcrRepo's repository policy. Keep `accountSettings.registryPolicyScope: V2` — V1 is the legacy semantics.
+**Registry policy is not repository policy** — `registryPolicy` grants registry-level actions only (replication in, cache sharing); grants on individual repositories belong on AWS ECR Repository's repository policy. Keep `accountSettings.registryPolicyScope: V2` — V1 is the legacy semantics.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AwsSecretsManagerSecret** | `pullThroughCacheRules[].credentialArn` | `status.outputs.secret_arn` |
-| **AwsIamRole** | `pullTimeUpdateExclusions[]`, `pullThroughCacheRules[].customRoleArn`, `repositoryCreationTemplates[].customRoleArn` | `status.outputs.role_arn` |
-| **AwsKmsKey** | `repositoryCreationTemplates[].encryption.kmsKey` | `status.outputs.key_arn` |
+| **AWS Secrets Manager Secret** | `pullThroughCacheRules[].credentialArn` | `status.outputs.secret_arn` |
+| **AWS IAM Role** | `pullTimeUpdateExclusions[]`, `pullThroughCacheRules[].customRoleArn`, `repositoryCreationTemplates[].customRoleArn` | `status.outputs.role_arn` |
+| **AWS KMS Key** | `repositoryCreationTemplates[].encryption.kmsKey` | `status.outputs.key_arn` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

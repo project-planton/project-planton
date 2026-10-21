@@ -1,6 +1,6 @@
 # Keycloak
 
-Declares a Keycloak server — the open-source identity and access management platform (OIDC, SAML, user federation) — as a `Keycloak` custom resource reconciled by the official Keycloak Operator. Keycloak ships no official Helm chart; the operator is the first-party Kubernetes distribution, and this component renders its CR faithfully: the operator turns the declaration into a running StatefulSet, its Services, network policy, and the one-time bootstrap admin credential.
+Declares a Keycloak server — the open-source identity and access management platform (OIDC, SAML, user federation) — as a Keycloak custom resource reconciled by the official Keycloak Operator. Keycloak ships no official Helm chart; the operator is the first-party Kubernetes distribution, and this component renders its CR faithfully: the operator turns the declaration into a running StatefulSet, its Services, network policy, and the one-time bootstrap admin credential.
 
 The spec's purpose is converting **crash-loops into apply-time errors**: the CR itself requires almost nothing, but the server refuses to start without a database, a served-or-delegated TLS answer, and (in strict mode) a hostname. Every one of those server-startup rules is validated on this spec before anything deploys.
 
@@ -135,12 +135,12 @@ These are the most important decisions when configuring a Keycloak server. Explo
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **KubernetesNamespace** | `namespace` | `spec.name` |
-| **KubernetesPostgres** | `db.host` | `status.outputs.rw_service` |
-| **KubernetesPostgres** | `db.usernameSecret.name` / `db.passwordSecret.name` | `status.outputs.password_secret.name` |
-| **KubernetesCertificate** | `http.tlsSecretName` | `status.outputs.secret_name` |
+| **Kubernetes Namespace** | `namespace` | `spec.name` |
+| **PostgreSQL** | `db.host` | `status.outputs.rw_service` |
+| **PostgreSQL** | `db.usernameSecret.name` / `db.passwordSecret.name` | `status.outputs.password_secret.name` |
+| **Cert Manager Certificate** | `http.tlsSecretName` | `status.outputs.secret_name` |
 
 ### What This Kind Provides
 

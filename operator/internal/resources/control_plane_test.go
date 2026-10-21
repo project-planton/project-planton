@@ -96,11 +96,11 @@ func TestControlPlaneDeployment_AwsConnectionMethodEnvVars(t *testing.T) {
 	}
 }
 
-func TestControlPlaneRelayInternalBaseURL(t *testing.T) {
-	got := ControlPlaneRelayInternalBaseURL("planton", "planton-ns")
+func TestControlPlaneBrowserAPIInternalOrigin(t *testing.T) {
+	got := ControlPlaneBrowserAPIInternalOrigin("planton", "planton-ns")
 	want := "http://planton-control-plane.planton-ns.svc.cluster.local:8081"
 	if got != want {
-		t.Errorf("relay internal base URL = %q, want %q", got, want)
+		t.Errorf("browser-API internal origin = %q, want %q", got, want)
 	}
 }
 
@@ -569,7 +569,6 @@ func TestControlPlaneDeployment_RunnerBinding(t *testing.T) {
 	cfg := testControlPlaneConfig()
 	cfg.Runner = &RunnerBinding{
 		CloudOpsSecretName: "planton-runner-cloudops",
-		Provisioner:        "tofu",
 		DirectDialHost:     "planton-runner.planton.svc.cluster.local",
 	}
 	deploy := ControlPlaneDeployment(cfg)
@@ -582,9 +581,6 @@ func TestControlPlaneDeployment_RunnerBinding(t *testing.T) {
 	if envMap["PLANTON_BOOTSTRAP_RUNNER_NAMESPACE"] != cfg.Namespace {
 		t.Errorf("PLANTON_BOOTSTRAP_RUNNER_NAMESPACE = %q, want the CR namespace (the declared "+
 			"workload identity's namespace half)", envMap["PLANTON_BOOTSTRAP_RUNNER_NAMESPACE"])
-	}
-	if envMap["PLANTON_BOOTSTRAP_RUNNER_PROVISIONER"] != "tofu" {
-		t.Errorf("PLANTON_BOOTSTRAP_RUNNER_PROVISIONER = %q, want tofu", envMap["PLANTON_BOOTSTRAP_RUNNER_PROVISIONER"])
 	}
 	// The credential seed is GONE: no API key exists on this install in any
 	// form -- the badge is the identity, per call, cluster-verified.
@@ -774,7 +770,6 @@ func TestControlPlaneDeployment_NoRunnerBinding(t *testing.T) {
 	for _, name := range []string{
 		"PLANTON_BOOTSTRAP_RUNNER_SLUG",
 		"PLANTON_BOOTSTRAP_RUNNER_NAMESPACE",
-		"PLANTON_BOOTSTRAP_RUNNER_PROVISIONER",
 		"KUBERNETES_WORKLOAD_AUTH_ENABLED",
 		"KUBERNETES_WORKLOAD_AUTH_AUDIENCE",
 		"KUBERNETES_WORKLOAD_AUTH_TRUSTED_NAMESPACES",
@@ -803,7 +798,6 @@ func TestControlPlaneDeployment_BuildRoutingSeed(t *testing.T) {
 	cfg := testControlPlaneConfig()
 	cfg.Runner = &RunnerBinding{
 		CloudOpsSecretName: "planton-runner-cloudops",
-		Provisioner:        "tofu",
 		DirectDialHost:     "planton-runner.planton.svc.cluster.local",
 		BuildEnabled:       true,
 	}
@@ -832,7 +826,6 @@ func TestControlPlaneDeployment_BuildRoutingSeedAbsentWhenBuildsOff(t *testing.T
 	withRunnerBuildsOff := testControlPlaneConfig()
 	withRunnerBuildsOff.Runner = &RunnerBinding{
 		CloudOpsSecretName: "planton-runner-cloudops",
-		Provisioner:        "tofu",
 		DirectDialHost:     "planton-runner.planton.svc.cluster.local",
 		BuildEnabled:       false,
 	}
@@ -908,7 +901,7 @@ func TestControlPlaneDeployment_SetsNoRunnerTaskQueue(t *testing.T) {
 	}
 }
 
-// The control plane downloads official IaC modules at its own catalog release,
+// The control plane downloads platform IaC modules at its own catalog release,
 // so the operator hands it no module version: a value rendered here would be a
 // second truth beside the platform's (and once was -- a compiled-in pin three
 // weeks behind the catalog, so a kind the platform accepted 404'd at module

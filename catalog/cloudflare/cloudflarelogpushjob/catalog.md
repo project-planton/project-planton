@@ -6,21 +6,21 @@ Deploys a Cloudflare Logpush job that continuously ships one log dataset — HTT
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **Logpush Job** -- one `cloudflare_logpush_job` on the account or zone scope, shipping the chosen dataset to the configured destination
-- **Logpush Ownership Challenge** -- created only when `generateOwnershipChallenge` is `true`; makes Cloudflare drop a challenge file into the destination so you can prove you control it. The challenge is one-shot at Cloudflare: it cannot be read back, updated, or imported, and destroying it only removes it from state
+- **Logpush Job** — one `cloudflare_logpush_job` on the account or zone scope, shipping the chosen dataset to the configured destination
+- **Logpush Ownership Challenge** — created only when `generateOwnershipChallenge` is `true`; makes Cloudflare drop a challenge file into the destination so you can prove you control it. The challenge is one-shot at Cloudflare: it cannot be read back, updated, or imported, and destroying it only removes it from state
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **Cloudflare Provider Connection** -- an active connection in the Connect module with a Cloudflare API token that has Logs Write on the target account or zone. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline API token authentication.
+- **Cloudflare Provider Connection** — an active connection in the Connect module with a Cloudflare API token that has Logs Write on the target account or zone. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline API token authentication.
 
 ### Cloudflare Account
 
-- **A Logpush entitlement** -- most datasets are gated by plan or product subscription (notably the Enterprise Logpush surface); the gate is Cloudflare's and surfaces at create time. Measured: below Enterprise the create fails with 403 code 1004 "exceeded max jobs allowed" even on a zone with zero jobs -- the plan's job quota is zero, not a real quota overrun.
-- **A destination you control** with write credentials -- the credentials ride inside `destinationConf` as one opaque URI. Same-account R2 buckets skip the ownership handshake entirely; every other destination must prove ownership via `ownershipChallenge`.
-- **The matching scope** -- zone datasets (`http_requests`, `firewall_events`, `dns_logs`, `nel_reports`, `spectrum_events`, `page_shield_events`, `zaraz_events`) need `zoneId`; everything else needs `accountId`. A mismatch fails at the Cloudflare API.
+- **A Logpush entitlement** — most datasets are gated by plan or product subscription (notably the Enterprise Logpush surface); the gate is Cloudflare's and surfaces at create time. Measured: below Enterprise the create fails with 403 code 1004 "exceeded max jobs allowed" even on a zone with zero jobs — the plan's job quota is zero, not a real quota overrun.
+- **A destination you control** with write credentials — the credentials ride inside `destinationConf` as one opaque URI. Same-account R2 buckets skip the ownership handshake entirely; every other destination must prove ownership via `ownershipChallenge`.
+- **The matching scope** — zone datasets (`http_requests`, `firewall_events`, `dns_logs`, `nel_reports`, `spectrum_events`, `page_shield_events`, `zaraz_events`) need `zoneId`; everything else needs `accountId`. A mismatch fails at the Cloudflare API.
 
 ## Deploy
 
@@ -93,13 +93,13 @@ These are the most important decisions when configuring a Logpush job. Explore t
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **CloudflareDnsZone** | `zoneId` | `status.outputs.zone_id` |
+| **Cloudflare DNS Zone** | `zoneId` | `status.outputs.zone_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -111,14 +111,14 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Traffic analytics to R2** -- One zone's HTTP request logs into a same-account R2 bucket with an explicit `fieldNames` list instead of the dataset's default. Same-account R2 skips the ownership handshake, so this shape deploys in one pass; trim the field list to what your queries actually read — fewer fields is less storage and faster scans. Start from the **HTTP requests to R2** preset.
+**Traffic analytics to R2** — One zone's HTTP request logs into a same-account R2 bucket with an explicit `fieldNames` list instead of the dataset's default. Same-account R2 skips the ownership handshake, so this shape deploys in one pass; trim the field list to what your queries actually read — fewer fields is less storage and faster scans. Start from the **HTTP requests to R2** preset.
 
-**Audit logs to a SIEM** -- Account-scoped `audit_logs_v2` streamed to an external HTTPS collector every 30 seconds, so the record of who changed what survives independently of the Cloudflare account itself. An HTTPS destination must prove ownership: deploy once with `generateOwnershipChallenge: true`, fetch the token from the posted file, then apply with `ownershipChallenge` filled in. Start from the **Audit logs to a SIEM** preset.
+**Audit logs to a SIEM** — Account-scoped `audit_logs_v2` streamed to an external HTTPS collector every 30 seconds, so the record of who changed what survives independently of the Cloudflare account itself. An HTTPS destination must prove ownership: deploy once with `generateOwnershipChallenge: true`, fetch the token from the posted file, then apply with `ownershipChallenge` filled in. Start from the **Audit logs to a SIEM** preset.
 
-**Sampled firehose** -- A high-volume dataset shipped with `outputOptions.sampleRate: 0.1` and a `filter` restricted to the hostnames or status classes you actually investigate — the shape that keeps a busy zone's logs affordable while preserving enough signal for debugging.
+**Sampled firehose** — A high-volume dataset shipped with `outputOptions.sampleRate: 0.1` and a `filter` restricted to the hostnames or status classes you actually investigate — the shape that keeps a busy zone's logs affordable while preserving enough signal for debugging.
 
 ## Works With
 
-- [**Cloudflare DNS Zone**](/infra-catalog/cloudflare-dns-zone) -- the scope for every zone dataset; wire `zoneId` via ValueFromRef.
-- [**Cloudflare R2 Bucket**](/infra-catalog/cloudflare-r2-bucket) -- the usual same-account destination, and the only kind that skips the ownership handshake.
-- [**Cloudflare Notification Policy**](/infra-catalog/cloudflare-notification-policy) -- alerts when a job starts failing or gets disabled, closing the silent-delete gap.
+- [**Cloudflare DNS Zone**](/infra-catalog/cloudflare-dns-zone) — the scope for every zone dataset; wire `zoneId` by reference.
+- [**Cloudflare R2 Bucket**](/infra-catalog/cloudflare-r2-bucket) — the usual same-account destination, and the only kind that skips the ownership handshake.
+- [**Cloudflare Notification Policy**](/infra-catalog/cloudflare-notification-policy) — alerts when a job starts failing or gets disabled, closing the silent-delete gap.

@@ -1,5 +1,5 @@
 # Least-privilege permissions the IaC runner's AWS principal needs to
-# provision, update, and destroy this component with the official modules.
+# provision, update, and destroy this component with the platform modules.
 # Every entry is `derived` (static analysis of the module sources, cited in
 # notes) until the live capture lane upgrades it to `proven`. Schema:
 # iac/catalogkindpermissions/v1.
@@ -19,6 +19,8 @@ spec:
         resources:
           - arn:aws:backup:*:*:backup-vault:*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_backup_vault AND aws_backup_logically_air_gapped_vault (the spec's exactly-one union) -- both vault types share the backup-vault ARN format per the service reference, and Describe/Delete serve both arms. Describe runs on every plan/refresh; Delete only succeeds on an EMPTY vault (see DrainRecoveryPoints), and a compliance-locked vault cannot be deleted at all until its points age out.
       - sid: MountVaultCapsule
         actions:
@@ -26,6 +28,8 @@ spec:
         resources:
           - "*"
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Dependent action of CreateBackupVault -- it associates the encryption key with the new vault's storage capsule, and AWS's own vault-creation policy example grants it on "*" (the backup-storage service publishes no ARN format for it). Create fails with AccessDenied without it.
       - sid: VaultEncryptionKeyGrants
         actions:
@@ -37,6 +41,8 @@ spec:
         resources:
           - arn:aws:kms:*:*:key/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: The KMS quintet AWS documents as required by CreateBackupVault -- Backup takes grants on the vault key (custom key via standard.kms_key_arn / air_gapped.encryption_key_arn, or the service default) to encrypt recovery points. Tighten the resource to the specific key ARN when the key is pinned.
       - sid: ManageVaultLock
         actions:
@@ -45,6 +51,8 @@ spec:
         resources:
           - arn:aws:backup:*:*:backup-vault:*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_backup_vault_lock_configuration (rendered only when standard.lock is set). Delete removes a governance-mode lock at destroy; a compliance-mode lock past its cooling-off window makes this call fail BY DESIGN -- no permission can undo it.
       - sid: ManageVaultPolicy
         actions:
@@ -54,6 +62,8 @@ spec:
         resources:
           - arn:aws:backup:*:*:backup-vault:*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_backup_vault_policy (rendered only when standard.policy is set). Get serves every plan/refresh of the policy satellite; Put writes on create and update; Delete detaches at destroy.
       - sid: ManageVaultNotifications
         actions:
@@ -63,6 +73,8 @@ spec:
         resources:
           - arn:aws:backup:*:*:backup-vault:*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_backup_vault_notifications (rendered only when standard.notifications is set). The SNS side needs no grant here -- the topic's own access policy must allow backup.amazonaws.com to publish, which lives on the AwsSnsTopic component.
       - sid: DrainRecoveryPoints
         actions:
@@ -72,6 +84,8 @@ spec:
           - arn:aws:backup:*:*:backup-vault:*
           - arn:aws:*:*:*:*:*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: "Needed only when standard.force_destroy is true: at destroy the provider lists the vault's recovery points and deletes each before deleting the vault. List scopes to the vault ARN; DeleteRecoveryPoint authorizes against the recovery-point ARN, whose service-reference format (arn:partition:vendor:region:*:resourceType:recoveryPointId) spans the source services (EC2 snapshots, RDS snapshots, ...) -- hence the broad second resource. Omit this statement entirely for vaults that keep force_destroy false."
       - sid: TagVault
         actions:
@@ -81,4 +95,6 @@ spec:
         resources:
           - arn:aws:backup:*:*:backup-vault:*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Both vault resources tag with the platform's standard tags; ListTags serves every plan/refresh read-back. All three actions scope to the backup-vault ARN per the service reference.

@@ -33,7 +33,7 @@ func writeContractNotes(outputDir, kindName string, in Input, result *Result) (s
 func tofuNotes(kindName, sourceVersion string) string {
 	return fmt.Sprintf(`# %[1]s — Customized OpenTofu/Terraform Module
 
-This directory is a customizable copy of the official OpenTofu/Terraform
+This directory is a customizable copy of the platform OpenTofu/Terraform
 module for the %[1]s catalog kind, ejected from release %[2]s of the
 Planton catalog. Edit it freely — it is yours now. The one thing that must
 survive every customization is the contract below.
@@ -66,7 +66,7 @@ what broke when something does.
     planton tofu plan --manifest <your-manifest.yaml> --module-dir .
     planton tofu apply --manifest <your-manifest.yaml> --module-dir .
 
-The commands behave exactly like a deployment of the official module, with
+The commands behave exactly like a deployment of the platform module, with
 this directory substituted in.
 
 ## Use it for platform deployments
@@ -87,7 +87,7 @@ alongside any copy you distribute.
 func pulumiNotes(kindName, sourceVersion, goModulePath string) string {
 	return fmt.Sprintf(`# %[1]s — Customized Pulumi Module
 
-This directory is a customizable copy of the official Pulumi module for the
+This directory is a customizable copy of the platform Pulumi module for the
 %[1]s catalog kind, ejected from release %[2]s of the Planton catalog.
 Edit it freely — it is yours now. The one thing that must survive every
 customization is the contract below.
@@ -132,7 +132,7 @@ something does.
     planton pulumi preview --manifest <your-manifest.yaml> --module-dir .
     planton pulumi update --manifest <your-manifest.yaml> --module-dir .
 
-The commands behave exactly like a deployment of the official module, with
+The commands behave exactly like a deployment of the platform module, with
 this directory substituted in.
 
 ## Use it for platform deployments

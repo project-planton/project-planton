@@ -88,7 +88,7 @@ This creates an outbound endpoint on two ENIs, forwards `corp.example.com` queri
 
 ### InfraChart
 
-When the endpoint deploys alongside its network in one chart, wire the subnet, security group, and VPC references via ValueFromRef:
+When the endpoint deploys alongside its network in one chart, wire the subnet, security group, and VPC references:
 
 ```yaml
 spec:
@@ -136,15 +136,15 @@ These are the most important decisions when configuring a resolver endpoint. Exp
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AwsSubnet** | `ipAddresses[].subnetId` | `status.outputs.subnet_id` |
-| **AwsSecurityGroup** | `securityGroupIds` | `status.outputs.security_group_id` |
-| **AwsVpc** | `rules[].vpcIds` | `status.outputs.vpc_id` |
+| **AWS Subnet** | `ipAddresses[].subnetId` | `status.outputs.subnet_id` |
+| **AWS Security Group** | `securityGroupIds` | `status.outputs.security_group_id` |
+| **AWS VPC** | `rules[].vpcIds` | `status.outputs.vpc_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

@@ -35,7 +35,7 @@ inline for one-off scoping.
 ## Grounding lookups (session start, before proposing architecture)
 
 ```
-planton chart list                        # charts in the catalog (org + official), each with its version
+planton chart list                        # charts in the catalog (org + platform), each with its version
 planton infra stack list -o json        # the org's Infra Stacks (what has been deployed)
 planton infra stack get <id-or-name> --env <env>  # one stack, full record (its declaration and live revision);
                                                  # a name needs --env, an id does not
@@ -51,6 +51,8 @@ planton service status <service>          # a service's environments in promotio
                                           # runs, rollout, distance ("3 commits behind dev"), runs in
                                           # flight by number; -o json|yaml for the path itself
 planton search connections                # provider connections (which clouds/clusters)
+planton search infra-components --all-envs -o json  # deployed infra components in every environment;
+                                          # an answer with only indexFreshness means none
 planton connection authorization list     # which connections which envs may use
 planton secret list -o json               # managed secrets ("env" field = scope)
 planton variable list -o json             # managed variables ("env" field = scope)
@@ -93,12 +95,14 @@ by id/name is the direct read.
 ## Changing a deployed stack (mutations)
 
 Every change to a stack is a plan you show first, then apply on the user's
-yes for THAT plan; none of these runs uninvited:
+yes for THAT plan (or under their word to carry on without asking, then say
+exactly what was destroyed or replaced); none of these runs uninvited:
 
 ```
 planton infra stack apply <name> [folder] --env <env> -m "<why>" --plan-digest <d>
                               # applies exactly the plan shown and follows its run;
-                              # --destroy / --keep / --adopt Kind/name name choices
+                              # the digest or --yes consents to its destroys and replaces;
+                              # --keep / --adopt Kind/name name choices
 planton infra stack reconcile <name> --env <env>      # plans putting back what drifted; applies
                               # like apply (-m, --plan-digest; --dry-run stops at the plan)
 planton infra stack withdraw <name> --env <env>       # takes a waiting request back
@@ -108,7 +112,11 @@ planton infra stack upgrade <name> --env <env>
 ```
 
 A request waiting in a protected environment is decided by a PERSON who
-read its review; you only carry out the decision they stated:
+read its review: you carry out the decision they stated, or approve under
+their word to carry on without asking -- never a run your own person
+started (the platform refuses it). Approving approves every Destroy and
+Replace the review shows; at a terminal it asks, and `--yes` alone approves
+the current review:
 
 ```
 planton infra stack approve <name> --env <env> --review-digest <d>
@@ -136,18 +144,21 @@ Each delivery verb takes `--dry-run` (what the run would apply, whether it
 waits at a gate, and every removal; nothing saved, no run number taken),
 `--reapply-all` and `--follow`; each answers with a run ("Run #129") to
 follow. A run removes what the service no longer declares once everything
-declared applied; a removal that holds data, or one a protected gate
-approved before it appeared, waits for a person, and so does the
-environment's gate:
+declared applied. In an unprotected environment a push destroys it unasked;
+the other verbs name it and ask at a terminal (`--yes` answers ahead). A
+protected environment's gate decides every removal it shows (each is
+destroyed unless kept), and a removal that appears after the approval
+asks on its own:
 
 ```
-planton service removal destroy <service> <number> <env> <Kind/name>   # naming it is the consent
+planton service removal destroy <service> <number> <env> <Kind/name>   # asks; --yes answers ahead
 planton service removal keep <service> <number> <env> <Kind/name>      # keeps it on its provider
-planton service resolve-env-manual-gate <service> <number> <env> approve --keep <Kind/name> --destroy <Kind/name>
+planton service resolve-env-manual-gate <service> <number> <env> approve --keep <Kind/name>   # the rest is destroyed
 ```
 
-These decisions are a person's, never yours: relay the question and the
-command. `references/service.delivery-verbs.md` carries the verbs, the
+These decisions are a person's: relay the question and the command, and
+answer only on their word (never on a run your own person started), then
+say exactly what was destroyed. `references/service.delivery-verbs.md` carries the verbs, the
 removals and drift; `references/service.reading-a-run.md` the gates.
 
 ## Checking out real files (charts and deployed stacks)
@@ -193,7 +204,7 @@ planton infra pipeline logs <infpipe_id>              # auto-targets the failed 
 planton infra pipeline logs <infpipe_id> --node <slug> # a specific node (slug from status)
 
 # 3b. A passing failure (a timeout, a quota)? Run it again, as it was reviewed:
-planton infra pipeline rerun <infpipe_id>              # same revision; asks when it destroys (--yes)
+planton infra pipeline rerun <infpipe_id>              # same revision; asks when it destroys or replaces (--yes)
 
 # 4. Deeper: the Infra Job record carries the full error detail:
 planton infra job list <infra-component-id> -o json
@@ -421,8 +432,9 @@ planton rerun <run-id> --no-follow          # starts it and returns
 and read its kind from the prefix: `ij_` an Infra Job, `infpipe_` a stack
 run, `svcpipe_` a service run, `extrun_` an external CI run. Any other id
 exits 1 naming the four. A rerun is a platform mutation: say what it runs
-again and confirm first. When the rerun still destroys something it asks;
-`--yes` answers, only after the user agreed. `--failed-only`, `--job` and
+again and confirm first. When the rerun still destroys or replaces
+something it asks; `--yes` answers, once the user agreed (or told you to
+carry on without asking). `--failed-only`, `--job` and
 `--debug-logging` work only for an external CI run and are refused
 elsewhere. Exit codes: `0` done, or a request is waiting for its approver
 (relay the review link); `1` it failed or was refused; `3` a person must
@@ -441,6 +453,8 @@ planton secret get db-password --reveal -o plain   # same contract; so do env ge
 
 Branch on 3 for "not declared" (create it, or fall back) and treat 1 as a
 failure to reach or ask the instance -- never parse the banner's words.
+
+Not found also covers what you are not allowed to know about. A record in an organization you are not part of answers exactly like a record that does not exist: the same exit 3 and the same sentence, whether you named it by id or by organization and slug. So exit 3 against another organization never proves a name is free there; check the instance and organization first (`planton context get`). Inside an organization you belong to, a record you may not read is a refusal, not a miss: the Access Needed banner names the roles that could and who can grant them, and the command exits 1.
 
 ## On a self-hosted instance
 
@@ -462,6 +476,37 @@ non-interactively). The craft around them is the `self-hosted.*` references:
 front doors and `login --local` (`self-hosted.front-doors-and-the-cli.md`,
 `self-hosted.identity-primary-and-break-glass.md`), mapping
 (`self-hosted.identity-mapping.md`).
+
+## The company's logo
+
+```
+planton branding show                                       # the logo shown, its served addresses, who set it
+planton branding set-logo logo.png [--dark-theme light.png] # one change sets both versions
+planton branding clear-logo [--dark-theme]                  # back to Planton's mark, or drop only the dark-theme version
+```
+
+The scope follows the instance: on a self-hosted install one logo covers the
+whole installation (installation administration access; `--org` is refused),
+and on planton.ai each organization carries its own (`--org` or the current
+context; Owner or Infrastructure Admin; the console's Settings → General →
+Logo). `set-logo` and `clear-logo` are mutations: confirm first. When a logo
+would be hard to see on the dark theme, `set-logo` and `show` say so and print
+the `--dark-theme` command to run. The craft is
+`self-hosted.branding.md`.
+
+## The organization's custom domain
+
+```
+planton custom-domain get                       # the organization's domain and its state (exit 3: none)
+planton custom-domain set <name> --no-wait      # set it; prints the one record to add
+planton custom-domain prompt -o json            # the setup guide: the record, the DNS host, its command
+planton custom-domain verify --wait --timeout 8m -o json  # Check Now until Live (exit 0) or a diagnosis (exit 2)
+planton custom-domain delete --force            # remove it
+```
+
+Team plan, hosted Planton only; `--org` names the organization. `set` and
+`delete` are mutations: confirm first. The whole loop, every state's fix and
+the DNS change are `organization.custom-domain.md`.
 
 ## Generic escape hatches
 

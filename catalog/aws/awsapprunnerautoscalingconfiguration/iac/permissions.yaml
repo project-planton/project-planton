@@ -1,5 +1,5 @@
 # Least-privilege permissions the IaC runner's AWS principal needs to
-# provision, update, and destroy this component with the official modules.
+# provision, update, and destroy this component with the platform modules.
 # Every entry is `derived` (static analysis of the module sources, cited in
 # notes) until the live capture lane upgrades it to `proven`. Schema:
 # iac/catalogkindpermissions/v1.
@@ -21,6 +21,8 @@ spec:
         resources:
           - arn:aws:apprunner:*:*:autoscalingconfiguration/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_apprunner_auto_scaling_configuration_version across both source arms (the Pulumi module drives the same provider through the pulumi-aws bridge). Every scaling value is create-time immutable, so any change is a Create of the next revision plus a Delete of the replaced one; Describe and ListTagsForResource serve plan/refresh, Tag/Untag reconcile the platform's identity tags in place. The service reference authorizes all six actions on the autoscalingconfiguration ARN format (name/version/id path -- the single trailing wildcard covers all revisions).
       - sid: ClaimAccountDefault
         actions:
@@ -28,6 +30,8 @@ spec:
         resources:
           - arn:aws:apprunner:*:*:autoscalingconfiguration/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Exercised only when spec.set_as_account_default is true -- aws_apprunner_default_auto_scaling_configuration_version's create and update both call UpdateDefaultAutoScalingConfiguration on the configuration ARN (provider source default_auto_scaling_configuration_version.go); its delete is a provider no-op because AWS has no restore API.
       - sid: ListAutoScalingConfigurations
         actions:
@@ -35,4 +39,6 @@ spec:
         resources:
           - "*"
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Read-side of the account-default claim -- the provider discovers which configuration currently holds the default designation by listing all configurations and filtering on IsDefault (findDefaultAutoScalingConfigurationSummary in the provider source). List actions support no resource-level scoping in the service reference (empty Resources list), so the wildcard is the narrowest possible scope.

@@ -1,5 +1,5 @@
 # Least-privilege permissions the IaC runner's AWS principal needs to
-# provision, update, and destroy this component with the official modules.
+# provision, update, and destroy this component with the platform modules.
 # Every entry is `derived` (static analysis of the module sources, cited in
 # notes) until the live capture lane upgrades it to `proven`. Schema:
 # iac/catalogkindpermissions/v1.
@@ -22,6 +22,8 @@ spec:
         resources:
           - arn:aws:logs:*:*:log-group:*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_cloudwatch_log_group / cloudwatch.LogGroup. The provider issues separate calls beyond create/delete -- PutRetentionPolicy (and DeleteRetentionPolicy when retention is cleared), AssociateKmsKey/DisassociateKmsKey for in-place kms_key_id changes, and PutLogGroupDeletionProtection for the deletion_protection_enabled flag. All authorize on the log-group ARN format per the service reference. A protected group makes DeleteLogGroup fail by design until the flag is cleared first.
       - sid: DescribeLogGroups
         actions:
@@ -29,6 +31,8 @@ spec:
         resources:
           - "*"
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: The provider's existence-and-attributes read during plan/refresh. The service reference lists NO resource types for DescribeLogGroups (it is an account-level List), so an ARN-scoped grant never matches -- the wildcard is the narrowest possible scope.
       - sid: ManageTags
         actions:
@@ -38,6 +42,8 @@ spec:
         resources:
           - arn:aws:logs:*:*:log-group:*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: TagResource rides CreateLogGroup for the module's identity tags and serves later tag reconciliation; ListTagsForResource backs every refresh. All three list the log-group resource type in the service reference, so they stay ARN-scoped.
       - sid: ManageMetricFilters
         actions:
@@ -47,6 +53,8 @@ spec:
         resources:
           - arn:aws:logs:*:*:log-group:*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_cloudwatch_log_metric_filter (one per spec.metric_filters entry). Put is both create and update; all three actions authorize on the log-group ARN.
       - sid: ManageSubscriptionFilters
         actions:
@@ -56,6 +64,8 @@ spec:
         resources:
           - arn:aws:logs:*:*:log-group:*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_cloudwatch_log_subscription_filter (at most two per group, AWS's own limit). All three authorize on the log-group ARN; the service reference also names an optional destination resource on Put for cross-account CloudWatch Logs destinations.
       - sid: ManageDataProtectionPolicy
         actions:
@@ -65,6 +75,8 @@ spec:
         resources:
           - arn:aws:logs:*:*:log-group:*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_cloudwatch_log_data_protection_policy, created only when spec.data_protection_policy carries a document. All three authorize on the log-group ARN.
       - sid: ManageIndexPolicy
         actions:
@@ -74,6 +86,8 @@ spec:
         resources:
           - "*"
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_cloudwatch_log_index_policy, created only when spec.field_index_policy carries a document. The service reference lists NO resource types for any of the three index-policy actions (unlike the data-protection trio, which scope to the log group) -- IAM evaluates them against Resource "*", so the wildcard is the narrowest possible scope.
       - sid: ManageLogStreams
         actions:
@@ -82,6 +96,8 @@ spec:
         resources:
           - arn:aws:logs:*:*:log-group:*:log-stream:*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_cloudwatch_log_stream (one per spec.log_streams entry -- pre-created streams only; runtime writers create their own). Both actions authorize on the log-STREAM ARN format, which nests under the group's ARN.
       - sid: DescribeLogStreams
         actions:
@@ -89,6 +105,8 @@ spec:
         resources:
           - arn:aws:logs:*:*:log-group:*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: The stream read during plan/refresh. Unlike the stream write actions, DescribeLogStreams authorizes on the GROUP's ARN per the service reference -- scoping it to log-stream ARNs would deny refresh.
       - sid: ManageTransformer
         actions:
@@ -98,6 +116,8 @@ spec:
         resources:
           - arn:aws:logs:*:*:log-group:*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_cloudwatch_log_transformer, created only when spec.transformer carries a pipeline (STANDARD class only -- the spec pre-validates the PutTransformer contract). Put replaces the whole pipeline on every update; all three authorize on the log-group ARN.
       - sid: PassDeliveryRoleToLogs
         actions:
@@ -105,4 +125,6 @@ spec:
         resources:
           - arn:aws:iam::*:role/*
         provenance: derived
+        reach: target
+        privilege: uses_identity
         notes: PutSubscriptionFilter passes subscription_filters.role_arn to logs.amazonaws.com -- the role CloudWatch Logs assumes to put records into Kinesis or Firehose destinations (the service reference's API-to-IAM mapping names the PassedToService value). Needed only when a subscription filter targets Kinesis or Firehose; Lambda destinations authorize via a Lambda permission instead. Add an iam:PassedToService=logs.amazonaws.com condition and narrow to the actual role ARN in a hardened deployment.

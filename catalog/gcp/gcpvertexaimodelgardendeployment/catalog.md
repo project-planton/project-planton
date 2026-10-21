@@ -1,24 +1,24 @@
 # GCP Vertex AI Model Garden Deployment
 
-Puts an open model to work in one step. Name a model from Vertex AI Model Garden or the Hugging Face hub, accept its license, and Vertex AI uploads it, creates an endpoint, and deploys it on the compute you declare -- or on the shape Model Garden recommends when you declare none. Minutes later you have a prediction endpoint for Gemma, Llama, Qwen, or any of the hundreds of models Model Garden serves, with autoscaling, Spot capacity, a dedicated DNS name, or Private Service Connect as you choose.
+Puts an open model to work in one step. Name a model from Vertex AI Model Garden or the Hugging Face hub, accept its license, and Vertex AI uploads it, creates an endpoint, and deploys it on the compute you declare — or on the shape Model Garden recommends when you declare none. Minutes later you have a prediction endpoint for Gemma, Llama, Qwen, or any of the hundreds of models Model Garden serves, with autoscaling, Spot capacity, a dedicated DNS name, or Private Service Connect as you choose.
 
 ## What Gets Created
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **API enablement** -- `aiplatform.googleapis.com` on the project
-- **Model, endpoint, and deployment** -- a `vertex.AiEndpointWithModelGardenDeployment`: the uploaded model, the endpoint, and the deployed model serving on it
+- **API enablement** — `aiplatform.googleapis.com` on the project
+- **Model, endpoint, and deployment** — a `vertex.AiEndpointWithModelGardenDeployment`: the uploaded model, the endpoint, and the deployed model serving on it
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **GCP Provider Connection** -- an active connection in the Connect module with `roles/aiplatform.admin` on the project. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
+- **GCP Provider Connection** — an active connection in the Connect module with `roles/aiplatform.admin` on the project. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
 
 ### Accelerator quota
 
-Most open models serve from a GPU. The project needs quota for the accelerator in the region -- an `NVIDIA_L4` in `us-central1` for the presets -- and the replicas bill from the moment they are ready.
+Most open models serve from a GPU. The project needs quota for the accelerator in the region — an `NVIDIA_L4` in `us-central1` for the presets — and the replicas bill from the moment they are ready.
 
 ## Deploy
 
@@ -58,24 +58,24 @@ When deploying as part of a multi-resource environment, reference `endpoint_id` 
 
 These are the most important decisions when configuring a deployment. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Which model** -- exactly one of `publisherModelName` (a Model Garden entry with its version) or `huggingFaceModelId` (a hub id). Gated models need `acceptEula: true`, and gated Hugging Face models a read token.
+**Which model** — exactly one of `publisherModelName` (a Model Garden entry with its version) or `huggingFaceModelId` (a hub id). Gated models need `acceptEula: true`, and gated Hugging Face models a read token.
 
-**Which compute** -- omit `deployConfig` to accept Model Garden's recommended machine and one replica, or declare `dedicatedResources`: the machine type, accelerator type and count, replica bounds, Spot, and the metrics autoscaling follows. `minReplicaCount` is the committed spend.
+**Which compute** — omit `deployConfig` to accept Model Garden's recommended machine and one replica, or declare `dedicatedResources`: the machine type, accelerator type and count, replica bounds, Spot, and the metrics autoscaling follows. `minReplicaCount` is the committed spend.
 
-**Everything is immutable** -- a new model version, machine, or endpoint setting replaces the whole deployment and the endpoint ID changes. Treat a deployment as a versioned artifact and roll forward with a second block.
+**Everything is immutable** — a new model version, machine, or endpoint setting replaces the whole deployment and the endpoint ID changes. Treat a deployment as a versioned artifact and roll forward with a second block.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **GcpProject** | `projectId`, `endpointConfig.privateServiceConnectConfig.projectAllowlist[]`, `pscAutomationConfig.projectId` | `status.outputs.project_id` |
-| **GcpVpcNetwork** | `endpointConfig.privateServiceConnectConfig.pscAutomationConfig.network` | `status.outputs.network_id` |
+| **GCP Project** | `projectId`, `endpointConfig.privateServiceConnectConfig.projectAllowlist[]`, `pscAutomationConfig.projectId` | `status.outputs.project_id` |
+| **GCP VPC Network** | `endpointConfig.privateServiceConnectConfig.pscAutomationConfig.network` | `status.outputs.network_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -89,12 +89,12 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Hugging Face on the recommended shape** -- The fastest path from a model id to an endpoint. Start from the **Hugging Face on the Recommended Shape** preset.
+**Hugging Face on the recommended shape** — The fastest path from a model id to an endpoint. Start from the **Hugging Face on the Recommended Shape** preset.
 
-**Gemma on L4 with vLLM** -- A publisher model on an explicit GPU with a declared serving container, Spot autoscaling, and a dedicated endpoint. Start from the **Gemma on L4 with vLLM** preset.
+**Gemma on L4 with vLLM** — A publisher model on an explicit GPU with a declared serving container, Spot autoscaling, and a dedicated endpoint. Start from the **Gemma on L4 with vLLM** preset.
 
 ## Works With
 
-- [**GCP Vertex AI Endpoint**](/infra-catalog/gcp-vertex-ai-endpoint) -- an endpoint managed on its own
-- [**GCP Vertex AI Agent Engine**](/infra-catalog/gcp-vertex-ai-agent-engine) -- agents that call the deployed model
-- [**GCP Project**](/infra-catalog/gcp-project) and [**GCP VPC Network**](/infra-catalog/gcp-vpc-network) -- Private Service Connect consumers
+- [**GCP Vertex AI Endpoint**](/infra-catalog/gcp-vertex-ai-endpoint) — an endpoint managed on its own
+- [**GCP Vertex AI Agent Engine**](/infra-catalog/gcp-vertex-ai-agent-engine) — agents that call the deployed model
+- [**GCP Project**](/infra-catalog/gcp-project) and [**GCP VPC Network**](/infra-catalog/gcp-vpc-network) — Private Service Connect consumers

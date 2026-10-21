@@ -1,6 +1,6 @@
 # AWS Managed Prometheus
 
-Deploys an Amazon Managed Prometheus (AMP) workspace — a PromQL-compatible metrics backend your clusters remote-write into — with retention controls, recording and alerting rule namespaces, a managed Alertmanager, query logging, a cross-account resource policy, and PromQL anomaly detectors. Scrapers are deliberately a separate kind (AwsManagedPrometheusScraper) that references this workspace's ARN, because a scraper can exist with zero workspaces. Two AWS contracts shape the lifecycle before you write a manifest: a workspace alias can never be unset once set (clearing it replaces the workspace), and the workspace configuration persists after destroy (AWS exposes no delete for it).
+Deploys an Amazon Managed Prometheus (AMP) workspace — a PromQL-compatible metrics backend your clusters remote-write into — with retention controls, recording and alerting rule namespaces, a managed Alertmanager, query logging, a cross-account resource policy, and PromQL anomaly detectors. Scrapers are deliberately a separate kind (AWS Managed Prometheus Scraper) that references this workspace's ARN, because a scraper can exist with zero workspaces. Two AWS contracts shape the lifecycle before you write a manifest: a workspace alias can never be unset once set (clearing it replaces the workspace), and the workspace configuration persists after destroy (AWS exposes no delete for it).
 
 ## What Gets Created
 
@@ -22,9 +22,9 @@ When you deploy this Infra Component, the IaC module provisions:
 
 ### AWS Account
 
-- **CloudWatch log groups** (only for logging) — `logging.logGroupArn` and each `queryLogging` destination reference an AwsCloudwatchLogGroup's `log_group_arn` output or a literal group ARN. AWS requires a `:*` suffix on these ARNs; both engines append it when absent, so wire the bare output and never hand-craft the suffix.
+- **CloudWatch log groups** (only for logging) — `logging.logGroupArn` and each `queryLogging` destination reference an AWS CloudWatch Log Group's `log_group_arn` output or a literal group ARN. AWS requires a `:*` suffix on these ARNs; both engines append it when absent, so wire the bare output and never hand-craft the suffix.
 - **An SNS topic** (only for alerting) — AMP's managed Alertmanager delivers exclusively to SNS, so the `alertManagerDefinition` needs a topic ARN to route to.
-- **A KMS key** (only for customer-managed encryption) — `kmsKeyArn` references an AwsKmsKey's `key_arn` output.
+- **A KMS key** (only for customer-managed encryption) — `kmsKeyArn` references an AWS KMS Key's `key_arn` output.
 
 ## Deploy
 
@@ -76,7 +76,7 @@ This creates a workspace with 90-day retention, one recording-rules namespace, a
 
 ### InfraChart
 
-When the workspace deploys alongside its log group in one chart, wire the logging reference via ValueFromRef:
+When the workspace deploys alongside its log group in one chart, wire the logging reference:
 
 ```yaml
 spec:
@@ -114,19 +114,19 @@ These are the most important decisions when configuring a workspace. Explore the
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AwsKmsKey** | `kmsKeyArn` | `status.outputs.key_arn` |
-| **AwsCloudwatchLogGroup** | `logging.logGroupArn` | `status.outputs.log_group_arn` |
-| **AwsCloudwatchLogGroup** | `queryLogging.destinations[].logGroupArn` | `status.outputs.log_group_arn` |
+| **AWS KMS Key** | `kmsKeyArn` | `status.outputs.key_arn` |
+| **AWS CloudWatch Log Group** | `logging.logGroupArn` | `status.outputs.log_group_arn` |
+| **AWS CloudWatch Log Group** | `queryLogging.destinations[].logGroupArn` | `status.outputs.log_group_arn` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
-| `workspace_arn` | The workspace's ARN | The `destination` of an AwsManagedPrometheusScraper; IAM policies granting remote-write or query |
+| `workspace_arn` | The workspace's ARN | The `destination` of an AWS Managed Prometheus Scraper; IAM policies granting remote-write or query |
 | `prometheus_endpoint` | The Prometheus-compatible query/remote-write endpoint URL | Remote-write agent configuration and Grafana data sources |
 | `workspace_id` | The workspace's ID | Addressing the workspace in AWS API calls and CLI operations |
 
@@ -136,7 +136,7 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**EKS fleet landing zone** — one workspace per environment with 90-day retention, a recording-plus-alerting rules namespace, and Alertmanager routing to SNS. Pair it with an AwsManagedPrometheusScraper per cluster, or point in-cluster remote-write agents at `prometheus_endpoint`. Start from the **Platform Metrics Workspace** preset.
+**EKS fleet landing zone** — one workspace per environment with 90-day retention, a recording-plus-alerting rules namespace, and Alertmanager routing to SNS. Pair it with an AWS Managed Prometheus Scraper per cluster, or point in-cluster remote-write agents at `prometheus_endpoint`. Start from the **Platform Metrics Workspace** preset.
 
 **Governed multi-team workspace** — a shared workspace with per-team active-series caps, expensive-query logging above a QSP threshold, and an anomaly detector watching the ingest rate itself, with missing data marked anomalous — silence from the fleet IS the incident. Start from the **Governed Multi-Team Workspace** preset.
 

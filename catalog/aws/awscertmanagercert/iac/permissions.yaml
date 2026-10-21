@@ -1,5 +1,5 @@
 # Least-privilege permissions the IaC runner's AWS principal needs to
-# provision, update, and destroy this component with the official modules.
+# provision, update, and destroy this component with the platform modules.
 # Every entry is `derived` (static analysis of the module sources, cited in
 # notes) until the live capture lane upgrades it to `proven`. Schema:
 # iac/catalogkindpermissions/v1.
@@ -16,6 +16,8 @@ spec:
         resources:
           - "*"
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Creation call of aws_acm_certificate (tf) / acm.Certificate (pulumi) for both public and private (certificate_authority_arn) issuance. The service reference lists no resource types for RequestCertificate, so the wildcard is the narrowest possible scope.
       - sid: ManageCertificateLifecycle
         actions:
@@ -29,6 +31,8 @@ spec:
         resources:
           - arn:aws:acm:*:*:certificate/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Everything after creation authorizes on the certificate ARN per the service reference. DescribeCertificate and ListTagsForCertificate serve plan/refresh (and wait_for_validation polling); ImportCertificate serves the imported block, both first import and re-import rotations; RenewCertificate serves early_renewal_duration on eligible certificates; DeleteCertificate destroys (AWS rejects it while the certificate is still associated with an integrated service).
       - sid: ManageValidationRecords
         actions:
@@ -37,6 +41,8 @@ spec:
         resources:
           - arn:aws:route53:::hostedzone/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Only when route53_hosted_zone_id is set -- the modules then create and delete the DNS validation CNAME records in that zone (aws_route53_record with allow_overwrite in tf, route53.Record in pulumi). Hardened deployments should scope this to the specific hosted zone's ARN. Hosted-zone ARNs carry no region or account segment.
       - sid: PollValidationRecordChanges
         actions:
@@ -44,4 +50,6 @@ spec:
         resources:
           - arn:aws:route53:::change/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: The Route 53 record resources wait for their change batches to reach INSYNC by polling GetChange, which authorizes on the change ARN only.

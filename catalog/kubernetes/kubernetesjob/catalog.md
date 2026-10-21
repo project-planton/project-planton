@@ -6,17 +6,17 @@ Runs work to completion on any Kubernetes cluster as a batch/v1 Job: pods are cr
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **Kubernetes Namespace** -- created only when `createNamespace` is `true`; otherwise deploys into an existing namespace
-- **Kubernetes Job** -- the batch workload resource that creates pods and runs them to completion, with the configured fan-out, retry budgets, deadlines, failure/success policies, and container specification
-- **Kubernetes Secret** -- created only when `container.app.env.secrets` carry literal values; stores them and mounts them as environment variables
-- **Kubernetes Labels** -- resource metadata labels (resource name, kind, organization, environment) applied automatically for tracking
+- **Kubernetes Namespace** — created only when `createNamespace` is `true`; otherwise deploys into an existing namespace
+- **Kubernetes Job** — the batch workload resource that creates pods and runs them to completion, with the configured fan-out, retry budgets, deadlines, failure/success policies, and container specification
+- **Kubernetes Secret** — created only when `container.app.env.secrets` carry literal values; stores them and mounts them as environment variables
+- **Kubernetes Labels** — resource metadata labels (resource name, kind, organization, environment) applied automatically for tracking
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **Kubernetes Provider Connection** -- an active connection in the Connect module with kubeconfig credentials for the target Kubernetes cluster. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline kubeconfig authentication.
+- **Kubernetes Provider Connection** — an active connection in the Connect module with kubeconfig credentials for the target Kubernetes cluster. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline kubeconfig authentication.
 
 ### Kubernetes Cluster
 
@@ -61,7 +61,7 @@ This creates a single-pod Job (parallelism and completions default to 1) with up
 
 ### InfraChart
 
-When deploying as part of a multi-resource environment, use ValueFromRef to wire the Job to a namespace managed by another Infra Component:
+When deploying as part of a multi-resource environment, use references to wire the Job to a namespace managed by another Infra Component:
 
 ```yaml
 spec:
@@ -79,31 +79,31 @@ The InfraPipeline resolves the dependency graph, deploys the namespace first, th
 
 These are the most important decisions when configuring a Kubernetes Job. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**Parallelism and completions** -- `completions` is the number of successful pods required; `parallelism` is how many run concurrently. `completions: 10` with `parallelism: 3` runs up to 3 pods at a time until 10 succeed. `completionMode: "Indexed"` assigns each pod a completion index (0 to completions-1, exposed via the batch.kubernetes.io/job-completion-index annotation and the pod hostname) so each pod claims its own partition of the work.
+**Parallelism and completions** — `completions` is the number of successful pods required; `parallelism` is how many run concurrently. `completions: 10` with `parallelism: 3` runs up to 3 pods at a time until 10 succeed. `completionMode: "Indexed"` assigns each pod a completion index (0 to completions-1, exposed via the batch.kubernetes.io/job-completion-index annotation and the pod hostname) so each pod claims its own partition of the work.
 
-**Retries** -- `backoffLimit` (Kubernetes default 6) is the global retry budget. For partitioned work, `backoffLimitPerIndex` gives each index its OWN budget — one flaky partition exhausts only its own retries — and `maxFailedIndexes` bounds how many indexes may fail before the whole Job does. The per-index dials require Indexed mode and `restartPolicy: "Never"`.
+**Retries** — `backoffLimit` (Kubernetes default 6) is the global retry budget. For partitioned work, `backoffLimitPerIndex` gives each index its OWN budget — one flaky partition exhausts only its own retries — and `maxFailedIndexes` bounds how many indexes may fail before the whole Job does. The per-index dials require Indexed mode and `restartPolicy: "Never"`.
 
-**Pod failure policy** -- fine-grained per-failure handling, evaluated in order with first-match-wins: `FailJob` immediately on an unrecoverable exit code (a misconfiguration should not burn six retries), `Ignore` failures caused by node disruption (the DisruptionTarget pod condition) so infrastructure events never count against the budget, or `FailIndex` to stop retrying a single partition. Requires `restartPolicy: "Never"`.
+**Pod failure policy** — fine-grained per-failure handling, evaluated in order with first-match-wins: `FailJob` immediately on an unrecoverable exit code (a misconfiguration should not burn six retries), `Ignore` failures caused by node disruption (the DisruptionTarget pod condition) so infrastructure events never count against the budget, or `FailIndex` to stop retrying a single partition. Requires `restartPolicy: "Never"`.
 
-**Success policy** -- Indexed-only early success: declare the Job succeeded once specific indexes (`succeededIndexes: "0"` for a leader) or enough indexes (`succeededCount`) finish; lingering pods are then terminated.
+**Success policy** — Indexed-only early success: declare the Job succeeded once specific indexes (`succeededIndexes: "0"` for a leader) or enough indexes (`succeededCount`) finish; lingering pods are then terminated.
 
-**Deadlines and cleanup** -- `activeDeadlineSeconds` is the hard wall-clock guard: past it, everything is killed regardless of retries (note that suspending the Job resets this timer). `ttlSecondsAfterFinished` deletes the finished Job and its pods automatically; unset preserves them for `kubectl logs` post-mortems.
+**Deadlines and cleanup** — `activeDeadlineSeconds` is the hard wall-clock guard: past it, everything is killed regardless of retries (note that suspending the Job resets this timer). `ttlSecondsAfterFinished` deletes the finished Job and its pods automatically; unset preserves them for `kubectl logs` post-mortems.
 
-**The work itself** -- `container.app.command`/`args` override the image entrypoint; the app container's exit code decides the pod's success. Sidecars need an exit story: a Job pod only completes when ALL its containers exit.
+**The work itself** — `container.app.command`/`args` override the image entrypoint; the app container's exit code decides the pod's success. Sidecars need an exit story: a Job pod only completes when ALL its containers exit.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **KubernetesNamespace** | `namespace` | `spec.name` |
-| **KubernetesServiceAccount** | `pod.serviceAccount` | `status.outputs.service_account_name` |
-| **KubernetesSecret** | `pod.imagePullSecrets` | `spec.name` |
+| **Kubernetes Namespace** | `namespace` | `spec.name` |
+| **Kubernetes ServiceAccount** | `pod.serviceAccount` | `status.outputs.service_account_name` |
+| **Kubernetes Secret** | `pod.imagePullSecrets` | `spec.name` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -115,15 +115,15 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Database migration** -- Sequential one-shot work with a tight retry budget (retrying a half-applied migration is dangerous), an active deadline to catch runaway processes, and no TTL cleanup so the pods survive for verification. Start from the **Database Migration Job** preset.
+**Database migration** — Sequential one-shot work with a tight retry budget (retrying a half-applied migration is dangerous), an active deadline to catch runaway processes, and no TTL cleanup so the pods survive for verification. Start from the **Database Migration Job** preset.
 
-**Parallel batch** -- An Indexed fan-out where each pod processes its own numbered partition, with a per-index retry budget so one flaky shard cannot fail the run. Start from the **Parallel Batch Job (Indexed)** preset.
+**Parallel batch** — An Indexed fan-out where each pod processes its own numbered partition, with a per-index retry budget so one flaky shard cannot fail the run. Start from the **Parallel Batch Job (Indexed)** preset.
 
-**Resilient batch** -- A failure policy that fails fast on the "bad input" exit code and forgives node disruptions — the production posture for long-running batch work on spot capacity. Start from the **Resilient Batch Job (Failure Policy)** preset.
+**Resilient batch** — A failure policy that fails fast on the "bad input" exit code and forgives node disruptions — the production posture for long-running batch work on spot capacity. Start from the **Resilient Batch Job (Failure Policy)** preset.
 
 ## Works With
 
-- [**Kubernetes Namespace**](/infra-catalog/kubernetes-namespace) -- provides the target namespace for the Job
-- [**Kubernetes ServiceAccount**](/infra-catalog/kubernetes-service-account) -- keyless cloud access for the run's lifetime via workload identity
-- [**Kubernetes Secret**](/infra-catalog/kubernetes-secret) -- image pull secrets and referenced credential material
-- [**Kubernetes CronJob**](/infra-catalog/kubernetes-cron-job) -- the scheduled twin: runs this same batch surface on a cron schedule
+- [**Kubernetes Namespace**](/infra-catalog/kubernetes-namespace) — provides the target namespace for the Job
+- [**Kubernetes ServiceAccount**](/infra-catalog/kubernetes-service-account) — keyless cloud access for the run's lifetime via workload identity
+- [**Kubernetes Secret**](/infra-catalog/kubernetes-secret) — image pull secrets and referenced credential material
+- [**Kubernetes CronJob**](/infra-catalog/kubernetes-cron-job) — the scheduled twin: runs this same batch surface on a cron schedule

@@ -1,5 +1,5 @@
 # Least-privilege permissions the IaC runner's AWS principal needs to
-# provision, update, and destroy this component with the official modules.
+# provision, update, and destroy this component with the platform modules.
 # Every entry is `derived` (static analysis of the module sources, cited in
 # notes) until the live capture lane upgrades it to `proven`. Schema:
 # iac/catalogkindpermissions/v1.
@@ -22,6 +22,8 @@ spec:
           - arn:aws:apigateway:*::/vpclinks/*
           - arn:aws:apigateway:*::/tags/*
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers aws_api_gateway_vpc_link (tf) / apigateway.VpcLink (pulumi). API Gateway authorizes by HTTP verb against resource paths -- POST on the /vpclinks collection creates (asynchronously, against the target NLB), GET reads status, PATCH updates name and description in place, DELETE destroys. The Tags resource authorizes GET/PUT/DELETE; PUT serves only tagging here. The connection to the NLB is established by the API Gateway service through its service-linked role, so the caller needs no elasticloadbalancing permissions.
       - sid: CreateApiGatewayServiceLinkedRole
         actions:
@@ -29,4 +31,6 @@ spec:
         resources:
           - arn:aws:iam::*:role/aws-service-role/ops.apigateway.amazonaws.com/AWSServiceRoleForAPIGateway
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: AWS auto-creates the AWSServiceRoleForAPIGateway service-linked role (which manages the link's connection to the NLB) when the first API, custom domain name, or VPC link is created in an account. Only the account's first such creation exercises this permission.

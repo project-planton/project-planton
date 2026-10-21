@@ -13,7 +13,7 @@ When you deploy this Infra Component, the IaC module provisions:
 ### Planton Setup
 
 - **AWS Provider Connection** — an active connection in the Connect module with Bedrock provisioned-throughput permissions (`bedrock:CreateProvisionedModelThroughput` and its read/update/delete siblings). Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **The model to serve** — typically an AwsBedrockCustomModel whose `custom_model_arn` this purchase serves; fine-tuned models cannot serve on-demand at all.
+- **The model to serve** — typically an AWS Bedrock Custom Model whose `custom_model_arn` this purchase serves; fine-tuned models cannot serve on-demand at all.
 
 ### AWS Account
 
@@ -55,7 +55,7 @@ This purchases one no-commitment model unit for the referenced fine-tuned model 
 
 ### InfraChart
 
-When the purchase deploys alongside the custom model it serves, wire the reference via ValueFromRef:
+When the purchase deploys alongside the custom model it serves, wire the reference:
 
 ```yaml
 spec:
@@ -88,17 +88,17 @@ These are the most important decisions when configuring a throughput purchase. E
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AwsBedrockCustomModel** | `modelArn` | `status.outputs.custom_model_arn` |
+| **AWS Bedrock Custom Model** | `modelArn` | `status.outputs.custom_model_arn` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
-| `provisioned_model_arn` | ARN of the provisioned model — the modelId applications pass to InvokeModel/Converse | An AwsBedrockAgent alias's `routing.provisionedThroughput`; application configuration consuming the dedicated capacity |
+| `provisioned_model_arn` | ARN of the provisioned model — the modelId applications pass to InvokeModel/Converse | An AWS Bedrock Agent alias's `routing.provisionedThroughput`; application configuration consuming the dedicated capacity |
 
 `provisioned_model_name` echoes `metadata.name` — a record, not a composition input.
 
@@ -110,7 +110,7 @@ Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
 **Committed production capacity** — once demand is measured and steady, a OneMonth or SixMonths commitment at the measured unit count buys the discounted rate. Enter it knowing the term is irreversible — the manifest cannot delete or resize the purchase until the term ends. Start from the **Committed Production Capacity** preset.
 
-**Capacity behind an agent alias** — wire `provisioned_model_arn` into an AwsBedrockAgent alias's `routing.provisionedThroughput` so the alias serves production traffic through reserved capacity while the draft and other aliases stay on on-demand.
+**Capacity behind an agent alias** — wire `provisioned_model_arn` into an AWS Bedrock Agent alias's `routing.provisionedThroughput` so the alias serves production traffic through reserved capacity while the draft and other aliases stay on on-demand.
 
 ## Works With
 

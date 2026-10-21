@@ -63,7 +63,7 @@ This creates a same-account, same-region peering between the app and data VPCs, 
 
 ### InfraChart
 
-When the peering deploys alongside its VPCs in one chart, wire both VPC references via ValueFromRef:
+When the peering deploys alongside its VPCs in one chart, wire both VPC references:
 
 ```yaml
 spec:
@@ -104,17 +104,17 @@ These are the most important decisions when configuring a VPC peering. Explore t
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **AwsVpc** | `request.vpcId` | `status.outputs.vpc_id` |
-| **AwsVpc** | `request.peerVpcId` | `status.outputs.vpc_id` |
-| **AwsVpcPeering** | `accept.vpcPeeringConnectionId` | `status.outputs.peering_connection_id` |
+| **AWS VPC** | `request.vpcId` | `status.outputs.vpc_id` |
+| **AWS VPC** | `request.peerVpcId` | `status.outputs.vpc_id` |
+| **AWS VPC Peering** | `accept.vpcPeeringConnectionId` | `status.outputs.peering_connection_id` |
 
 Cross-account peers pass the literal peer `vpc-...` id (with `peerOwnerId`) instead of a reference, and cross-account accepters paste the `pcx-...` id shared by the requesting account.
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|

@@ -1,6 +1,6 @@
 # Planton Operator
 
-Installs the Planton operator — the lifecycle manager that reconciles `PlantonPlatform` declarations into running self-hosted Planton platforms (control plane, console, identity, databases, secrets manager, in-cluster runner) — from the official `planton-operator` Helm chart (OCI, ghcr.io/plantonhq/charts). This component installs the MANAGER; the platforms themselves are declared with KubernetesPlantonPlatform resources, one per platform, all served by this one operator. One installation per cluster: the operator enforces that itself at startup, and the release name is fixed to `planton-operator`.
+Installs the Planton operator — the lifecycle manager that reconciles PlantonPlatform declarations into running self-hosted Planton platforms (control plane, console, identity, databases, secrets manager, in-cluster runner) — from Planton's planton-operator Helm chart (OCI, ghcr.io/plantonhq/charts). This component installs the MANAGER; the platforms themselves are declared with Planton Platform resources, one per platform, all served by this one operator. One installation per cluster: the operator enforces that itself at startup, and the release name is fixed to `planton-operator`.
 
 ## What Gets Created
 
@@ -18,7 +18,7 @@ When you deploy this Infra Component, the IaC module provisions:
 
 ### Kubernetes Cluster
 
-- **None beyond cluster-admin access** — the operator is self-contained. The platforms it deploys bring their own dependencies (declared per KubernetesPlantonPlatform).
+- **None beyond cluster-admin access** — the operator is self-contained. The platforms it deploys bring their own dependencies (declared per Planton Platform).
 - **No sibling operator** — the operator refuses to start beside another `planton-operator` install (its own startup guard) and names the remedy in its log. Adding more platforms to a cluster never needs a second operator.
 
 ## Deploy
@@ -52,7 +52,7 @@ This installs the manager with chart defaults (one replica, leader election on) 
 
 ### InfraChart
 
-When deploying as part of a multi-resource environment, use ValueFromRef to place the operator in a managed namespace:
+When deploying as part of a multi-resource environment, use references to place the operator in a managed namespace:
 
 ```yaml
 spec:
@@ -64,13 +64,13 @@ spec:
   createNamespace: false
 ```
 
-The InfraPipeline creates the namespace first, then installs the operator into it. A KubernetesPlantonPlatform in the same chart declares its `depends_on` edge to the operator through `metadata.relationships` — no spec field consumes an operator output, so the edge is declared, not wired.
+The InfraPipeline creates the namespace first, then installs the operator into it. A Planton Platform in the same chart declares its `depends_on` edge to the operator through `metadata.relationships` — no spec field consumes an operator output, so the edge is declared, not wired.
 
 ## Key Configuration
 
 These are the most important decisions when configuring a Planton Operator install. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**One operator per cluster is self-enforced** — the operator scans for sibling operator Deployments at startup and refuses to start beside one, so the failure mode of a duplicate install is a crash-looping pod with a remedy in its log, never two managers fighting. It watches every namespace: adding platforms to the cluster means declaring more KubernetesPlantonPlatform resources, never installing a second operator.
+**One operator per cluster is self-enforced** — the operator scans for sibling operator Deployments at startup and refuses to start beside one, so the failure mode of a duplicate install is a crash-looping pod with a remedy in its log, never two managers fighting. It watches every namespace: adding platforms to the cluster means declaring more Planton Platform resources, never installing a second operator.
 
 **The chart pin moves the schema with it** — `chartVersion` defaults to the version this catalog release was validated against; pin a different published version for change control. The operator's definitions are resources of the release, so a `chartVersion` bump upgrades the operator and its schema together, and there is no second copy of the schema for anything to fall behind. Charts older than `0.8.0` do not own their definitions and are refused at plan time with the version to pin.
 
@@ -86,13 +86,13 @@ These are the most important decisions when configuring a Planton Operator insta
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **KubernetesNamespace** | `namespace` | `spec.name` |
+| **Kubernetes Namespace** | `namespace` | `spec.name` |
 
 ### What This Kind Provides
 
-This component's `status.outputs` only identify the installation — `namespace` (where the manager runs) and `release_name` (fixed to `planton-operator` by the singleton design). The operator has no per-platform surface to wire: KubernetesPlantonPlatform resources compose against the CRD it installs, and the deploy-order edge is declared through `metadata.relationships`, never through ValueFromRef.
+This component's `status.outputs` only identify the installation — `namespace` (where the manager runs) and `release_name` (fixed to `planton-operator` by the singleton design). The operator has no per-platform surface to wire: Planton Platform resources compose against the CRD it installs, and the deploy-order edge is declared through `metadata.relationships`, never by reference.
 
 ## Common Patterns
 

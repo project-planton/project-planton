@@ -1,6 +1,6 @@
 ---
 title: Deploy, Promote, Rollback, and Redeploy — The Delivery Verbs
-description: The four verbs that deliver a version without a build of their own (deploy an image built anywhere, promote a captured pair between environments, roll an environment back, redeploy what runs to put back drift), a service environment's drift check, the owner rule for a service's resources, what a run removes when the service no longer declares a resource (and the question it asks about one that holds data), every verb's dry run, plus tag releases, feature-branch deploys, and standing branch-to-environment mappings. Read when someone wants a version moved between environments, an image they built running, a tag push to be the release, every resource re-applied, a change made in the cloud found or put back, a direct change to a service's resource refused, a resource removed from a service, a run waiting on a removal, what a click would do before it is made, or a refused delivery or an "Unchanged since" resource explained.
+description: The four verbs that deliver a version without a build of their own (deploy an image built anywhere, promote a captured pair between environments, roll an environment back, redeploy what runs to put back drift), a service environment's drift check, the owner rule for a service's resources, what a run removes when the service no longer declares a resource (and who decides it in a protected environment), every verb's dry run, plus tag releases, feature-branch deploys, and standing branch-to-environment mappings. Read when someone wants a version moved between environments, an image they built running, a tag push to be the release, every resource re-applied, a change made in the cloud found or put back, a direct change to a service's resource refused, a resource removed from a service, a run waiting on a removal, what a click would do before it is made, or a refused delivery or an "Unchanged since" resource explained.
 ---
 
 # Deploy, Promote, Rollback, and Redeploy — The Delivery Verbs
@@ -86,28 +86,29 @@ The rule exists because the service's next deploy would silently undo a direct c
 
 A service's declaration is what runs in its cloud. A resource the service owns in an environment and a run no longer declares — renamed or deleted in the kustomize tree or the Configuration tab, or missing from the configuration a promotion or rollback carries — is a **removal** of that run. The run lists its removals from the moment it exists and carries out each one at the very end, after everything declared applied, the rollout verified, and the deployment record was written:
 
-- **Destroyed** — the default for a resource that holds no data. It is the service's own change, made with the service's authority exactly like its applies, so a developer's push destroys it.
-- **Kept in AWS** (the provider's own name) — a resource marked `planton.dev/keep-on-provider: "true"` (an annotation under the resource manifest's `metadata.annotations`, in each environment's configuration that should keep it) is never destroyed: the service lets go of its record and it keeps running, findable and adoptable. An Unmanaged resource is always kept the same way, and a person can also choose Keep when asked (below).
+- **Destroyed** — the default, a database included. It is the service's own change, made with the service's authority exactly like its applies, so a developer's push destroys it.
+- **Kept in AWS** (the provider's own name) — a resource marked `planton.dev/keep-on-provider: "true"` (an annotation under the resource manifest's `metadata.annotations`, in each environment's configuration that should keep it) is never destroyed: the service lets go of its record and it keeps running, findable and adoptable. An Unmanaged resource is always kept the same way, and a protected gate's approver can also choose Keep (below).
 - **Left in Place** — something stops the destroy: `planton.dev/prevent-destroy`, the resource's own deletion protection, something else still reading it (another stack or service, a resource deployed on its own, or what this service still declares), or a kept resource living inside it. The row says why and names the way out. The resource stays the service's, `listResources` keeps listing it under no-longer-declared, and the next run tries again once the reason is gone.
 
 What to know when explaining a removal:
 
 - **A failed apply or a failed verification removes nothing.** Removals read "Not run: nothing is removed while what the service declares did not all apply".
 - **A removal never fails a deployment.** A destroy that fails leaves the environment deployed with "1 removal failed", promotion carries on, and the next run (or a redeploy) tries again. A cancel or a newer push taking over during the removals leaves the environment deployed too ("Removals not run: the run was cancelled").
-- **A resource that holds data always waits for a person**, in every environment. It holds data when its catalog kind has backup and recovery (`needs_named_consent` on the removal); read that from the run, never guess it from the kind. The rest of the environment deploys, then the run asks: "orders-db holds data a destroy can't give back. Destroy it (type its name), or keep it in AWS. Renamed it by mistake? Restore its name and push: the newer run takes over."
-- **In a protected environment, the approver decides every removal.** The gate lists each one; the approver may keep any of them and must keep or name every one that holds data before approving. The approval covers exactly the records shown: a removal that appears after it, or whose resource was replaced since, asks on its own row.
-- **Who answers.** Whoever may decide the run's gates: approve rights on the environment, and in a protected one not the person who started the run while another approver exists. The person who started the run is told why it waits. You, the assistant, never answer one: relay the question, its two answers and the command, and let a person decide.
+- **In an unprotected environment nothing asks.** A push, `planton service run` (`run_service_pipeline`) and a deploy from the service's own CI are the declaration itself: each destroys every removal, a database too, unasked. A renamed database is a removal, so before a push that renames or drops a resource, read the environment's drift (`get_service_drift`, its `no_longer_declared`) and say what goes; mark a resource keep-on-provider to keep it running.
+- **The other delivery verbs say what goes first.** Promote, rollback, redeploy and any other deploy read their dry run: at a terminal they name each removal and ask; `--yes` starts them without a terminal and they print what they removed; with neither they refuse and print the same command with `--yes` added. Into a protected environment they say the approver decides those removals at the gate, and ask nothing more. Agents (`deploy_service`, `promote_service_deployment`, `rollback_service_deployment`, `redeploy_service`) pass `confirm` when the run destroys something: once the person agreed, or under their word to carry on without asking (for this task), and then say exactly what was destroyed.
+- **In a protected environment, the approver decides every removal.** The gate lists each one, and approving decides them all: each is destroyed unless the approver keeps it. The approval covers exactly the records shown: a removal that appears after it, or whose resource was replaced since, asks on its own row.
+- **Who answers.** Whoever may decide the run's gates: approve rights on the environment, and in a protected one not the person who started the run while another approver exists. The person who started the run is told why it waits. You answer one only on the person's word — the decision they stated, or their word to carry on without asking (for this task), after which you say exactly what was destroyed — and never on a run your own person started: the platform refuses it, and the person decides it themselves.
 - **A mistake is fixed by pushing the fix.** A run that waits only on removal questions or job approvals gives way to a newer push, so restoring the name and pushing makes the question go away. A developer without approve rights can also mark the resource keep-on-provider on its own page (the guard freed it) and push or redeploy.
 - **Removing a whole environment** from the service's configuration is different: the environment's resources keep running (`service.configuring-deployments.md`).
 
 ```text
-planton service removal destroy checkout-api 131 prod AwsRdsInstance/orders-db   # destroy; naming it is the consent
+planton service removal destroy checkout-api 131 prod AwsRdsInstance/orders-db   # destroy it: asks at a terminal, --yes answers ahead
 planton service removal keep checkout-api 131 prod AwsRdsInstance/orders-db      # keep it on its provider
 planton service resolve-env-manual-gate checkout-api 131 prod approve \
-  --keep AwsRedisElasticache/orders-cache --destroy AwsRdsInstance/orders-db   # a protected gate's removals
+  --keep AwsRedisElasticache/orders-cache   # a protected gate: everything it shows and does not keep is destroyed
 ```
 
-Agents use the same doors: `resolve_service_pipeline_node_gate` with `consented` for a removal's question, and `resolve_service_pipeline_env_gate` with `keep` and `consented` for a gate's removals — both human decisions the assistant only relays.
+Agents use the same doors: `resolve_service_pipeline_node_gate` (approve destroys the removal its question asks about) and `resolve_service_pipeline_env_gate` with `keep` for a gate's removals, each with `confirm` — passed only on the person's word, never on a run your own person started, and followed by exactly what was destroyed. A gate's approve or a removal's destroy asks at a terminal and names what it destroys; `--yes` answers ahead. Rejecting and keeping ask nothing.
 
 ## Every verb answers a dry run
 
@@ -121,7 +122,7 @@ A branch mapped straight to a Promotion Only environment (`deploy.branchDeployme
 
 ## Protection is never bypassed
 
-Promoting into a protected environment still stops at that environment's approval gate, and the person who promoted approves it only when no other approver exists. Report the gate and who can resolve it. Never attempt an approval on someone's behalf — approval is a human decision, and the assistant holds no approval rights anywhere.
+Promoting into a protected environment still stops at that environment's approval gate, and the person who promoted approves it only when no other approver exists. Report the gate and who can resolve it. Approve only on the person's word, and never a run your own person started — even when they are the only approver, the platform refuses it, and they approve it themselves.
 
 ## Naming the source of a promotion
 

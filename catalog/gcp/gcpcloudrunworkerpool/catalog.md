@@ -1,25 +1,25 @@
 # GCP Cloud Run Worker Pool
 
-Cloud Run's shape for work that is not a request: a pool of always-running container instances with no HTTP front door. Queue consumers, schedulers, event pullers, ML batch workers -- anything that should be up all the time and pull its own work. It keeps everything a Cloud Run service has for building the instance (containers and sidecars, volumes, direct VPC egress, GPUs, CMEK) and drops the request path: no port, no URL, no ingress, and instances scaled to a count you set or between bounds by a signal you drive, never by traffic.
+Cloud Run's shape for work that is not a request: a pool of always-running container instances with no HTTP front door. Queue consumers, schedulers, event pullers, ML batch workers — anything that should be up all the time and pull its own work. It keeps everything a Cloud Run service has for building the instance (containers and sidecars, volumes, direct VPC egress, GPUs, CMEK) and drops the request path: no port, no URL, no ingress, and instances scaled to a count you set or between bounds by a signal you drive, never by traffic.
 
 ## What Gets Created
 
 When you deploy this Infra Component, the IaC module provisions:
 
-- **Worker pool** -- a `cloudrunv2.WorkerPool` in the chosen region with the container template, scaling posture, instance split across revisions, binary authorization, and encryption settings
-- **API enablement** -- the Cloud Run Admin API on the project, never disabled on destroy
+- **Worker pool** — a `cloudrunv2.WorkerPool` in the chosen region with the container template, scaling posture, instance split across revisions, binary authorization, and encryption settings
+- **API enablement** — the Cloud Run Admin API on the project, never disabled on destroy
 
 ## Before You Deploy
 
 ### Planton Setup
 
-- **GCP Provider Connection** -- an active connection in the Connect module with `roles/run.admin` and `roles/iam.serviceAccountUser` on the project. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
-- **Planton Runner** -- required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
+- **GCP Provider Connection** — an active connection in the Connect module with `roles/run.admin` and `roles/iam.serviceAccountUser` on the project. Map it as the default for your environment, or specify it explicitly when creating the Infra Component.
+- **Planton Runner** — required when using Runner-based credential delivery. Not needed for inline credentials or browser OAuth authentication modes.
 
 ### GCP Resources
 
 - **A container image** in Artifact Registry (or a public registry) the Cloud Run service agent can pull.
-- **A `GcpServiceAccount`** for the runtime identity -- give real workers a least-privilege identity instead of the Compute default.
+- **A `GcpServiceAccount`** for the runtime identity — give real workers a least-privilege identity instead of the Compute default.
 - **A VPC and subnet** when the worker reaches private resources through direct VPC egress.
 
 ## Deploy
@@ -75,39 +75,39 @@ This runs two instances of the orders worker, pulling from a Pub/Sub subscriptio
 
 ### InfraChart
 
-When deploying as part of a multi-resource environment, wire `serviceAccount`, the subnet, secrets, and the cache or database the worker talks to through ValueFromRef in one InfraPipeline; deployment pipelines inject the built image into a container whose `image` is left blank.
+When deploying as part of a multi-resource environment, wire `serviceAccount`, the subnet, secrets, and the cache or database the worker talks to by reference in one InfraPipeline; deployment pipelines inject the built image into a container whose `image` is left blank.
 
 ## Key Configuration
 
 These are the most important decisions when configuring a worker pool. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**How many instances** -- `scaling.scalingMode: MANUAL` (Google's default) runs exactly `manualInstanceCount` instances (`0` parks the pool); `AUTOMATIC` lets Cloud Run move between `minInstanceCount` and `maxInstanceCount` on a signal you drive, such as a queue-depth metric.
+**How many instances** — `scaling.scalingMode: MANUAL` (Google's default) runs exactly `manualInstanceCount` instances (`0` parks the pool); `AUTOMATIC` lets Cloud Run move between `minInstanceCount` and `maxInstanceCount` on a signal you drive, such as a queue-depth metric.
 
-**The container** -- `containers[].image`, `env` (a literal, a Secret Manager secret you own, or a `secretValue` the component keeps in Secret Manager for you), `resources.cpu` / `memory`, probes on the port a health listener binds, sidecars ordered by `dependsOn`.
+**The container** — `containers[].image`, `env` (a literal, a Secret Manager secret you own, or a `secretValue` the component keeps in Secret Manager for you), `resources.cpu` / `memory`, probes on the port a health listener binds, sidecars ordered by `dependsOn`.
 
-**Private networking** -- `vpcAccess.networkInterfaces` for direct VPC egress (recommended) or a `connector`; `egress: ALL_TRAFFIC` routes public egress through the VPC too.
+**Private networking** — `vpcAccess.networkInterfaces` for direct VPC egress (recommended) or a `connector`; `egress: ALL_TRAFFIC` routes public egress through the VPC too.
 
-**Rollouts** -- every template change is a new revision; `instanceSplits` moves instances between revisions gradually.
+**Rollouts** — every template change is a new revision; `instanceSplits` moves instances between revisions gradually.
 
-**Destroy semantics** -- `deletionProtection` (default `true`) blocks destroys until flipped; `deletionPolicy: PREVENT` is a second guard.
+**Destroy semantics** — `deletionProtection` (default `true`) blocks destroys until flipped; `deletionPolicy: PREVENT` is a second guard.
 
 ## Outputs and Dependencies
 
 ### What This Kind Consumes
 
-| Dependency | Field | ValueFromRef Path |
+| Dependency | Field | Reference Path |
 |------------|-------|-------------------|
-| **GcpProject** | `projectId` | `status.outputs.project_id` |
-| **GcpServiceAccount** | `serviceAccount` | `status.outputs.email` |
-| **GcpKmsKey** | `encryptionKey` | `status.outputs.key_id` |
-| **GcpServerlessVpcConnector** | `vpcAccess.connector` | `status.outputs.self_link` |
-| **GcpVpcNetwork** / **GcpSubnetwork** | `vpcAccess.networkInterfaces[].network` / `.subnetwork` | `status.outputs.network_name` / `status.outputs.subnetwork_name` |
-| **GcpCloudSql** | `volumes[].cloudSqlInstance.instances[]` | `status.outputs.connection_name` |
-| **GcpGcsBucket** | `volumes[].gcs.bucket` | `status.outputs.bucket_id` |
+| **GCP Project** | `projectId` | `status.outputs.project_id` |
+| **GCP Service Account** | `serviceAccount` | `status.outputs.email` |
+| **GCP KMS Key** | `encryptionKey` | `status.outputs.key_id` |
+| **GCP Serverless VPC Connector** | `vpcAccess.connector` | `status.outputs.self_link` |
+| **GCP VPC Network** / **GCP Subnetwork** | `vpcAccess.networkInterfaces[].network` / `.subnetwork` | `status.outputs.network_name` / `status.outputs.subnetwork_name` |
+| **GCP Cloud SQL** | `volumes[].cloudSqlInstance.instances[]` | `status.outputs.connection_name` |
+| **GCP GCS Bucket** | `volumes[].gcs.bucket` | `status.outputs.bucket_id` |
 
 ### What This Kind Provides
 
-After provisioning, `status.outputs` contains values that downstream Infra Components can consume via ValueFromRef:
+After provisioning, `status.outputs` contains values that downstream Infra Components can reference:
 
 | Output | Description | Common Downstream Use |
 |--------|-------------|----------------------|
@@ -120,17 +120,17 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 
 Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 
-**Queue consumer** -- A fixed number of instances pulling from Pub/Sub over direct VPC egress. Start from the **Queue Consumer** preset.
+**Queue consumer** — A fixed number of instances pulling from Pub/Sub over direct VPC egress. Start from the **Queue Consumer** preset.
 
-**Autoscaled worker** -- Bounds instead of a count, a secret-backed env var, a liveness probe. Start from the **Autoscaled Worker** preset.
+**Autoscaled worker** — Bounds instead of a count, a secret-backed env var, a liveness probe. Start from the **Autoscaled Worker** preset.
 
-**GPU inference worker** -- An L4 GPU per instance, single-zone for cost, a startup probe with a long window. Start from the **GPU Inference Worker** preset.
+**GPU inference worker** — An L4 GPU per instance, single-zone for cost, a startup probe with a long window. Start from the **GPU Inference Worker** preset.
 
 ## Works With
 
-- [**GCP Cloud Run**](/infra-catalog/gcp-cloud-run) -- the request-serving sibling
-- [**GCP Cloud Run Job**](/infra-catalog/gcp-cloud-run-job) -- run-to-completion work
-- [**GCP Service Account**](/infra-catalog/gcp-service-account) -- the runtime identity
-- [**GCP Subnetwork**](/infra-catalog/gcp-subnetwork) -- direct VPC egress
-- [**GCP Redis Cluster**](/infra-catalog/gcp-redis-cluster) -- a cache a worker reaches privately
-- [**GCP Pub/Sub Subscription**](/infra-catalog/gcp-pub-sub-subscription) -- the queue a worker pulls from
+- [**GCP Cloud Run**](/infra-catalog/gcp-cloud-run) — the request-serving sibling
+- [**GCP Cloud Run Job**](/infra-catalog/gcp-cloud-run-job) — run-to-completion work
+- [**GCP Service Account**](/infra-catalog/gcp-service-account) — the runtime identity
+- [**GCP Subnetwork**](/infra-catalog/gcp-subnetwork) — direct VPC egress
+- [**GCP Redis Cluster**](/infra-catalog/gcp-redis-cluster) — a cache a worker reaches privately
+- [**GCP Pub/Sub Subscription**](/infra-catalog/gcp-pub-sub-subscription) — the queue a worker pulls from

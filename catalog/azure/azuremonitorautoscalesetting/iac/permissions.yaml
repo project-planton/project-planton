@@ -1,5 +1,5 @@
 # Least-privilege permissions the IaC runner's Azure principal needs to
-# provision, update, and destroy this component with the official modules.
+# provision, update, and destroy this component with the platform modules.
 # Every entry is `derived` (static analysis of the module sources, cited in
 # notes) until the live capture lane upgrades it to `proven`. Schema:
 # iac/catalogkindpermissions/v1.
@@ -16,4 +16,5 @@ spec:
           - Microsoft.Insights/AutoscaleSettings/Write
           - Microsoft.Insights/AutoscaleSettings/Delete
         provenance: derived
+        privilege: ordinary
         notes: Covers azurerm_monitor_autoscale_setting -- create, read/refresh, in-place updates (profiles, rules, predictive, notification, tags), and destroy, held on the setting's resource group. The module passes target_resource_id and each rule's metric_resource_id as opaque ARM IDs and performs no direct reads of the target or metric sources; Azure validates the references (region match, one-setting-per-target) server-side at PUT, so deployments conventionally also hold read on the target's scope -- Monitoring Contributor plus Reader over the target covers both. ARM's inventory spells these operations with PascalCase verbs (Read/Write/Delete).

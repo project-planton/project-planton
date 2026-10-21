@@ -1,5 +1,5 @@
 # Least-privilege permissions the IaC runner's GCP principal needs to
-# provision, update, and destroy this component with the official modules.
+# provision, update, and destroy this component with the platform modules.
 # Every entry is `derived` (static analysis of the module sources, cited in
 # notes) until the live capture lane upgrades it to `proven`. Schema:
 # iac/catalogkindpermissions/v1.
@@ -16,6 +16,8 @@ spec:
           - serviceusage.services.get
           - serviceusage.services.list
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers google_project_service enabling aiplatform.googleapis.com on the target project. disable_on_destroy is false in the module, so the disable permission is never needed.
       - purpose: ManageAgentEngine
         permissions:
@@ -24,11 +26,15 @@ spec:
           - aiplatform.reasoningEngines.update
           - aiplatform.reasoningEngines.delete
         provenance: derived
+        reach: target
+        privilege: ordinary
         notes: Covers google_vertex_ai_reasoning_engine (Pulumi vertex.AiReasoningEngine) -- create, read/refresh, in-place PATCHes (display name, description, labels, the whole spec, the memory bank), and destroy under deletion_policy DELETE (ABANDON and PREVENT call no API). GCP defines no aiplatform.operations.get permission; polling the long-running operations needs nothing beyond these. roles/aiplatform.admin contains them all.
       - purpose: ActAsAgentIdentity
         permissions:
           - iam.serviceAccounts.actAs
         provenance: derived
+        reach: target
+        privilege: uses_identity
         condition:
           spec_field_set: agent.service_account
         notes: Needed only when agent.service_account names a custom service account -- Vertex AI requires the deploying principal to act as the identity the agent runs as. A source_code_spec build also runs a Cloud Build in the project as Google's Vertex AI service agent, which needs its own default roles; that is a project prerequisite, not a runner permission.
@@ -50,6 +56,8 @@ spec:
           - secretmanager.versions.disable
           - secretmanager.versions.destroy
         provenance: derived
+        reach: target
+        privilege: ordinary
         condition:
           spec_field_set: agent.deployment_spec.secret_env.value
         notes: Covers the secret the modules keep per agent.deployment_spec.secret_env[].value -- google_project_service enabling secretmanager.googleapis.com (disable_on_destroy false), google_secret_manager_secret (user-managed replication in the agent's location, attribution labels), google_secret_manager_secret_version holding the value (a new value creates the new version before destroying the old; versions.access is the provider's read of the payload on refresh), and google_secret_manager_secret_iam_member granting roles/secretmanager.secretAccessor on that one secret to the agent's identity (IAM member resources read the policy before modifying it). Teardown deletes the secret, which destroys its versions.
@@ -57,6 +65,8 @@ spec:
         permissions:
           - resourcemanager.projects.get
         provenance: derived
+        reach: target
+        privilege: ordinary
         condition:
           spec_field_set: agent.deployment_spec.secret_env.value
         notes: The data source the modules use to name the project's Vertex AI Reasoning Engine service agent (service-<project-number>@gcp-sa-aiplatform-re.iam.gserviceaccount.com) in the secretAccessor grant when agent.service_account is unset -- google_project reads the project to learn its number. Not exercised when agent.service_account names the identity (the condition cannot express "unset", so the entry rides the stored-value condition).
@@ -78,6 +88,8 @@ spec:
           - secretmanager.versions.disable
           - secretmanager.versions.destroy
         provenance: derived
+        reach: target
+        privilege: ordinary
         condition:
           spec_field_set: agent.deployment_spec.secret_env.value
         notes: Covers the secret the modules keep per agent.deployment_spec.secret_env[].value -- google_project_service enabling secretmanager.googleapis.com (disable_on_destroy false), google_secret_manager_secret (user-managed replication in the agent's location, attribution labels), google_secret_manager_secret_version holding the value (a new value creates the new version before destroying the old; versions.access is the provider's read of the payload on refresh), and google_secret_manager_secret_iam_member granting roles/secretmanager.secretAccessor on that one secret to the agent's identity (IAM member resources read the policy before modifying it). Teardown deletes the secret, which destroys its versions.
@@ -85,6 +97,8 @@ spec:
         permissions:
           - resourcemanager.projects.get
         provenance: derived
+        reach: target
+        privilege: ordinary
         condition:
           spec_field_set: agent.deployment_spec.secret_env.value
         notes: The data source the modules use to name the project's Vertex AI Reasoning Engine service agent (service-<project-number>@gcp-sa-aiplatform-re.iam.gserviceaccount.com) in the secretAccessor grant when agent.service_account is unset -- google_project reads the project to learn its number. Not exercised when agent.service_account names the identity (the condition cannot express "unset", so the entry rides the stored-value condition).
