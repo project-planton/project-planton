@@ -23,7 +23,7 @@ When you deploy this Infra Component, the IaC module provisions:
 
 ### GCP Scope
 
-- **IAM**: the deploying identity needs `roles/orgpolicy.policyAdmin` on the scope — on the project for a project-scoped policy (the one shape that needs no organization-level grant), on the folder or organization otherwise.
+- **IAM**: the deploying identity needs `roles/orgpolicy.policyAdmin` granted on the organization, even for a project-scoped policy: Google grants that role at the organization only, and a custom role cannot carry its permissions.
 
 ## Deploy
 

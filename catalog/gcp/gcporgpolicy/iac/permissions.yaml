@@ -20,10 +20,10 @@ spec:
           - orgpolicy.policies.delete
           - orgpolicy.constraints.list
         provenance: derived
-        reach: target
+        reach: organization
         privilege: ordinary
         predefined_role: roles/orgpolicy.policyAdmin
-        notes: "Covers google_org_policy_policy (Pulumi orgpolicy.Policy) -- the modules' only resource. create on first apply; get on every refresh and import (the provider reads the policy by name); update when the enforced or dry-run rule set changes; delete on destroy under deletion_policy DELETE (ABANDON and PREVENT call no delete API). constraints.list is what the provider needs to validate a constraint name exists at the scope. Granted on the SCOPE the policy applies to -- the project for a project-scoped policy (the one shape that needs no organization-level grant), the folder or organization otherwise. roles/orgpolicy.policyAdmin contains all five."
+        notes: "Covers google_org_policy_policy (Pulumi orgpolicy.Policy) -- the modules' only resource. create on first apply; get on every refresh and import (the provider reads the policy by name); update when the enforced or dry-run rule set changes; delete on destroy under deletion_policy DELETE (ABANDON and PREVENT call no delete API). constraints.list is what the provider needs to validate a constraint name exists at the scope. Granted on the organization, even for a project-scoped policy: Google grants roles/orgpolicy.policyAdmin at the organization only (it is not in a project's grantable roles), so the kind needs Organization Access. roles/orgpolicy.policyAdmin contains all five."
       - purpose: ResolveDefaultProject
         permissions:
           - resourcemanager.projects.get

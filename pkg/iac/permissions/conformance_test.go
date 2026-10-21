@@ -1146,3 +1146,41 @@ func kindProjection(kindDir string) (group, kind string, ok bool) {
 	}
 	return "", "", false
 }
+
+// gcpRolesNotGrantableOnAProject are predefined roles Google grants above a
+// project only: each is absent from a project's grantable roles
+// (gcloud iam list-grantable-roles //cloudresourcemanager.googleapis.com/projects/<id>),
+// checked 2026-10-21. A connection's setup binds a target-reach predefined
+// role on the project, where Google refuses these, so every setup carrying
+// the kind would stop at that binding.
+var gcpRolesNotGrantableOnAProject = map[string]bool{
+	"roles/iam.denyAdmin":                    true,
+	"roles/iam.denyReviewer":                 true,
+	"roles/orgpolicy.policyAdmin":            true,
+	"roles/accesscontextmanager.policyAdmin": true,
+	"roles/resourcemanager.folderAdmin":      true,
+	"roles/billing.admin":                    true,
+}
+
+func TestGcpPredefinedRolesAreGrantedWhereGoogleAcceptsThem(t *testing.T) {
+	root := repoRoot(t)
+	if _, err := os.Stat(filepath.Join(root, "catalog")); err != nil {
+		t.Skip("catalog source tree not present (bazel sandbox); runs under go test and the lint.catalog-data lane")
+	}
+	discovered, err := Discover(root)
+	if err != nil {
+		t.Fatalf("discovering permissions manifests: %v", err)
+	}
+	for _, kindDir := range discovered["gcp"] {
+		manifest, err := Load(root, "gcp", kindDir)
+		if err != nil {
+			t.Fatalf("%s permissions manifest: %v", kindDir, err)
+		}
+		for _, group := range manifest.GetSpec().GetGcp().GetGroups() {
+			if group.GetReach() == permissionsv1.PermissionReach_target && gcpRolesNotGrantableOnAProject[group.GetPredefinedRole()] {
+				t.Errorf("%s group %s binds %s on the target project, where Google does not grant it -- set reach: organization (or billing_account)",
+					kindDir, group.GetPurpose(), group.GetPredefinedRole())
+			}
+		}
+	}
+}
