@@ -29,7 +29,7 @@ Every command takes the organization from `--org` or the saved context (`planton
 | `planton custom-domain get` | `get_custom_domain` | The domain, its record and its recorded state. The tool wraps its answer: `{"custom_domain": {...}}`, or with none `{"custom_domain": null, "next": "apply_custom_domain"}` (the CLI exits 3). The other tools answer the bare record: apply and delete the CustomDomain, verify the verification, the guide the guide. |
 | `planton custom-domain verify [--wait] [--timeout 15m]` | `verify_custom_domain` | Checks now: `custom_domain` (the record) beside `reading` (what DNS, the certificate and the console show this moment, with `reading.diagnosis`). A read: it never moves the recorded state, only hurries it when the reading is ahead. |
 | `planton custom-domain prompt [--copy]` (`-o json` for the whole guide) | `get_custom_domain_setup_guide`; prompt `setup_custom_domain(org)` (the guide's `agent_prompt`, verbatim) | The setup guide: `record`, `ownership_record`, `dns_host` (`kind`, `display_name`, `zone`, `dashboard_url`, `steps`, `command`) and `agent_prompt`. |
-| `planton custom-domain delete [--force]` | `delete_custom_domain` with `confirm: true` | Removes it (a mutation). The address stops serving the console; everyone keeps it at planton.ai. |
+| `planton custom-domain delete [--yes]` | `delete_custom_domain` with `confirm: true` | Removes it (a mutation). The address stops serving the console; everyone keeps it at planton.ai. |
 
 It is also a manifest, so `planton apply -f custom-domain.yaml` sets it like any other record:
 
