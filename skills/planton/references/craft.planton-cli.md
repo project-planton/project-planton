@@ -494,6 +494,23 @@ would be hard to see on the dark theme, `set-logo` and `show` say so and print
 the `--dark-theme` command to run. The craft is
 `self-hosted.branding.md`.
 
+## Connecting a cloud
+
+```
+planton connect gcp --project <project> -o json      # the plan; writes nothing ("written": false)
+planton connect gcp --project <project> --print-documents   # the exact setup script and every permission
+planton connect gcp verify <slug> -o json            # what a connection can deploy, and the trust it presents
+planton connect gcp cleanup <slug> -o json           # what deleting it leaves in the cloud, and the removal script
+planton connect aws --profile <profile> -o json      # AWS: the account the profile signs in to
+planton connect azure --subscription <id-or-name> -o json   # Azure
+planton connect digitalocean --print-documents       # the token's scopes; the token comes from DIGITALOCEAN_TOKEN or stdin
+planton connect cloudflare --print-documents         # the same for CLOUDFLARE_API_TOKEN
+planton connect gcp detect                           # deploy with this machine's sign-in instead (Runner Identity)
+planton delete GcpProviderConnection <slug>          # delete (AwsProviderConnection, AzureProviderConnection, DigitalOceanProviderConnection, CloudflareProviderConnection)
+```
+
+The bare `connect` verbs and `delete` are mutations; `verify`, `cleanup` and every `-o json` without `--yes` are read-only. `aws` and `azure` take the same `--print-documents`, `verify`, `cleanup` and `-o json` as `gcp`. The whole journey -- what to explain, the plan, the yes, the verdict, every refusal -- is `infra.connecting-clouds.md`.
+
 ## The organization's custom domain
 
 ```

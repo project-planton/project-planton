@@ -5,11 +5,11 @@ description: How an agent connects AWS, Google Cloud, Azure, DigitalOcean or Clo
 
 # Connecting a Cloud
 
-Read this when a person asks you to connect their cloud to Planton, asks what Planton can do in their account, or a connection cannot deploy something they asked for.
+Read this when a person asks you to connect their cloud to Planton, asks what Planton can do in their account, or a connection cannot deploy something they asked for. Connecting writes no files in the workspace, so the chart workflow's folder check does not apply.
 
 ## The doctrine in one sentence
 
-The person decides, fully informed: you explain what Planton will be able to do and that the setup runs as them in their own cloud, show the exact plan, ask, run it only on their yes, narrate each step, read the verdict back -- and every reassurance you give is a fact the product makes true, never a comfort you made up.
+The person decides, fully informed: you read the plan, explain what Planton will be able to do and that the setup runs as them in their own cloud, ask, run it only on their yes, narrate each step, read the verdict back -- and every reassurance you give is a fact the product makes true, never a comfort you made up.
 
 ## Why the person is right to ask questions
 
@@ -21,64 +21,76 @@ A connection gives Planton a way into their cloud. A careful engineer, and every
 |---|---|
 | planton.ai | Keyless: the trust is written in the person's cloud with their sign-in, Planton stores no key |
 | A self-hosted Planton with a public address | Keyless, the same way |
-| Planton Desktop's own instance, or a self-hosted Planton with a private address | Refuses keyless with the instance's reason, and names `planton connect gcp detect` (the Runner Identity method: deploys run with this machine's sign-in directly) |
+| Planton Desktop's own instance, or a self-hosted Planton with a private address | Refuses keyless with the instance's reason, and names `planton connect gcp detect` (the Runner Identity method: deploys run with this machine's sign-in directly, with that sign-in's full access) |
 
-DigitalOcean and Cloudflare have no keyless trust: the connection holds an API token the person creates (below). The four methods are named the same everywhere: Keyless, Stored Key, Runner Identity, Vault Broker.
+DigitalOcean and Cloudflare have no keyless trust: the connection holds an API token (below). The four methods are named the same everywhere: Keyless, Stored Key, Runner Identity, Vault Broker. `aws` and `azure` take the same `--print-documents`, `verify`, `cleanup` and `-o json` as `gcp`; this page shows `gcp` where all three behave alike.
 
 ## The journey, in order
 
-1. **Explain first, in plain words** -- before any command that could change something. Use the facts in "What to tell the person" below.
-2. **Show the plan.** `planton connect gcp --project <project> -o json` prints the plan and changes nothing (`"written": false`). Its keys: `runsAs` (the identity the setup acts as), `target` and `targetNoun` (the project, account or subscription it acts in), `connection` (the name and slug it will create), `grant` and `kindsGranted` of `kindsInCatalog` (what Planton may deploy), and per script `keeps` (what it leaves untouched) and `reachesOthers` (what it also changes for other connections). Tell the person each of these, in their words. `readScript` is the command that prints the exact script, if they want to read it.
-3. **Ask.** Name the identity and the target in the question: "This runs as dev@acme.com in project acme-prod and creates a role only Planton's connection can use. Go ahead?"
-4. **Run on their yes:** the `run` command from the plan (it carries `--yes`). The script runs on this machine, as them; narrate as it goes: the trust, the role, waiting for the cloud to accept the trust (a new trust can take a few minutes to spread), the connection, Verify.
+1. **Read the plan first; it changes nothing.** `planton connect gcp --project <project> -o json` prints the plan (`"written": false`). Pass every choice the person already made -- `--kinds`, `--organization-access`, `--access-granting`, `--no-authorize`, `--no-default`, `--name`, `--configuration` -- because the plan's `run` command carries exactly what the plan was asked with. Its keys: `runsAs` (the identity the setup acts as), `target` and `targetNoun` (the project, account or subscription), `connection` (the name and slug it will create), `grant` and `kindsGranted` of `kindsInCatalog` (what Planton may deploy), `resumes` (an existing keyless connection by that name is picked up), and per script `keeps` (what it leaves untouched) and `reachesOthers` (what it also changes for other connections). `readScript` prints the exact script.
+2. **Explain, in plain words, with the plan's real values:** the facts in "What to tell the person" below.
+3. **Ask, naming the identity, the target and who may use it:** "This runs as dev@acme.com in project acme-prod and creates a role only Planton's connection can use, with what you see in the plan. The connection will be usable by every environment in your organization and becomes its default GCP connection when you have none. Go ahead?"
+4. **Run on their yes:** the plan's `run` command (it carries `--yes`). The script runs on this machine, as them; narrate as it goes -- the trust, the role, waiting for the cloud to accept the trust (a new trust can take a few minutes to spread), the connection, Verify.
 5. **Read the verdict back** (below), and say what they can deploy now.
 
 A person at the terminal can simply run `planton connect gcp`: it shows the same plan as a card and asks the same question.
 
+- **A request to connect is not a yes to a plan the person has not seen.** When they said outright to go ahead without asking, still show the plan as you run it: this changes who can act in their cloud.
 - **`--yes` is the person's yes, given ahead.** Pass it only after they agreed to this plan.
 - **`--accept-shared-changes`** is needed with `--yes` when `reachesOthers` is not empty: the role is bound to an identity other connections also sign in as, so the change reaches them too. Pass it only after the person accepted that consequence by name.
-- **Target and sign-in flags:** GCP `--project` and `--configuration` (a gcloud named configuration); AWS `--account-id` and `--profile`; Azure `--subscription` (by id or name). Without them, the setup uses the cloud CLI's active sign-in and its default project, account or subscription -- never another sign-in it happens to find. `--name` sets the connection's name (default: `gcp.project.<project>`, `aws.account.<id>`, `azure.subscription.<id>`).
+- **Target and sign-in flags:** GCP `--project` and `--configuration` (a gcloud named configuration); AWS `--account-id` and `--profile`; Azure `--subscription` (by id or name). Without them the setup uses the cloud CLI's active sign-in and its default project, account or subscription -- never another sign-in it happens to find. The default name is `gcp.project.<project>`, `aws.account.<id>`, `azure.subscription.<id>`; the slug is that name with dots as dashes.
 
 ## What to tell the person -- every sentence is a product fact
 
 - **It runs as you, on your machine.** The setup script runs here with the sign-in you already have. Your sign-in never leaves this machine; Planton receives only what the script reports back (on GCP the trust's provider name and the service account, on AWS the role's ARN, on Azure the app's client id, tenant and subscription).
-- **Planton keeps no key.** A keyless connection stores no secret. Each deploy gets a short-lived token that only this connection's trust accepts.
+- **Planton keeps no key.** A keyless connection stores no secret. When it deploys, Planton's issuer signs a token for exactly this connection, and the cloud exchanges it for short-lived credentials (about an hour).
+- **Only this connection can use the trust.** The trust accepts a token only from Planton's issuer and only with this connection's subject (`planton:v1:org:<org>:conn:<slug>:provider:<cloud>`); no other connection or organization can present it. `planton connect gcp verify <slug>` prints the issuer and subject.
 - **It can do exactly what the grant says, nothing more.** The setup creates the connection's own role with exactly the permissions the catalog lists for the kinds granted. "Everything Planton can deploy" never includes Owner or Editor, never power over who has access in the account (IAM policies, roles, users, keys), and never permissions above the target (an organization, a folder, a billing account) -- those two tiers are separate opt-ins, `--access-granting` and `--organization-access`, each off unless the person asks.
+- **What else the setup creates or turns on, and what stays.** GCP: turns on the APIs Planton itself operates on in the project (the trust's, Cloud Resource Manager, Service Usage), and creates or adopts the workload identity pool `planton` and the service account `planton-provisioner`; every kind turns on the APIs it needs at its first deploy. AWS: registers the account's identity provider for Planton's issuer. Azure: creates or adopts the app registration `planton-provisioner`. These are shared by every Planton connection in the account, so the cleanup leaves them in place; the plan's `keeps` says so.
 - **You stay in control, in your own cloud.** The role is theirs: they can read it, narrow it or delete it at any time in their cloud's console. Verify always says what the connection can actually do after a change.
-- **Taking it back is one script and one delete.** `planton connect gcp cleanup <slug>` prints what deleting the connection leaves in their cloud and the script that removes the trust and the role Planton set up; `planton delete GcpProviderConnection <slug>` deletes the connection.
-- **The script is readable before it runs.** `planton connect gcp --project <project> --print-documents` prints it exactly as it will run, with every permission written out.
+- **Taking it back is one script and one delete** (below). Deleting the trust or the role refuses every new token at once; credentials already issued expire on their own, in about an hour.
+- **The script is readable before it runs.** `planton connect gcp --project <project> --print-documents` prints it exactly as the command would run it with the same name and grant, every permission written out.
 
 ## The common worries, answered truthfully
 
 | The person asks | The answer, and where they see it |
 |---|---|
 | "What exactly can Planton do in my account?" | Deploy, change and destroy the kinds the grant covers, with exactly the permissions the catalog lists for them. The plan's `grant` and `kindsGranted` say which; `--print-documents` shows every permission. |
-| "Does Planton keep my credentials?" | No. Keyless stores nothing; each deploy gets a short-lived token the trust accepts. Their own sign-in never leaves the machine. (DigitalOcean and Cloudflare are the exception: their token is stored as an organization secret, because those clouds have no keyless trust.) |
-| "Can Planton read my data?" | Answer from the documents, never with a blanket no: the grant includes what the kinds need to manage their resources, which for some kinds includes reading that resource's contents (a secret store's versions, for example). Show the permissions with `--print-documents` and name any that read data. |
-| "How do I limit it?" | Grant only some kinds (`--kinds GcpGkeCluster,GcpGcsBucket`), or narrow the role in their cloud later; Verify then says which kinds can no longer deploy. A recorded grant is changed with Update the Grant in the connection's Permissions section. |
-| "How do I revoke it?" | `planton connect gcp cleanup <slug>` for the removal script, then `planton delete GcpProviderConnection <slug>`. Deleting the trust in their cloud cuts Planton off at once. |
+| "Does Planton keep my credentials?" | No. Keyless stores nothing; each deploy gets short-lived credentials (about an hour). Their own sign-in never leaves the machine. (DigitalOcean and Cloudflare are the exception: their token is stored as an organization secret, because those clouds have no keyless trust.) |
+| "Can Planton read my data?" | Answer from the documents, never with a blanket no: the grant includes what the kinds need to manage their resources, which for some kinds includes reading that resource's contents (a secret store's versions, for example). Show the permissions with `--print-documents`, name any that read data, and offer to grant only the kinds they need. |
+| "How do I limit it?" | Grant only some kinds (`--kinds GcpGkeCluster,GcpGcsBucket`), or narrow the role in their cloud later; Verify then says which kinds can no longer deploy. A recorded grant is changed with Update the Grant in the connection's Permissions section in the console (below). |
+| "How do I revoke it?" | The cleanup script, then the delete (below). |
 | "Does this touch my other roles or connections?" | The plan's `keeps` lists what stays untouched; `reachesOthers` lists what the change does to other connections that sign in as the same identity -- read it to them before asking. |
 | "Why does it need this permission?" | Because a kind in the grant needs it to deploy: the catalog's permission files list each kind's permissions by purpose, and the connection's Permissions section in the console shows which kind needs what. |
-| "Who in my organization can use this connection?" | By default it is authorized for every environment of the organization and becomes the organization's default for that cloud when none exists (never replacing one). `--no-authorize` and `--no-default` leave both alone. |
+| "What does Planton itself use it for?" | Beyond deploying kinds: the pickers that list what exists in the account, Verify, and -- when the organization uses them -- a state backend, a state encryption key, a secret backend, a container registry and Kubernetes access. "Everything" includes them; a grant of picked kinds keeps the pickers and Verify. |
+| "Who in my organization can use this connection?" | By default it is authorized for every environment of the organization, so the people who can deploy into those environments can deploy through it; it becomes the organization's default for that cloud when none exists (never replacing one). `--no-authorize` and `--no-default` leave both alone. |
 
 ## The grant
 
-- **Default: everything Planton can deploy** for that cloud -- every catalog kind, and every way Planton itself uses a connection.
+- **Default: everything Planton can deploy** for that cloud -- every catalog kind that needs neither opt-in tier, and every way Planton itself uses a connection.
 - **`--kinds`** narrows it to the kinds named, as the catalog spells them (`GcpGkeCluster`, `AwsVpc`).
-- **`--organization-access`** adds the permissions above the target that organization-level kinds need. **`--access-granting`** adds power over who has access in the account. Each is the person's explicit choice; say what it gives before passing it.
-- **Running the command again keeps the connection's recorded grant.** To change it, the person uses Update the Grant in the connection's Permissions section.
+- **`--organization-access`** adds the permissions above the target that organization-level kinds need. **`--access-granting`** adds power over who has access in the account. Each is the person's explicit choice; say what it gives before passing it. The kinds that need a tier the grant leaves out are outside the grant.
+- **Changing a recorded grant** is Update the Grant in the connection's Permissions section: on GCP and Azure one consent applies it, everywhere the page also gives the update script to run with the person's own sign-in. Planton needs no power over access for this -- the person's consent or sign-in applies it. Running `planton connect` again keeps the recorded grant and refuses a different one.
 
 ## Reading the verdict
 
 `-o json --yes` ends with `verdict`; a person sees the same as a headline and lists.
 
-- `headline`: "171 of 186 GCP Kinds Can Deploy", counted against the grant.
-- `blocked`: kinds the grant covers that cannot deploy, each with the permissions it is missing. The way forward is to apply the grant again from the connection's Permissions section, never to build a second role by hand.
-- `outsideGrant`: kinds the person did not grant. Not a fault -- what they chose.
+- `headline`: "171 of 186 GCP Kinds Can Deploy" -- 186 is the kinds the grant covers, 171 of them hold what they need.
+- `blocked`: kinds the grant covers that cannot deploy, each with the permissions it is missing. Right after a setup, the cloud may still be spreading the new role: verify again in a minute. Still blocked, the role lacks what the grant includes (a newer catalog needs more, or someone narrowed it): apply the grant again with Update the Grant, never by building a second role by hand.
+- `outsideGrant`: kinds the person did not grant, including those needing an opt-in tier. Not a fault -- what they chose.
 - `canDeploy`, `usesNotReady` (Planton's own uses the identity cannot serve yet), `catalogRelease`.
 - `healthy: false` with `reason` and `providerReason`: Planton's sentence and the cloud's own words. `providerReasonCode: "Throttling"` means the cloud rate-limited Verify: run `planton connect aws verify <slug>` again in a minute.
 
-`planton connect gcp verify <slug>` re-runs Verify any time: after the person changes the role, or to see the issuer and subject the trust must pin.
+`planton connect gcp verify <slug>` re-runs Verify any time.
+
+## Taking it back
+
+1. **Decide what happens to what it deployed.** Deleting a connection leaves everything it deployed running; destroy those first if the person wants them gone.
+2. **The removal script, while the connection exists:** `planton connect gcp cleanup <slug>` prints what deleting the connection leaves in the cloud (to stderr) and the script that removes the trust and the role Planton set up (to stdout). Run it on the person's yes with their sign-in, or hand it to them; it is safe to run again.
+3. **Then delete the connection:** `planton delete GcpProviderConnection <slug>` (`AwsProviderConnection`, `AzureProviderConnection`, `DigitalOceanProviderConnection`, `CloudflareProviderConnection`). It is a mutation like any other: the person's yes first.
+
+A setup that stopped before the connection existed has no cleanup command: run the same `planton connect` again to finish it, then take it back as above.
 
 ## When something stops
 
@@ -88,24 +100,49 @@ Every failure after the script ran names the command that resumes; running the s
 |---|---|
 | Keyless Isn't Offered Here | This Planton cannot offer keyless (its reason is in the sentence). Offer `planton connect gcp detect` (Runner Identity) and say what differs: deploys run with this machine's sign-in, with that sign-in's full access. |
 | A lapsed or missing sign-in (detection fails) | The sentence names the sign-in it tried. The person runs `gcloud auth login`, `aws sso login --profile <profile>` or `az login`, then the same command. |
-| Run the Setup in Your Cloud's Shell (no bash) | The machine has no bash (Windows without Git Bash). Print the script with `--print-documents` and have the person run it in Google Cloud Shell, AWS CloudShell or Azure Cloud Shell, which have bash and are already signed in. |
-| Install gcloud / aws / az | The cloud's CLI is missing. Install it and sign in, or use the cloud's own shell as above. |
+| Run the Setup in Your Cloud's Shell (no bash) | The machine has no bash (Windows without Git Bash). See "Without bash" below. |
+| Install gcloud / aws / az | The cloud's CLI is missing. Name it; installing it is the person's choice -- or use the cloud's own shell (below). |
 | The Setup Stopped | The script's last line is the cloud's own reason. A permission refusal means the person's sign-in cannot create the trust: on GCP it must be able to create workload identity pools, service accounts and custom roles, bind roles on the project and turn on APIs (a project Owner can); on AWS create IAM identity providers, roles and policies; on Azure register an app in Entra ID and create and assign roles in the subscription (Owner or User Access Administrator). Nothing was created in Planton. |
 | The script says the AWS CLI is signed in to another account | The profile belongs to a different account than the target. Pick the right one with `--profile`. |
-| The script says the Azure CLI works in another tenant | Switch with `az account set --subscription <id>` (the person's choice to make), then run again. |
+| The script says the Azure CLI works in another tenant | Switching is the person's choice: `az account set --subscription <id>`, then run again. |
 | The Trust Isn't Working | The cloud refused the connection's token; the sentence and the cloud's reason say why. The trust is set up; after fixing, the same command finishes. |
 | Choose Another Name | The name belongs to a different connection. Pass `--name`. |
 | Change the Grant From the Connection | A re-run keeps the recorded grant. Use Update the Grant in the connection's Permissions section. |
 | This Setup Changes Other Connections | `--yes` without `--accept-shared-changes` while the change reaches other connections. Tell the person which, and ask. |
 
+## Without bash: the cloud's own shell
+
+`planton connect gcp --project <project> --name <name> --print-documents` prints the script; the person runs it in Google Cloud Shell, AWS CloudShell or Azure Cloud Shell, which have bash and are already signed in. The script ends by printing what Planton needs. The connection is then created from those values in the console's connection wizard (the setup step takes them), or with `planton apply -f` on a manifest naming them -- for GCP:
+
+```yaml
+apiVersion: connect.planton.ai/v1alpha1
+kind: GcpProviderConnection
+metadata:
+  name: <name>
+  slug: <slug>      # exactly the slug the script was printed for: the trust pins it
+  org: <org>
+spec:
+  authMode: oidc
+  workloadIdentityProvider: //iam.googleapis.com/projects/<number>/locations/global/workloadIdentityPools/planton/providers/<provider>
+  serviceAccountEmail: planton-provisioner@<project>.iam.gserviceaccount.com
+  grant:
+    coverage: everything
+```
+
+Then `planton connect gcp verify <slug>`.
+
 ## DigitalOcean and Cloudflare: a token
 
-`planton connect digitalocean --print-documents` (or `cloudflare`) prints the scopes the token needs and where to create it. The person creates the token and passes it in `DIGITALOCEAN_TOKEN` or `CLOUDFLARE_API_TOKEN`, or on stdin -- never as a flag, and never pasted into the conversation if you can avoid it. Then `planton connect digitalocean --region nyc3` (DigitalOcean needs the region resources deploy to unless they name one) stores it as the organization secret Planton Desktop uses too, connects, makes the connection ready and verifies it. Connecting again with a new token rotates it. Revoking the token on the provider's token page cuts Planton off.
+1. `planton connect digitalocean --print-documents` (or `cloudflare`) prints the scopes the token needs and where to create it.
+2. The person creates the token and runs the connect command themselves, with the token in their own shell -- `DIGITALOCEAN_TOKEN=<token> planton connect digitalocean --region <region>` (DigitalOcean asks for the region resources deploy to when a resource names none) or `CLOUDFLARE_API_TOKEN=<token> planton connect cloudflare` -- so the token is never pasted into the conversation and never a command-line flag you write. The command can also read it from stdin.
+3. It stores the token as an organization secret (the one Planton Desktop uses too), connects, makes the connection ready and verifies it; `-o json` with `--yes` prints the receipt and the verdict.
+
+Connecting again with a new token rotates it. Revoking the token on the provider's token page cuts Planton off; `planton delete DigitalOceanProviderConnection digitalocean` removes the connection.
 
 ## What never to do
 
 - Never pass `--yes` or `--accept-shared-changes` without the person's yes to that exact plan.
 - Never edit the server's script, and never compose a provider name, an ARN or a subject yourself: the script reports them.
-- Never put a token in a command-line flag or a file in the repository.
+- Never put a token in a command-line flag, the conversation or a file in the repository.
 - Never tell the person Planton "can't read anything" or "only has read access": answer from the permissions the documents list.
 - Never switch the person's default subscription, project or profile for them; name the command and let them choose.

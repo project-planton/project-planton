@@ -597,25 +597,31 @@ questions:
     question: >
       Connect my GCP project acme-prod to Planton.
     answer: >
-      Explain first: the setup runs as them, on this machine, with the gcloud
-      sign-in they already have, and writes a trust and a role only this
-      connection can use in their own project; Planton keeps no key. Then
-      show the plan without changing anything -- `planton connect gcp
-      --project acme-prod -o json` -- and tell them who it runs as, where,
-      what Planton may deploy, what it leaves alone and anything it changes
-      for other connections. Ask, naming the identity and the project. Only
-      on their yes run the plan's `run` command (it carries --yes), narrate
-      each step, and read the verdict back.
+      Read the plan first, which changes nothing -- `planton connect gcp
+      --project acme-prod -o json` -- then explain with its real values: the
+      setup runs as them, on this machine, with the gcloud sign-in they
+      already have, and writes a trust and a role only this connection can
+      use in their own project; Planton keeps no key. Tell them who it runs
+      as, where, what Planton may deploy, what it leaves alone, anything it
+      changes for other connections, and that the connection will be usable
+      by every environment and become the organization's default GCP
+      connection when there is none. Ask, naming the identity and the
+      project. Only on their yes run the plan's `run` command (it carries
+      --yes and every choice the plan was asked with), narrate each step,
+      and read the verdict back.
     checks:
       - skill: planton
         file: SKILL.md
         pattern: '(?s)Connecting a cloud is the person''s informed decision'
       - skill: planton
         file: references/infra.connecting-clouds.md
-        pattern: 'planton connect gcp --project <project> -o json` prints the plan and changes nothing'
+        pattern: '\*\*Read the plan first; it changes nothing\.\*\*'
       - skill: planton
         file: references/infra.connecting-clouds.md
-        pattern: '\*\*Explain first, in plain words\*\*'
+        pattern: 'the plan''s `run` command carries exactly what the plan was asked with'
+      - skill: planton
+        file: references/infra.connecting-clouds.md
+        pattern: '\*\*Ask, naming the identity, the target and who may use it:\*\*'
       - skill: planton
         file: references/infra.connecting-clouds.md
         pattern: '\*\*`--yes` is the person''s yes, given ahead\.\*\*'
@@ -721,7 +727,10 @@ questions:
     checks:
       - skill: planton
         file: references/infra.connecting-clouds.md
-        pattern: 'never to build a second role by hand'
+        pattern: 'never by building a second role by hand'
+      - skill: planton
+        file: references/infra.connecting-clouds.md
+        pattern: 'the cloud may still be spreading the new role: verify again in a minute'
       - skill: planton
         file: references/infra.connecting-clouds.md
         pattern: 'Not a fault -- what they chose'
@@ -750,11 +759,16 @@ questions:
     answer: >
       Print the exact script with --print-documents and run it in the cloud's
       own browser shell (Google Cloud Shell), which has bash and is already
-      signed in as them.
+      signed in as them; the script ends by printing what Planton needs, and
+      the connection is created from those values in the console's wizard or
+      with `planton apply -f` on a manifest naming them, then verified.
     checks:
       - skill: planton
         file: references/infra.connecting-clouds.md
-        pattern: 'Print the script with `--print-documents` and have the person run it in Google Cloud Shell'
+        pattern: 'the person runs it in Google Cloud Shell, AWS CloudShell or Azure Cloud Shell'
+      - skill: planton
+        file: references/infra.connecting-clouds.md
+        pattern: 'slug: <slug>      # exactly the slug the script was printed for: the trust pins it'
 
   - id: connect-digitalocean
     persona: developer
@@ -763,13 +777,15 @@ questions:
     answer: >
       DigitalOcean has no keyless trust: `planton connect digitalocean
       --print-documents` prints the scopes the token needs and where to
-      create it. The person passes the token in DIGITALOCEAN_TOKEN or on
-      stdin, never as a flag, then `planton connect digitalocean --region
-      <region>` stores it as the organization secret, connects and verifies.
+      create it. The person creates the token and runs the connect command
+      themselves with it in their own shell (DIGITALOCEAN_TOKEN, or stdin),
+      so it never enters the conversation or a flag; `planton connect
+      digitalocean --region <region>` stores it as the organization secret,
+      connects and verifies. Unlike keyless, Planton does keep this token.
     checks:
       - skill: planton
         file: references/infra.connecting-clouds.md
-        pattern: 'never as a flag'
+        pattern: 'so the token is never pasted into the conversation and never a command-line flag you write'
       - skill: planton
         file: references/infra.connecting-clouds.md
-        pattern: 'planton connect digitalocean --region nyc3`'
+        pattern: 'planton connect digitalocean --region <region>`'
