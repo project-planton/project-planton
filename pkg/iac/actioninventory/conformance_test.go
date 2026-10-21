@@ -425,6 +425,14 @@ func TestGcpPermissionReach(t *testing.T) {
 	forEachManifest(t, func(provider, kind string, manifest *permissionsv1.CatalogKindPermissions) {
 		for _, group := range manifest.GetSpec().GetGcp().GetGroups() {
 			declared := group.GetReach().String()
+			if permissions.GcpRolesGrantedAboveAProject[group.GetPredefinedRole()] {
+				// Only this role carries the permissions, and Google grants it
+				// above a project only: the group is granted where the role is.
+				if group.GetReach() == permissionsv1.PermissionReach_target {
+					t.Errorf("%s/%s group %q: %s is granted above a project only, so the group's reach cannot be target", provider, kind, group.GetPurpose(), group.GetPredefinedRole())
+				}
+				continue
+			}
 			for _, permission := range group.GetPermissions() {
 				reach, ok := inv.Reach(permission)
 				if !ok {

@@ -53,3 +53,20 @@ func Load(repoRoot, provider, kindDir string) (*permissionsv1.CatalogKindPermiss
 	}
 	return manifest, nil
 }
+
+// GcpRolesGrantedAboveAProject are predefined roles Google grants above a
+// project only: each is absent from a project's grantable roles
+// (gcloud iam list-grantable-roles //cloudresourcemanager.googleapis.com/projects/<id>,
+// checked 2026-10-21). A group whose permissions only such a role can carry is
+// granted where the role is -- reach organization (or billing_account) --
+// even though Google answers the permissions themselves on a project, because
+// a connection's setup binds a target-reach role on the project, where Google
+// refuses it.
+var GcpRolesGrantedAboveAProject = map[string]bool{
+	"roles/iam.denyAdmin":                    true,
+	"roles/iam.denyReviewer":                 true,
+	"roles/orgpolicy.policyAdmin":            true,
+	"roles/accesscontextmanager.policyAdmin": true,
+	"roles/resourcemanager.folderAdmin":      true,
+	"roles/billing.admin":                    true,
+}
