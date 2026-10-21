@@ -125,6 +125,8 @@ spec:
   authMode: oidc
   workloadIdentityProvider: //iam.googleapis.com/projects/<number>/locations/global/workloadIdentityPools/planton/providers/<provider>
   serviceAccountEmail: planton-provisioner@<project>.iam.gserviceaccount.com
+  projectId:
+    value: <project>
   grant:
     coverage: everything
 ```
