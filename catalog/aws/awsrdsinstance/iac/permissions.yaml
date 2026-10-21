@@ -116,10 +116,21 @@ spec:
         notes: Required only when kms_key_id, master_user_secret_kms_key_id, or performance_insights_kms_key_id selects a customer-managed key -- RDS creates grants against the key during instance create/modify.
       - sid: ManageMasterUserSecret
         actions:
+          - secretsmanager:CreateSecret
+          - secretsmanager:TagResource
           - secretsmanager:DescribeSecret
         resources:
           - arn:aws:secretsmanager:*:*:secret:rds!*
         provenance: derived
         reach: target
         privilege: ordinary
-        notes: With manage_master_user_password=true, RDS owns the Secrets Manager secret; the provider reads it back into state after create. Scoped to the rds!-prefixed secrets RDS manages.
+        notes: With manage_master_user_password=true, RDS creates and tags the master user's Secrets Manager secret as the caller during the instance's create, modify, or restore, so the caller needs those actions itself (a live create was refused with "isn't authorized to create a secret in AWS Secrets Manager" without them); the provider reads the secret back into state after create, and RDS deletes it with the instance. Scoped to the rds!-prefixed secrets RDS manages.
+      - sid: DescribeMasterUserSecretKey
+        actions:
+          - kms:DescribeKey
+        resources:
+          - arn:aws:kms:*:*:key/*
+        provenance: derived
+        reach: target
+        privilege: ordinary
+        notes: With manage_master_user_password=true, RDS describes the key that encrypts the master user's secret as the caller -- the aws/secretsmanager key by default, or master_user_secret_kms_key_id's customer-managed key.

@@ -15,27 +15,27 @@ spec:
           - serviceusage.services.enable
           - serviceusage.services.get
           - serviceusage.services.list
-        provenance: derived
+        provenance: proven
         reach: target
         privilege: ordinary
-        notes: Covers google_project_service enabling sqladmin.googleapis.com on the target project. disable_on_destroy is false in the module, so the disable permission is never needed.
+        notes: "Covers google_project_service enabling sqladmin.googleapis.com on the target project. disable_on_destroy is false in the module, so the disable permission is never needed. Proven 2026-10-20 on dev by the least-privilege lane: an identity holding exactly the kind's rendered permissions deployed, updated and destroyed it."
       - purpose: ManageInstance
         permissions:
           - cloudsql.instances.create
           - cloudsql.instances.get
           - cloudsql.instances.update
           - cloudsql.instances.delete
-        provenance: derived
+        provenance: proven
         reach: target
         privilege: ordinary
-        notes: Covers google_sql_database_instance for primaries, read replicas, and read pools alike -- create, read/refresh, in-place updates (tier, disk, backup, network), and destroy. The provider polls the operations each mutation returns under the same instance-scoped authorization.
+        notes: "Covers google_sql_database_instance for primaries, read replicas, and read pools alike -- create, read/refresh, in-place updates (tier, disk, backup, network), and destroy. The provider polls the operations each mutation returns under the same instance-scoped authorization. Proven 2026-10-20 on dev by the least-privilege lane: an identity holding exactly the kind's rendered permissions deployed, updated and destroyed it."
       - purpose: ReadDefaultUsers
         permissions:
           - cloudsql.users.list
-        provenance: derived
+        provenance: proven
         reach: target
         privilege: ordinary
-        notes: Right after creating a primary, the provider lists its users to find a default root user with a wildcard host; the create fails without this read (cloudsql.users.list was refused on a live create). Replicas inherit their primary's users and skip the read.
+        notes: "Right after creating a primary, the provider lists its users to find a default root user with a wildcard host; the create fails without this read (cloudsql.users.list was refused on a live create). Replicas inherit their primary's users and skip the read. Proven 2026-10-20 on dev by the least-privilege lane: an identity holding exactly the kind's rendered permissions deployed, updated and destroyed it."
       - purpose: RemoveWildcardRootUser
         permissions:
           - cloudsql.users.delete
