@@ -789,3 +789,30 @@ questions:
       - skill: planton
         file: references/infra.connecting-clouds.md
         pattern: 'planton connect digitalocean --region <region>`'
+
+  - id: security-lead-asks-whether-the-identity-is-shared
+    persona: security lead, wary of granting access
+    question: >
+      Could another Planton connection in our GCP project end up with this
+      connection's permissions, or could another company's Planton use our
+      trust?
+    answer: >
+      The trust admits only this Planton's issuer and only this connection's
+      subject, so no other organization or Planton can present it. But by
+      default the role is granted to the service account
+      planton-provisioner@<project>, which every Planton connection in the
+      project may sign in as, so each of them can do what their roles allow
+      together; the plan's reachesOthers names them. To keep this
+      connection's role apart, name a service account of its own with
+      --service-account (Azure: --app-name). AWS gives every connection its
+      own role.
+    checks:
+      - skill: planton
+        file: references/infra.connecting-clouds.md
+        pattern: '\*\*Say plainly when the identity is shared\.\*\*'
+      - skill: planton
+        file: references/infra.connecting-clouds.md
+        pattern: '--service-account <name>@<project>\.iam\.gserviceaccount\.com'
+      - skill: planton
+        file: references/infra.connecting-clouds.md
+        pattern: 'no other connection, organization or Planton can present it'
