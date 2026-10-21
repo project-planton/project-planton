@@ -1,6 +1,6 @@
 # The behavioral proof: on a cluster whose CNI ENFORCES NetworkPolicy
-# (Cilium, on the cilium-cni cluster profile — kind's default CNI silently
-# ignores policies), an ingress-deny policy selecting the backend must turn
+# (Cilium, on the cilium-cni cluster profile, the CNI production clusters
+# run), an ingress-deny policy selecting the backend must turn
 # the client's previously-working request into a dropped connection, and
 # destroying the policy must let traffic flow again. The verifier switches
 # to behavioral assertions precisely because this scenario names

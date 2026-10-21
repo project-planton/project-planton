@@ -12,7 +12,9 @@ go_library(
         "//catalog/kubernetes/aa_e2e/verify",
         "//e2e/framework/provider",
         "//iac/catalogkindpermissions/v1:catalogkindpermissions",
+        "//pkg/failure",
         "//pkg/iac/permissions",
+        "@com_github_masterminds_semver_v3//:semver",
         "@com_github_pkg_errors//:errors",
         "@io_k8s_sigs_yaml//:yaml",
     ],
@@ -21,6 +23,7 @@ go_library(
 go_test(
     name = "aa_e2e_test",
     srcs = [
+        "harness_kind_version_test.go",
         "harness_sysctl_test.go",
         "identity_test.go",
     ],

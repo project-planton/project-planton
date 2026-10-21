@@ -66,8 +66,10 @@ permissions:
 env:
   PULUMI_CONFIG_PASSPHRASE: ''
   # kind's version is coupled to the Kubernetes node image it pulls; keep in
-  # lockstep with the toolchain image (tools/ci/docker/Dockerfile).
-  KIND_VERSION: v0.27.0
+  # lockstep with the toolchain image (tools/ci/docker/Dockerfile). v0.33 is
+  # the oldest kind that builds the pod-certificates profile's cluster (the
+  # harness refuses an older one).
+  KIND_VERSION: v0.33.0
   # CI runners are ephemeral: delete the kind cluster at teardown. Local runs keep
   # the cluster alive across back-to-back sessions (the harness's persistent lane).
   PLANTON_E2E_DESTROY_CLUSTER: '1'

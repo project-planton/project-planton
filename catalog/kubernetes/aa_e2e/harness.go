@@ -28,9 +28,11 @@ import (
 	"strings"
 	"time"
 
+	"github.com/Masterminds/semver/v3"
 	"github.com/pkg/errors"
 	"github.com/plantonhq/planton/catalog/kubernetes/aa_e2e/verify"
 	"github.com/plantonhq/planton/e2e/framework/provider"
+	"github.com/plantonhq/planton/pkg/failure"
 )
 
 // Environment contract for lane selection.
@@ -148,7 +150,8 @@ func NewCiliumCniHarness(baseClusterName string) *Harness {
 //     images onto the one node, and kubelet's serial default queues them
 //     long enough for the last workload to miss its rollout deadline;
 //   - a node image pinned by digest to the release those gates were proven
-//     on (kind v0.33's default), which needs kind v0.33 or newer.
+//     on (kind v0.33's default), which needs kind v0.33 or newer; the
+//     harness refuses an older kind before creating the cluster.
 const podCertificatesKindConfigYAML = `kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
 nodes:
@@ -179,6 +182,11 @@ var podCertificatesNodeSysctls = []nodeSysctl{
 	{key: "net.ipv6.conf.all.proxy_ndp", value: "1", optional: true},
 }
 
+// podCertificatesMinKindVersion is the oldest kind that builds the profile's
+// cluster: the first release whose node images carry Kubernetes 1.37, the
+// version the feature gates above need.
+const podCertificatesMinKindVersion = "v0.33.0"
+
 // NewPodCertificatesHarness builds the harness for the pod-certificates
 // profile: a dedicated persistent kind cluster (default name
 // "<base>-podcert"). kind's default CNI stays, and it enforces
@@ -188,6 +196,7 @@ func NewPodCertificatesHarness(baseClusterName string) *Harness {
 		clusterName:    baseClusterName + "-podcert",
 		kindConfigYAML: podCertificatesKindConfigYAML,
 		nodeSysctls:    podCertificatesNodeSysctls,
+		minKindVersion: podCertificatesMinKindVersion,
 	}
 }
 
@@ -238,6 +247,14 @@ type Harness struct {
 	// AND when a running cluster is reused: a sysctl set over docker exec does
 	// not survive a node container restart, and setting it again is a no-op.
 	nodeSysctls []nodeSysctl
+
+	// minKindVersion, when set, is the oldest kind CLI that can build this
+	// profile's cluster (its node image or configuration needs a newer kind
+	// than the default cluster does). Setup checks it before creating the
+	// cluster, so an older kind refuses with the fix instead of failing
+	// obscurely mid-create. A reused cluster was already built and is not
+	// checked.
+	minKindVersion string
 }
 
 // NewHarness creates a Kubernetes test harness with the given kind cluster name.
@@ -287,6 +304,9 @@ func (h *Harness) Setup(ctx context.Context) error {
 			return errors.Wrapf(err, "kind export kubeconfig failed: %s", stderr.String())
 		}
 	} else {
+		if err := h.checkKindVersion(ctx); err != nil {
+			return err
+		}
 		args := []string{
 			"create", "cluster",
 			"--name", h.clusterName,
@@ -335,6 +355,46 @@ func (h *Harness) Setup(ctx context.Context) error {
 	// Set KUBECONFIG globally so Pulumi's kubernetes provider picks it up
 	os.Setenv("KUBECONFIG", h.kubeconfigPath)
 
+	return nil
+}
+
+// checkKindVersion refuses to create the cluster when the installed kind is
+// older than the profile needs.
+func (h *Harness) checkKindVersion(ctx context.Context) error {
+	if h.minKindVersion == "" {
+		return nil
+	}
+	out, err := exec.CommandContext(ctx, "kind", "version").Output()
+	if err != nil {
+		return errors.Wrap(err, "reading the installed kind's version (kind version)")
+	}
+	return kindVersionRefusal(string(out), h.minKindVersion, h.clusterName)
+}
+
+// kindVersionRefusal reads `kind version` output (for example
+// "kind v0.24.0 go1.22.6 darwin/arm64") and returns the refusal when it is
+// older than min, or names no version at all; nil when kind is new enough.
+func kindVersionRefusal(versionOutput, min, clusterName string) error {
+	nextStep := fmt.Sprintf("install kind %s or newer (`brew upgrade kind`, or `go install sigs.k8s.io/kind@%s`), then re-run", min, min)
+	fields := strings.Fields(versionOutput)
+	var have *semver.Version
+	if len(fields) >= 2 && fields[0] == "kind" {
+		have, _ = semver.NewVersion(fields[1])
+	}
+	if have == nil {
+		return &failure.Failure{
+			Observed: fmt.Sprintf("`kind version` printed %q, which names no kind version; cluster %q needs kind %s or newer", strings.TrimSpace(versionOutput), clusterName, min),
+			Meaning:  "the kind on PATH is not the kind CLI, or its output changed, so the harness cannot tell whether it can build this cluster",
+			NextStep: nextStep,
+		}
+	}
+	if have.LessThan(semver.MustParse(min)) {
+		return &failure.Failure{
+			Observed: fmt.Sprintf("kind %s is installed; cluster %q needs kind %s or newer", fields[1], clusterName, min),
+			Meaning:  "the cluster's node image or configuration is newer than this kind can build, so creating it would fail, or would build a cluster without the APIs its scenarios need",
+			NextStep: nextStep,
+		}
+	}
 	return nil
 }
 

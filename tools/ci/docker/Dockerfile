@@ -75,9 +75,11 @@ RUN set -eux; \
 # -----------------------------------------------------------------------------
 # gotestsum (latest) + kind (pinned).
 # kind stays pinned because its version is coupled to the Kubernetes node-image
-# versions the e2e framework boots; this matches the original workflow's @v0.27.0.
+# versions the e2e framework boots; it moves in lockstep with the e2e-kubernetes
+# workflow's KIND_VERSION. v0.33 is the oldest kind that builds the
+# pod-certificates profile's cluster.
 # -----------------------------------------------------------------------------
-ENV KIND_VERSION=v0.27.0
+ENV KIND_VERSION=v0.33.0
 RUN set -eux; \
     go install gotest.tools/gotestsum@latest; \
     go install "sigs.k8s.io/kind@${KIND_VERSION}"; \

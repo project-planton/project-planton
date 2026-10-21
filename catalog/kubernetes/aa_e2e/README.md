@@ -39,9 +39,12 @@ by name).
 
 Some scenarios need a cluster the default kind cluster cannot be: a Cilium
 lane needs a cluster created WITHOUT a CNI (kindnet already owns pod
-networking on the default cluster), and a NetworkPolicy enforcement proof
-needs a CNI that actually enforces. A scenario opts into such a cluster by
-annotation:
+networking on the default cluster), and a proof about how a production CNI
+evaluates NetworkPolicy needs that CNI. kindnet itself enforces
+NetworkPolicy, so the default and pod-certificates clusters do too; it
+evaluates only pod-to-pod traffic, though, so traffic a pod sends to its
+own node (the API server of a one-node cluster) never meets a policy there.
+A scenario opts into a profile cluster by annotation:
 
 ```yaml
 metadata:
