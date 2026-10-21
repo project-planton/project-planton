@@ -83,7 +83,7 @@ A person at the terminal can simply run `planton connect gcp`: it shows the same
 - `canDeploy`, `usesNotReady` (Planton's own uses the identity cannot serve yet, each with its `missing` permissions), `catalogRelease`.
 - `severity`: `success`, `warning` (a granted kind or one of Planton's own uses can't work yet -- the connection signed in, but don't report it as fully working), `info` (not judged) or `error` (no sign-in).
 - `blockedFix` and `outsideGrantFix`: each a `sentence` and the `command` to run or the `url` to open -- the one way forward for that list. Kinds outside the grant are added on the connection's grant page; the sentence names the opt-in tier any of them needs.
-- `healthy: false` with `reason` and `providerReason`: Planton's sentence and the cloud's own words, and `fix`: the cause as the console titles it (`refusal`, e.g. "GCP Refused This Connection's Identity") with its `sentence` and `command` or `url`. A `command` that verifies again means wait and retry (the cloud is still spreading the trust, or rate-limited Verify); one that runs the setup again re-creates the trust and adopts what exists.
+- `healthy: false` with `reason` and `providerReason`: Planton's sentence and the cloud's own words, and `fix`: the cause as the console titles it (`refusal`, e.g. "GCP Refused This Connection's Identity"), its `door` and its `sentence` with the `command` or `url`. `door: "retry"` (severity `warning`) means nothing is wrong yet -- the cloud is still spreading the trust, or rate-limited Verify: wait a minute and run the `command`. `set-up-trust` runs the setup again, which re-creates the trust and adopts what exists; the other doors are changes the person makes. A refused sign-in exits 1, so a chained `verify && deploy` stops there.
 
 `planton connect gcp verify <slug>` re-runs Verify any time.
 
@@ -111,7 +111,7 @@ Every failure after the script ran names the command that resumes; running the s
 | The Trust Isn't Working | The cloud refused the connection's token; the sentence and the cloud's reason say why. The trust is set up; after fixing, the same command finishes. |
 | Choose Another Name | The name belongs to a different connection. Pass `--name`. |
 | Change the Grant From the Connection | A re-run keeps the recorded grant. Use Update the Grant in the connection's Permissions section. |
-| This Setup Changes Other Connections | `--yes` without `--accept-shared-changes` while the change reaches other connections. Tell the person which, and ask. |
+| This Setup Changes Other Connections | `--yes` without `--accept-shared-changes` while the change reaches other connections. Tell the person which; the refusal's `next` gives this connection its own identity (fill in the name with them), and accepting the shared change is `--accept-shared-changes` -- only on their yes to that consequence by name. |
 
 ## Without bash: the cloud's own shell
 
