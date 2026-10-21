@@ -3,8 +3,6 @@ kind: InfraChart
 metadata:
   name: Kubernetes Self-Hosted Langfuse
 spec:
-  selector:
-    kind: platform
   description: >-
     Your own Langfuse, the open-source LLM engineering platform for tracing,
     prompts and evaluations, on your cluster in one deploy, with all four of
