@@ -389,8 +389,8 @@ func (v *AgentSandboxControllerVerifier) VerifyAbsent(ctx context.Context, kubec
 	for _, name := range []string{agentSandboxControllerName, agentSandboxRouterName} {
 		absent := KubectlResourceAbsent
 		if v.DeployRefused {
-			absent = func(ctx context.Context, kubeconfig, kind, name, namespace string) error {
-				return KubectlResourceNotOwnedBy(ctx, kubeconfig, kind, name, namespace, agentSandboxKind)
+			absent = func(ctx context.Context, kubeconfig, _, name, namespace string) error {
+				return KubectlDeploymentLeftAsPlanted(ctx, kubeconfig, name, namespace)
 			}
 		}
 		if err := absent(ctx, kubeconfig, "deployment", name, agentSandboxNamespace); err != nil {

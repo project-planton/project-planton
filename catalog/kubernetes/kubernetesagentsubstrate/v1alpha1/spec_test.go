@@ -193,6 +193,15 @@ var _ = ginkgo.Describe("KubernetesAgentSubstrate Validation Tests", func() {
 			refusedBy("gke_cluster_id_format")
 		})
 
+		ginkgo.It("refuses a bundled database's own resources with size10, whose postgresql.conf assumes its own sizing", func() {
+			input.Spec.ClusterSize = KubernetesAgentSubstrateSpec_size10
+			valid()
+			input.Spec.Database.GetBundled().Resources = &kubernetes.ContainerResources{Limits: &kubernetes.CpuMemory{Cpu: "2", Memory: "2Gi"}}
+			refusedBy("size10_sizes_the_bundled_database")
+			input.Spec.ClusterSize = KubernetesAgentSubstrateSpec_size0
+			valid()
+		})
+
 		ginkgo.It("refuses GCS off GKE, where it has no keyless identity", func() {
 			input.Spec.Storage = gcs()
 			refusedBy("gcs_needs_gke")
@@ -330,6 +339,26 @@ var _ = ginkgo.Describe("KubernetesAgentSubstrate Validation Tests", func() {
 			input.Spec.Router = &KubernetesAgentSubstrateRouter{RouteTimeout: stringPtr("0s")}
 			refusedBy("route_timeout_format")
 		})
+
+		ginkgo.It("refuses an ext_proc limit below the parking lot, which the router refuses to start with", func() {
+			input.Spec.Router = &KubernetesAgentSubstrateRouter{ExtProcMaxRequests: int32Ptr(128), ParkedRequests: &KubernetesAgentSubstrateParkedRequests{Max: int32Ptr(256)}}
+			refusedBy("router_ext_proc_covers_parked_requests")
+			input.Spec.Router.ExtProcMaxRequests = int32Ptr(512)
+			valid()
+			input.Spec.Router = &KubernetesAgentSubstrateRouter{ExtProcMaxRequests: int32Ptr(512)}
+			refusedBy("router_ext_proc_covers_parked_requests") // below the unset parking lot's 1024
+			input.Spec.Router.ExtProcMaxRequests = int32Ptr(0)
+			valid()
+		})
+
+		ginkgo.It("refuses a drain shorter than the parking budget, which the router refuses to start with", func() {
+			input.Spec.Router = &KubernetesAgentSubstrateRouter{DrainTimeout: "4s"}
+			refusedBy("router_drain_covers_parked_budget") // below the unset budget's 5s
+			input.Spec.Router = &KubernetesAgentSubstrateRouter{DrainTimeout: "20s", ParkedRequests: &KubernetesAgentSubstrateParkedRequests{Budget: stringPtr("30s")}}
+			refusedBy("router_drain_covers_parked_budget")
+			input.Spec.Router.ParkedRequests.Budget = stringPtr("8s")
+			valid()
+		})
 	})
 
 	ginkgo.Describe("the node agent's image cache", func() {
@@ -410,7 +439,7 @@ var _ = ginkgo.Describe("KubernetesAgentSubstrate Validation Tests", func() {
 						Budget: stringPtr("8s"), Max: int32Ptr(2048), RetryInterval: stringPtr("50ms"),
 						RetryFactor: float64Ptr(1.5), RetryJitter: float64Ptr(0.2),
 					},
-					ExtProcMaxRequests: int32Ptr(500),
+					ExtProcMaxRequests: int32Ptr(4096),
 					DrainDelay:         stringPtr("10s"),
 					DrainTimeout:       "25s",
 				},
@@ -438,7 +467,7 @@ var _ = ginkgo.Describe("KubernetesAgentSubstrate Validation Tests", func() {
 					TracesSampler:    "parentbased_traceidratio", TracesSamplerRatio: float64Ptr(0.25),
 					MetricExportIntervalMs: int32Ptr(10000), MetricExportTimeoutMs: int32Ptr(5000),
 				},
-				ClusterSize:        KubernetesAgentSubstrateSpec_size10,
+				ClusterSize:        KubernetesAgentSubstrateSpec_size0, // size10 excludes the bundled database's own resources set above
 				CordonControlPlane: true,
 				ImageRegistry:      "us-central1-docker.pkg.dev",
 				ImagePullSecrets:   []string{"mirror-pull"},

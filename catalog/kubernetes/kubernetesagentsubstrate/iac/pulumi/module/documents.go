@@ -5,6 +5,7 @@ import (
 	"io"
 	"net/http"
 	"regexp"
+	"strconv"
 	"strings"
 	"time"
 
@@ -24,25 +25,63 @@ var documentSeparator = regexp.MustCompile(`(?m)^---[ \t]*$`)
 // fetchTimeout bounds one download; the largest file is under 100 KB.
 const fetchTimeout = 2 * time.Minute
 
-// fetchText downloads one pinned file. A failure is explained in three
-// parts: these URLs are module constants, so nothing in the spec can fix
-// them, and the reader needs to know whether the network or the pin is at
+// fetchAttempts is how many times a transient answer (a dropped connection,
+// HTTP 429, a 5xx) is tried before the deploy is refused. The Terraform
+// twin's http data sources retry the same answers (their retry block).
+const fetchAttempts = 4
+
+// fetchText downloads one pinned file, retrying the answers that pass: a
+// plan fetches every release file, so a host limiting a burst of plans must
+// slow the deploy down, not fail it. A failure is explained in three parts:
+// these URLs are module constants, so nothing in the spec can fix them, and
+// the reader needs to know whether the network, the host or the pin is at
 // fault.
 func fetchText(url string) (string, error) {
 	client := &http.Client{Timeout: fetchTimeout}
-	response, err := client.Get(url)
+	var response *http.Response
+	var err error
+	for attempt := 1; ; attempt++ {
+		response, err = client.Get(url)
+		retryable := err != nil || response.StatusCode == http.StatusTooManyRequests ||
+			(response.StatusCode >= 500 && response.StatusCode != http.StatusNotImplemented)
+		if !retryable || attempt == fetchAttempts {
+			break
+		}
+		wait := time.Duration(1<<(attempt-1)) * time.Second
+		if response != nil {
+			if seconds, parseErr := strconv.Atoi(response.Header.Get("Retry-After")); parseErr == nil && seconds > 0 && seconds <= 30 {
+				wait = time.Duration(seconds) * time.Second
+			}
+			_ = response.Body.Close()
+		}
+		time.Sleep(wait)
+	}
 	if err != nil {
-		return "", fmt.Errorf("observed: %s could not be fetched (%s)\nmeaning: the host does not resolve, or egress to it is blocked from where this deploy runs\nnext step: confirm DNS and egress to downloads.planton.ai and raw.githubusercontent.com (`curl -I %s`), then re-run", url, err.Error(), url)
+		return "", fmt.Errorf("observed: %s could not be fetched after %d attempts (%s)\nmeaning: the host does not resolve, or egress to it is blocked from where this deploy runs\nnext step: confirm DNS and egress to downloads.planton.ai and raw.githubusercontent.com (`curl -I %s`), then re-run", url, fetchAttempts, err.Error(), url)
 	}
 	defer func() { _ = response.Body.Close() }()
 	if response.StatusCode != http.StatusOK {
-		return "", fmt.Errorf("observed: %s answered HTTP %d\nmeaning: Agent Substrate %s is not served at the address this module pins, or the host is failing\nnext step: confirm what is published (`curl -I %s`); if the release was moved or withdrawn, the module's pin needs a catalog fix", url, response.StatusCode, vars.Release, url)
+		return "", fetchRefusal(url, response.StatusCode)
 	}
 	raw, err := io.ReadAll(response.Body)
 	if err != nil {
 		return "", errors.Wrapf(err, "reading %s", url)
 	}
 	return string(raw), nil
+}
+
+// fetchRefusal explains a release file the host would not serve, by what
+// its answer means: a limit to wait out, a failing host, or a pin that no
+// longer resolves.
+func fetchRefusal(url string, status int) error {
+	switch {
+	case status == http.StatusTooManyRequests:
+		return fmt.Errorf("observed: %s answered HTTP 429 on all %d attempts\nmeaning: the host is limiting how often this address may download; a burst of plans from one address can reach the limit\nnext step: wait a minute and re-run", url, fetchAttempts)
+	case status >= 500:
+		return fmt.Errorf("observed: %s answered HTTP %d on all %d attempts\nmeaning: the host is failing, not the pin\nnext step: re-run once it answers 200 (`curl -I %s`)", url, status, fetchAttempts, url)
+	default:
+		return fmt.Errorf("observed: %s answered HTTP %d\nmeaning: Agent Substrate %s is not served at the address this module pins\nnext step: confirm what is published (`curl -I %s`); if the release was moved or withdrawn, the module's pin needs a catalog fix", url, status, vars.Release, url)
+	}
 }
 
 // splitDocuments parses a stream into its objects, dropping fragments that

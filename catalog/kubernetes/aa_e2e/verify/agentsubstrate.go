@@ -421,7 +421,7 @@ func (v *AgentSubstrateVerifier) verifyAPIRoundTrip(ctx context.Context, kubecon
 		_, err = api.CreateAtespace(c, &ateapipb.CreateAtespaceRequest{Atespace: &ateapipb.Atespace{Metadata: &ateapipb.ResourceMetadata{Name: agentSubstrateProbeAtespace}}})
 		cancel()
 		strangerID := "system:serviceaccount:" + agentSubstrateProbeNamespace + ":" + agentSubstrateProbeStranger
-		if status.Code(err) != codes.PermissionDenied || !strings.Contains(err.Error(), strangerID) {
+		if status.Code(err) != codes.PermissionDenied || !strings.Contains(err.Error(), `principal "`+ateAuthorizationUser(strangerID)+`"`) {
 			return errors.Errorf("with authorization on, a caller who is not an owner (%s) got %v; the API must deny it by that principal", strangerID, err)
 		}
 		fmt.Printf("  [verify] with authorization on, a non-owner was denied by its principal %s\n", strangerID)
@@ -523,12 +523,20 @@ func (v *AgentSubstrateVerifier) verifyRouter(ctx context.Context, kubeconfig, e
 	return errors.Errorf("the router never answered HTTP at %s (the router_endpoint output); last: %s", endpoint, firstLines(last, 3))
 }
 
+// ateAuthorizationUser is the principal as the API's authorizer names it in
+// a denial: "user:" and the identity with the characters its authorization
+// store reserves percent-encoded (upstream's formatUser at v0.5.0,
+// cmd/ateapi/internal/authz/authz_util.go).
+func ateAuthorizationUser(id string) string {
+	return "user:" + strings.NewReplacer("%", "%25", ":", "%3A", "#", "%23", " ", "%20", "*", "%2A").Replace(id)
+}
+
 func (v *AgentSubstrateVerifier) VerifyAbsent(ctx context.Context, kubeconfig string) error {
 	for _, d := range agentSubstrateDeployments {
 		absent := KubectlResourceAbsent
 		if v.DeployRefused {
-			absent = func(ctx context.Context, kubeconfig, kind, name, namespace string) error {
-				return KubectlResourceNotOwnedBy(ctx, kubeconfig, kind, name, namespace, agentSubstrateKind)
+			absent = func(ctx context.Context, kubeconfig, _, name, namespace string) error {
+				return KubectlDeploymentLeftAsPlanted(ctx, kubeconfig, name, namespace)
 			}
 		}
 		if err := absent(ctx, kubeconfig, "deployment", d[1], d[0]); err != nil {

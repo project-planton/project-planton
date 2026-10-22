@@ -170,8 +170,10 @@ message KubernetesAgentSubstrateSpec {
    * The cluster-size profile upstream tunes for. size0 is upstream's default;
    * size10 is upstream's profile for large clusters: the pod-certificate
    * controller gets a higher Kubernetes API rate, and the bundled database a
-   * large-server postgresql.conf, 80 CPUs and 140Gi requested, and wider
-   * connection pools.
+   * dedicated node's sizing (a large-server postgresql.conf, 80 CPUs and
+   * 140Gi requested) and wider connection pools. The configuration and the
+   * resources are one profile, so a bundled database's own resources cannot
+   * be set with size10.
    */
   ClusterSize cluster_size = 14;
 
@@ -221,6 +223,11 @@ message KubernetesAgentSubstrateSpec {
     size10 = 1;
   }
 
+  option (buf.validate.message).cel = {
+    id: "size10_sizes_the_bundled_database"
+    message: "database.bundled.resources cannot be set with cluster_size size10: size10 sizes the bundled database for a dedicated node, its postgresql.conf tuned for 140Gi, and a smaller container would run out of memory under load; use size10 with its own sizing, or size0 with your resources"
+    expression: "this.cluster_size != 1 || !has(this.database.bundled) || !has(this.database.bundled.resources)"
+  };
   option (buf.validate.message).cel = {
     id: "gcs_needs_gke"
     message: "storage.gcs authenticates keylessly through GKE Workload Identity, so it needs platform.gke; on another cluster use storage.s3"
@@ -429,7 +436,8 @@ message KubernetesAgentSubstrateBundledDatabase {
 
   /**
    * Resources for the database container. Empty = upstream's (2 CPUs and 1Gi
-   * requested; 16 CPUs and 2Gi limits), or size10's.
+   * requested; 16 CPUs and 2Gi limits), or size10's. Not settable with
+   * cluster_size size10, whose postgresql.conf assumes its own sizing.
    */
   dev.planton.kubernetes.ContainerResources resources = 3;
 }
@@ -1102,7 +1110,10 @@ message KubernetesAgentSubstrateRouter {
   KubernetesAgentSubstrateParkedRequests parked_requests = 7;
 
   /**
-   * Most requests the router's ext_proc server handles at once. 0 = no limit.
+   * Most requests the router's ext_proc server handles at once. 0 = upstream
+   * derives it from parked_requests.max. An explicit value must be at least
+   * parked_requests.max: a smaller limit would cut the parking lot short with
+   * 503s, and the router refuses to start with it.
    */
   optional int32 ext_proc_max_requests = 8 [
     (dev.planton.shared.options.default) = "0",
@@ -1124,8 +1135,10 @@ message KubernetesAgentSubstrateRouter {
 
   /**
    * Deadline of the drain (Go duration). Empty = upstream's derived default
-   * (park budget plus the drain route budget plus margin). The whole
-   * shutdown must fit the pod's 60s termination grace period.
+   * (park budget plus the drain route budget plus margin). An explicit value
+   * must be at least parked_requests.budget, so parked requests finish
+   * instead of being reset on shutdown. The whole shutdown must fit the
+   * pod's 60s termination grace period.
    */
   string drain_timeout = 10 [
     (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE,
@@ -1143,6 +1156,17 @@ message KubernetesAgentSubstrateRouter {
     envoy = 0;
     agentgateway = 1;
   }
+
+  option (buf.validate.message).cel = {
+    id: "router_ext_proc_covers_parked_requests"
+    message: "ext_proc_max_requests must be at least parked_requests.max (1024 when unset), or 0 to derive it from it: a smaller ext_proc limit cuts the parking lot short with 503s, and the router refuses to start"
+    expression: "this.ext_proc_max_requests == 0 || this.ext_proc_max_requests >= (has(this.parked_requests.max) ? this.parked_requests.max : 1024)"
+  };
+  option (buf.validate.message).cel = {
+    id: "router_drain_covers_parked_budget"
+    message: "drain_timeout must be at least parked_requests.budget (5s when unset): a drain shorter than the parking budget resets parked requests on shutdown, and the router refuses to start"
+    expression: "this.drain_timeout == '' || !this.drain_timeout.matches('^([0-9]+(\\\\.[0-9]+)?(ns|us|ms|s|m|h))+$') || (has(this.parked_requests.budget) && !this.parked_requests.budget.matches('^([0-9]+(\\\\.[0-9]+)?(ns|us|ms|s|m|h))+$')) || duration(this.drain_timeout) >= duration(has(this.parked_requests.budget) ? this.parked_requests.budget : '5s')"
+  };
 }
 
 /**

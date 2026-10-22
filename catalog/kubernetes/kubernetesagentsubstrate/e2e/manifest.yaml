@@ -109,7 +109,7 @@ spec:
       retryInterval: 200ms
       retryFactor: 1.5
       retryJitter: 0.2
-    extProcMaxRequests: 512
+    extProcMaxRequests: 4096
     drainDelay: 15s
     drainTimeout: 30s
   egress:

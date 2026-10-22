@@ -4,7 +4,10 @@
 # drains and resources, the node agent's image cache and staging, the
 # router's parking and timeouts and its allowed SPIFFE client, the egress
 # gateway's caches and Envoy threads, the pod-certificate controller's rate,
-# the size10 tuning, and telemetry exporters with a sampler.
+# the bundled database's own resources, and telemetry exporters with a
+# sampler. size10 sizes the database for a dedicated node, which one kind
+# node cannot hold, and excludes the database's own resources; the offline
+# manifest covers it.
 #
 # THE AUTHORIZATION PROOF: the probe client
 # (system:serviceaccount:e2e-ate-probe:e2e-ate-client, the token subject)
@@ -94,7 +97,7 @@ spec:
       retryInterval: 200ms
       retryFactor: 1.5
       retryJitter: 0.2
-    extProcMaxRequests: 128
+    extProcMaxRequests: 512
     drainDelay: 5s
     drainTimeout: 20s
   egress:
@@ -117,4 +120,3 @@ spec:
       - console
     tracesSampler: parentbased_traceidratio
     tracesSamplerRatio: 0.5
-  clusterSize: size10

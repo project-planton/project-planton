@@ -15,10 +15,19 @@ data "http" "release_file" {
   url                = "${local.release_base_url}${local.release}/${each.value}"
   request_timeout_ms = 120000
 
+  # A dropped connection, HTTP 429 or a 5xx is retried (honoring
+  # Retry-After), as the Pulumi twin's fetchText does: a plan fetches every
+  # release file, so a host limiting a burst of plans slows the deploy down.
+  retry {
+    attempts     = 3
+    min_delay_ms = 1000
+    max_delay_ms = 8000
+  }
+
   lifecycle {
     postcondition {
       condition     = self.status_code == 200
-      error_message = "observed: ${self.url} answered HTTP ${self.status_code}\nmeaning: Agent Substrate ${local.release} is not served at the address this module pins, or the host is failing\nnext step: confirm what is published (curl -I ${self.url}); if the release was moved or withdrawn, the module's pin needs a catalog fix"
+      error_message = self.status_code == 429 ? "observed: ${self.url} answered HTTP 429 on every attempt\nmeaning: the host is limiting how often this address may download; a burst of plans from one address can reach the limit\nnext step: wait a minute and re-run" : self.status_code >= 500 ? "observed: ${self.url} answered HTTP ${self.status_code} on every attempt\nmeaning: the host is failing, not the pin\nnext step: re-run once it answers 200 (curl -I ${self.url})" : "observed: ${self.url} answered HTTP ${self.status_code}\nmeaning: Agent Substrate ${local.release} is not served at the address this module pins\nnext step: confirm what is published (curl -I ${self.url}); if the release was moved or withdrawn, the module's pin needs a catalog fix"
     }
   }
 }
@@ -26,6 +35,12 @@ data "http" "release_file" {
 data "http" "setup_sql" {
   url                = local.setup_sql_url
   request_timeout_ms = 120000
+
+  retry {
+    attempts     = 3
+    min_delay_ms = 1000
+    max_delay_ms = 8000
+  }
 
   lifecycle {
     postcondition {

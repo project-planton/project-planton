@@ -32,6 +32,6 @@ spec:
   # cordonControlPlane needs nodes labelled for the control plane and the
   # database, which the one-node kind cluster cannot offer; the offline
   # proofs cover it.
-  status: pending_proof
-  validated_provisioners: []
+  status: green
+  validated_provisioners: [pulumi, terraform]
   timeout_minutes: 40

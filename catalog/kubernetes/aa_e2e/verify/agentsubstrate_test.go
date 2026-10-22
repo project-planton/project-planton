@@ -164,3 +164,12 @@ func TestAgentSubstrateVerifierPinsTheModulesRelease(t *testing.T) {
 		}
 	}
 }
+
+// The API's authorizer names a denied principal in its store's escaped form;
+// the full-surface lane asserts the stranger is denied by exactly that name.
+func TestAteAuthorizationUserEscapesLikeTheAPI(t *testing.T) {
+	got := ateAuthorizationUser("system:serviceaccount:e2e-ate-probe:e2e-ate-stranger")
+	if want := "user:system%3Aserviceaccount%3Ae2e-ate-probe%3Ae2e-ate-stranger"; got != want {
+		t.Errorf("ateAuthorizationUser = %q, want %q (the principal the API printed in a live denial)", got, want)
+	}
+}

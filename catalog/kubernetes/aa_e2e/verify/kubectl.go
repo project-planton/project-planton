@@ -195,27 +195,33 @@ func kubectlGetJSONPath(ctx context.Context, kubeconfig, kind, name, namespace, 
 	return "", errors.Wrapf(lastErr, "resource %s/%s not readable after 5 attempts", kind, name)
 }
 
-// KubectlResourceNotOwnedBy proves that after a refused deploy no object of
-// this name belongs to ownerKind: it is gone, or it is the one another owner
-// planted (a fixture standing in for another installation), which still lacks
-// ownerKind's planton.ai/kind mark. A refused deploy creates nothing and takes
-// nothing over, so the planted object stays until its own prerequisite is
-// torn down.
-func KubectlResourceNotOwnedBy(ctx context.Context, kubeconfig, kind, name, namespace, ownerKind string) error {
-	args := append(BuildKubectlArgs(kubeconfig, "get", kind, name, namespace),
-		"--ignore-not-found", "-o", "jsonpath={.metadata.uid} {.metadata.labels.planton\\.ai/kind}")
+// plantedStandInImage is the image every e2e fixture runs when it stands in
+// for another installation, or for an earlier release of the kind, in a
+// lane whose deploy must be refused.
+const plantedStandInImage = "registry.k8s.io/pause:"
+
+// KubectlDeploymentLeftAsPlanted proves that after a refused deploy a
+// Deployment of this name is gone, or is still the planted stand-in: every
+// container still runs the stand-in's image, so the refused deploy applied
+// nothing over it. The stand-in stays until its own prerequisite is torn
+// down.
+func KubectlDeploymentLeftAsPlanted(ctx context.Context, kubeconfig, name, namespace string) error {
+	args := append(BuildKubectlArgs(kubeconfig, "get", "deployment", name, namespace),
+		"--ignore-not-found", "-o", "jsonpath={.spec.template.spec.containers[*].image}")
 	out, err := exec.CommandContext(ctx, "kubectl", args...).Output()
 	if err != nil {
-		return errors.Wrapf(err, "reading %s %s/%s after the refused deploy", kind, namespace, name)
+		return errors.Wrapf(err, "reading deployment %s/%s after the refused deploy", namespace, name)
 	}
-	fields := strings.Fields(string(out))
-	if len(fields) == 0 {
+	images := strings.Fields(string(out))
+	if len(images) == 0 {
 		return nil
 	}
-	if len(fields) > 1 && fields[1] == ownerKind {
-		return errors.Errorf("%s %s/%s carries %s's mark after a refused deploy, which must create nothing", kind, namespace, name, ownerKind)
+	for _, image := range images {
+		if !strings.HasPrefix(image, plantedStandInImage) {
+			return errors.Errorf("deployment %s/%s runs %s after a refused deploy, which must apply nothing: the planted stand-in was replaced", namespace, name, image)
+		}
 	}
-	fmt.Printf("  [verify] DESTROY: %s %s/%s is another owner's and was left as it was\n", kind, namespace, name)
+	fmt.Printf("  [verify] DESTROY: deployment %s/%s is still the planted stand-in, left as it was\n", namespace, name)
 	return nil
 }
 

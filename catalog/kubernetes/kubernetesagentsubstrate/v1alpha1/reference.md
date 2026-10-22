@@ -184,7 +184,7 @@ spec:
       retryInterval: 200ms
       retryFactor: 1.5
       retryJitter: 0.2
-    extProcMaxRequests: 512
+    extProcMaxRequests: 4096
     drainDelay: 15s
     drainTimeout: 30s
   egress:
@@ -635,7 +635,8 @@ install: a volume claim template cannot change.
 `ContainerResources`
 
 Resources for the database container. Empty = upstream's (2 CPUs and 1Gi
-requested; 16 CPUs and 2Gi limits), or size10's.
+requested; 16 CPUs and 2Gi limits), or size10's. Not settable with
+cluster_size size10, whose postgresql.conf assumes its own sizing.
 
 ### spec.database.bundled.resources.limits
 
@@ -1460,6 +1461,9 @@ overflows.
 The ingress router (`atenet-router`), the data path a request reaches an
 actor by.
 
+- rule: ext_proc_max_requests must be at least parked_requests.max (1024 when unset), or 0 to derive it from it: a smaller ext_proc limit cuts the parking lot short with 503s, and the router refuses to start
+- rule: drain_timeout must be at least parked_requests.budget (5s when unset): a drain shorter than the parking budget resets parked requests on shutdown, and the router refuses to start
+
 ### spec.router.dataplane
 
 `enum`
@@ -1609,7 +1613,10 @@ Random jitter applied to each interval, as a fraction of it.
 
 `int32` · optional (explicit presence)
 
-Most requests the router's ext_proc server handles at once. 0 = no limit.
+Most requests the router's ext_proc server handles at once. 0 = upstream
+derives it from parked_requests.max. An explicit value must be at least
+parked_requests.max: a smaller limit would cut the parking lot short with
+503s, and the router refuses to start with it.
 
 - default: `0`
 - rule: {"int32":{"gte":0}}
@@ -1629,8 +1636,10 @@ changes propagate (Go duration).
 `string`
 
 Deadline of the drain (Go duration). Empty = upstream's derived default
-(park budget plus the drain route budget plus margin). The whole
-shutdown must fit the pod's 60s termination grace period.
+(park budget plus the drain route budget plus margin). An explicit value
+must be at least parked_requests.budget, so parked requests finish
+instead of being reset on shutdown. The whole shutdown must fit the
+pod's 60s termination grace period.
 
 - rule: drain_timeout must be a Go duration such as "20s"
 - rule: {"ignore":"IGNORE_IF_ZERO_VALUE"}
@@ -2084,8 +2093,10 @@ Timeout of one metric export, in milliseconds. Empty = the SDK's.
 The cluster-size profile upstream tunes for. size0 is upstream's default;
 size10 is upstream's profile for large clusters: the pod-certificate
 controller gets a higher Kubernetes API rate, and the bundled database a
-large-server postgresql.conf, 80 CPUs and 140Gi requested, and wider
-connection pools.
+dedicated node's sizing (a large-server postgresql.conf, 80 CPUs and
+140Gi requested) and wider connection pools. The configuration and the
+resources are one profile, so a bundled database's own resources cannot
+be set with size10.
 
 Allowed values (use exactly as shown):
 
@@ -2131,6 +2142,7 @@ plane's images from a private registry.
 
 ## Validation Rules
 
+- `size10_sizes_the_bundled_database`: database.bundled.resources cannot be set with cluster_size size10: size10 sizes the bundled database for a dedicated node, its postgresql.conf tuned for 140Gi, and a smaller container would run out of memory under load; use size10 with its own sizing, or size0 with your resources
 - `gcs_needs_gke`: storage.gcs authenticates keylessly through GKE Workload Identity, so it needs platform.gke; on another cluster use storage.s3
 - `cloud_sql_needs_gke`: database.cloud_sql connects through the Cloud SQL Auth Proxy with GKE Workload Identity, so it needs platform.gke
 - `cloud_sql_iam_needs_api_server_identity`: database.cloud_sql logs in as the API server's Google service account, so set platform.gke.api_server_service_account (or turn cloud_sql.iam_authentication off and give a connection string)

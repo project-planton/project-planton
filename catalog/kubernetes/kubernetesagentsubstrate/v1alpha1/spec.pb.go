@@ -402,8 +402,10 @@ type KubernetesAgentSubstrateSpec struct {
 	// The cluster-size profile upstream tunes for. size0 is upstream's default;
 	// size10 is upstream's profile for large clusters: the pod-certificate
 	// controller gets a higher Kubernetes API rate, and the bundled database a
-	// large-server postgresql.conf, 80 CPUs and 140Gi requested, and wider
-	// connection pools.
+	// dedicated node's sizing (a large-server postgresql.conf, 80 CPUs and
+	// 140Gi requested) and wider connection pools. The configuration and the
+	// resources are one profile, so a bundled database's own resources cannot
+	// be set with size10.
 	ClusterSize KubernetesAgentSubstrateSpec_ClusterSize `protobuf:"varint,14,opt,name=cluster_size,json=clusterSize,proto3,enum=dev.planton.kubernetes.kubernetesagentsubstrate.v1alpha1.KubernetesAgentSubstrateSpec_ClusterSize" json:"cluster_size,omitempty"`
 	// *
 	// Run the control plane on dedicated nodes: every control-plane Deployment
@@ -1020,7 +1022,8 @@ type KubernetesAgentSubstrateBundledDatabase struct {
 	VolumeSize *string `protobuf:"bytes,2,opt,name=volume_size,json=volumeSize,proto3,oneof" json:"volume_size,omitempty"`
 	// *
 	// Resources for the database container. Empty = upstream's (2 CPUs and 1Gi
-	// requested; 16 CPUs and 2Gi limits), or size10's.
+	// requested; 16 CPUs and 2Gi limits), or size10's. Not settable with
+	// cluster_size size10, whose postgresql.conf assumes its own sizing.
 	Resources     *kubernetes.ContainerResources `protobuf:"bytes,3,opt,name=resources,proto3" json:"resources,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -2294,7 +2297,10 @@ type KubernetesAgentSubstrateRouter struct {
 	// How requests wait while their actor wakes.
 	ParkedRequests *KubernetesAgentSubstrateParkedRequests `protobuf:"bytes,7,opt,name=parked_requests,json=parkedRequests,proto3" json:"parked_requests,omitempty"`
 	// *
-	// Most requests the router's ext_proc server handles at once. 0 = no limit.
+	// Most requests the router's ext_proc server handles at once. 0 = upstream
+	// derives it from parked_requests.max. An explicit value must be at least
+	// parked_requests.max: a smaller limit would cut the parking lot short with
+	// 503s, and the router refuses to start with it.
 	ExtProcMaxRequests *int32 `protobuf:"varint,8,opt,name=ext_proc_max_requests,json=extProcMaxRequests,proto3,oneof" json:"ext_proc_max_requests,omitempty"`
 	// *
 	// How long a terminating pod keeps accepting new requests, so readiness
@@ -2302,8 +2308,10 @@ type KubernetesAgentSubstrateRouter struct {
 	DrainDelay *string `protobuf:"bytes,9,opt,name=drain_delay,json=drainDelay,proto3,oneof" json:"drain_delay,omitempty"`
 	// *
 	// Deadline of the drain (Go duration). Empty = upstream's derived default
-	// (park budget plus the drain route budget plus margin). The whole
-	// shutdown must fit the pod's 60s termination grace period.
+	// (park budget plus the drain route budget plus margin). An explicit value
+	// must be at least parked_requests.budget, so parked requests finish
+	// instead of being reset on shutdown. The whole shutdown must fit the
+	// pod's 60s termination grace period.
 	DrainTimeout  string `protobuf:"bytes,10,opt,name=drain_timeout,json=drainTimeout,proto3" json:"drain_timeout,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -3289,7 +3297,7 @@ var File_catalog_kubernetes_kubernetesagentsubstrate_v1alpha1_spec_proto protore
 
 const file_catalog_kubernetes_kubernetesagentsubstrate_v1alpha1_spec_proto_rawDesc = "" +
 	"\n" +
-	"?catalog/kubernetes/kubernetesagentsubstrate/v1alpha1/spec.proto\x128dev.planton.kubernetes.kubernetesagentsubstrate.v1alpha1\x1a\x1bbuf/validate/validate.proto\x1a#catalog/kubernetes/kubernetes.proto\x1a%catalog/kubernetes/workload_pod.proto\x1a&shared/foreignkey/v1/foreign_key.proto\x1a\x1cshared/options/options.proto\"\xe3\x1a\n" +
+	"?catalog/kubernetes/kubernetesagentsubstrate/v1alpha1/spec.proto\x128dev.planton.kubernetes.kubernetesagentsubstrate.v1alpha1\x1a\x1bbuf/validate/validate.proto\x1a#catalog/kubernetes/kubernetes.proto\x1a%catalog/kubernetes/workload_pod.proto\x1a&shared/foreignkey/v1/foreign_key.proto\x1a\x1cshared/options/options.proto\"\x84\x1e\n" +
 	"\x1cKubernetesAgentSubstrateSpec\x12\xc4\x02\n" +
 	"\tnamespace\x18\x01 \x01(\v22.dev.planton.shared.foreignkey.v1.StringValueOrRefB\xf1\x01\xbaH\xdb\x01\xba\x01\xd4\x01\n" +
 	"\x0fnamespace_fixed\x12\x90\x01namespace must be \"ate-system\": upstream's manifests, the API's server name and its token audience name it, so Agent Substrate runs nowhere else\x1a.!has(this.value) || this.value == 'ate-system'\xc8\x01\x01\x88\xd4a\xa0\x1f\x92\xd4a\tspec.nameR\tnamespace\x12)\n" +
@@ -3318,7 +3326,8 @@ const file_catalog_kubernetes_kubernetesagentsubstrate_v1alpha1_spec_proto_rawDe
 	"\vClusterSize\x12\t\n" +
 	"\x05size0\x10\x00\x12\n" +
 	"\n" +
-	"\x06size10\x10\x01:\xbb\b\xbaH\xb7\b\x1a\xc1\x01\n" +
+	"\x06size10\x10\x01:\xdc\v\xbaH\xd8\v\x1a\x9e\x03\n" +
+	"!size10_sizes_the_bundled_database\x12\x98\x02database.bundled.resources cannot be set with cluster_size size10: size10 sizes the bundled database for a dedicated node, its postgresql.conf tuned for 140Gi, and a smaller container would run out of memory under load; use size10 with its own sizing, or size0 with your resources\x1a^this.cluster_size != 1 || !has(this.database.bundled) || !has(this.database.bundled.resources)\x1a\xc1\x01\n" +
 	"\rgcs_needs_gke\x12~storage.gcs authenticates keylessly through GKE Workload Identity, so it needs platform.gke; on another cluster use storage.s3\x1a0!has(this.storage.gcs) || has(this.platform.gke)\x1a\xc1\x01\n" +
 	"\x13cloud_sql_needs_gke\x12qdatabase.cloud_sql connects through the Cloud SQL Auth Proxy with GKE Workload Identity, so it needs platform.gke\x1a7!has(this.database.cloud_sql) || has(this.platform.gke)\x1a\xbe\x03\n" +
 	"'cloud_sql_iam_needs_api_server_identity\x12\xbd\x01database.cloud_sql logs in as the API server's Google service account, so set platform.gke.api_server_service_account (or turn cloud_sql.iam_authentication off and give a connection string)\x1a\xd2\x01!has(this.database.cloud_sql) || (has(this.database.cloud_sql.iam_authentication) && !this.database.cloud_sql.iam_authentication) || (has(this.platform.gke) && has(this.platform.gke.api_server_service_account))\x1a\xeb\x01\n" +
@@ -3486,7 +3495,7 @@ const file_catalog_kubernetes_kubernetesagentsubstrate_v1alpha1_spec_proto_rawDe
 	"\n" +
 	"_max_bytesB\n" +
 	"\n" +
-	"\b_min_age\"\xb4\f\n" +
+	"\b_min_age\"\xe1\x13\n" +
 	"\x1eKubernetesAgentSubstrateRouter\x12\x80\x01\n" +
 	"\tdataplane\x18\x01 \x01(\x0e2b.dev.planton.kubernetes.kubernetesagentsubstrate.v1alpha1.KubernetesAgentSubstrateRouter.DataplaneR\tdataplane\x12-\n" +
 	"\breplicas\x18\x02 \x01(\x05B\f\xbaH\x04\x1a\x02(\x01\x8a\xa6\x1d\x011H\x00R\breplicas\x88\x01\x01\x12H\n" +
@@ -3506,7 +3515,9 @@ const file_catalog_kubernetes_kubernetesagentsubstrate_v1alpha1_spec_proto_rawDe
 	"\x1brouter_drain_timeout_format\x121drain_timeout must be a Go duration such as \"20s\"\x1a7this.matches('^([0-9]+(\\\\.[0-9]+)?(ns|us|ms|s|m|h))+$')\xd8\x01\x01R\fdrainTimeout\"(\n" +
 	"\tDataplane\x12\t\n" +
 	"\x05envoy\x10\x00\x12\x10\n" +
-	"\fagentgateway\x10\x01B\v\n" +
+	"\fagentgateway\x10\x01:\xaa\a\xbaH\xa6\a\x1a\xf7\x02\n" +
+	"&router_ext_proc_covers_parked_requests\x12\xc7\x01ext_proc_max_requests must be at least parked_requests.max (1024 when unset), or 0 to derive it from it: a smaller ext_proc limit cuts the parking lot short with 503s, and the router refuses to start\x1a\x82\x01this.ext_proc_max_requests == 0 || this.ext_proc_max_requests >= (has(this.parked_requests.max) ? this.parked_requests.max : 1024)\x1a\xa9\x04\n" +
+	"!router_drain_covers_parked_budget\x12\xb2\x01drain_timeout must be at least parked_requests.budget (5s when unset): a drain shorter than the parking budget resets parked requests on shutdown, and the router refuses to start\x1a\xce\x02this.drain_timeout == '' || !this.drain_timeout.matches('^([0-9]+(\\\\.[0-9]+)?(ns|us|ms|s|m|h))+$') || (has(this.parked_requests.budget) && !this.parked_requests.budget.matches('^([0-9]+(\\\\.[0-9]+)?(ns|us|ms|s|m|h))+$')) || duration(this.drain_timeout) >= duration(has(this.parked_requests.budget) ? this.parked_requests.budget : '5s')B\v\n" +
 	"\t_replicasB\x10\n" +
 	"\x0e_route_timeoutB\x18\n" +
 	"\x16_ext_proc_max_requestsB\x0e\n" +
