@@ -29,10 +29,10 @@ func TestAgentSubstrateVerifierReadsTheScenarios(t *testing.T) {
 		{Atespace: "support", AllowedNamespaces: []string{"support-credentials"}},
 	}
 	type lane struct {
-		create, bundled, agentgateway, authz, keep, refused, policy bool
-		provider, installed                                         string
-		grants                                                      []agentSubstrateGrant
-		crds                                                        []string
+		create, bundled, agentgateway, authz, keep, refused, policy, gcs bool
+		provider, installed                                              string
+		grants                                                           []agentSubstrateGrant
+		crds                                                             []string
 	}
 	kind := lane{bundled: true, policy: true, provider: "disabled", crds: agentSubstrateCrds}
 	with := func(edit func(*lane)) lane { l := kind; edit(&l); return l }
@@ -43,7 +43,7 @@ func TestAgentSubstrateVerifierReadsTheScenarios(t *testing.T) {
 		"credential-policy-change.yaml":    with(func(l *lane) { l.provider, l.grants = "kubernetes", research }),
 		"credential-policy-change.to.yaml": with(func(l *lane) { l.provider, l.grants = "kubernetes", changed }),
 		"external-database.yaml":           with(func(l *lane) { l.bundled = false }),
-		"gke-keyless.yaml":                 with(func(l *lane) { l.create, l.policy = true, false }),
+		"gke-keyless.yaml":                 with(func(l *lane) { l.create, l.policy, l.gcs = true, false, true }),
 		"namespace-missing.yaml":           with(func(l *lane) { l.keep, l.refused = true, true }),
 		"namespace-owned-elsewhere.yaml":   with(func(l *lane) { l.create, l.keep, l.refused = true, true, true }),
 		"workload-owned-elsewhere.yaml":    with(func(l *lane) { l.keep, l.refused = true, true }),
@@ -62,7 +62,7 @@ func TestAgentSubstrateVerifierReadsTheScenarios(t *testing.T) {
 			v := newAgentSubstrateVerifier(filepath.Join(agentSubstrateScenarios, name))
 			got := lane{
 				create: v.CreateNamespace, bundled: v.BundledDatabase, agentgateway: v.Agentgateway, authz: v.Authorization,
-				keep: v.KeepOnUninstall, refused: v.DeployRefused, policy: v.EnforcesNetworkPolicy,
+				keep: v.KeepOnUninstall, refused: v.DeployRefused, policy: v.EnforcesNetworkPolicy, gcs: v.GcsBucket != "",
 				provider: v.CredentialProvider, installed: v.ExpectedVersion, grants: v.Grants, crds: v.CRDs,
 			}
 			if !reflect.DeepEqual(got, want) {

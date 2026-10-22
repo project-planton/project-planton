@@ -102,6 +102,9 @@ type AgentSubstrateVerifier struct {
 	EnforcesNetworkPolicy bool
 	// ExpectedVersion is the stamp a refused-upgrade lane planted.
 	ExpectedVersion string
+	// GcsBucket is the snapshot bucket of a GKE lane storing in GCS
+	// (storage.gcs), reached keylessly through Workload Identity.
+	GcsBucket string
 	helmCRDLifecycle
 }
 
@@ -119,6 +122,13 @@ func newAgentSubstrateVerifier(manifestPath string) *AgentSubstrateVerifier {
 	}
 	if router, ok := specField(spec, "router").(map[string]interface{}); ok {
 		v.Agentgateway = stringOr(specField(router, "dataplane"), "envoy") == "agentgateway"
+	}
+	if storage, ok := specField(spec, "storage").(map[string]interface{}); ok {
+		if gcs, ok := specField(storage, "gcs").(map[string]interface{}); ok {
+			if bucket, ok := specField(gcs, "bucket").(map[string]interface{}); ok {
+				v.GcsBucket = stringOr(specField(bucket, "value"), "")
+			}
+		}
 	}
 	if egress, ok := specField(spec, "egress").(map[string]interface{}); ok {
 		if provider, ok := specField(egress, "credentialProvider").(map[string]interface{}); ok {
@@ -230,7 +240,86 @@ func (v *AgentSubstrateVerifier) VerifyExistsWithOutputs(ctx context.Context, ku
 	if err := v.verifyReachability(ctx, kubeconfig, out("api_address")); err != nil {
 		return err
 	}
+	if v.GcsBucket != "" {
+		for _, account := range agentSubstrateStorageAccounts {
+			if err := proveKeylessStorage(ctx, kubeconfig, account, v.GcsBucket); err != nil {
+				return err
+			}
+		}
+	}
 	return v.verifyRouter(ctx, kubeconfig, out("router_endpoint"))
+}
+
+// agentSubstrateStorageAccounts are the Kubernetes service accounts that
+// read and write actor snapshots; on GKE each is bound through Workload
+// Identity to the Google service account the spec names.
+var agentSubstrateStorageAccounts = []string{"atelet", "ate-api-server"}
+
+// proveKeylessStorage proves the keyless storage path end to end: a pod
+// running as the control plane's own service account takes a token from the
+// GKE metadata server alone (no key anywhere), checks the token belongs to a
+// Google service account rather than the node's, and writes, reads back and
+// deletes an object in the snapshot bucket.
+func proveKeylessStorage(ctx context.Context, kubeconfig, account, bucket string) error {
+	pod := "e2e-ate-gcs-" + account
+	object := fmt.Sprintf("e2e-keyless-%s-%d", account, time.Now().UnixNano())
+	script := `set -e
+md=http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/default
+echo "EMAIL:$(curl -sf -H 'Metadata-Flavor: Google' $md/email)"
+token=$(curl -sf -H 'Metadata-Flavor: Google' $md/token | sed -n 's/.*"access_token":"\([^"]*\)".*/\1/p')
+api=https://storage.googleapis.com
+curl -sf -X POST -H "Authorization: Bearer $token" -H 'Content-Type: text/plain' --data-binary keyless "$api/upload/storage/v1/b/$BUCKET/o?uploadType=media&name=$OBJECT" >/dev/null && echo WROTE
+echo "READ:$(curl -sf -H "Authorization: Bearer $token" "$api/storage/v1/b/$BUCKET/o/$OBJECT?alt=media")"
+curl -sf -X DELETE -H "Authorization: Bearer $token" "$api/storage/v1/b/$BUCKET/o/$OBJECT" && echo DELETED`
+	manifest := fmt.Sprintf(`apiVersion: v1
+kind: Pod
+metadata:
+  name: %s
+  namespace: %s
+spec:
+  serviceAccountName: %s
+  restartPolicy: Never
+  containers:
+    - name: probe
+      image: %s
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65534
+        allowPrivilegeEscalation: false
+        capabilities: {drop: ["ALL"]}
+        seccompProfile: {type: RuntimeDefault}
+      env:
+        - {name: BUCKET, value: %q}
+        - {name: OBJECT, value: %q}
+      command: ["sh", "-c", %q]
+`, pod, agentSubstrateNamespace, account, agentSandboxClientImage, bucket, object, script)
+	defer func() {
+		_ = exec.Command("kubectl", "--kubeconfig", kubeconfig, "-n", agentSubstrateNamespace, "delete", "pod", pod, "--ignore-not-found", "--wait=false").Run()
+	}()
+	if err := kubectlApplyStdin(ctx, kubeconfig, manifest); err != nil {
+		return errors.Wrapf(err, "starting the keyless storage probe as %s", account)
+	}
+	phase, err := awaitJSONPath(ctx, kubeconfig, "pod", pod, agentSubstrateNamespace, `{.status.phase}`, 3*time.Minute)
+	for err == nil && (phase == "Pending" || phase == "Running") {
+		time.Sleep(3 * time.Second)
+		phase, err = awaitJSONPath(ctx, kubeconfig, "pod", pod, agentSubstrateNamespace, `{.status.phase}`, time.Minute)
+	}
+	logs, _ := exec.CommandContext(ctx, "kubectl", "--kubeconfig", kubeconfig, "-n", agentSubstrateNamespace, "logs", pod).CombinedOutput()
+	text := string(logs)
+	email := ""
+	for _, line := range strings.Split(text, "\n") {
+		if rest, ok := strings.CutPrefix(line, "EMAIL:"); ok {
+			email = strings.TrimSpace(rest)
+		}
+	}
+	switch {
+	case phase != "Succeeded" || !strings.Contains(text, "WROTE") || !strings.Contains(text, "READ:keyless") || !strings.Contains(text, "DELETED"):
+		return errors.Errorf("as %s/%s, the snapshot bucket %s could not be written, read and cleaned keylessly (pod %s, %v): %s", agentSubstrateNamespace, account, bucket, phase, err, firstLines(text, 6))
+	case !strings.HasSuffix(email, ".iam.gserviceaccount.com") || strings.Contains(email, "-compute@developer."):
+		return errors.Errorf("as %s/%s, the metadata server answered as %q: the service account is not bound through Workload Identity, so storage would run as the node", agentSubstrateNamespace, account, email)
+	}
+	fmt.Printf("  [verify] KEYLESS: as %s/%s (%s, no key), wrote, read back and deleted an object in gs://%s\n", agentSubstrateNamespace, account, email, bucket)
+	return nil
 }
 
 func (v *AgentSubstrateVerifier) verifyRollouts(ctx context.Context, kubeconfig string) error {
