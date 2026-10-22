@@ -12,6 +12,6 @@ spec:
   # gets a policy carrying exactly its declared rules, and behavioral-unmanaged
   # gets none. Every field each lane sets reads back from the live object.
   # The warm pool and claim lanes run sandboxes from templates.
-  status: pending_proof
-  validated_provisioners: []
+  status: green
+  validated_provisioners: [pulumi, terraform]
   timeout_minutes: 20

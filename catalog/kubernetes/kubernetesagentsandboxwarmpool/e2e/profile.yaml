@@ -11,6 +11,6 @@ spec:
   # proves the pool fills to its size with ready members: minimal relies on
   # the cluster's default of one and checks the scale endpoint an autoscaler
   # drives; full-surface asks for two with the Recreate strategy.
-  status: pending_proof
-  validated_provisioners: []
+  status: green
+  validated_provisioners: [pulumi, terraform]
   timeout_minutes: 20

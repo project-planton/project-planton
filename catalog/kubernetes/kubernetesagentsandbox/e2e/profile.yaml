@@ -12,6 +12,6 @@ spec:
   # namespace resolved by reference; behavioral-suspend proves the promise
   # behind operatingMode: suspending deletes the pod and keeps the same claim,
   # and resuming brings the sandbox's files back.
-  status: pending_proof
-  validated_provisioners: []
+  status: green
+  validated_provisioners: [pulumi, terraform]
   timeout_minutes: 25

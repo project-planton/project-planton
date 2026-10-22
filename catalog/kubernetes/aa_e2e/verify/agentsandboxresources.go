@@ -405,10 +405,19 @@ func (v *AgentSandboxWarmPoolVerifier) VerifyExists(ctx context.Context, kubecon
 		return err
 	}
 	want := fmt.Sprintf("%d", v.Replicas)
-	if err := pollJSONPath(ctx, kubeconfig, agentSandboxWarmPoolResource, v.Name, v.Namespace, "{.status.readyReplicas}", want, 6*time.Minute); err != nil {
-		return errors.Wrapf(err, "the pool never filled to %s ready members", want)
+	if v.Replicas == 0 {
+		// An empty pool reports no readyReplicas at all (the API omits a
+		// zero), so its proof is that it holds no members.
+		if err := awaitNoneNamed(ctx, kubeconfig, agentSandboxResource, v.Namespace, v.Name+"-", 2*time.Minute); err != nil {
+			return errors.Wrap(err, "the pool is sized 0 but holds members")
+		}
+		fmt.Printf("  [verify] EMPTY: the pool is sized 0 and holds no members\n")
+	} else {
+		if err := pollJSONPath(ctx, kubeconfig, agentSandboxWarmPoolResource, v.Name, v.Namespace, "{.status.readyReplicas}", want, 6*time.Minute); err != nil {
+			return errors.Wrapf(err, "the pool never filled to %s ready members", want)
+		}
+		fmt.Printf("  [verify] FILL: the pool holds %s ready members\n", want)
 	}
-	fmt.Printf("  [verify] FILL: the pool holds %s ready members\n", want)
 
 	raw, err := exec.CommandContext(ctx, "kubectl", "--kubeconfig", kubeconfig, "get", "--raw",
 		fmt.Sprintf("/apis/extensions.agents.x-k8s.io/v1beta1/namespaces/%s/sandboxwarmpools/%s/scale", v.Namespace, v.Name)).CombinedOutput()
