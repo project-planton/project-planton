@@ -16,6 +16,6 @@ spec:
   # counter actor on the pool, calls it through the router, suspends it into
   # the S3 store, finds the snapshot in the bucket, and resumes it with its
   # files (VOLUMES fidelity: the file counter continues, memory starts over).
-  status: pending_proof
-  validated_provisioners: []
+  status: green
+  validated_provisioners: [pulumi, terraform]
   timeout_minutes: 60

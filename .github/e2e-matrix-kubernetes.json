@@ -52,17 +52,17 @@
       "name": "Tier 4 Pulumi",
       "tier": 4,
       "engine": "pulumi",
-      "timeout": 775,
-      "run_regex": "Test(KubernetesAgentSandboxController|KubernetesAgentSubstrate|KubernetesAltinityOperator|KubernetesAuthorizationPolicy|KubernetesDestinationRule|KubernetesEnvoyFilter|KubernetesFlinkOperator|KubernetesGhaRunnerScaleSetController|KubernetesIstioBaseCrds|KubernetesKeycloakOperator|KubernetesKubeRayOperator|KubernetesOtelOperator|KubernetesPeerAuthentication|KubernetesPlantonOperator|KubernetesRabbitMqOperator|KubernetesRequestAuthentication|KubernetesServiceEntry|KubernetesTektonOperator|KubernetesTelemetry)_Pulumi",
-      "kind_count": 19
+      "timeout": 1335,
+      "run_regex": "Test(KubernetesAgentSandboxController|KubernetesAgentSubstrate|KubernetesAgentSubstrateCsiDriverConfig|KubernetesAgentSubstrateSandboxConfig|KubernetesAgentSubstrateWorkerPool|KubernetesAltinityOperator|KubernetesAuthorizationPolicy|KubernetesDestinationRule|KubernetesEnvoyFilter|KubernetesFlinkOperator|KubernetesGhaRunnerScaleSetController|KubernetesIstioBaseCrds|KubernetesKeycloakOperator|KubernetesKubeRayOperator|KubernetesOtelOperator|KubernetesPeerAuthentication|KubernetesPlantonOperator|KubernetesRabbitMqOperator|KubernetesRequestAuthentication|KubernetesServiceEntry|KubernetesTektonOperator|KubernetesTelemetry)_Pulumi",
+      "kind_count": 22
     },
     {
       "name": "Tier 4 Terraform",
       "tier": 4,
       "engine": "terraform",
-      "timeout": 775,
-      "run_regex": "Test(KubernetesAgentSandboxController|KubernetesAgentSubstrate|KubernetesAltinityOperator|KubernetesAuthorizationPolicy|KubernetesDestinationRule|KubernetesEnvoyFilter|KubernetesFlinkOperator|KubernetesGhaRunnerScaleSetController|KubernetesIstioBaseCrds|KubernetesKeycloakOperator|KubernetesKubeRayOperator|KubernetesOtelOperator|KubernetesPeerAuthentication|KubernetesPlantonOperator|KubernetesRabbitMqOperator|KubernetesRequestAuthentication|KubernetesServiceEntry|KubernetesTektonOperator|KubernetesTelemetry)_Terraform",
-      "kind_count": 19
+      "timeout": 1335,
+      "run_regex": "Test(KubernetesAgentSandboxController|KubernetesAgentSubstrate|KubernetesAgentSubstrateCsiDriverConfig|KubernetesAgentSubstrateSandboxConfig|KubernetesAgentSubstrateWorkerPool|KubernetesAltinityOperator|KubernetesAuthorizationPolicy|KubernetesDestinationRule|KubernetesEnvoyFilter|KubernetesFlinkOperator|KubernetesGhaRunnerScaleSetController|KubernetesIstioBaseCrds|KubernetesKeycloakOperator|KubernetesKubeRayOperator|KubernetesOtelOperator|KubernetesPeerAuthentication|KubernetesPlantonOperator|KubernetesRabbitMqOperator|KubernetesRequestAuthentication|KubernetesServiceEntry|KubernetesTektonOperator|KubernetesTelemetry)_Terraform",
+      "kind_count": 22
     }
   ]
 }

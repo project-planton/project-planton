@@ -12,6 +12,6 @@ spec:
   # the live object. A CSIDriverConfig has no status and Substrate's API
   # reports no driver health, so a lane with no CSI driver on the cluster
   # proves the object, not a volume.
-  status: pending_proof
-  validated_provisioners: []
+  status: green
+  validated_provisioners: [pulumi, terraform]
   timeout_minutes: 40

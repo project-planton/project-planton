@@ -550,7 +550,7 @@ func DeployDependencies(ctx context.Context, t testing.TB, repoRoot, kindProvide
 			}
 			docDep.ManifestPath = resolvedManifestPath
 
-			state, err := deployDependency(ctx, t, repoRoot, kindProvider, docDep, backendURL, runID, harness, docIndex)
+			state, err := deployDependency(ctx, t, repoRoot, kindProvider, docDep, backendURL, runID, harness, docIndex, accumulated)
 			if err == nil {
 				state.Referable, err = ReferableValues(state.Outputs, docDep.ManifestPath)
 				err = errors.Wrapf(err, "failed to read what dependents can reference from dependency %q", dep.KindSlug)
@@ -597,7 +597,7 @@ func dependencyEngine(slug string) (string, error) {
 // has its own provider's harness verify it (see dependencyHarness). docIndex
 // disambiguates the deploy label when an install profile deploys several
 // instances of the same kind.
-func deployDependency(ctx context.Context, t testing.TB, repoRoot, kindProvider string, dep Dependency, backendURL, runID string, harness provider.Harness, docIndex int) (DependencyState, error) {
+func deployDependency(ctx context.Context, t testing.TB, repoRoot, kindProvider string, dep Dependency, backendURL, runID string, harness provider.Harness, docIndex int, deployedBefore DependencyOutputs) (DependencyState, error) {
 	if _, err := catalogkindreflect.KindVersionDir(dep.KindSlug); err != nil {
 		return DependencyState{}, err
 	}
@@ -657,7 +657,11 @@ func deployDependency(ctx context.Context, t testing.TB, repoRoot, kindProvider 
 		return state, err
 	}
 
-	verifyCtx := context.WithValue(ctx, provider.ManifestPathKey{}, dep.ManifestPath)
+	// A prerequisite is verified like the scenario it stands in front of:
+	// with the prerequisites deployed before it, so a verifier that proves
+	// the resource through what it composes with (a SandboxConfig through
+	// the control plane's API) can reach them.
+	verifyCtx := verifyContext(ctx, dep.ManifestPath, deployedBefore)
 	if err := depHarness.VerifyDeployed(verifyCtx, dep.KindSlug, state.Outputs); err != nil {
 		return state, errors.Wrapf(err, "dependency %q deployed but verification failed", dep.KindSlug)
 	}

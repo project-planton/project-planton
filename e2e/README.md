@@ -392,7 +392,11 @@ declaring kind -- recursively and cycle-checked. All fixtures join the same
 transitive `value_from` reference resolution the registry chain uses, and
 teardown runs in reverse across the merged chain. Every kind that appears in
 the annotation needs a verifier and an install profile, exactly like a
-registry prerequisite.
+registry prerequisite. Each prerequisite is verified the way the scenario
+is: with the outputs of every prerequisite deployed before it, so a fixture
+whose verifier proves it through what it composes with (a SandboxConfig
+through the Agent Substrate control plane's API) proves itself as a fixture
+too.
 
 **A prerequisite may belong to another provider.** The runner reads each
 prerequisite's provider from its kind's registry metadata: its install
@@ -2101,8 +2105,11 @@ as its execution layer. For each test scenario:
 The `e2e-kubernetes.yaml` GitHub Actions workflow runs the E2E pipeline. **Paused (2026-09-17, GitHub Actions budget):** every `e2e-*.yaml` workflow in this repository is manual-dispatch only; the weekly schedule and the pull-request build-check are retired verbatim in each file's header so they can be restored when the budget allows. The pipeline, when dispatched:
 
 1. **build-check** -- compiles E2E code + go vet
-2. **discover** -- runs `planton e2e discover --output github-matrix` to
-   generate the test matrix from profiles
+2. **discover** -- reads the committed `.github/e2e-matrix-kubernetes.json`
+   (regenerated from the `green` profiles by `make e2e-matrix`, which runs
+   `planton e2e discover --status green --output github-matrix`) and applies
+   the dispatch's tier and provisioner filters, so a profile moved to `green`
+   reaches CI only with a regenerated matrix
 3. **e2e** -- dynamic matrix of (tier x provisioner) cells, each with its own
    kind cluster, using `gotestsum` for JUnit output
 4. **summary** -- aggregates JUnit XML into GitHub Step Summary
