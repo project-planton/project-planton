@@ -8,7 +8,8 @@ spec:
   createNamespace: true
   # Templates, warm pools and claims: what upstream's Python and Go SDKs
   # create a sandbox through (a SandboxClaim bound to a warm pool member).
-  extensions: {}
+  extensions:
+    enabled: true
   router:
     # The SDKs reach a sandbox through sandbox-router-svc. Every request is
     # let through here, so the router's NetworkPolicy (on by default) and the

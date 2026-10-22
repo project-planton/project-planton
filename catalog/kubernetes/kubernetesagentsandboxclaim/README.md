@@ -29,6 +29,8 @@ Products usually create claims at runtime through agent-sandbox's SDKs. Declare 
 
 A claim the template does not allow reports `Ready=False` with reason `EnvVarsInjectionRejected`, `VolumeClaimTemplatesError` or `InvalidMetadata`.
 
+A claim's sandbox keeps the shape it was built with: the controller patches only its pod labels and annotations, so a changed pool, variable or volume reaches the claim's next sandbox.
+
 ## Spec Overview
 
 | Field | Purpose |

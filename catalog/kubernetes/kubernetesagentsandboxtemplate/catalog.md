@@ -95,7 +95,7 @@ The InfraPipeline creates the namespace first, then the template. A Agent Sandbo
 
 These are the most important decisions when configuring a template. Explore the full field reference in the [API Explorer](#api-explorer) tab.
 
-**The template decides isolation for every sandbox.** Set the runtime class (gVisor on GKE Sandbox nodes, a Kata class elsewhere), the security context and the resources here, once. A warm pool rolls its members to a changed template by its update strategy.
+**The template decides isolation for every sandbox.** Set the runtime class (gVisor on GKE Sandbox nodes, a Kata class elsewhere), the security context and the resources here, once. A warm pool rolls its unclaimed members to a changed template by its update strategy; a claimed sandbox keeps running what it was built with.
 
 **The fence is managed by default, and strict.** With no `networkPolicy`, the controller admits ingress only from its router and egress only to the public internet — private ranges, the metadata server and cluster DNS are blocked. Declaring `networkPolicy` replaces that default with exactly your rules; `networkPolicyManagement: Unmanaged` hands the fence to Cilium or a mesh.
 

@@ -6,7 +6,8 @@ spec:
   namespace:
     value: agent-sandbox-system
   createNamespace: true
-  extensions: {}
+  extensions:
+    enabled: true
   controller:
     # A leader-elected hot standby (leader election is on by default), and
     # a reservation the cluster's quotas can count.

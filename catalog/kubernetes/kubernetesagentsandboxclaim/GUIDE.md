@@ -36,6 +36,10 @@ Claim variables are literals that land in the custom resource as written. Keep a
 
 `Delete` and `DeleteForeground` remove an object Planton still declares, and the next apply claims again. They suit runtime claims; keep `Retain` for a declared one.
 
+## Changing a claim that holds a sandbox
+
+Once a claim holds a sandbox, the controller keeps it: it patches the sandbox's pod labels and annotations to match the claim, and nothing else. A changed pool, environment variable or volume claim template reaches the claim's next sandbox, the one it gets after this one expires or is deleted, not the one it holds. The lifecycle applies at once. To move a claim's work onto a changed shape now, delete its sandbox and the controller starts the next one.
+
 ## Finding the sandbox
 
 The controller picks the sandbox's name when it binds: a warm member's `<pool>-<random>` name, or the claim's own name for a cold start. It records it in the claim's status (`sandbox.name`, with the pod IPs and the Service's DNS name when there is one). A caller reads that name and sends it to the controller's router as `X-Sandbox-ID`, with the claim's namespace as `X-Sandbox-Namespace`.

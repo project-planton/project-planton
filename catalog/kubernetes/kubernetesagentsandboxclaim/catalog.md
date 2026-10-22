@@ -87,6 +87,8 @@ These are the most important decisions when configuring a claim. Explore the ful
 
 **Variables and volumes cost a cold start, and need the template's consent.** A running pod cannot take either, so the controller starts a sandbox for the claim. The pool's template must allow them (`envVarsInjectionPolicy`, `volumeClaimTemplatesPolicy`); otherwise the claim reports `Ready=False` with the reason.
 
+**A claim keeps the sandbox it was given.** The controller patches only the sandbox's pod labels and annotations to match the claim, so a changed pool, variable or volume reaches the claim's next sandbox, not the one it holds; the lifecycle applies at once.
+
 **Pod labels must be in an allowed domain.** The controller accepts claim labels only under its allowed label domains (`sandbox.users.io` by default). Anything else is refused with reason `InvalidMetadata`.
 
 **Expiry ends the sandbox; the policy decides the claim.** `lifecycle.shutdownTime` and `ttlSecondsAfterFinished` end the sandbox. `shutdownPolicy` keeps the claim (`Retain`) or deletes it (`Delete`, `DeleteForeground`), and a deleted claim is recreated by the next apply. Keep `Retain` for a declared claim.
