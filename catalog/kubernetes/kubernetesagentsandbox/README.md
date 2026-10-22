@@ -34,6 +34,7 @@ A gVisor or Kata pod cannot be port-forwarded. Callers reach it through the cont
 - **`operatingMode: Suspended`** deletes the pod and keeps the Sandbox, its claims and its Service; `Running` starts a new pod on the same claims. The `Ready` and `Suspended` conditions report what the controller has reached.
 - **`shutdownTime`** ends the sandbox at an absolute RFC 3339 time: the pod and Service are deleted, then `shutdownPolicy` keeps the object (`Retain`, marked `SandboxExpired`) or deletes it (`Delete`).
 - **`volumeClaimTemplates` are fixed** once the sandbox exists; the API server refuses any change to the list.
+- **A pod edit reaches the next pod.** On a running pod the controller updates only its labels and annotations. Every other change to `podTemplate` applies when the controller next creates the pod, so suspend and resume the sandbox to apply it now.
 
 ## Spec Overview
 

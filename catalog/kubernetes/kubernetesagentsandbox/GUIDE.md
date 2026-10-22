@@ -36,6 +36,8 @@ Three ways a sandbox stops running, each keeping a different amount:
 | `shutdownTime` reached, `shutdownPolicy: Delete` | deleted | deleted | deleted |
 | Destroy this resource | deleted | deleted | deleted |
 
+Suspending is also how a pod edit lands. On a pod that already exists, the controller updates only its labels and annotations; a new image, a new environment variable, a new limit or any other change to `podTemplate` waits for the next pod it creates. Apply the edit, then suspend and resume the sandbox (its files stay) to have it now. Until then the Sandbox reads as changed while its pod runs the old specification.
+
 Suspending is the cheap way to idle: CPU and memory come back to the cluster, storage keeps costing. `shutdownTime` is absolute, so a manifest whose time has passed creates a sandbox that is torn down at once; extend a window by moving the time. Prefer `Retain` for a declared sandbox: `Delete` removes an object Planton still declares, and the next apply recreates it (already expired).
 
 ## What the API server checks that the spec cannot

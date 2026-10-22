@@ -110,6 +110,8 @@ These are the most important decisions when configuring a sandbox. Explore the f
 
 **Suspend instead of delete.** `operatingMode: Suspended` deletes the pod and keeps the object, its claims and its Service, giving back CPU and memory while keeping state. `Running` brings it back where it left off.
 
+**A pod edit reaches the next pod.** On a running pod the controller updates only its labels and annotations. Any other change to the pod template applies when the pod is next created, so suspend and resume the sandbox to apply it now.
+
 **Expiry is absolute.** `shutdownTime` ends the sandbox at a moment in time, and `shutdownPolicy` decides whether the object stays (`Retain`, marked expired) or goes (`Delete`, which the next apply recreates). Keep `Retain` for a declared sandbox.
 
 ## Outputs and Dependencies
