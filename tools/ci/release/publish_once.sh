@@ -60,7 +60,21 @@ if published_sha="$(aws s3api head-object --bucket "${R2_BUCKET}" --key "${key}"
   exit 0
 fi
 
-aws s3 cp "${file}" "s3://${R2_BUCKET}/${key}" --endpoint-url "${AWS_ENDPOINT_URL}" \
-  --metadata "sha256=${local_sha}" "$@" >&2
-echo "✓ Uploaded: https://downloads.planton.ai/${key}" >&2
-echo "${local_sha}"
+# R2 answers a burst of parallel uploads with a passing InternalError now and
+# then (v0.6.22's logos, v0.6.23's Pulumi modules); one such answer used to
+# fail the whole lane. A failed upload writes nothing under the key, so trying
+# again is safe; three tries with a growing pause outlast the blip, and a real
+# outage still fails here, loudly.
+for attempt in 1 2 3; do
+  if aws s3 cp "${file}" "s3://${R2_BUCKET}/${key}" --endpoint-url "${AWS_ENDPOINT_URL}" \
+      --metadata "sha256=${local_sha}" "$@" >&2; then
+    echo "✓ Uploaded: https://downloads.planton.ai/${key}" >&2
+    echo "${local_sha}"
+    exit 0
+  fi
+  if [ "${attempt}" -lt 3 ]; then
+    echo "::warning::${key}: upload attempt ${attempt} of 3 failed; trying again in $((attempt * 15))s" >&2
+    sleep $((attempt * 15))
+  fi
+done
+exit 1
