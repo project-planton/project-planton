@@ -23,9 +23,9 @@ spec:
           - Microsoft.DBforPostgreSQL/flexibleServers/firewallRules/delete
           - Microsoft.DBforPostgreSQL/flexibleServers/configurations/read
           - Microsoft.DBforPostgreSQL/flexibleServers/configurations/write
-        provenance: derived
+        provenance: proven
         privilege: ordinary
-        notes: Covers azurerm_postgresql_flexible_server and its child resources (databases, firewall rules, server configurations) -- create, read/refresh, in-place updates, and destroy.
+        notes: "Covers azurerm_postgresql_flexible_server and its child resources (databases, firewall rules, server configurations) -- create, read/refresh, in-place updates, and destroy. Proven 2026-10-23 on dev by the least-privilege lane: an identity holding exactly the kind's rendered permissions deployed, updated and destroyed it."
       - purpose: GrantEntraAdministrators
         actions:
           - Microsoft.DBforPostgreSQL/flexibleServers/administrators/read
