@@ -27,7 +27,7 @@ how far that has progressed.
 
 | | |
 |---|---|
-| Provider schema (parity baseline) | `aws@6.58.0` |
+| Provider schema (parity baseline) | `aws@6.69.1` |
 | Kinds in the catalog | 205 |
 | Distinct provider resources consumed | 524 |
 | Spec fields authored across all kinds | 7471 |
@@ -55,7 +55,7 @@ catalog modules' own provider blocks must carry that judgment too.
 
 | Provider-block args | Matched | Mapped | Module-owned | Excluded | Open gaps | Accounted |
 |---|---|---|---|---|---|---|
-| 365 | 4 | 332 | 0 | 29 | 0 | ✅ |
+| 375 | 4 | 342 | 0 | 29 | 0 | ✅ |
 
 ## Depth: per-kind accounting
 
@@ -65,7 +65,7 @@ excluded with a recorded reason -- and every spec field must reach provider
 surface. **Accounted** means both directions hold with zero unexplained
 gaps. **Proven** means live end-to-end runs passed on every IaC engine the kind runs on.
 
-**205 of 205 kinds are at total accounting; 185 proven live.**
+**182 of 205 kinds are at total accounting; 185 proven live.**
 
 | Kind | Provider args | Matched | Mapped | Excluded | Open gaps | Accounted | Proven |
 |---|---|---|---|---|---|---|---|
@@ -90,11 +90,11 @@ gaps. **Proven** means live end-to-end runs passed on every IaC engine the kind 
 | AwsBatchJobQueue | 12 | 5 | 5 | 2 | 0 | ✅ | ✅ pulumi, terraform |
 | AwsBatchSchedulingPolicy | 8 | 1 | 4 | 3 | 0 | ✅ | ✅ pulumi, terraform |
 | AwsBedrockAgent | 55 | 15 | 25 | 15 | 0 | ✅ | — |
-| AwsBedrockAgentCoreEvaluation | 115 | 10 | 102 | 3 | 0 | ✅ | ✅ pulumi, terraform |
-| AwsBedrockAgentCoreGateway | 167 | 7 | 156 | 4 | 0 | ✅ | ✅ pulumi, terraform |
-| AwsBedrockAgentCoreIdentity | 59 | 10 | 26 | 23 | 0 | ✅ | ✅ pulumi, terraform |
-| AwsBedrockAgentCoreMemory | 27 | 7 | 18 | 2 | 0 | ✅ | ✅ pulumi, terraform |
-| AwsBedrockAgentCoreRuntime | 58 | 7 | 48 | 3 | 0 | ✅ | ✅ pulumi, terraform |
+| AwsBedrockAgentCoreEvaluation | 144 | 10 | 101 | 3 | 41 | ❌ | ✅ pulumi, terraform |
+| AwsBedrockAgentCoreGateway | 200 | 7 | 156 | 4 | 33 | ❌ | ✅ pulumi, terraform |
+| AwsBedrockAgentCoreIdentity | 135 | 10 | 26 | 23 | 76 | ❌ | ✅ pulumi, terraform |
+| AwsBedrockAgentCoreMemory | 43 | 7 | 18 | 2 | 16 | ❌ | ✅ pulumi, terraform |
+| AwsBedrockAgentCoreRuntime | 59 | 7 | 48 | 3 | 1 | ❌ | ✅ pulumi, terraform |
 | AwsBedrockAgentCoreTokenVault | 4 | 1 | 3 | 0 | 0 | ✅ | ✅ pulumi, terraform |
 | AwsBedrockAgentCoreTools | 30 | 11 | 16 | 3 | 0 | ✅ | ✅ pulumi, terraform |
 | AwsBedrockCustomModel | 14 | 7 | 5 | 2 | 0 | ✅ | — |
@@ -102,7 +102,7 @@ gaps. **Proven** means live end-to-end runs passed on every IaC engine the kind 
 | AwsBedrockGuardrail | 53 | 6 | 42 | 5 | 0 | ✅ | ✅ pulumi, terraform |
 | AwsBedrockInferenceProfile | 5 | 2 | 1 | 2 | 0 | ✅ | ✅ pulumi, terraform |
 | AwsBedrockInvocationLogging | 11 | 0 | 11 | 0 | 0 | ✅ | ✅ pulumi, terraform |
-| AwsBedrockKnowledgeBase | 154 | 6 | 130 | 18 | 0 | ✅ | ✅ pulumi, terraform |
+| AwsBedrockKnowledgeBase | 159 | 6 | 130 | 18 | 5 | ❌ | ✅ pulumi, terraform |
 | AwsBedrockModelAccess | 4 | 2 | 1 | 1 | 0 | ✅ | — |
 | AwsBedrockPrompt | 31 | 4 | 24 | 3 | 0 | ✅ | ✅ pulumi, terraform |
 | AwsBedrockProvisionedThroughput | 6 | 4 | 0 | 2 | 0 | ✅ | — |
@@ -113,7 +113,7 @@ gaps. **Proven** means live end-to-end runs passed on every IaC engine the kind 
 | AwsCloudMapNamespace | 35 | 3 | 17 | 15 | 0 | ✅ | ✅ pulumi, terraform |
 | AwsCloudTrail | 30 | 9 | 18 | 3 | 0 | ✅ | ✅ pulumi, terraform |
 | AwsCloudTrailEventDataStore | 19 | 6 | 10 | 3 | 0 | ✅ | — |
-| AwsCloudwatchAlarm | 39 | 24 | 12 | 3 | 0 | ✅ | ✅ pulumi, terraform |
+| AwsCloudwatchAlarm | 42 | 24 | 12 | 3 | 3 | ❌ | ✅ pulumi, terraform |
 | AwsCloudwatchCompositeAlarm | 13 | 10 | 0 | 3 | 0 | ✅ | ✅ pulumi, terraform |
 | AwsCloudwatchDashboard | 3 | 3 | 0 | 0 | 0 | ✅ | ✅ pulumi, terraform |
 | AwsCloudwatchLogAccountPolicy | 6 | 5 | 0 | 1 | 0 | ✅ | ✅ pulumi, terraform |
@@ -121,7 +121,7 @@ gaps. **Proven** means live end-to-end runs passed on every IaC engine the kind 
 | AwsCloudwatchLogDelivery | 31 | 13 | 10 | 8 | 0 | ✅ | ✅ pulumi, terraform |
 | AwsCloudwatchLogGroup | 100 | 19 | 70 | 11 | 0 | ✅ | ✅ pulumi, terraform |
 | AwsCloudwatchLogResourcePolicy | 4 | 4 | 0 | 0 | 0 | ✅ | ✅ pulumi, terraform |
-| AwsCloudwatchSynthetics | 36 | 18 | 11 | 7 | 0 | ✅ | ✅ pulumi, terraform |
+| AwsCloudwatchSynthetics | 37 | 18 | 11 | 7 | 1 | ❌ | ✅ pulumi, terraform |
 | AwsCodeBuildProject | 115 | 96 | 12 | 7 | 0 | ✅ | ✅ pulumi, terraform |
 | AwsCodePipeline | 84 | 4 | 75 | 5 | 0 | ✅ | ✅ pulumi, terraform |
 | AwsCognitoIdentityProvider | 7 | 6 | 1 | 0 | 0 | ✅ | ✅ pulumi, terraform |
@@ -134,7 +134,7 @@ gaps. **Proven** means live end-to-end runs passed on every IaC engine the kind 
 | AwsConfigRule | 72 | 18 | 44 | 10 | 0 | ✅ | ✅ pulumi, terraform |
 | AwsCostAnomalyMonitor | 50 | 29 | 15 | 6 | 0 | ✅ | ✅ pulumi, terraform |
 | AwsCostCategory | 132 | 2 | 127 | 3 | 0 | ✅ | ✅ pulumi, terraform |
-| AwsDlmLifecyclePolicy | 72 | 2 | 63 | 7 | 0 | ✅ | ✅ pulumi, terraform |
+| AwsDlmLifecyclePolicy | 73 | 2 | 63 | 7 | 1 | ❌ | ✅ pulumi, terraform |
 | AwsDocumentDb | 74 | 40 | 8 | 26 | 0 | ✅ | ✅ pulumi, terraform |
 | AwsDynamodb | 71 | 27 | 38 | 6 | 0 | ✅ | ✅ pulumi, terraform |
 | AwsEbsSnapshot | 46 | 13 | 20 | 13 | 0 | ✅ | ✅ pulumi, terraform |
@@ -142,14 +142,14 @@ gaps. **Proven** means live end-to-end runs passed on every IaC engine the kind 
 | AwsEc2Instance | 92 | 42 | 43 | 7 | 0 | ✅ | ✅ pulumi, terraform |
 | AwsEcrRegistrySettings | 36 | 7 | 25 | 4 | 0 | ✅ | ✅ pulumi, terraform |
 | AwsEcrRepo | 17 | 5 | 7 | 5 | 0 | ✅ | ✅ pulumi, terraform |
-| AwsEcsCluster | 80 | 7 | 64 | 9 | 0 | ✅ | ✅ pulumi, terraform |
-| AwsEcsService | 98 | 53 | 34 | 11 | 0 | ✅ | ✅ pulumi, terraform |
+| AwsEcsCluster | 81 | 7 | 64 | 9 | 1 | ❌ | ✅ pulumi, terraform |
+| AwsEcsService | 101 | 53 | 34 | 11 | 3 | ❌ | ✅ pulumi, terraform |
 | AwsEcsTaskDefinition | 56 | 13 | 22 | 21 | 0 | ✅ | ✅ pulumi, terraform |
 | AwsEfsAccessPoint | 11 | 9 | 0 | 2 | 0 | ✅ | ✅ pulumi, terraform |
 | AwsEgressOnlyInternetGateway | 4 | 2 | 0 | 2 | 0 | ✅ | ✅ pulumi, terraform |
 | AwsEksAccessEntry | 14 | 9 | 0 | 5 | 0 | ✅ | ✅ pulumi, terraform |
 | AwsEksAddon | 14 | 10 | 2 | 2 | 0 | ✅ | ✅ pulumi, terraform |
-| AwsEksCluster | 38 | 8 | 20 | 10 | 0 | ✅ | ✅ pulumi, terraform |
+| AwsEksCluster | 46 | 8 | 20 | 10 | 8 | ❌ | ✅ pulumi, terraform |
 | AwsEksFargateProfile | 9 | 4 | 2 | 3 | 0 | ✅ | ✅ pulumi, terraform |
 | AwsEksNodeGroup | 43 | 26 | 12 | 5 | 0 | ✅ | ✅ pulumi, terraform |
 | AwsElasticFileSystem | 34 | 15 | 10 | 9 | 0 | ✅ | ✅ pulumi, terraform |
@@ -163,11 +163,11 @@ gaps. **Proven** means live end-to-end runs passed on every IaC engine the kind 
 | AwsEventBridgeScheduler | 51 | 41 | 4 | 6 | 0 | ✅ | ✅ pulumi, terraform |
 | AwsFsxDataRepositoryAssociation | 11 | 7 | 2 | 2 | 0 | ✅ | — |
 | AwsFsxLustreFileSystem | 34 | 29 | 3 | 2 | 0 | ✅ | — |
-| AwsFsxOntapFileSystem | 21 | 18 | 1 | 2 | 0 | ✅ | — |
+| AwsFsxOntapFileSystem | 22 | 18 | 1 | 2 | 1 | ❌ | — |
 | AwsFsxOntapStorageVirtualMachine | 14 | 6 | 6 | 2 | 0 | ✅ | — |
 | AwsFsxOntapVolume | 34 | 31 | 0 | 3 | 0 | ✅ | — |
-| AwsFsxOpenzfsFileSystem | 35 | 31 | 2 | 2 | 0 | ✅ | — |
-| AwsFsxWindowsFileSystem | 34 | 28 | 2 | 4 | 0 | ✅ | — |
+| AwsFsxOpenzfsFileSystem | 36 | 31 | 2 | 2 | 1 | ❌ | — |
+| AwsFsxWindowsFileSystem | 35 | 28 | 2 | 4 | 1 | ❌ | — |
 | AwsGlobalAccelerator | 28 | 12 | 11 | 5 | 0 | ✅ | ✅ pulumi, terraform |
 | AwsGlueCatalogDatabase | 15 | 10 | 2 | 3 | 0 | ✅ | ✅ pulumi, terraform |
 | AwsGuardDuty | 79 | 27 | 31 | 21 | 0 | ✅ | ✅ pulumi, terraform |
@@ -193,11 +193,11 @@ gaps. **Proven** means live end-to-end runs passed on every IaC engine the kind 
 | AwsLambdaLayer | 20 | 8 | 7 | 5 | 0 | ✅ | ✅ pulumi, terraform |
 | AwsLaunchTemplate | 139 | 99 | 26 | 14 | 0 | ✅ | ✅ pulumi, terraform |
 | AwsLbListener | 76 | 13 | 59 | 4 | 0 | ✅ | ✅ pulumi, terraform |
-| AwsLbListenerRule | 61 | 3 | 55 | 3 | 0 | ✅ | ✅ pulumi, terraform |
+| AwsLbListenerRule | 62 | 3 | 55 | 3 | 1 | ❌ | ✅ pulumi, terraform |
 | AwsLbTargetGroup | 48 | 34 | 8 | 6 | 0 | ✅ | ✅ pulumi, terraform |
 | AwsManagedPrefixList | 8 | 3 | 2 | 3 | 0 | ✅ | ✅ pulumi, terraform |
 | AwsManagedPrometheus | 45 | 12 | 21 | 12 | 0 | ✅ | ✅ pulumi, terraform |
-| AwsManagedPrometheusScraper | 17 | 5 | 10 | 2 | 0 | ✅ | ✅ pulumi, terraform |
+| AwsManagedPrometheusScraper | 18 | 5 | 10 | 2 | 1 | ❌ | ✅ pulumi, terraform |
 | AwsMemcachedElasticache | 48 | 21 | 3 | 24 | 0 | ✅ | ✅ pulumi, terraform |
 | AwsMemorydbAcl | 6 | 2 | 0 | 4 | 0 | ✅ | ✅ pulumi, terraform |
 | AwsMemorydbCluster | 46 | 29 | 3 | 14 | 0 | ✅ | — |
@@ -217,10 +217,10 @@ gaps. **Proven** means live end-to-end runs passed on every IaC engine the kind 
 | AwsOrganizationalUnit | 4 | 1 | 1 | 2 | 0 | ✅ | — |
 | AwsPlantonRunner | 0 | 0 | 0 | 0 | 0 | ✅ | ✅ pulumi, terraform |
 | AwsPrivateCa | 51 | 10 | 23 | 18 | 0 | ✅ | ✅ pulumi, terraform |
-| AwsRdsCluster | 143 | 84 | 19 | 40 | 0 | ✅ | ✅ pulumi, terraform |
-| AwsRdsInstance | 119 | 65 | 20 | 34 | 0 | ✅ | ✅ pulumi, terraform |
+| AwsRdsCluster | 146 | 84 | 19 | 40 | 3 | ❌ | ✅ pulumi, terraform |
+| AwsRdsInstance | 120 | 65 | 20 | 34 | 1 | ❌ | ✅ pulumi, terraform |
 | AwsRdsProxy | 40 | 19 | 11 | 10 | 0 | ✅ | ✅ pulumi, terraform |
-| AwsRedisElasticache | 66 | 40 | 12 | 14 | 0 | ✅ | ✅ pulumi, terraform |
+| AwsRedisElasticache | 68 | 40 | 12 | 14 | 2 | ❌ | ✅ pulumi, terraform |
 | AwsRedshiftCluster | 105 | 61 | 12 | 32 | 0 | ✅ | ✅ pulumi, terraform |
 | AwsRedshiftServerlessNamespace | 15 | 10 | 0 | 5 | 0 | ✅ | ✅ pulumi, terraform |
 | AwsRedshiftServerlessWorkgroup | 33 | 19 | 4 | 10 | 0 | ✅ | ✅ pulumi, terraform |
@@ -249,14 +249,14 @@ gaps. **Proven** means live end-to-end runs passed on every IaC engine the kind 
 | AwsSagemakerModelRegistry | 8 | 1 | 3 | 4 | 0 | ✅ | ✅ pulumi, terraform |
 | AwsSagemakerNotebookInstance | 23 | 9 | 7 | 7 | 0 | ✅ | ✅ pulumi, terraform |
 | AwsSagemakerPipeline | 12 | 2 | 7 | 3 | 0 | ✅ | ✅ pulumi, terraform |
-| AwsSecretsManagerSecret | 34 | 14 | 12 | 8 | 0 | ✅ | ✅ pulumi, terraform |
+| AwsSecretsManagerSecret | 35 | 14 | 12 | 8 | 1 | ❌ | ✅ pulumi, terraform |
 | AwsSecurityGroup | 13 | 5 | 3 | 5 | 0 | ✅ | ✅ pulumi, terraform |
 | AwsServerlessElasticache | 19 | 12 | 4 | 3 | 0 | ✅ | ✅ pulumi, terraform |
 | AwsSesAccountSettings | 6 | 0 | 6 | 0 | 0 | ✅ | ✅ pulumi, terraform |
 | AwsSesConfigurationSet | 27 | 6 | 16 | 5 | 0 | ✅ | ✅ pulumi, terraform |
 | AwsSesEmailIdentity | 19 | 7 | 5 | 7 | 0 | ✅ | ✅ pulumi, terraform |
 | AwsSnsSubscription | 13 | 11 | 2 | 0 | 0 | ✅ | ✅ pulumi, terraform |
-| AwsSnsTopic | 33 | 10 | 18 | 5 | 0 | ✅ | ✅ pulumi, terraform |
+| AwsSnsTopic | 34 | 10 | 18 | 5 | 1 | ❌ | ✅ pulumi, terraform |
 | AwsSqsQueue | 20 | 12 | 4 | 4 | 0 | ✅ | ✅ pulumi, terraform |
 | AwsSsmAssociation | 21 | 17 | 2 | 2 | 0 | ✅ | ✅ pulumi, terraform |
 | AwsSsmDocument | 13 | 5 | 5 | 3 | 0 | ✅ | ✅ pulumi, terraform |
@@ -273,11 +273,11 @@ gaps. **Proven** means live end-to-end runs passed on every IaC engine the kind 
 | AwsVpcPeering | 17 | 7 | 5 | 5 | 0 | ✅ | ✅ pulumi, terraform |
 | AwsWafIpSet | 9 | 5 | 0 | 4 | 0 | ✅ | ✅ pulumi, terraform |
 | AwsWafRegexPatternSet | 8 | 3 | 1 | 4 | 0 | ✅ | ✅ pulumi, terraform |
-| AwsWafWebAcl | 9727 | 7 | 9685 | 35 | 0 | ✅ | ✅ pulumi, terraform |
+| AwsWafWebAcl | 10525 | 7 | 10465 | 35 | 18 | ❌ | ✅ pulumi, terraform |
 
 ## Breadth: every GA resource, one disposition
 
-All resources of `aws@6.58.0` land in exactly one class:
+All resources of `aws@6.69.1` land in exactly one class:
 
 | Disposition | Resources | Meaning |
 |---|---|---|
@@ -288,7 +288,8 @@ All resources of `aws@6.58.0` land in exactly one class:
 | Planned | 461 | judged to be covered by a planned kind or planned composition, not built yet |
 | Deferred | 544 | deliberately not offered, each with the recorded reason |
 | Excluded as deprecated | 129 | deprecated or superseded provider surface |
-| **Total** | **1691** | |
+| UNDISPOSITIONED | 44 | awaiting recorded judgment -- carried loudly in the CI baseline |
+| **Total** | **1735** | |
 
 ## The enumerated record
 

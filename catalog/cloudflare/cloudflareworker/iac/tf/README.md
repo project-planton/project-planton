@@ -26,9 +26,9 @@ The committed `.terraform.lock.hcl` fixes both providers, the Cloudflare one and
 
 `script_id`, `script_name`, `custom_domain_hostnames`, `route_patterns`, plus keyed maps `custom_domain_ids` (by hostname), `route_ids` and `route_zone_ids` (by list index) so import can reassemble `{account_id}/{domain_id}` and `{zone_id}/{route_id}`.
 
-## PARITY-EXCEPTION (Pulumi-only gaps)
+## Feature-gated fields
 
-This engine honors `cache_options`, `exports`, `package_dependencies`, rate-limit `mitigation_timeout`, and traces `propagation_policy`. Pulumi's Cloudflare SDK v6.17.0 has no matching inputs and skips them. Note `propagation_policy` is additionally feature-gated at Cloudflare: without the account's trace-propagation feature the script upload fails with 403 code 100342 (measured live).
+Traces `propagation_policy` needs the account's trace-propagation feature: without it Cloudflare rejects the whole script upload with 403 code 100342 (measured live). Leave it unset unless the account carries the feature.
 
 ## Usage
 

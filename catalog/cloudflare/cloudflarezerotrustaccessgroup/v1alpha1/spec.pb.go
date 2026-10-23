@@ -643,10 +643,6 @@ type CloudflareAccessRule_UserRiskScore struct {
 
 type CloudflareAccessRule_CloudflareAccountMember struct {
 	// Match members of the Cloudflare account (by account ID).
-	//
-	// tofu↔pulumi parity: the Pulumi Cloudflare SDK (v6.17.0) does not yet expose
-	// this rule variant; the Terraform module implements it and the Pulumi module
-	// omits it. See the Pulumi module README.
 	CloudflareAccountMember *AccessRuleCloudflareAccountMember `protobuf:"bytes,26,opt,name=cloudflare_account_member,json=cloudflareAccountMember,proto3,oneof"`
 }
 

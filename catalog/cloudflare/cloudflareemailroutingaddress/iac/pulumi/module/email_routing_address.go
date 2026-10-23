@@ -15,17 +15,19 @@ func emailRoutingAddress(
 ) (*cloudflare.EmailRoutingAddress, error) {
 	spec := locals.CloudflareEmailRoutingAddress.Spec
 
-	// PARITY-EXCEPTION: spec.status (explicit verification-state override) is
-	// not sent -- pulumi-cloudflare SDK v6.17.0's EmailRoutingAddressArgs
-	// carries only AccountId and Email (the terraform provider at v5.23.0 has
-	// `status`). Wire it when the SDK catches up.
+	args := &cloudflare.EmailRoutingAddressArgs{
+		AccountId: pulumi.String(spec.AccountId),
+		Email:     pulumi.String(spec.Email),
+	}
+	// Explicit verification-state override; empty leaves the state to the
+	// normal emailed-link flow.
+	if spec.Status != "" {
+		args.Status = pulumi.String(spec.Status)
+	}
 	created, err := cloudflare.NewEmailRoutingAddress(
 		ctx,
 		"email-routing-address",
-		&cloudflare.EmailRoutingAddressArgs{
-			AccountId: pulumi.String(spec.AccountId),
-			Email:     pulumi.String(spec.Email),
-		},
+		args,
 		pulumi.Provider(cloudflareProvider),
 	)
 	if err != nil {

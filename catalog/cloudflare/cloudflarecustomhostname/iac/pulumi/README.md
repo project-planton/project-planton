@@ -2,7 +2,7 @@
 
 Provisions a `cloudflare_custom_hostname` from the component's IaC input.
 
-## Field-name nuance (pulumi-cloudflare SDK v6.17.0)
+## Field-name nuance
 
 The Pulumi SDK names two ssl fields differently from the Terraform provider; the
 module maps them and behavior is identical:

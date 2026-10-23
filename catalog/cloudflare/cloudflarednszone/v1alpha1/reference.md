@@ -44,6 +44,7 @@ spec:
         value: "192.0.2.1"
       proxied: true
       ttl: 1
+      includeShadowMetadata: true
       settings:
         ipv4Only: true
       tags:
@@ -81,6 +82,8 @@ spec:
     soa:
       minTtl: 1800
       ttl: 3600
+    nameservers:
+      type: cloudflare.advanced
   dnssec:
     enabled: true
   hold:
@@ -181,11 +184,11 @@ spec:
 | `spec.records[].settings.ipv6Only` | `bool` |  |  |  |
 | `spec.records[].settings.flattenCname` | `bool` |  |  |  |
 | `spec.records[].privateRouting` | `bool` |  |  |  |
+| `spec.records[].includeShadowMetadata` | `bool` |  |  |  |
 | `spec.type` | `enum` |  |  |  |
 | `spec.vanityNameServers` | `[]string` |  |  |  |
 | `spec.dnsSettings` | `CloudflareDnsZoneDnsSettings` |  |  |  |
 | `spec.dnsSettings.flattenAllCnames` | `bool` |  |  |  |
-| `spec.dnsSettings.foundationDns` | `bool` |  |  |  |
 | `spec.dnsSettings.multiProvider` | `bool` |  |  |  |
 | `spec.dnsSettings.secondaryOverrides` | `bool` |  |  |  |
 | `spec.dnsSettings.nsTtl` | `uint32` |  |  |  |
@@ -201,6 +204,7 @@ spec:
 | `spec.dnsSettings.nameservers` | `CloudflareDnsZoneNameservers` |  |  |  |
 | `spec.dnsSettings.nameservers.nsSet` | `uint32` |  |  |  |
 | `spec.dnsSettings.nameservers.type` | `string` |  |  |  |
+| `spec.dnsSettings.nameservers.nameserverSetId` | `string` |  |  |  |
 | `spec.dnsSettings.internalDns` | `CloudflareDnsZoneInternalDns` |  |  |  |
 | `spec.dnsSettings.internalDns.referenceZoneId` | `string \| valueFrom` |  |  | CloudflareDnsZone (`status.outputs.zone_id`) |
 | `spec.dnssec` | `CloudflareDnsZoneDnssec` |  |  |  |
@@ -935,6 +939,16 @@ Whether the record is restricted to Cloudflare's internal (private) routing
 and not served over the public internet — used for internal DNS / Magic WAN
 scenarios. Defaults to false (public).
 
+### spec.records[].includeShadowMetadata
+
+`bool` · optional (explicit presence)
+
+Whether Cloudflare includes shadow metadata in the record's API
+response (its `meta` field): whether another record shadows this one, as
+described in Cloudflare's "Shadowed records" reference. It shapes only
+what the API reports back; the record itself serves the same answers
+either way. Cloudflare treats an unset value as false.
+
 ### spec.type
 
 `enum`
@@ -965,22 +979,16 @@ Omit to leave Cloudflare's defaults in place. The non-default values are
 individually entitlement-gated: on an account/zone without the matching
 feature, Cloudflare rejects the write with 400 code 1003 "not available
 to this account or zone" (measured live for SOA tuning, ns_ttl, and
-flatten_all_cnames). On the terraform engine also note the v5.23.0
-provider echoes server defaults into unset optional fields on refresh,
-so a partial dns_settings block re-plans forever -- declare every field
-the server echoes, or omit the block.
+flatten_all_cnames). The provider reads the zone's live ns_ttl back on
+every refresh and holds no default for it, so a block that leaves
+ns_ttl unset re-plans on every apply -- declare it (Cloudflare's
+default is 86400), or omit the block.
 
 ### spec.dnsSettings.flattenAllCnames
 
 `bool`
 
 Flatten all CNAME records in the zone (a CNAME at the apex is always flattened).
-
-### spec.dnsSettings.foundationDns
-
-`bool`
-
-Enable Foundation DNS Advanced Nameservers on the zone.
 
 ### spec.dnsSettings.multiProvider
 
@@ -1082,13 +1090,17 @@ TTL of the SOA record itself (300-86400).
 
 `CloudflareDnsZoneNameservers`
 
-Settings determining the nameservers through which the zone is available.
+The nameservers through which the zone is available -- including
+Cloudflare's Advanced Nameservers (Foundation DNS), selected by type
+"cloudflare.advanced".
 
 ### spec.dnsSettings.nameservers.nsSet
 
 `uint32`
 
-Configured nameserver set to use for this zone (1-5).
+The configured custom nameserver set to use (1-5). Applies to the
+custom.* types only; Cloudflare does not report it back for other
+types.
 
 - rule: ns_set must be 0 (default) or between 1 and 5
 
@@ -1096,10 +1108,24 @@ Configured nameserver set to use for this zone (1-5).
 
 `string`
 
-Nameserver type: one of "cloudflare.standard", "custom.account",
-"custom.tenant", "custom.zone".
+Which nameservers serve the zone:
+  - "cloudflare.standard": Cloudflare's assigned nameservers. Choosing it
+    on a zone that runs Advanced Nameservers turns them off.
+  - "cloudflare.advanced": Advanced Nameservers (Foundation DNS), a paid
+    entitlement. On an account without it Cloudflare refuses the write.
+  - "custom.account", "custom.tenant", "custom.zone": custom nameservers
+    defined at that scope; ns_set picks which configured set.
+  - "custom": an account-owned Custom Nameserver Set, named by
+    nameserver_set_id.
 
-- rule: type must be one of "cloudflare.standard", "custom.account", "custom.tenant", "custom.zone"
+- rule: type must be one of "cloudflare.standard", "cloudflare.advanced", "custom.account", "custom.tenant", "custom.zone", "custom"
+
+### spec.dnsSettings.nameservers.nameserverSetId
+
+`string`
+
+The identifier of the account-owned Custom Nameserver Set that serves
+the zone, for type "custom".
 
 ### spec.dnsSettings.internalDns
 

@@ -25,6 +25,7 @@ spec:
         value: "192.0.2.1"
       proxied: true
       ttl: 1
+      includeShadowMetadata: true
       settings:
         ipv4Only: true
       tags:
@@ -62,6 +63,8 @@ spec:
     soa:
       minTtl: 1800
       ttl: 3600
+    nameservers:
+      type: cloudflare.advanced
   dnssec:
     enabled: true
   hold:

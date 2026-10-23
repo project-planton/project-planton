@@ -375,11 +375,27 @@ func buildActionParameters(ap *cloudflarerulesetv1alpha1.CloudflareRulesetAction
 	args.StripEtags = optBool(ap.StripEtags)
 	args.StripLastModified = optBool(ap.StripLastModified)
 	args.StripSetCookie = optBool(ap.StripSetCookie)
-	// NOTE: `vary` is intentionally not mapped here — the pulumi-cloudflare SDK
-	// (v6.17.0) does not expose it on ruleset action parameters, while the Terraform
-	// provider (v5.21.1) does. The proto models it as the future-proof contract; the
-	// Terraform module provisions it today and Pulumi will once the SDK catches up.
-	// See pkg/iac/MODULE_PARITY.md.
+	if v := ap.Vary; v != nil {
+		vary := &cloudflare.RulesetRuleActionParametersVaryArgs{}
+		if v.Default != nil {
+			vary.Default = &cloudflare.RulesetRuleActionParametersVaryDefaultArgs{Action: pulumi.String(v.Default.Action)}
+		}
+		if len(v.Headers) > 0 {
+			headers := cloudflare.RulesetRuleActionParametersVaryHeadersMap{}
+			for name, h := range v.Headers {
+				header := cloudflare.RulesetRuleActionParametersVaryHeadersArgs{Action: pulumi.String(h.Action)}
+				if len(h.MediaTypes) > 0 {
+					header.MediaTypes = pulumi.ToStringArray(h.MediaTypes)
+				}
+				if len(h.Languages) > 0 {
+					header.Languages = pulumi.ToStringArray(h.Languages)
+				}
+				headers[name] = header
+			}
+			vary.Headers = headers
+		}
+		args.Vary = vary
+	}
 
 	// Log custom fields
 	if len(ap.CookieFields) > 0 {

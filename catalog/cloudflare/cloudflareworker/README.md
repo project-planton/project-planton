@@ -124,7 +124,7 @@ literal id or a `valueFrom` reference to the producing resource:
 - `migrations` — Durable Object class create/rename/transfer/delete. Cloudflare treats the tag as a one-shot: a second apply of the same `newTag` is rejected, so this does not belong in an idempotent live scenario.
 - `keepAssets` / `keepBindings` — keep previous-upload assets or binding types instead of resending them.
 - `usageModel`, `contentType`, `bodyPart` (service-worker syntax; mutually exclusive with `mainModule`).
-- `cacheOptions`, `exports`, `packageDependencies` — honored by tofu. Pulumi's Cloudflare SDK v6.17.0 has no matching inputs and logs a PARITY-EXCEPTION.
+- `cacheOptions`, `exports`, `packageDependencies` — the global CacheW settings, per-entrypoint export configuration, and the npm packages recorded against the build.
 
 `r2Bundle.bucket` is a CloudflareR2Bucket reference (or a literal name).
 

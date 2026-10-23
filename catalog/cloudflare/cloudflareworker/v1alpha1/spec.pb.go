@@ -139,14 +139,11 @@ type CloudflareWorkerSpec struct {
 	// Usage model for invocations: "standard", "bundled", or "unbound". Empty
 	// lets Cloudflare default to "standard".
 	UsageModel string `protobuf:"bytes,34,opt,name=usage_model,json=usageModel,proto3" json:"usage_model,omitempty"`
-	// Global CacheW settings. Pulumi's Cloudflare SDK v6.17.0 has no matching
-	// input — tofu honors this; Pulumi logs a PARITY-EXCEPTION and skips it.
+	// Global CacheW settings.
 	CacheOptions *CloudflareWorkerCacheOptions `protobuf:"bytes,35,opt,name=cache_options,json=cacheOptions,proto3" json:"cache_options,omitempty"`
-	// Per-entrypoint export configuration. Map key is the export name. Pulumi
-	// SDK v6.17.0 has no matching input — tofu honors this; Pulumi skips it.
+	// Per-entrypoint export configuration. Map key is the export name.
 	Exports map[string]*CloudflareWorkerExport `protobuf:"bytes,36,rep,name=exports,proto3" json:"exports,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
-	// npm packages recorded against this Worker build. Pulumi SDK v6.17.0 has
-	// no matching input — tofu honors this; Pulumi skips it.
+	// npm packages recorded against this Worker build.
 	PackageDependencies []*CloudflareWorkerPackageDependency `protobuf:"bytes,37,rep,name=package_dependencies,json=packageDependencies,proto3" json:"package_dependencies,omitempty"`
 	// Version annotations written on this upload (message + tag). The
 	// server-set workers_triggered_by leaf is computed-only and omitted.
@@ -2512,8 +2509,7 @@ func (x *CloudflareWorkerMigrationStep) GetTransferredClasses() []*CloudflareWor
 	return nil
 }
 
-// CloudflareWorkerCacheOptions is the provider cache_options block. Pulumi
-// SDK v6.17.0 has no matching input — tofu honors this; Pulumi skips it.
+// CloudflareWorkerCacheOptions is the provider cache_options block.
 type CloudflareWorkerCacheOptions struct {
 	state             protoimpl.MessageState `protogen:"open.v1"`
 	Enabled           bool                   `protobuf:"varint,1,opt,name=enabled,proto3" json:"enabled,omitempty"`

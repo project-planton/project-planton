@@ -28,4 +28,4 @@ The profile is an account singleton: create and update are the same PATCH, and D
 
 ## SDK Version
 
-Uses `pulumi-cloudflare` v6.19.0.
+Uses `pulumi-cloudflare` SDK v6 (Cloudflare Terraform provider v5 line).

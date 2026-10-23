@@ -122,22 +122,11 @@ message MongodbKubernetesSpec {
 
 Existing deployments continue to work. New features are opt-in.
 
-### Deprecation Pattern
+### Retiring a Field
 
-When replacing fields, keep old ones and document the migration path:
+A field the provider or service retires, or one a better design replaces, is deleted, and the message's remaining fields are renumbered sequentially in declaration order. The catalog carries no `reserved` statements and no deprecated twin fields with precedence logic in the modules: two ways to say one thing is a choice the manifest author should never face, and a module branch nobody exercises.
 
-```protobuf
-message ClickHouseKubernetesSpec {
-  // DEPRECATED: Use coordination field instead
-  // Will be removed in v2.0
-  ClickHouseKubernetesZookeeperConfig zookeeper = 3 [deprecated = true];
-  
-  // New field with better design
-  ClickHouseKubernetesCoordinationConfig coordination = 6;
-}
-```
-
-Implementation code handles both fields with priority logic (new field takes precedence).
+Renumbering is safe because nothing persists a catalog spec by field number: manifests, stored records, and stack inputs all address fields by name. A manifest that still sets the deleted field fails validation naming it, which is the migration signal. Where the field had a successor, the successor's own comment teaches how to express what the old field meant (Cloudflare's Advanced Nameservers are `nameservers.type: cloudflare.advanced`, not a separate switch), so the author reading the spec finds the answer at the field they need. Stored records that still carry the field are aligned by hand on each instance that holds them, in the same release.
 
 ## Practical Guidelines
 

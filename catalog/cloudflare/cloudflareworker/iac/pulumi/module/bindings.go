@@ -174,12 +174,14 @@ func buildBindings(spec *cloudflareworkerv1alpha1.CloudflareWorkerSpec) cloudfl.
 			Namespace: pulumi.String(b.Namespace),
 		}
 		if s := b.Simple; s != nil {
-			// PARITY-EXCEPTION: pulumi-cloudflare SDK v6.17.0's Simple args
-			// have Limit + Period only — mitigation_timeout is tofu-only.
-			args.Simple = &cloudfl.WorkersScriptBindingSimpleArgs{
+			simple := &cloudfl.WorkersScriptBindingSimpleArgs{
 				Limit:  pulumi.Float64(s.Limit),
 				Period: pulumi.Int(int(s.Period)),
 			}
+			if s.MitigationTimeout > 0 {
+				simple.MitigationTimeout = pulumi.Int(int(s.MitigationTimeout))
+			}
+			args.Simple = simple
 		}
 		bindings = append(bindings, args)
 	}

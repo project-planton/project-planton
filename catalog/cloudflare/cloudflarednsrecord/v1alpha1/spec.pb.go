@@ -233,8 +233,14 @@ type CloudflareDnsRecordSpec struct {
 	// and not served over the public internet — used for internal DNS / Magic WAN
 	// scenarios. Defaults to false (public).
 	PrivateRouting bool `protobuf:"varint,24,opt,name=private_routing,json=privateRouting,proto3" json:"private_routing,omitempty"`
-	unknownFields  protoimpl.UnknownFields
-	sizeCache      protoimpl.SizeCache
+	// Whether Cloudflare includes shadow metadata in the record's API
+	// response (its `meta` field): whether another record shadows this one, as
+	// described in Cloudflare's "Shadowed records" reference. It shapes only
+	// what the API reports back; the record itself serves the same answers
+	// either way. Cloudflare treats an unset value as false.
+	IncludeShadowMetadata *bool `protobuf:"varint,25,opt,name=include_shadow_metadata,json=includeShadowMetadata,proto3,oneof" json:"include_shadow_metadata,omitempty"`
+	unknownFields         protoimpl.UnknownFields
+	sizeCache             protoimpl.SizeCache
 }
 
 func (x *CloudflareDnsRecordSpec) Reset() {
@@ -464,6 +470,13 @@ func (x *CloudflareDnsRecordSpec) GetSettings() *CloudflareDnsRecordSettings {
 func (x *CloudflareDnsRecordSpec) GetPrivateRouting() bool {
 	if x != nil {
 		return x.PrivateRouting
+	}
+	return false
+}
+
+func (x *CloudflareDnsRecordSpec) GetIncludeShadowMetadata() bool {
+	if x != nil && x.IncludeShadowMetadata != nil {
+		return *x.IncludeShadowMetadata
 	}
 	return false
 }
@@ -1636,7 +1649,7 @@ var File_catalog_cloudflare_cloudflarednsrecord_v1alpha1_spec_proto protoreflect
 
 const file_catalog_cloudflare_cloudflarednsrecord_v1alpha1_spec_proto_rawDesc = "" +
 	"\n" +
-	":catalog/cloudflare/cloudflarednsrecord/v1alpha1/spec.proto\x123dev.planton.cloudflare.cloudflarednsrecord.v1alpha1\x1a\x1bbuf/validate/validate.proto\x1a&shared/foreignkey/v1/foreign_key.proto\"\xcf\x1f\n" +
+	":catalog/cloudflare/cloudflarednsrecord/v1alpha1/spec.proto\x123dev.planton.cloudflare.cloudflarednsrecord.v1alpha1\x1a\x1bbuf/validate/validate.proto\x1a&shared/foreignkey/v1/foreign_key.proto\"\xa8 \n" +
 	"\x17CloudflareDnsRecordSpec\x12r\n" +
 	"\azone_id\x18\x01 \x01(\v22.dev.planton.shared.foreignkey.v1.StringValueOrRefB%\xbaH\x03\xc8\x01\x01\x88\xd4a\xd86\x92\xd4a\x16status.outputs.zone_idR\x06zoneId\x12\x1a\n" +
 	"\x04name\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04name\x12\xd8\x01\n" +
@@ -1665,7 +1678,8 @@ const file_catalog_cloudflare_cloudflarednsrecord_v1alpha1_spec_proto_rawDesc = 
 	"\x03uri\x18\x15 \x01(\v2<.dev.planton.cloudflare.cloudflarednsrecord.v1alpha1.UriDataH\x00R\x03uri\x12\x12\n" +
 	"\x04tags\x18\x16 \x03(\tR\x04tags\x12l\n" +
 	"\bsettings\x18\x17 \x01(\v2P.dev.planton.cloudflare.cloudflarednsrecord.v1alpha1.CloudflareDnsRecordSettingsR\bsettings\x12'\n" +
-	"\x0fprivate_routing\x18\x18 \x01(\bR\x0eprivateRouting\"\xfa\x01\n" +
+	"\x0fprivate_routing\x18\x18 \x01(\bR\x0eprivateRouting\x12;\n" +
+	"\x17include_shadow_metadata\x18\x19 \x01(\bH\x01R\x15includeShadowMetadata\x88\x01\x01\"\xfa\x01\n" +
 	"\n" +
 	"RecordType\x12\x1b\n" +
 	"\x17record_type_unspecified\x10\x00\x12\x05\n" +
@@ -1699,7 +1713,8 @@ const file_catalog_cloudflare_cloudflarednsrecord_v1alpha1_spec_proto_rawDesc = 
 	"\x15spec.content_xor_data\x12Pset exactly one of content (simple records) or a data block (structured records)\x1a\xfe\x01has(this.content) != (has(this.caa) || has(this.cert) || has(this.dnskey) || has(this.ds) || has(this.https) || has(this.loc) || has(this.naptr) || has(this.smimea) || has(this.srv) || has(this.sshfp) || has(this.svcb) || has(this.tlsa) || has(this.uri))\x1a\xb9\x03\n" +
 	"\"spec.structured_types_require_data\x12athis record type requires its structured data block (e.g. SRV needs data.srv, CAA needs data.caa)\x1a\xaf\x02!(this.type in [6, 8, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21]) || (has(this.caa) || has(this.cert) || has(this.dnskey) || has(this.ds) || has(this.https) || has(this.loc) || has(this.naptr) || has(this.smimea) || has(this.srv) || has(this.sshfp) || has(this.svcb) || has(this.tlsa) || has(this.uri))\x1a\xdc\x04\n" +
 	"\x1cspec.data_block_matches_type\x126the supplied data block does not match the record type\x1a\x83\x04(!has(this.caa) || this.type == 8) && (!has(this.cert) || this.type == 11) && (!has(this.dnskey) || this.type == 12) && (!has(this.ds) || this.type == 13) && (!has(this.https) || this.type == 14) && (!has(this.loc) || this.type == 15) && (!has(this.naptr) || this.type == 16) && (!has(this.smimea) || this.type == 17) && (!has(this.srv) || this.type == 6) && (!has(this.sshfp) || this.type == 18) && (!has(this.svcb) || this.type == 19) && (!has(this.tlsa) || this.type == 20) && (!has(this.uri) || this.type == 21)B\x06\n" +
-	"\x04data\"|\n" +
+	"\x04dataB\x1a\n" +
+	"\x18_include_shadow_metadata\"|\n" +
 	"\x1bCloudflareDnsRecordSettings\x12\x1b\n" +
 	"\tipv4_only\x18\x01 \x01(\bR\bipv4Only\x12\x1b\n" +
 	"\tipv6_only\x18\x02 \x01(\bR\bipv6Only\x12#\n" +

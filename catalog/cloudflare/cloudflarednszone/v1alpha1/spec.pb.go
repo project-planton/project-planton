@@ -294,10 +294,10 @@ type CloudflareDnsZoneSpec struct {
 	// individually entitlement-gated: on an account/zone without the matching
 	// feature, Cloudflare rejects the write with 400 code 1003 "not available
 	// to this account or zone" (measured live for SOA tuning, ns_ttl, and
-	// flatten_all_cnames). On the terraform engine also note the v5.23.0
-	// provider echoes server defaults into unset optional fields on refresh,
-	// so a partial dns_settings block re-plans forever -- declare every field
-	// the server echoes, or omit the block.
+	// flatten_all_cnames). The provider reads the zone's live ns_ttl back on
+	// every refresh and holds no default for it, so a block that leaves
+	// ns_ttl unset re-plans on every apply -- declare it (Cloudflare's
+	// default is 86400), or omit the block.
 	DnsSettings *CloudflareDnsZoneDnsSettings `protobuf:"bytes,7,opt,name=dns_settings,json=dnsSettings,proto3" json:"dns_settings,omitempty"`
 	// Optional DNSSEC configuration. Enable to have Cloudflare sign the zone; the
 	// DS record material to hand to your registrar is published as outputs.
@@ -499,8 +499,14 @@ type CloudflareDnsZoneRecord struct {
 	// and not served over the public internet — used for internal DNS / Magic WAN
 	// scenarios. Defaults to false (public).
 	PrivateRouting bool `protobuf:"varint,24,opt,name=private_routing,json=privateRouting,proto3" json:"private_routing,omitempty"`
-	unknownFields  protoimpl.UnknownFields
-	sizeCache      protoimpl.SizeCache
+	// Whether Cloudflare includes shadow metadata in the record's API
+	// response (its `meta` field): whether another record shadows this one, as
+	// described in Cloudflare's "Shadowed records" reference. It shapes only
+	// what the API reports back; the record itself serves the same answers
+	// either way. Cloudflare treats an unset value as false.
+	IncludeShadowMetadata *bool `protobuf:"varint,25,opt,name=include_shadow_metadata,json=includeShadowMetadata,proto3,oneof" json:"include_shadow_metadata,omitempty"`
+	unknownFields         protoimpl.UnknownFields
+	sizeCache             protoimpl.SizeCache
 }
 
 func (x *CloudflareDnsZoneRecord) Reset() {
@@ -727,6 +733,13 @@ func (x *CloudflareDnsZoneRecord) GetPrivateRouting() bool {
 	return false
 }
 
+func (x *CloudflareDnsZoneRecord) GetIncludeShadowMetadata() bool {
+	if x != nil && x.IncludeShadowMetadata != nil {
+		return *x.IncludeShadowMetadata
+	}
+	return false
+}
+
 type isCloudflareDnsZoneRecord_Data interface {
 	isCloudflareDnsZoneRecord_Data()
 }
@@ -897,25 +910,25 @@ type CloudflareDnsZoneDnsSettings struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Flatten all CNAME records in the zone (a CNAME at the apex is always flattened).
 	FlattenAllCnames bool `protobuf:"varint,1,opt,name=flatten_all_cnames,json=flattenAllCnames,proto3" json:"flatten_all_cnames,omitempty"`
-	// Enable Foundation DNS Advanced Nameservers on the zone.
-	FoundationDns bool `protobuf:"varint,2,opt,name=foundation_dns,json=foundationDns,proto3" json:"foundation_dns,omitempty"`
 	// Enable multi-provider DNS (activates the zone even with non-Cloudflare NS
 	// records and respects apex NS records during outbound transfers).
-	MultiProvider bool `protobuf:"varint,3,opt,name=multi_provider,json=multiProvider,proto3" json:"multi_provider,omitempty"`
+	MultiProvider bool `protobuf:"varint,2,opt,name=multi_provider,json=multiProvider,proto3" json:"multi_provider,omitempty"`
 	// Allow a secondary zone to use proxied override records and apex CNAME
 	// flattening.
-	SecondaryOverrides bool `protobuf:"varint,4,opt,name=secondary_overrides,json=secondaryOverrides,proto3" json:"secondary_overrides,omitempty"`
+	SecondaryOverrides bool `protobuf:"varint,3,opt,name=secondary_overrides,json=secondaryOverrides,proto3" json:"secondary_overrides,omitempty"`
 	// Time to live (TTL), in seconds, for the zone's nameserver (NS) records.
 	// Leave 0 to use the default; otherwise 30-86400.
-	NsTtl uint32 `protobuf:"varint,5,opt,name=ns_ttl,json=nsTtl,proto3" json:"ns_ttl,omitempty"`
+	NsTtl uint32 `protobuf:"varint,4,opt,name=ns_ttl,json=nsTtl,proto3" json:"ns_ttl,omitempty"`
 	// Whether the zone is a standard zone or a CDN/DNS-only zone.
-	ZoneMode CloudflareDnsZoneSpec_ZoneMode `protobuf:"varint,6,opt,name=zone_mode,json=zoneMode,proto3,enum=dev.planton.cloudflare.cloudflarednszone.v1alpha1.CloudflareDnsZoneSpec_ZoneMode" json:"zone_mode,omitempty"`
+	ZoneMode CloudflareDnsZoneSpec_ZoneMode `protobuf:"varint,5,opt,name=zone_mode,json=zoneMode,proto3,enum=dev.planton.cloudflare.cloudflarednszone.v1alpha1.CloudflareDnsZoneSpec_ZoneMode" json:"zone_mode,omitempty"`
 	// Components of the zone's SOA record.
-	Soa *CloudflareDnsZoneSoa `protobuf:"bytes,7,opt,name=soa,proto3" json:"soa,omitempty"`
-	// Settings determining the nameservers through which the zone is available.
-	Nameservers *CloudflareDnsZoneNameservers `protobuf:"bytes,8,opt,name=nameservers,proto3" json:"nameservers,omitempty"`
+	Soa *CloudflareDnsZoneSoa `protobuf:"bytes,6,opt,name=soa,proto3" json:"soa,omitempty"`
+	// The nameservers through which the zone is available -- including
+	// Cloudflare's Advanced Nameservers (Foundation DNS), selected by type
+	// "cloudflare.advanced".
+	Nameservers *CloudflareDnsZoneNameservers `protobuf:"bytes,7,opt,name=nameservers,proto3" json:"nameservers,omitempty"`
 	// Settings for an internal zone (only relevant when type is "internal").
-	InternalDns   *CloudflareDnsZoneInternalDns `protobuf:"bytes,9,opt,name=internal_dns,json=internalDns,proto3" json:"internal_dns,omitempty"`
+	InternalDns   *CloudflareDnsZoneInternalDns `protobuf:"bytes,8,opt,name=internal_dns,json=internalDns,proto3" json:"internal_dns,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -953,13 +966,6 @@ func (*CloudflareDnsZoneDnsSettings) Descriptor() ([]byte, []int) {
 func (x *CloudflareDnsZoneDnsSettings) GetFlattenAllCnames() bool {
 	if x != nil {
 		return x.FlattenAllCnames
-	}
-	return false
-}
-
-func (x *CloudflareDnsZoneDnsSettings) GetFoundationDns() bool {
-	if x != nil {
-		return x.FoundationDns
 	}
 	return false
 }
@@ -1115,16 +1121,30 @@ func (x *CloudflareDnsZoneSoa) GetTtl() uint32 {
 	return 0
 }
 
-// CloudflareDnsZoneNameservers selects the nameserver set for the zone.
+// CloudflareDnsZoneNameservers selects the nameservers that serve the zone.
+// Setting the block means choosing a type: Cloudflare requires it on every
+// write of nameserver settings.
 type CloudflareDnsZoneNameservers struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// Configured nameserver set to use for this zone (1-5).
+	// The configured custom nameserver set to use (1-5). Applies to the
+	// custom.* types only; Cloudflare does not report it back for other
+	// types.
 	NsSet uint32 `protobuf:"varint,1,opt,name=ns_set,json=nsSet,proto3" json:"ns_set,omitempty"`
-	// Nameserver type: one of "cloudflare.standard", "custom.account",
-	// "custom.tenant", "custom.zone".
-	Type          string `protobuf:"bytes,2,opt,name=type,proto3" json:"type,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	// Which nameservers serve the zone:
+	//   - "cloudflare.standard": Cloudflare's assigned nameservers. Choosing it
+	//     on a zone that runs Advanced Nameservers turns them off.
+	//   - "cloudflare.advanced": Advanced Nameservers (Foundation DNS), a paid
+	//     entitlement. On an account without it Cloudflare refuses the write.
+	//   - "custom.account", "custom.tenant", "custom.zone": custom nameservers
+	//     defined at that scope; ns_set picks which configured set.
+	//   - "custom": an account-owned Custom Nameserver Set, named by
+	//     nameserver_set_id.
+	Type string `protobuf:"bytes,2,opt,name=type,proto3" json:"type,omitempty"`
+	// The identifier of the account-owned Custom Nameserver Set that serves
+	// the zone, for type "custom".
+	NameserverSetId string `protobuf:"bytes,3,opt,name=nameserver_set_id,json=nameserverSetId,proto3" json:"nameserver_set_id,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
 }
 
 func (x *CloudflareDnsZoneNameservers) Reset() {
@@ -1167,6 +1187,13 @@ func (x *CloudflareDnsZoneNameservers) GetNsSet() uint32 {
 func (x *CloudflareDnsZoneNameservers) GetType() string {
 	if x != nil {
 		return x.Type
+	}
+	return ""
+}
+
+func (x *CloudflareDnsZoneNameservers) GetNameserverSetId() string {
+	if x != nil {
+		return x.NameserverSetId
 	}
 	return ""
 }
@@ -2468,7 +2495,7 @@ const file_catalog_cloudflare_cloudflarednszone_v1alpha1_spec_proto_rawDesc = ""
 	"\x15zone_mode_unspecified\x10\x00\x12\f\n" +
 	"\bstandard\x10\x01\x12\f\n" +
 	"\bcdn_only\x10\x02\x12\f\n" +
-	"\bdns_only\x10\x03\"\xcb\x1e\n" +
+	"\bdns_only\x10\x03\"\xa4\x1f\n" +
 	"\x17CloudflareDnsZoneRecord\x12\x1a\n" +
 	"\x04name\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04name\x12\xd6\x01\n" +
 	"\x04type\x18\x02 \x01(\x0e2U.dev.planton.cloudflare.cloudflarednszone.v1alpha1.CloudflareDnsZoneRecord.RecordTypeBk\xbaHh\xba\x01]\n" +
@@ -2496,7 +2523,8 @@ const file_catalog_cloudflare_cloudflarednszone_v1alpha1_spec_proto_rawDesc = ""
 	"\x03uri\x18\x15 \x01(\v2:.dev.planton.cloudflare.cloudflarednszone.v1alpha1.UriDataH\x00R\x03uri\x12\x12\n" +
 	"\x04tags\x18\x16 \x03(\tR\x04tags\x12n\n" +
 	"\bsettings\x18\x17 \x01(\v2R.dev.planton.cloudflare.cloudflarednszone.v1alpha1.CloudflareDnsZoneRecordSettingsR\bsettings\x12'\n" +
-	"\x0fprivate_routing\x18\x18 \x01(\bR\x0eprivateRouting\"\xfa\x01\n" +
+	"\x0fprivate_routing\x18\x18 \x01(\bR\x0eprivateRouting\x12;\n" +
+	"\x17include_shadow_metadata\x18\x19 \x01(\bH\x01R\x15includeShadowMetadata\x88\x01\x01\"\xfa\x01\n" +
 	"\n" +
 	"RecordType\x12\x1b\n" +
 	"\x17record_type_unspecified\x10\x00\x12\x05\n" +
@@ -2530,22 +2558,22 @@ const file_catalog_cloudflare_cloudflarednszone_v1alpha1_spec_proto_rawDesc = ""
 	"\x17record.content_xor_data\x12Pset exactly one of content (simple records) or a data block (structured records)\x1a\xfe\x01has(this.content) != (has(this.caa) || has(this.cert) || has(this.dnskey) || has(this.ds) || has(this.https) || has(this.loc) || has(this.naptr) || has(this.smimea) || has(this.srv) || has(this.sshfp) || has(this.svcb) || has(this.tlsa) || has(this.uri))\x1a\xbb\x03\n" +
 	"$record.structured_types_require_data\x12athis record type requires its structured data block (e.g. SRV needs data.srv, CAA needs data.caa)\x1a\xaf\x02!(this.type in [6, 8, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21]) || (has(this.caa) || has(this.cert) || has(this.dnskey) || has(this.ds) || has(this.https) || has(this.loc) || has(this.naptr) || has(this.smimea) || has(this.srv) || has(this.sshfp) || has(this.svcb) || has(this.tlsa) || has(this.uri))\x1a\xde\x04\n" +
 	"\x1erecord.data_block_matches_type\x126the supplied data block does not match the record type\x1a\x83\x04(!has(this.caa) || this.type == 8) && (!has(this.cert) || this.type == 11) && (!has(this.dnskey) || this.type == 12) && (!has(this.ds) || this.type == 13) && (!has(this.https) || this.type == 14) && (!has(this.loc) || this.type == 15) && (!has(this.naptr) || this.type == 16) && (!has(this.smimea) || this.type == 17) && (!has(this.srv) || this.type == 6) && (!has(this.sshfp) || this.type == 18) && (!has(this.svcb) || this.type == 19) && (!has(this.tlsa) || this.type == 20) && (!has(this.uri) || this.type == 21)B\x06\n" +
-	"\x04data\"\x80\x01\n" +
+	"\x04dataB\x1a\n" +
+	"\x18_include_shadow_metadata\"\x80\x01\n" +
 	"\x1fCloudflareDnsZoneRecordSettings\x12\x1b\n" +
 	"\tipv4_only\x18\x01 \x01(\bR\bipv4Only\x12\x1b\n" +
 	"\tipv6_only\x18\x02 \x01(\bR\bipv6Only\x12#\n" +
-	"\rflatten_cname\x18\x03 \x01(\bR\fflattenCname\"\x9e\x06\n" +
+	"\rflatten_cname\x18\x03 \x01(\bR\fflattenCname\"\xf7\x05\n" +
 	"\x1cCloudflareDnsZoneDnsSettings\x12,\n" +
 	"\x12flatten_all_cnames\x18\x01 \x01(\bR\x10flattenAllCnames\x12%\n" +
-	"\x0efoundation_dns\x18\x02 \x01(\bR\rfoundationDns\x12%\n" +
-	"\x0emulti_provider\x18\x03 \x01(\bR\rmultiProvider\x12/\n" +
-	"\x13secondary_overrides\x18\x04 \x01(\bR\x12secondaryOverrides\x12\x9e\x01\n" +
-	"\x06ns_ttl\x18\x05 \x01(\rB\x86\x01\xbaH\x82\x01\xba\x01\x7f\n" +
+	"\x0emulti_provider\x18\x02 \x01(\bR\rmultiProvider\x12/\n" +
+	"\x13secondary_overrides\x18\x03 \x01(\bR\x12secondaryOverrides\x12\x9e\x01\n" +
+	"\x06ns_ttl\x18\x04 \x01(\rB\x86\x01\xbaH\x82\x01\xba\x01\x7f\n" +
 	"\x12ns_ttl.valid_range\x12:ns_ttl must be 0 (default) or between 30 and 86400 seconds\x1a-this == 0u || (this >= 30u && this <= 86400u)R\x05nsTtl\x12n\n" +
-	"\tzone_mode\x18\x06 \x01(\x0e2Q.dev.planton.cloudflare.cloudflarednszone.v1alpha1.CloudflareDnsZoneSpec.ZoneModeR\bzoneMode\x12Y\n" +
-	"\x03soa\x18\a \x01(\v2G.dev.planton.cloudflare.cloudflarednszone.v1alpha1.CloudflareDnsZoneSoaR\x03soa\x12q\n" +
-	"\vnameservers\x18\b \x01(\v2O.dev.planton.cloudflare.cloudflarednszone.v1alpha1.CloudflareDnsZoneNameserversR\vnameservers\x12r\n" +
-	"\finternal_dns\x18\t \x01(\v2O.dev.planton.cloudflare.cloudflarednszone.v1alpha1.CloudflareDnsZoneInternalDnsR\vinternalDns\"\x8b\a\n" +
+	"\tzone_mode\x18\x05 \x01(\x0e2Q.dev.planton.cloudflare.cloudflarednszone.v1alpha1.CloudflareDnsZoneSpec.ZoneModeR\bzoneMode\x12Y\n" +
+	"\x03soa\x18\x06 \x01(\v2G.dev.planton.cloudflare.cloudflarednszone.v1alpha1.CloudflareDnsZoneSoaR\x03soa\x12q\n" +
+	"\vnameservers\x18\a \x01(\v2O.dev.planton.cloudflare.cloudflarednszone.v1alpha1.CloudflareDnsZoneNameserversR\vnameservers\x12r\n" +
+	"\finternal_dns\x18\b \x01(\v2O.dev.planton.cloudflare.cloudflarednszone.v1alpha1.CloudflareDnsZoneInternalDnsR\vinternalDns\"\x8b\a\n" +
 	"\x14CloudflareDnsZoneSoa\x12\xae\x01\n" +
 	"\x06expire\x18\x01 \x01(\rB\x95\x01\xbaH\x91\x01\xba\x01\x8d\x01\n" +
 	"\x16soa_expire.valid_range\x12?expire must be 0 (default) or between 86400 and 2419200 seconds\x1a2this == 0u || (this >= 86400u && this <= 2419200u)R\x06expire\x12\xa7\x01\n" +
@@ -2558,12 +2586,13 @@ const file_catalog_cloudflare_cloudflarednszone_v1alpha1_spec_proto_rawDesc = ""
 	"\x15soa_retry.valid_range\x12:retry must be 0 (default) or between 600 and 86400 seconds\x1a.this == 0u || (this >= 600u && this <= 86400u)R\x05retry\x12\x14\n" +
 	"\x05rname\x18\x06 \x01(\tR\x05rname\x12\x99\x01\n" +
 	"\x03ttl\x18\a \x01(\rB\x86\x01\xbaH\x82\x01\xba\x01\x7f\n" +
-	"\x13soa_ttl.valid_range\x128ttl must be 0 (default) or between 300 and 86400 seconds\x1a.this == 0u || (this >= 300u && this <= 86400u)R\x03ttl\"\xa0\x03\n" +
+	"\x13soa_ttl.valid_range\x128ttl must be 0 (default) or between 300 and 86400 seconds\x1a.this == 0u || (this >= 300u && this <= 86400u)R\x03ttl\"\x80\x04\n" +
 	"\x1cCloudflareDnsZoneNameservers\x12\x8a\x01\n" +
 	"\x06ns_set\x18\x01 \x01(\rBs\xbaHp\xba\x01m\n" +
-	"\x12ns_set.valid_range\x12-ns_set must be 0 (default) or between 1 and 5\x1a(this == 0u || (this >= 1u && this <= 5u)R\x05nsSet\x12\xf2\x01\n" +
-	"\x04type\x18\x02 \x01(\tB\xdd\x01\xbaH\xd9\x01\xba\x01\xd5\x01\n" +
-	"\x15nameserver_type.valid\x12[type must be one of \"cloudflare.standard\", \"custom.account\", \"custom.tenant\", \"custom.zone\"\x1a_this == '' || this in ['cloudflare.standard', 'custom.account', 'custom.tenant', 'custom.zone']R\x04type\"\xa4\x01\n" +
+	"\x12ns_set.valid_range\x12-ns_set must be 0 (default) or between 1 and 5\x1a(this == 0u || (this >= 1u && this <= 5u)R\x05nsSet\x12\xa6\x02\n" +
+	"\x04type\x18\x02 \x01(\tB\x91\x02\xbaH\x8d\x02\xba\x01\x89\x02\n" +
+	"\x15nameserver_type.valid\x12|type must be one of \"cloudflare.standard\", \"cloudflare.advanced\", \"custom.account\", \"custom.tenant\", \"custom.zone\", \"custom\"\x1arthis in ['cloudflare.standard', 'cloudflare.advanced', 'custom.account', 'custom.tenant', 'custom.zone', 'custom']R\x04type\x12*\n" +
+	"\x11nameserver_set_id\x18\x03 \x01(\tR\x0fnameserverSetId\"\xa4\x01\n" +
 	"\x1cCloudflareDnsZoneInternalDns\x12\x83\x01\n" +
 	"\x11reference_zone_id\x18\x01 \x01(\v22.dev.planton.shared.foreignkey.v1.StringValueOrRefB#\x88\xd4a\xd86\x92\xd4a\x16status.outputs.zone_id\x98\xd4a\x01R\x0freferenceZoneId\"\x91\x01\n" +
 	"\x17CloudflareDnsZoneDnssec\x12\x18\n" +

@@ -63,10 +63,10 @@ message CloudflareDnsZoneSpec {
   // individually entitlement-gated: on an account/zone without the matching
   // feature, Cloudflare rejects the write with 400 code 1003 "not available
   // to this account or zone" (measured live for SOA tuning, ns_ttl, and
-  // flatten_all_cnames). On the terraform engine also note the v5.23.0
-  // provider echoes server defaults into unset optional fields on refresh,
-  // so a partial dns_settings block re-plans forever -- declare every field
-  // the server echoes, or omit the block.
+  // flatten_all_cnames). The provider reads the zone's live ns_ttl back on
+  // every refresh and holds no default for it, so a block that leaves
+  // ns_ttl unset re-plans on every apply -- declare it (Cloudflare's
+  // default is 86400), or omit the block.
   CloudflareDnsZoneDnsSettings dns_settings = 7;
 
   // Optional DNSSEC configuration. Enable to have Cloudflare sign the zone; the
@@ -305,6 +305,13 @@ message CloudflareDnsZoneRecord {
   // and not served over the public internet — used for internal DNS / Magic WAN
   // scenarios. Defaults to false (public).
   bool private_routing = 24;
+
+  // Whether Cloudflare includes shadow metadata in the record's API
+  // response (its `meta` field): whether another record shadows this one, as
+  // described in Cloudflare's "Shadowed records" reference. It shapes only
+  // what the API reports back; the record itself serves the same answers
+  // either way. Cloudflare treats an unset value as false.
+  optional bool include_shadow_metadata = 25;
 }
 
 // CloudflareDnsZoneRecordSettings holds record-level behavior toggles. These
@@ -330,36 +337,35 @@ message CloudflareDnsZoneDnsSettings {
   // Flatten all CNAME records in the zone (a CNAME at the apex is always flattened).
   bool flatten_all_cnames = 1;
 
-  // Enable Foundation DNS Advanced Nameservers on the zone.
-  bool foundation_dns = 2;
-
   // Enable multi-provider DNS (activates the zone even with non-Cloudflare NS
   // records and respects apex NS records during outbound transfers).
-  bool multi_provider = 3;
+  bool multi_provider = 2;
 
   // Allow a secondary zone to use proxied override records and apex CNAME
   // flattening.
-  bool secondary_overrides = 4;
+  bool secondary_overrides = 3;
 
   // Time to live (TTL), in seconds, for the zone's nameserver (NS) records.
   // Leave 0 to use the default; otherwise 30-86400.
-  uint32 ns_ttl = 5 [(buf.validate.field).cel = {
+  uint32 ns_ttl = 4 [(buf.validate.field).cel = {
     id: "ns_ttl.valid_range"
     message: "ns_ttl must be 0 (default) or between 30 and 86400 seconds"
     expression: "this == 0u || (this >= 30u && this <= 86400u)"
   }];
 
   // Whether the zone is a standard zone or a CDN/DNS-only zone.
-  CloudflareDnsZoneSpec.ZoneMode zone_mode = 6;
+  CloudflareDnsZoneSpec.ZoneMode zone_mode = 5;
 
   // Components of the zone's SOA record.
-  CloudflareDnsZoneSoa soa = 7;
+  CloudflareDnsZoneSoa soa = 6;
 
-  // Settings determining the nameservers through which the zone is available.
-  CloudflareDnsZoneNameservers nameservers = 8;
+  // The nameservers through which the zone is available -- including
+  // Cloudflare's Advanced Nameservers (Foundation DNS), selected by type
+  // "cloudflare.advanced".
+  CloudflareDnsZoneNameservers nameservers = 7;
 
   // Settings for an internal zone (only relevant when type is "internal").
-  CloudflareDnsZoneInternalDns internal_dns = 9;
+  CloudflareDnsZoneInternalDns internal_dns = 8;
 }
 
 // CloudflareDnsZoneSoa configures the zone's SOA record.
@@ -408,22 +414,37 @@ message CloudflareDnsZoneSoa {
   }];
 }
 
-// CloudflareDnsZoneNameservers selects the nameserver set for the zone.
+// CloudflareDnsZoneNameservers selects the nameservers that serve the zone.
+// Setting the block means choosing a type: Cloudflare requires it on every
+// write of nameserver settings.
 message CloudflareDnsZoneNameservers {
-  // Configured nameserver set to use for this zone (1-5).
+  // The configured custom nameserver set to use (1-5). Applies to the
+  // custom.* types only; Cloudflare does not report it back for other
+  // types.
   uint32 ns_set = 1 [(buf.validate.field).cel = {
     id: "ns_set.valid_range"
     message: "ns_set must be 0 (default) or between 1 and 5"
     expression: "this == 0u || (this >= 1u && this <= 5u)"
   }];
 
-  // Nameserver type: one of "cloudflare.standard", "custom.account",
-  // "custom.tenant", "custom.zone".
+  // Which nameservers serve the zone:
+  //   - "cloudflare.standard": Cloudflare's assigned nameservers. Choosing it
+  //     on a zone that runs Advanced Nameservers turns them off.
+  //   - "cloudflare.advanced": Advanced Nameservers (Foundation DNS), a paid
+  //     entitlement. On an account without it Cloudflare refuses the write.
+  //   - "custom.account", "custom.tenant", "custom.zone": custom nameservers
+  //     defined at that scope; ns_set picks which configured set.
+  //   - "custom": an account-owned Custom Nameserver Set, named by
+  //     nameserver_set_id.
   string type = 2 [(buf.validate.field).cel = {
     id: "nameserver_type.valid"
-    message: "type must be one of \"cloudflare.standard\", \"custom.account\", \"custom.tenant\", \"custom.zone\""
-    expression: "this == '' || this in ['cloudflare.standard', 'custom.account', 'custom.tenant', 'custom.zone']"
+    message: "type must be one of \"cloudflare.standard\", \"cloudflare.advanced\", \"custom.account\", \"custom.tenant\", \"custom.zone\", \"custom\""
+    expression: "this in ['cloudflare.standard', 'cloudflare.advanced', 'custom.account', 'custom.tenant', 'custom.zone', 'custom']"
   }];
+
+  // The identifier of the account-owned Custom Nameserver Set that serves
+  // the zone, for type "custom".
+  string nameserver_set_id = 3;
 }
 
 // CloudflareDnsZoneInternalDns configures an internal zone's fallback.

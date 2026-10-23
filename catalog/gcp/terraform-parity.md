@@ -27,8 +27,8 @@ how far that has progressed.
 
 | | |
 |---|---|
-| Provider schema (parity baseline) | `google@8.3.0` |
-| Supporting schema (pinned by this catalog's modules) | `google-beta@8.3.0` |
+| Provider schema (parity baseline) | `google@8.7.0` |
+| Supporting schema (pinned by this catalog's modules) | `google-beta@8.7.0` |
 | Kinds in the catalog | 186 |
 | Distinct provider resources consumed | 308 |
 | Spec fields authored across all kinds | 6399 |
@@ -69,7 +69,7 @@ catalog modules' own provider blocks must carry that judgment too.
 
 | Provider-block args | Matched | Mapped | Module-owned | Excluded | Open gaps | Accounted |
 |---|---|---|---|---|---|---|
-| 207 | 1 | 4 | 2 | 200 | 0 | ✅ |
+| 208 | 1 | 4 | 2 | 201 | 0 | ✅ |
 
 ## Depth: per-kind accounting
 
@@ -79,7 +79,7 @@ excluded with a recorded reason -- and every spec field must reach provider
 surface. **Accounted** means both directions hold with zero unexplained
 gaps. **Proven** means live end-to-end runs passed on every IaC engine the kind runs on.
 
-**186 of 186 kinds are at total accounting; 80 proven live.**
+**169 of 186 kinds are at total accounting; 80 proven live.**
 
 | Kind | Provider args | Matched | Mapped | Excluded | Open gaps | Accounted | Proven |
 |---|---|---|---|---|---|---|---|
@@ -90,9 +90,9 @@ gaps. **Proven** means live end-to-end runs passed on every IaC engine the kind 
 | GcpApiKey | 13 | 10 | 2 | 1 | 0 | ✅ | ✅ pulumi, terraform |
 | GcpArtifactRegistryRepo | 52 | 33 | 12 | 7 | 0 | ✅ | ✅ pulumi, terraform |
 | GcpBackendBucket | 29 | 22 | 6 | 1 | 0 | ✅ | ✅ pulumi, terraform |
-| GcpBackendService | 223 | 173 | 45 | 5 | 0 | ✅ | — |
+| GcpBackendService | 226 | 174 | 45 | 5 | 2 | ❌ | — |
 | GcpBigQueryCapacityCommitment | 9 | 8 | 1 | 0 | 0 | ✅ | — |
-| GcpBigQueryConnection | 29 | 21 | 8 | 0 | 0 | ✅ | — |
+| GcpBigQueryConnection | 31 | 21 | 8 | 0 | 2 | ❌ | — |
 | GcpBigQueryDataset | 39 | 33 | 6 | 0 | 0 | ✅ | ✅ pulumi, terraform |
 | GcpBigQueryReservation | 19 | 11 | 8 | 0 | 0 | ✅ | — |
 | GcpBigQueryReservationGroup | 4 | 2 | 2 | 0 | 0 | ✅ | — |
@@ -117,24 +117,24 @@ gaps. **Proven** means live end-to-end runs passed on every IaC engine the kind 
 | GcpCloudComposerUserWorkloadsSecret | 6 | 4 | 2 | 0 | 0 | ✅ | ✅ pulumi, terraform |
 | GcpCloudFunction | 73 | 43 | 16 | 14 | 0 | ✅ | — |
 | GcpCloudIdentityGroup | 15 | 6 | 8 | 1 | 0 | ✅ | — |
-| GcpCloudRun | 147 | 27 | 102 | 18 | 0 | ✅ | — |
+| GcpCloudRun | 153 | 27 | 102 | 18 | 6 | ❌ | — |
 | GcpCloudRunDomainMapping | 10 | 1 | 9 | 0 | 0 | ✅ | ✅ pulumi, terraform |
-| GcpCloudRunJob | 82 | 10 | 63 | 9 | 0 | ✅ | — |
+| GcpCloudRunJob | 84 | 10 | 63 | 9 | 2 | ❌ | — |
 | GcpCloudRunWorkerPool | 97 | 16 | 68 | 13 | 0 | ✅ | — |
 | GcpCloudSchedulerJob | 32 | 29 | 3 | 0 | 0 | ✅ | ✅ pulumi, terraform |
-| GcpCloudSql | 148 | 43 | 99 | 6 | 0 | ✅ | — |
+| GcpCloudSql | 149 | 43 | 99 | 6 | 1 | ❌ | — |
 | GcpCloudSqlDatabase | 6 | 4 | 2 | 0 | 0 | ✅ | ✅ pulumi, terraform |
 | GcpCloudSqlUser | 14 | 10 | 2 | 2 | 0 | ✅ | — |
 | GcpCloudTasksQueue | 29 | 22 | 7 | 0 | 0 | ✅ | ✅ pulumi, terraform |
 | GcpColabRuntime | 10 | 7 | 3 | 0 | 0 | ✅ | — |
 | GcpColabRuntimeTemplate | 26 | 20 | 6 | 0 | 0 | ✅ | — |
 | GcpColabSchedule | 57 | 11 | 44 | 2 | 0 | ✅ | — |
-| GcpComputeDisk | 36 | 18 | 14 | 4 | 0 | ✅ | ✅ pulumi, terraform |
+| GcpComputeDisk | 40 | 18 | 14 | 4 | 4 | ❌ | ✅ pulumi, terraform |
 | GcpComputeImage | 41 | 21 | 12 | 8 | 0 | ✅ | — |
-| GcpComputeInstance | 125 | 50 | 64 | 11 | 0 | ✅ | — |
-| GcpComputeMig | 415 | 70 | 316 | 29 | 0 | ✅ | — |
+| GcpComputeInstance | 129 | 50 | 64 | 11 | 4 | ❌ | — |
+| GcpComputeMig | 423 | 70 | 316 | 29 | 8 | ❌ | — |
 | GcpDataprocAutoscalingPolicy | 16 | 15 | 1 | 0 | 0 | ✅ | ✅ pulumi, terraform |
-| GcpDataprocCluster | 172 | 89 | 83 | 0 | 0 | ✅ | — |
+| GcpDataprocCluster | 172 | 89 | 77 | 0 | 12 | ❌ | — |
 | GcpDatastreamConnectionProfile | 58 | 56 | 2 | 0 | 0 | ✅ | — |
 | GcpDatastreamPrivateConnection | 10 | 9 | 1 | 0 | 0 | ✅ | — |
 | GcpDatastreamStream | 159 | 158 | 1 | 0 | 0 | ✅ | — |
@@ -166,7 +166,7 @@ gaps. **Proven** means live end-to-end runs passed on every IaC engine the kind 
 | GcpGkeFleetFeature | 126 | 91 | 24 | 11 | 0 | ✅ | — |
 | GcpGkeFleetMembership | 7 | 4 | 3 | 0 | 0 | ✅ | — |
 | GcpGkeFleetScope | 28 | 15 | 11 | 2 | 0 | ✅ | — |
-| GcpGkeNodePool | 184 | 129 | 54 | 1 | 0 | ✅ | — |
+| GcpGkeNodePool | 185 | 129 | 54 | 0 | 3 | ❌ | — |
 | GcpGkeWorkloadIdentityBinding | 6 | 3 | 0 | 3 | 0 | ✅ | ✅ pulumi, terraform |
 | GcpGlobalAddress | 11 | 9 | 2 | 0 | 0 | ✅ | ✅ pulumi, terraform |
 | GcpGlobalForwardingRule | 51 | 43 | 8 | 0 | 0 | ✅ | — |
@@ -188,14 +188,14 @@ gaps. **Proven** means live end-to-end runs passed on every IaC engine the kind 
 | GcpLogMetric | 23 | 21 | 2 | 0 | 0 | ✅ | ✅ pulumi, terraform |
 | GcpLoggingSink | 54 | 38 | 16 | 0 | 0 | ✅ | ✅ pulumi, terraform |
 | GcpManagedKafkaAcl | 9 | 8 | 1 | 0 | 0 | ✅ | — |
-| GcpManagedKafkaCluster | 14 | 7 | 6 | 1 | 0 | ✅ | — |
+| GcpManagedKafkaCluster | 15 | 7 | 6 | 1 | 1 | ❌ | — |
 | GcpManagedKafkaConnectCluster | 10 | 7 | 3 | 0 | 0 | ✅ | — |
 | GcpManagedKafkaConnector | 8 | 7 | 1 | 0 | 0 | ✅ | — |
 | GcpManagedKafkaTopic | 8 | 7 | 1 | 0 | 0 | ✅ | — |
 | GcpManagedSslCertificate | 6 | 2 | 3 | 1 | 0 | ✅ | ✅ pulumi, terraform |
 | GcpMemorystoreInstance | 39 | 30 | 6 | 3 | 0 | ✅ | — |
 | GcpModelArmorFloorSetting | 19 | 13 | 6 | 0 | 0 | ✅ | — |
-| GcpModelArmorTemplate | 24 | 22 | 2 | 0 | 0 | ✅ | — |
+| GcpModelArmorTemplate | 25 | 22 | 2 | 0 | 1 | ❌ | — |
 | GcpMonitoringAlertPolicy | 70 | 68 | 2 | 0 | 0 | ✅ | ✅ pulumi, terraform |
 | GcpMonitoringDashboard | 3 | 2 | 1 | 0 | 0 | ✅ | ✅ pulumi, terraform |
 | GcpMonitoringNotificationChannel | 18 | 9 | 3 | 6 | 0 | ✅ | ✅ pulumi, terraform |
@@ -212,7 +212,7 @@ gaps. **Proven** means live end-to-end runs passed on every IaC engine the kind 
 | GcpPrivateCaPool | 57 | 51 | 4 | 2 | 0 | ✅ | — |
 | GcpProject | 14 | 5 | 5 | 4 | 0 | ✅ | — |
 | GcpProjectIamMember | 6 | 5 | 1 | 0 | 0 | ✅ | ✅ pulumi, terraform |
-| GcpPscServiceAttachment | 19 | 14 | 4 | 1 | 0 | ✅ | — |
+| GcpPscServiceAttachment | 20 | 14 | 4 | 1 | 1 | ❌ | — |
 | GcpPubSubSchema | 5 | 3 | 2 | 0 | 0 | ✅ | ✅ pulumi, terraform |
 | GcpPubSubSubscription | 44 | 41 | 3 | 0 | 0 | ✅ | ✅ pulumi, terraform |
 | GcpPubSubTopic | 44 | 41 | 3 | 0 | 0 | ✅ | ✅ pulumi, terraform |
@@ -225,7 +225,7 @@ gaps. **Proven** means live end-to-end runs passed on every IaC engine the kind 
 | GcpSccBigQueryExport | 22 | 18 | 3 | 1 | 0 | ✅ | — |
 | GcpSccMuteConfig | 21 | 18 | 3 | 0 | 0 | ✅ | — |
 | GcpSccNotificationConfig | 21 | 15 | 6 | 0 | 0 | ✅ | — |
-| GcpSecretManagerSecret | 61 | 35 | 16 | 10 | 0 | ✅ | ✅ pulumi, terraform |
+| GcpSecretManagerSecret | 65 | 35 | 16 | 10 | 4 | ❌ | ✅ pulumi, terraform |
 | GcpServerlessVpcConnector | 13 | 9 | 2 | 2 | 0 | ✅ | ✅ pulumi, terraform |
 | GcpServiceAccount | 26 | 11 | 5 | 10 | 0 | ✅ | ✅ pulumi, terraform |
 | GcpServiceAccountIamMember | 6 | 6 | 0 | 0 | 0 | ✅ | ✅ pulumi, terraform |
@@ -246,7 +246,7 @@ gaps. **Proven** means live end-to-end runs passed on every IaC engine the kind 
 | GcpTargetHttpsProxy | 25 | 21 | 4 | 0 | 0 | ✅ | — |
 | GcpTpuQueuedResource | 14 | 2 | 11 | 1 | 0 | ✅ | — |
 | GcpTpuVm | 31 | 27 | 4 | 0 | 0 | ✅ | — |
-| GcpUrlMap | 554 | 124 | 430 | 0 | 0 | ✅ | — |
+| GcpUrlMap | 558 | 124 | 430 | 0 | 4 | ❌ | — |
 | GcpVectorSearchCollection | 30 | 18 | 12 | 0 | 0 | ✅ | — |
 | GcpVertexAiAgentEngine | 104 | 50 | 41 | 13 | 0 | ✅ | — |
 | GcpVertexAiDataset | 7 | 4 | 3 | 0 | 0 | ✅ | — |
@@ -260,9 +260,9 @@ gaps. **Proven** means live end-to-end runs passed on every IaC engine the kind 
 | GcpVertexAiNotebook | 46 | 9 | 36 | 1 | 0 | ✅ | — |
 | GcpVertexAiPersistentResource | 23 | 19 | 4 | 0 | 0 | ✅ | — |
 | GcpVertexAiRagEngineConfig | 3 | 1 | 2 | 0 | 0 | ✅ | — |
-| GcpVertexAiSearchDataConnector | 28 | 27 | 1 | 0 | 0 | ✅ | — |
+| GcpVertexAiSearchDataConnector | 34 | 27 | 1 | 0 | 6 | ❌ | — |
 | GcpVertexAiSearchDataStore | 53 | 23 | 30 | 0 | 0 | ✅ | — |
-| GcpVertexAiSearchEngine | 155 | 124 | 29 | 2 | 0 | ✅ | — |
+| GcpVertexAiSearchEngine | 160 | 124 | 29 | 2 | 5 | ❌ | — |
 | GcpVertexAiTensorboard | 25 | 11 | 12 | 2 | 0 | ✅ | — |
 | GcpVpcNetwork | 17 | 10 | 6 | 1 | 0 | ✅ | ✅ pulumi, terraform |
 | GcpVpcPeering | 17 | 14 | 2 | 1 | 0 | ✅ | — |
@@ -272,18 +272,19 @@ gaps. **Proven** means live end-to-end runs passed on every IaC engine the kind 
 
 ## Breadth: every GA resource, one disposition
 
-All resources of `google@8.3.0` land in exactly one class:
+All resources of `google@8.7.0` land in exactly one class:
 
 | Disposition | Resources | Meaning |
 |---|---|---|
 | Modeled | 300 | consumed by a kind's Terraform module today |
 | IAM-covered | 24 | authoritative per-resource IAM forms (binding, policy) of a resource a kind already grants on additively; deliberately not modeled |
-| IAM not offered per resource | 390 | per-resource IAM triplets for resources no kind grants on yet; access goes through a grant at a broader scope (the project or account) |
+| IAM not offered per resource | 393 | per-resource IAM triplets for resources no kind grants on yet; access goes through a grant at a broader scope (the project or account) |
 | Composed | 6 | capability covered through an existing kind's surface rather than a kind of its own |
 | Planned | 0 | judged to be covered by a planned kind or planned composition, not built yet |
 | Deferred | 576 | deliberately not offered, each with the recorded reason |
 | Excluded as deprecated | 68 | deprecated or superseded provider surface |
-| **Total** | **1364** | |
+| UNDISPOSITIONED | 8 | awaiting recorded judgment -- carried loudly in the CI baseline |
+| **Total** | **1375** | |
 
 ## The enumerated record
 
@@ -624,7 +625,7 @@ rather than trusted.
 | `google_storage_bucket_iam_binding` | authoritative form of the additive grant GcpGcsBucket, GcpGcsBucketIamMember makes on google_storage_bucket; deliberately not modeled |
 | `google_storage_bucket_iam_policy` | authoritative form of the additive grant GcpGcsBucket, GcpGcsBucketIamMember makes on google_storage_bucket; deliberately not modeled |
 
-### IAM not offered per resource (390)
+### IAM not offered per resource (393)
 
 | Resource | Detail |
 |---|---|
@@ -850,6 +851,9 @@ rather than trusted.
 | `google_folder_iam_binding` | no kind grants on google_folder per resource yet; grant at a broader scope |
 | `google_folder_iam_member` | no kind grants on google_folder per resource yet; grant at a broader scope |
 | `google_folder_iam_policy` | no kind grants on google_folder per resource yet; grant at a broader scope |
+| `google_gemini_data_analytics_data_agent_iam_binding` | no kind grants on google_gemini_data_analytics_data_agent per resource yet; grant at a broader scope |
+| `google_gemini_data_analytics_data_agent_iam_member` | no kind grants on google_gemini_data_analytics_data_agent per resource yet; grant at a broader scope |
+| `google_gemini_data_analytics_data_agent_iam_policy` | no kind grants on google_gemini_data_analytics_data_agent per resource yet; grant at a broader scope |
 | `google_gemini_repository_group_iam_binding` | no kind grants on google_gemini_repository_group per resource yet; grant at a broader scope |
 | `google_gemini_repository_group_iam_member` | no kind grants on google_gemini_repository_group per resource yet; grant at a broader scope |
 | `google_gemini_repository_group_iam_policy` | no kind grants on google_gemini_repository_group per resource yet; grant at a broader scope |

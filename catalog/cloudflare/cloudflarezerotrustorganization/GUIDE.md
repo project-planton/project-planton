@@ -22,7 +22,7 @@ Two exceptions, both live-measured: `auth_domain` is REQUIRED on every write (Cl
 
 ## MFA and PIV pairing rules
 
-`mfa_required_for_all_apps` needs MFA enabled with at least one authenticator and a session duration configured. And Cloudflare rejects `allowed_authenticators: [ssh_piv_key]` alone when the organization has any non-infrastructure applications -- PIV keys pair only with infrastructure apps. Both rules are API-side; the spec comments carry them so the manifest author sees them first.
+`mfa_required_for_all_apps` needs MFA enabled with at least one authenticator and a session duration configured. And Cloudflare rejects `allowed_authenticators` holding only `piv_key` or `ssh_fido2_key` when the organization has any non-infrastructure applications -- hardware PIV keys and FIDO2 SSH keys pair only with infrastructure apps. Both rules are API-side; the spec comments carry them so the manifest author sees them first.
 
 ## The dashboard lock
 

@@ -190,8 +190,8 @@ PROACTIVE DEFAULT IDENTIFICATION (MANDATORY STEP)
   kept, an empty marker message for every legitimately empty arm, and
   `(buf.validate.oneof).required` only where a choice is mandatory (absence
   that means the provider's default needs no `none` arm); a `type` string the
-  oneof makes redundant is retired (`reserved` number and name) and derived
-  from the arm in the module.
+  oneof makes redundant is deleted (the message renumbered, never `reserved`)
+  and derived from the arm in the module.
 - **A word the manifest needs that the wire spells by absence is a field marked
   `(dev.planton.shared.options.manifest_only) = true`, never a per-module
   habit.** Some choices have no wire spelling of their own: "select every pod"

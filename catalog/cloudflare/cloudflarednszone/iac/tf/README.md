@@ -57,5 +57,6 @@ surface is identical in depth.
   needs **Zone → Zone → Edit** and **Zone → DNS → Edit**; add
   **Zone → Zone Settings → Edit** for the hold, and **Billing → Edit** (Billing
   Write) when `spec.subscription` is set.
-- `vanity_name_servers` needs a Business/Enterprise plan; `foundation_dns` is a
-  paid add-on; `multi_provider` and `secondary_overrides` are plan-gated.
+- `vanity_name_servers` needs a Business/Enterprise plan; Advanced Nameservers
+  (`dns_settings.nameservers.type: cloudflare.advanced`) are a paid add-on;
+  `multi_provider` and `secondary_overrides` are plan-gated.

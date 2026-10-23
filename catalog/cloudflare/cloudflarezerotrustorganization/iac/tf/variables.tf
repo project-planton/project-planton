@@ -40,7 +40,7 @@ variable "spec" {
       amr_matching_session_duration = optional(string, "")
       required_aaguids              = optional(string, "")
     }))
-    mfa_ssh_piv_key_requirements = optional(object({
+    mfa_piv_key_requirements = optional(object({
       pin_policy          = optional(string, "")
       touch_policy        = optional(string, "")
       ssh_key_type        = optional(list(string), [])
@@ -53,5 +53,12 @@ variable "spec" {
     is_ui_read_only             = optional(bool)
     ui_read_only_toggle_reason  = optional(string, "")
     key_rotation_interval_days  = optional(number)
+    strict_service_token_auth   = optional(bool)
+    warp_auth_non_browser_401   = optional(bool)
+    service_token_inactivity = optional(object({
+      action                    = optional(string, "")
+      enabled                   = optional(bool, false)
+      inactivity_threshold_days = optional(number, 0)
+    }))
   })
 }

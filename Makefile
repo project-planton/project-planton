@@ -363,23 +363,28 @@ lock-providers:
 
 # Regenerates pkg/providerparity/schemas/ -- the distilled Terraform provider
 # schemas the parity accounting measures the catalog against. One artifact
-# per provider at the exact release its pin resolves to; bumping a pin means
-# editing the constraint below and re-running (the artifact is replaced,
-# never accumulated). Requires `tofu` on PATH and network access to the
-# provider registry. Deterministic: an unchanged pin regenerates a
-# byte-identical artifact.
+# per provider at the exact release the canonical lock
+# (catalog/_providers/.terraform.lock.hcl) names, because that is the release
+# every OpenTofu module runs; the providers below carry no version for that
+# reason. Moving a provider is `make lock-providers upgrade=<p>` followed by
+# this target, and the parity failures that follow are the migration work
+# list (the artifact is replaced, never accumulated). A committed artifact
+# whose version differs from the lock fails
+# TestCommittedArtifactsMatchCanonicalLock. Requires `tofu` on PATH and
+# network access to the provider registry. Deterministic: an unchanged lock
+# regenerates a byte-identical artifact.
 .PHONY: generate-provider-schemas
 generate-provider-schemas:
 	go run ./pkg/providerparity/distiller \
 		--out-dir pkg/providerparity/schemas \
-		--provider 'google=hashicorp/google@8.3.0' \
-		--provider 'google-beta=hashicorp/google-beta@8.3.0' \
-		--provider 'azurerm=hashicorp/azurerm@5.0.0' \
-		--provider 'aws=hashicorp/aws@~> 6.58' \
-		--provider 'cloudflare=cloudflare/cloudflare@5.23.0' \
-		--provider 'digitalocean=digitalocean/digitalocean@~> 2.99' \
-		--provider 'auth0=auth0/auth0@~> 1.58' \
-		--provider 'stripe=stripe/stripe@0.3.0'
+		--provider 'google=hashicorp/google' \
+		--provider 'google-beta=hashicorp/google-beta' \
+		--provider 'azurerm=hashicorp/azurerm' \
+		--provider 'aws=hashicorp/aws' \
+		--provider 'cloudflare=cloudflare/cloudflare' \
+		--provider 'digitalocean=digitalocean/digitalocean' \
+		--provider 'auth0=auth0/auth0' \
+		--provider 'stripe=stripe/stripe'
 
 # Regenerate every committed public parity page (catalog/<provider>/terraform-parity.md)
 # from the accounting. Each page embeds its own generation parameters, so this

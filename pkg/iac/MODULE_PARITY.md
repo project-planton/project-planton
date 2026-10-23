@@ -211,25 +211,22 @@ and `{zone_id}/{route_id}`. Bindings cover the provider's full type list (wrangl
 `r2_bundle.bucket`, Durable Object `script_name`, `tail_consumers.service`, dispatch outbound
 `service`, transferred-class `from_script`, and VPC `tunnel_id` are Worker/R2/tunnel FKs.
 `migrations` (Durable Object class create/rename/transfer/delete) and nested `observability.logs` /
-`observability.traces` are honored by both engines. **PARITY-EXCEPTION**: Pulumi SDK v6.17.0 has no
-inputs for `cache_options`, `exports`, `package_dependencies`, rate-limit `mitigation_timeout`, or
-traces `propagation_policy` — tofu honors them; Pulumi logs and skips. **Workers Static Assets** (`spec.assets`)
+`observability.traces` (including `propagation_policy`), `cache_options`, `exports`,
+`package_dependencies`, and rate-limit `mitigation_timeout` are honored by both engines. **Workers Static Assets** (`spec.assets`)
 fold onto the same `cloudflare_workers_script` as the `assets` block: both engines set
 `directory` and the `config` sub-fields (`html_handling`, `not_found_handling`, `headers`,
 `redirects`) identically, and model `run_worker_first` as the provider's dynamic field — a
 `[]string` of path rules when `run_worker_first_rules` is set, else a bool from
-`run_worker_first` (full parity on v6.17.0, where `WorkersScriptAssetsConfig.RunWorkerFirst`
-is `interface{}`; mutually-exclusive by CEL). When `assets` is set without a script source the
+`run_worker_first` (`WorkersScriptAssetsConfig.RunWorkerFirst` is `interface{}` in the Pulumi SDK;
+mutually-exclusive by CEL). When `assets` is set without a script source the
 Worker is assets-only: both engines omit `content`/`main_module`. `assets.binding_name` appends
 an `assets`-type entry to the shared bindings list so a full-stack worker can read assets via
 `env.<NAME>`. No new outputs (the workers.dev URL is not derivable — the provider exposes
-no account-subdomain lookup). The provider pins the Pulumi Cloudflare SDK at
-**v6.17.0**, and tofu↔Pulumi are at **full parity** across the family: D1 `jurisdiction`, the worker
-service-binding `entrypoint`, worker `limits.subrequests`, the worker custom-domain `zone_id`, and the
-DNS-record `private_routing` are all modeled in the proto and honored by both engines (these were
-briefly deferred against the older v6.10.1 SDK, then restored on the upgrade — see
-`coding-guidelines/0004` in the project for the standing principle: the proto stays future-proof, the
-lagging engine is upgraded or degraded-and-documented, never held back with proto `reserved`).
+no account-subdomain lookup). tofu↔Pulumi are at **full parity** across the family: D1
+`jurisdiction`, the worker service-binding `entrypoint`, worker `limits.subrequests`, the worker
+custom-domain `zone_id`, and the DNS-record `private_routing` are modeled in the proto and honored by
+both engines. The standing principle: the proto stays complete, and a lagging engine is upgraded or
+degraded-and-documented, never held back by trimming the proto.
 Hyperdrive's `origin.service_id` (egress through a Workers VPC Service for a private origin) is
 modeled and honored by both engines (tofu `main.tf` origin block, Pulumi `originArgs.ServiceId`),
 omitted when empty; it is mutually exclusive with the spec-level `mtls` block by a message CEL
@@ -254,8 +251,7 @@ virtual-network/flatten-cname), a `monitor` reference, `check_regions`, `load_sh
 `origin_steering`, and `notification_filter`; `monitor_group` is reserved. `CloudflareLoadBalancerMonitor`
 carries the full probe surface (type, path/codes/body/method/headers, port, interval/timeout/retries,
 consecutive up/down, follow-redirects, allow-insecure, probe-zone) with a CEL rule requiring a port for
-tcp/udp_icmp/smtp. The Pulumi SDK is pinned at **v6.17.0** and tofu↔Pulumi are at **full parity** across
-the family (no deferrals). The family has no secret-bearing fields. See the conformance guard's
+tcp/udp_icmp/smtp. tofu↔Pulumi are at **full parity** across the family (no deferrals). The family has no secret-bearing fields. See the conformance guard's
 `CloudflareLoadBalancer`, `CloudflareLoadBalancerPool`, and `CloudflareLoadBalancerMonitor` cases.
 
 The Zero Trust Access family (`CloudflareZeroTrustAccessApplication`, `CloudflareZeroTrustAccessPolicy`,
@@ -274,14 +270,6 @@ modules map each variant explicitly. The application carries the full v5 surface
 `application_id`, `aud`, `domain`, and the SaaS signing/SSO material. Secret-bearing SCIM authentication
 fields (`password`, `token`, `client_secret`) are `(sensitive)`.
 
-**One tofu↔Pulumi parity gap (documented):** the `cloudflare_account_member` access-rule variant exists in
-the Terraform provider (v5.21.1) but **not in the Pulumi Cloudflare SDK (v6.17.0)** for group/policy rules.
-The proto models it (full source-of-truth) and the Terraform modules provision it; the Pulumi modules log a
-warning and skip that one variant. Every other field is at full parity. When a newer Pulumi SDK exposes
-`ZeroTrustAccess{Group,Policy}Include/Exclude/Require.CloudflareAccountMember`, wire it in and remove the
-note (see each kind's Pulumi `README.md`). See the conformance guard's
-`CloudflareZeroTrustAccessApplication`, `CloudflareZeroTrustAccessPolicy`, and
-`CloudflareZeroTrustAccessGroup` cases.
 
 The `CloudflareRuleset` kind carries the full v5 `cloudflare_ruleset` surface: the 20-value action
 set, rule-level `ratelimit` / `logging` / `exposed_credential_check`, and the deep `action_parameters`
@@ -297,12 +285,6 @@ operations, sensitivity levels, content types, SSL/security-level/Polish/body-bu
 CEL-validated. `exposed_credential_check.password_expression` is a wirefilter expression locating the
 password, not a secret, so it carries `sensitive_exempt_reason`.
 
-**One tofu↔Pulumi parity gap (documented):** `action_parameters.vary` (variant caching keyed on response
-headers) exists in the Terraform provider (v5.21.1) but **not in the pulumi-cloudflare SDK (v6.17.0)** —
-there is no `vary` field on `RulesetRuleActionParametersArgs`. The proto models it (future-proof source of
-truth) and the Terraform module provisions it; the Pulumi module omits it with an inline note. When a newer
-Pulumi SDK exposes `RulesetRuleActionParameters.Vary`, wire it in and remove the note (see the ruleset
-Pulumi `README.md`). Every other ruleset field is at full parity.
 
 The Email Routing family (`CloudflareEmailRoutingZone`, `CloudflareEmailRoutingRule`,
 `CloudflareEmailRoutingAddress`) pins the Cloudflare provider to v5 on both engines. The zone kind folds
@@ -312,16 +294,14 @@ note), and `cloudflare_email_routing_dns` (instantiated by `lock_dns_records`; `
 subdomain). Rules and the catch-all model the provider's generic `{type, value[]}` action LIST as typed
 actions with FKs (`forward_to` → address, `worker` → Worker); both engines map each typed action back,
 so one rule can forward AND invoke a Worker. The catch-all's `matchers` argument is module-supplied
-(`[{type = "all"}]` — the only value the provider's validator accepts). **PARITY-EXCEPTION**: the
-address's `status` (explicit verification-state override, `unverified`/`verified`) exists in the
-Terraform provider (v5.23.0) but **not in the pulumi-cloudflare SDK (v6.17.0)** — `EmailRoutingAddressArgs`
-carries only `AccountId` and `Email`; tofu honors it, Pulumi omits it with an inline note. Every other
-field is at full parity. Outputs: zone `{zone_id, enabled, status, name}` (the zone id is the
+(`[{type = "all"}]` — the only value the provider's validator accepts). Both engines honor the
+address's `status` (explicit verification-state override, `unverified`/`verified`); every field is at
+full parity. Outputs: zone `{zone_id, enabled, status, name}` (the zone id is the
 import identity of all three singletons), rule `{rule_id, zone_id}`, address
 `{address_id, email, verified, created}`.
 
-The `CloudflareQueue` kind models the queue plus its single (folded) consumer; the Pulumi SDK
-(v6.17.0) and Terraform provider (v5.21.1) are at **full parity** (`cloudflare_queue` +
+The `CloudflareQueue` kind models the queue plus its single (folded) consumer; both engines are at
+**full parity** (`cloudflare_queue` +
 `cloudflare_queue_consumer`, both engines). The consumer is folded onto the queue because at the resource
 level a queue has exactly one consumer with no independent lifecycle (the module still provisions the
 separate consumer resource). The queue has no secret-bearing fields. The v5 API caps
@@ -331,7 +311,7 @@ and id respectively, at full parity on both engines. See the conformance guard's
 
 The `CloudflarePagesProject` kind manages the Pages **project** (build config, optional git source,
 per-environment deployment configs, and folded custom domains via `cloudflare_pages_domain`); it never
-manages deployments, because the Cloudflare provider (v5.21.1) and Pulumi SDK (v6.17.0) expose no Pages
+manages deployments, because the Cloudflare provider and its Pulumi bridge expose no Pages
 deployment resource — versions are produced out-of-band (git push for git-connected projects, or
 `wrangler pages deploy` for direct-upload). Both engines are at **full parity** on the project surface, with
 three behaviors that BOTH engines implement identically (learned from the live API):

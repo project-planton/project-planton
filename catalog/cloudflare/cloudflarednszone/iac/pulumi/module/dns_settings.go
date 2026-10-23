@@ -9,13 +9,14 @@ import (
 
 // dnsSettings applies zone-wide DNS settings. Unset numeric/string fields are
 // left nil so Cloudflare's defaults remain in effect.
-// Upstream modeling defect at provider v5.23.0 (live-measured on the
-// terraform engine; the same provider sits underneath this SDK): the
-// provider echoes server defaults (ns_ttl 86400, the SOA timer block,
-// nameservers.type) into state on refresh while marking those attributes
-// Optional and NOT Computed, so any config that leaves them unset drifts on
-// every refresh. Pulumi previews do not refresh, which hides rather than
-// solves it -- a drift-free config declares every field the server echoes.
+//
+// The three booleans are always sent: the provider marks them Optional and
+// not Computed, so leaving one unset while the zone holds a value would plan
+// its removal on every refresh. ns_ttl has the same shape and the server
+// echoes its default (86400) into state, which is why the spec asks a
+// drift-free manifest to declare it. Advanced Nameservers are chosen through
+// nameservers.type ("cloudflare.advanced"), the only switch Cloudflare
+// accepts for them.
 func dnsSettings(
 	ctx *pulumi.Context,
 	resourceName string,
@@ -26,7 +27,6 @@ func dnsSettings(
 	args := &cloudflare.ZoneDnsSettingsArgs{
 		ZoneId:             zone.ID(),
 		FlattenAllCnames:   pulumi.Bool(spec.FlattenAllCnames),
-		FoundationDns:      pulumi.Bool(spec.FoundationDns),
 		MultiProvider:      pulumi.Bool(spec.MultiProvider),
 		SecondaryOverrides: pulumi.Bool(spec.SecondaryOverrides),
 	}
@@ -64,13 +64,16 @@ func dnsSettings(
 		args.Soa = soa
 	}
 
+	// type is required whenever the block is sent (the spec's rule holds it).
 	if n := spec.Nameservers; n != nil {
-		ns := cloudflare.ZoneDnsSettingsNameserversArgs{}
+		ns := cloudflare.ZoneDnsSettingsNameserversArgs{
+			Type: pulumi.String(n.Type),
+		}
 		if n.NsSet > 0 {
 			ns.NsSet = pulumi.Int(int(n.NsSet))
 		}
-		if n.Type != "" {
-			ns.Type = pulumi.String(n.Type)
+		if n.NameserverSetId != "" {
+			ns.NameserverSetId = pulumi.String(n.NameserverSetId)
 		}
 		args.Nameservers = ns
 	}
@@ -81,11 +84,16 @@ func dnsSettings(
 		}
 	}
 
+	// foundationDns is a retired switch the module never sends (Advanced
+	// Nameservers are nameservers.type). The API still reports it, and the
+	// provider marks it Optional and not Computed, so a refreshing update would
+	// otherwise plan to null the reported value.
 	if _, err := cloudflare.NewZoneDnsSettings(
 		ctx,
 		resourceName+"-dns-settings",
 		args,
 		pulumi.Provider(cloudflareProvider),
+		pulumi.IgnoreChanges([]string{"foundationDns"}),
 	); err != nil {
 		return errors.Wrap(err, "failed to apply zone dns settings")
 	}

@@ -27,4 +27,7 @@ resource "cloudflare_dns_record" "main" {
 
   # Restrict the record to Cloudflare internal (private) routing when set.
   private_routing = var.spec.private_routing ? true : null
+
+  # Shapes only what the API reports back about the record.
+  include_shadow_metadata = try(var.spec.include_shadow_metadata, null)
 }

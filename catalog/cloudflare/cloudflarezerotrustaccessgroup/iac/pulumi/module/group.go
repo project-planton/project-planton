@@ -17,7 +17,7 @@ func group(
 
 	args := &cloudflare.ZeroTrustAccessGroupArgs{
 		Name:      pulumi.String(spec.Name),
-		Includes:  groupIncludes(ctx, spec.Include),
+		Includes:  groupIncludes(spec.Include),
 		IsDefault: pulumi.BoolPtr(spec.IsDefault),
 	}
 	if spec.AccountId != "" {
@@ -27,10 +27,10 @@ func group(
 		args.ZoneId = pulumi.StringPtr(spec.ZoneId.GetValue())
 	}
 	if len(spec.Exclude) > 0 {
-		args.Excludes = groupExcludes(ctx, spec.Exclude)
+		args.Excludes = groupExcludes(spec.Exclude)
 	}
 	if len(spec.Require) > 0 {
-		args.Requires = groupRequires(ctx, spec.Require)
+		args.Requires = groupRequires(spec.Require)
 	}
 
 	created, err := cloudflare.NewZeroTrustAccessGroup(
@@ -58,7 +58,7 @@ func riskLevels(levels []cloudflarezerotrustaccessgroupv1alpha1.AccessRuleUserRi
 }
 
 // groupIncludes maps the access rules onto the provider's include array.
-func groupIncludes(ctx *pulumi.Context, rules []*cloudflarezerotrustaccessgroupv1alpha1.CloudflareAccessRule) cloudflare.ZeroTrustAccessGroupIncludeArray {
+func groupIncludes(rules []*cloudflarezerotrustaccessgroupv1alpha1.CloudflareAccessRule) cloudflare.ZeroTrustAccessGroupIncludeArray {
 	out := cloudflare.ZeroTrustAccessGroupIncludeArray{}
 	for _, r := range rules {
 		e := &cloudflare.ZeroTrustAccessGroupIncludeArgs{}
@@ -118,8 +118,11 @@ func groupIncludes(ctx *pulumi.Context, rules []*cloudflarezerotrustaccessgroupv
 		case *cloudflarezerotrustaccessgroupv1alpha1.CloudflareAccessRule_UserRiskScore:
 			e.UserRiskScore = &cloudflare.ZeroTrustAccessGroupIncludeUserRiskScoreArgs{UserRiskScores: riskLevels(v.UserRiskScore.UserRiskScore)}
 		case *cloudflarezerotrustaccessgroupv1alpha1.CloudflareAccessRule_CloudflareAccountMember:
-			ctx.Log.Warn("cloudflare_account_member access rule is not supported by the Pulumi Cloudflare SDK (v6.17.0); skipping this rule. Use the Terraform engine to provision it. See the Pulumi module README.", nil)
-			continue
+			member := &cloudflare.ZeroTrustAccessGroupIncludeCloudflareAccountMemberArgs{}
+			if v.CloudflareAccountMember.AccountId != "" {
+				member.AccountId = pulumi.String(v.CloudflareAccountMember.AccountId)
+			}
+			e.CloudflareAccountMember = member
 		default:
 			continue
 		}
@@ -129,7 +132,7 @@ func groupIncludes(ctx *pulumi.Context, rules []*cloudflarezerotrustaccessgroupv
 }
 
 // groupExcludes maps the access rules onto the provider's exclude array.
-func groupExcludes(ctx *pulumi.Context, rules []*cloudflarezerotrustaccessgroupv1alpha1.CloudflareAccessRule) cloudflare.ZeroTrustAccessGroupExcludeArray {
+func groupExcludes(rules []*cloudflarezerotrustaccessgroupv1alpha1.CloudflareAccessRule) cloudflare.ZeroTrustAccessGroupExcludeArray {
 	out := cloudflare.ZeroTrustAccessGroupExcludeArray{}
 	for _, r := range rules {
 		e := &cloudflare.ZeroTrustAccessGroupExcludeArgs{}
@@ -189,8 +192,11 @@ func groupExcludes(ctx *pulumi.Context, rules []*cloudflarezerotrustaccessgroupv
 		case *cloudflarezerotrustaccessgroupv1alpha1.CloudflareAccessRule_UserRiskScore:
 			e.UserRiskScore = &cloudflare.ZeroTrustAccessGroupExcludeUserRiskScoreArgs{UserRiskScores: riskLevels(v.UserRiskScore.UserRiskScore)}
 		case *cloudflarezerotrustaccessgroupv1alpha1.CloudflareAccessRule_CloudflareAccountMember:
-			ctx.Log.Warn("cloudflare_account_member access rule is not supported by the Pulumi Cloudflare SDK (v6.17.0); skipping this rule. Use the Terraform engine to provision it. See the Pulumi module README.", nil)
-			continue
+			member := &cloudflare.ZeroTrustAccessGroupExcludeCloudflareAccountMemberArgs{}
+			if v.CloudflareAccountMember.AccountId != "" {
+				member.AccountId = pulumi.String(v.CloudflareAccountMember.AccountId)
+			}
+			e.CloudflareAccountMember = member
 		default:
 			continue
 		}
@@ -200,7 +206,7 @@ func groupExcludes(ctx *pulumi.Context, rules []*cloudflarezerotrustaccessgroupv
 }
 
 // groupRequires maps the access rules onto the provider's require array.
-func groupRequires(ctx *pulumi.Context, rules []*cloudflarezerotrustaccessgroupv1alpha1.CloudflareAccessRule) cloudflare.ZeroTrustAccessGroupRequireArray {
+func groupRequires(rules []*cloudflarezerotrustaccessgroupv1alpha1.CloudflareAccessRule) cloudflare.ZeroTrustAccessGroupRequireArray {
 	out := cloudflare.ZeroTrustAccessGroupRequireArray{}
 	for _, r := range rules {
 		e := &cloudflare.ZeroTrustAccessGroupRequireArgs{}
@@ -260,8 +266,11 @@ func groupRequires(ctx *pulumi.Context, rules []*cloudflarezerotrustaccessgroupv
 		case *cloudflarezerotrustaccessgroupv1alpha1.CloudflareAccessRule_UserRiskScore:
 			e.UserRiskScore = &cloudflare.ZeroTrustAccessGroupRequireUserRiskScoreArgs{UserRiskScores: riskLevels(v.UserRiskScore.UserRiskScore)}
 		case *cloudflarezerotrustaccessgroupv1alpha1.CloudflareAccessRule_CloudflareAccountMember:
-			ctx.Log.Warn("cloudflare_account_member access rule is not supported by the Pulumi Cloudflare SDK (v6.17.0); skipping this rule. Use the Terraform engine to provision it. See the Pulumi module README.", nil)
-			continue
+			member := &cloudflare.ZeroTrustAccessGroupRequireCloudflareAccountMemberArgs{}
+			if v.CloudflareAccountMember.AccountId != "" {
+				member.AccountId = pulumi.String(v.CloudflareAccountMember.AccountId)
+			}
+			e.CloudflareAccountMember = member
 		default:
 			continue
 		}

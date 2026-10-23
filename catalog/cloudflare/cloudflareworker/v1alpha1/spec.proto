@@ -189,16 +189,13 @@ message CloudflareWorkerSpec {
     expression: "this == '' || this in ['standard', 'bundled', 'unbound']"
   }];
 
-  // Global CacheW settings. Pulumi's Cloudflare SDK v6.17.0 has no matching
-  // input — tofu honors this; Pulumi logs a PARITY-EXCEPTION and skips it.
+  // Global CacheW settings.
   CloudflareWorkerCacheOptions cache_options = 35;
 
-  // Per-entrypoint export configuration. Map key is the export name. Pulumi
-  // SDK v6.17.0 has no matching input — tofu honors this; Pulumi skips it.
+  // Per-entrypoint export configuration. Map key is the export name.
   map<string, CloudflareWorkerExport> exports = 36;
 
-  // npm packages recorded against this Worker build. Pulumi SDK v6.17.0 has
-  // no matching input — tofu honors this; Pulumi skips it.
+  // npm packages recorded against this Worker build.
   repeated CloudflareWorkerPackageDependency package_dependencies = 37;
 
   // Version annotations written on this upload (message + tag). The
@@ -723,8 +720,7 @@ message CloudflareWorkerMigrationStep {
   repeated CloudflareWorkerTransferredClass transferred_classes = 5;
 }
 
-// CloudflareWorkerCacheOptions is the provider cache_options block. Pulumi
-// SDK v6.17.0 has no matching input — tofu honors this; Pulumi skips it.
+// CloudflareWorkerCacheOptions is the provider cache_options block.
 message CloudflareWorkerCacheOptions {
   bool enabled = 1;
   bool cross_version_cache = 2;

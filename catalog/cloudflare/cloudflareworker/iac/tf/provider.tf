@@ -2,7 +2,7 @@ terraform {
   required_providers {
     cloudflare = {
       source  = "cloudflare/cloudflare"
-      version = "~> 5.23"
+      version = "~> 5.28"
     }
     # Reads spec.r2_bundle through R2's S3-compatible API. 6.29 is the floor for
     # aws_s3_object's download_body, which returns the object's bytes whatever its

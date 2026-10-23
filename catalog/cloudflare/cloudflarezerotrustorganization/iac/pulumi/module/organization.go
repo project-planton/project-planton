@@ -121,28 +121,44 @@ func organization(
 		args.MfaConfig = mfaConfig
 	}
 
-	if spec.MfaSshPivKeyRequirements != nil {
-		pivReqs := cloudflare.ZeroTrustOrganizationMfaSshPivKeyRequirementsArgs{}
-		if spec.MfaSshPivKeyRequirements.PinPolicy != "" {
-			pivReqs.PinPolicy = pulumi.String(spec.MfaSshPivKeyRequirements.PinPolicy)
+	if spec.MfaPivKeyRequirements != nil {
+		pivReqs := cloudflare.ZeroTrustOrganizationMfaPivKeyRequirementsArgs{}
+		if spec.MfaPivKeyRequirements.PinPolicy != "" {
+			pivReqs.PinPolicy = pulumi.String(spec.MfaPivKeyRequirements.PinPolicy)
 		}
-		if spec.MfaSshPivKeyRequirements.TouchPolicy != "" {
-			pivReqs.TouchPolicy = pulumi.String(spec.MfaSshPivKeyRequirements.TouchPolicy)
+		if spec.MfaPivKeyRequirements.TouchPolicy != "" {
+			pivReqs.TouchPolicy = pulumi.String(spec.MfaPivKeyRequirements.TouchPolicy)
 		}
-		if len(spec.MfaSshPivKeyRequirements.SshKeyType) > 0 {
-			pivReqs.SshKeyTypes = pulumi.ToStringArray(spec.MfaSshPivKeyRequirements.SshKeyType)
+		if len(spec.MfaPivKeyRequirements.SshKeyType) > 0 {
+			pivReqs.SshKeyTypes = pulumi.ToStringArray(spec.MfaPivKeyRequirements.SshKeyType)
 		}
-		if len(spec.MfaSshPivKeyRequirements.SshKeySize) > 0 {
+		if len(spec.MfaPivKeyRequirements.SshKeySize) > 0 {
 			sizes := pulumi.IntArray{}
-			for _, size := range spec.MfaSshPivKeyRequirements.SshKeySize {
+			for _, size := range spec.MfaPivKeyRequirements.SshKeySize {
 				sizes = append(sizes, pulumi.Int(int(size)))
 			}
 			pivReqs.SshKeySizes = sizes
 		}
-		if spec.MfaSshPivKeyRequirements.RequireFipsDevice != nil {
-			pivReqs.RequireFipsDevice = pulumi.BoolPtr(spec.MfaSshPivKeyRequirements.GetRequireFipsDevice())
+		if spec.MfaPivKeyRequirements.RequireFipsDevice != nil {
+			pivReqs.RequireFipsDevice = pulumi.BoolPtr(spec.MfaPivKeyRequirements.GetRequireFipsDevice())
 		}
-		args.MfaSshPivKeyRequirements = pivReqs
+		args.MfaPivKeyRequirements = pivReqs
+	}
+
+	if spec.StrictServiceTokenAuth != nil {
+		args.StrictServiceTokenAuth = pulumi.BoolPtr(spec.GetStrictServiceTokenAuth())
+	}
+	if spec.WarpAuthNonBrowser_401 != nil {
+		args.WarpAuthNonBrowser401 = pulumi.BoolPtr(spec.GetWarpAuthNonBrowser_401())
+	}
+	// All three inactivity fields are required by the provider whenever the
+	// block is sent; the spec's rules hold action and the threshold range.
+	if spec.ServiceTokenInactivity != nil {
+		args.ServiceTokenInactivity = cloudflare.ZeroTrustOrganizationServiceTokenInactivityArgs{
+			Action:                  pulumi.String(spec.ServiceTokenInactivity.Action),
+			Enabled:                 pulumi.Bool(spec.ServiceTokenInactivity.Enabled),
+			InactivityThresholdDays: pulumi.Int(int(spec.ServiceTokenInactivity.InactivityThresholdDays)),
+		}
 	}
 
 	createdOrganization, err := cloudflare.NewZeroTrustOrganization(

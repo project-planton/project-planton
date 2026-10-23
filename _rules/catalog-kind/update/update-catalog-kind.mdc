@@ -40,6 +40,17 @@ despite the schema marking it optional). A surface modeled from the schema alone
 every offline gate and be categorically undeployable live. When the doc page and schema
 disagree, the doc page plus a live probe is the truth to model.
 
+**Retiring a field deletes it and renumbers the message.** When the provider
+deprecates an argument for a successor, or a better design replaces a field,
+delete the field and renumber the rest sequentially -- never `reserved`, never a
+deprecated twin the modules arbitrate between (`architecture/specification-guidelies.md`,
+"Retiring a Field"). The successor's comment teaches how to express what the old
+field meant. Parity accounting skips schema-deprecated arguments, so the deleted
+field needs no exclusion; one written anyway is reported stale. Before the
+release, search each instance's stored records for the field's key (both the
+proto and the JSON spelling, in specs, status snapshots and job inputs) and align
+the rows that hold it: stored catalog objects are parsed strictly.
+
 **Extending a kind that manages live objects keeps unset unmanaged.** Every field the
 update adds has presence, and both modules send it only when the spec sets it, so an
 object deployed before the update previews no change. That holds only for provider
@@ -310,7 +321,15 @@ race with the controller's log before writing the gate; a gate that merely
    that need a newer provider. A field that needs a newer provider RELEASE than
    the catalog runs also moves the lock: `make lock-providers upgrade=<provider>`
    records the newest release every module allows in the canonical lock and every
-   module's `.terraform.lock.hcl` (see hack/guards/ensure_tf_provider_pins.sh). Finally verify the test-manifest anatomy exists:
+   module's `.terraform.lock.hcl` (see hack/guards/ensure_tf_provider_pins.sh). The
+   same change regenerates the parity schema (`make generate-provider-schemas`
+   reads every version from the canonical lock, and a schema that disagrees with
+   the lock fails `TestCommittedArtifactsMatchCanonicalLock`), validates every
+   module of that provider against the new release, and moves the Pulumi SDK to
+   the release that bridges the same provider version, so both engines run one
+   provider and the parity findings that follow are the move's work list. A
+   provider release can rename an argument outright with no state upgrader; only
+   `tofu validate` on every module catches it before an apply does. Finally verify the test-manifest anatomy exists:
    `e2e/manifest.yaml` at the kind root (a kind can lack it — and
    without it the offline `tofu plan` proof has NO input, so that gate silently
    never runs for the kind). Create it from the current spec when missing;

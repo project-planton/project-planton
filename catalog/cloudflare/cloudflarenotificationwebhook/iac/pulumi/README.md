@@ -29,4 +29,4 @@ Import as `{account_id}/{webhook_id}`.
 
 ## SDK Version
 
-Uses `pulumi-cloudflare` v6.19.0.
+Uses `pulumi-cloudflare` SDK v6 (Cloudflare Terraform provider v5 line).

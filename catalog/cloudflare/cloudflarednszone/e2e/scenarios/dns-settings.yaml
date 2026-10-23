@@ -1,0 +1,35 @@
+# DNS-settings scenario: the zone-wide settings singleton written with the
+# values a Free-plan zone accepts (each one is Cloudflare's own default), the
+# nameserver type declared as the provider requires on every nameservers
+# write, and ns_ttl declared because the provider reads it back on every
+# refresh and holds no default for it. The apply-idempotency gate is the
+# point: a second apply of this manifest must plan nothing on either engine.
+#
+# Advanced Nameservers (nameservers.type "cloudflare.advanced") are a paid
+# entitlement this account does not carry, so that arm stays offline-proven
+# (e2e/manifest.yaml) rather than live.
+apiVersion: cloudflare.planton.dev/v1alpha1
+kind: CloudflareDnsZone
+metadata:
+  name: planton-oss-e2e-cloudflarednszone-dns-settings
+  id: planton-oss-e2e-cloudflarednszone-dns-settings
+  org: planton-oss
+  env: e2e
+  labels:
+    managed-by: planton-e2e
+    e2e-catalog-kind: cloudflarednszone
+  annotations:
+    planton.dev/e2e: "true"
+  tags:
+    - planton-e2e
+spec:
+  zoneName: planton-e2e-dns-${E2E_RUN_ID}.com
+  accountId: ${E2E_ENV:PLANTON_E2E_CLOUDFLARE_ACCOUNT_ID}
+  dnsSettings:
+    flattenAllCnames: false
+    multiProvider: false
+    secondaryOverrides: false
+    nsTtl: 86400
+    zoneMode: standard
+    nameservers:
+      type: cloudflare.standard

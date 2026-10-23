@@ -28,7 +28,10 @@ set -euo pipefail
 #      below and in every module together for a unified cloud;
 #   2. `make lock-providers upgrade=<provider>` (e.g. upgrade=aws) to record the newest
 #      release every module's constraint allows, with its checksums, in the canonical
-#      lock and every module's projection.
+#      lock and every module's projection;
+#   3. `make generate-provider-schemas` so parity is measured at the release the
+#      modules now run, then validate every module of that provider against it and
+#      work the parity findings (catalog/_providers/README.md has the whole move).
 # Only the modules that require that provider change, so only their resources re-run.
 
 repo_root_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
@@ -53,7 +56,7 @@ canonical_pins=(
   # by recorded decision) and pins EXACT -- a floating raw-API provider would
   # move the ARM client under every admitted kind at once.
   "azure|azapi|2.11.0"
-  "cloudflare|cloudflare|~> 5.23"
+  "cloudflare|cloudflare|~> 5.28"
   "digitalocean|digitalocean|~> 2.99"
   "gcp|google|~> 8.3"
   # google-beta enters a module only under a recorded admission

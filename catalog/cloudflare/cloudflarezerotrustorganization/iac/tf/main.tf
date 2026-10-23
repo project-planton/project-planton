@@ -50,12 +50,23 @@ resource "cloudflare_zero_trust_organization" "main" {
     required_aaguids              = try(var.spec.mfa_config.required_aaguids, "") != "" ? var.spec.mfa_config.required_aaguids : null
   } : null
 
-  mfa_ssh_piv_key_requirements = try(var.spec.mfa_ssh_piv_key_requirements, null) != null ? {
-    pin_policy          = try(var.spec.mfa_ssh_piv_key_requirements.pin_policy, "") != "" ? var.spec.mfa_ssh_piv_key_requirements.pin_policy : null
-    touch_policy        = try(var.spec.mfa_ssh_piv_key_requirements.touch_policy, "") != "" ? var.spec.mfa_ssh_piv_key_requirements.touch_policy : null
-    ssh_key_types       = length(try(var.spec.mfa_ssh_piv_key_requirements.ssh_key_type, [])) > 0 ? var.spec.mfa_ssh_piv_key_requirements.ssh_key_type : null
-    ssh_key_sizes       = length(try(var.spec.mfa_ssh_piv_key_requirements.ssh_key_size, [])) > 0 ? var.spec.mfa_ssh_piv_key_requirements.ssh_key_size : null
-    require_fips_device = try(var.spec.mfa_ssh_piv_key_requirements.require_fips_device, null)
+  mfa_piv_key_requirements = try(var.spec.mfa_piv_key_requirements, null) != null ? {
+    pin_policy          = try(var.spec.mfa_piv_key_requirements.pin_policy, "") != "" ? var.spec.mfa_piv_key_requirements.pin_policy : null
+    touch_policy        = try(var.spec.mfa_piv_key_requirements.touch_policy, "") != "" ? var.spec.mfa_piv_key_requirements.touch_policy : null
+    ssh_key_types       = length(try(var.spec.mfa_piv_key_requirements.ssh_key_type, [])) > 0 ? var.spec.mfa_piv_key_requirements.ssh_key_type : null
+    ssh_key_sizes       = length(try(var.spec.mfa_piv_key_requirements.ssh_key_size, [])) > 0 ? var.spec.mfa_piv_key_requirements.ssh_key_size : null
+    require_fips_device = try(var.spec.mfa_piv_key_requirements.require_fips_device, null)
+  } : null
+
+  strict_service_token_auth = try(var.spec.strict_service_token_auth, null)
+  warp_auth_non_browser_401 = try(var.spec.warp_auth_non_browser_401, null)
+
+  # All three inactivity fields are required by the provider whenever the
+  # block is sent; the spec's rules hold action and the threshold range.
+  service_token_inactivity = try(var.spec.service_token_inactivity, null) != null ? {
+    action                    = var.spec.service_token_inactivity.action
+    enabled                   = var.spec.service_token_inactivity.enabled
+    inactivity_threshold_days = var.spec.service_token_inactivity.inactivity_threshold_days
   } : null
 }
 

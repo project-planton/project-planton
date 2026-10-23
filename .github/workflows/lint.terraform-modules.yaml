@@ -22,12 +22,19 @@
 #                       provider, plus the individually enrolled ones; helm_crds.tf wherever
 #                       it exists) equals the generator's output (pkg/iac/tofu/generators
 #                       drift tests).
-#   tf-validate-changed (PR, BLOCKING)       -- tofu fmt -check + init -backend=false
-#                       -lockfile=readonly + validate on the iac/tf modules changed in the PR.
+#   tf-validate-changed (PR + push, BLOCKING) -- tofu fmt -check + init -backend=false
+#                       -lockfile=readonly + validate on every iac/tf module the change
+#                       touches. A module counts as touched when any file under it moves
+#                       -- its .terraform.lock.hcl included, so a lock sweep that moves a
+#                       provider validates every module running the new release. Pushes to
+#                       main run it too: most changes land without a pull request. A
+#                       change list that cannot be computed fails the job; it never
+#                       passes by validating nothing.
 #   tf-validate-all    (nightly + manual)    -- the same read-only init + validate across
 #                       ALL modules: every module still installs exactly its locked,
-#                       checksummed providers and validates against them. Reports
-#                       failures; does not gate PRs.
+#                       checksummed providers and validates against them. Does not gate
+#                       PRs; a red scheduled run opens (or comments on) one tracking issue,
+#                       so a provider break that reaches main is seen the next morning.
 #   tf-isolated-plans  (PR + push, BLOCKING) -- credential-isolated `tofu plan` guards: a
 #                       module planned with ONLY what its connection supplies (no AWS_*,
 #                       empty HOME). `validate` never configures a provider, so a module that
@@ -79,8 +86,11 @@ permissions:
   contents: read
 
 concurrency:
-  group: tf-lint-${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  group: tf-lint-${{ github.workflow }}-${{ github.ref }}-${{ github.event_name == 'push' && github.sha || 'latest' }}
+  # A push validates only its own diff, so a later push must never cancel it:
+  # the cancelled push's modules would go unvalidated. Pull requests (and the
+  # schedule) supersede their earlier runs.
+  cancel-in-progress: ${{ github.event_name != 'push' }}
 
 jobs:
   # Root-cause guard: static, no network. Runs on every PR/push (and harmlessly on
@@ -162,31 +172,51 @@ jobs:
       - name: Credential-isolated plans
         run: go test ./pkg/iac/tofu/tofumodule/ -run 'PlansWithOnlyItsConnection' -count=1 -v
 
-  # Fast PR feedback: validate only the modules changed in this PR.
+  # Validate every module the change touches, on pull requests and on pushes.
   tf-validate-changed:
-    if: github.event_name == 'pull_request'
+    if: github.event_name == 'pull_request' || github.event_name == 'push'
     runs-on: ubuntu-latest
     container: ghcr.io/plantonhq/planton/ci-toolchain:latest
-    timeout-minutes: 30
+    timeout-minutes: 60
+    env:
+      TF_PLUGIN_CACHE_DIR: ${{ github.workspace }}/.tofu-plugin-cache
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
+      - name: Cache provider plugins
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.TF_PLUGIN_CACHE_DIR }}
+          key: tofu-plugins-${{ runner.os }}
+
       - name: Determine changed iac/tf modules
-        id: changed
+        shell: bash
         run: |
-          base="origin/${{ github.base_ref }}"
-          git fetch --no-tags --depth=1 origin "${{ github.base_ref }}" || true
-          : > changed_modules.txt
-          git diff --name-only "$base"...HEAD -- 'catalog/**/iac/tf/**' \
-            | sed -nE 's#^(catalog/[^/]+/[^/]+/iac/tf)/.*#\1#p' \
-            | sort -u >> changed_modules.txt || true
-          echo "Changed iac/tf modules:"
+          set -euo pipefail
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            base="$(git merge-base "origin/${{ github.base_ref }}" HEAD)"
+          else
+            base="${{ github.event.before }}"
+            # A new branch (or a forced history) has no usable before-commit:
+            # validate every module rather than guess.
+            if [ -z "$base" ] || [ "$base" = "0000000000000000000000000000000000000000" ] || ! git cat-file -e "$base^{commit}" 2>/dev/null; then
+              find catalog -type d -path '*/iac/tf' | grep -E '^catalog/[^/]+/[^/]+/iac/tf$' | sort > changed_modules.txt
+              echo "No comparable base commit; validating all $(wc -l < changed_modules.txt) modules."
+              exit 0
+            fi
+          fi
+          git diff --name-only "$base" HEAD > changed_files.txt
+          sed -nE 's#^(catalog/[^/]+/[^/]+/iac/tf)/.*#\1#p' changed_files.txt | sort -u > changed_modules.txt
+          echo "Changed iac/tf modules ($(wc -l < changed_modules.txt)):"
           cat changed_modules.txt
 
       - name: tofu fmt + init + validate (changed modules)
+        shell: bash
         run: |
+          mkdir -p "$TF_PLUGIN_CACHE_DIR"
           rc=0
           while IFS= read -r d; do
             [ -z "$d" ] && continue
@@ -195,7 +225,7 @@ jobs:
             (
               cd "$d"
               tofu fmt -check -recursive
-              tofu init -backend=false -lockfile=readonly -input=false -no-color
+              tofu init -backend=false -lockfile=readonly -input=false -no-color >/dev/null
               tofu validate -no-color
             ) || { echo "::error file=$d::tofu fmt/validate failed"; rc=1; }
             echo "::endgroup::"
@@ -208,6 +238,9 @@ jobs:
   tf-validate-all:
     if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
     container: ghcr.io/plantonhq/planton/ci-toolchain:latest
     timeout-minutes: 60
     env:
@@ -243,5 +276,28 @@ jobs:
           if [ ${#failed[@]} -gt 0 ]; then
             echo "::warning::${#failed[@]} module(s) failed validate:"
             printf '  - %s\n' "${failed[@]}"
+            printf '%s\n' "${failed[@]}" > "$RUNNER_TEMP/failed_modules.txt"
           fi
           exit $rc
+
+      # A red nightly run is otherwise silent: nobody watches scheduled runs.
+      # One open issue carries the signal; later red runs comment on it.
+      - name: Report failures on the tracking issue
+        if: failure() && github.event_name == 'schedule'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const path = `${process.env.RUNNER_TEMP}/failed_modules.txt`;
+            const failed = fs.existsSync(path) ? fs.readFileSync(path, 'utf8').trim().split('\n') : [];
+            const title = 'Nightly OpenTofu validation fails';
+            const run = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            const list = failed.length ? failed.map(d => `- \`${d}\``).join('\n') : '- (the run failed before listing modules)';
+            const body = `[Run ${context.runId}](${run}) found ${failed.length} module(s) that no longer pass \`tofu validate\` against their locked providers:\n\n${list}\n\nReproduce one with \`tofu init -backend=false -lockfile=readonly && tofu validate\` in the module directory.`;
+            const { data: open } = await github.rest.issues.listForRepo({ ...context.repo, state: 'open', per_page: 100 });
+            const existing = open.find(i => i.title === title && !i.pull_request);
+            if (existing) {
+              await github.rest.issues.createComment({ ...context.repo, issue_number: existing.number, body });
+            } else {
+              await github.rest.issues.create({ ...context.repo, title, body });
+            }

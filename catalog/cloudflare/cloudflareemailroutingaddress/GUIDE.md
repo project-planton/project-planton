@@ -12,7 +12,7 @@ One verified address serves every zone in the account. Model each real mailbox O
 
 ## The status override is for un-verifying only
 
-`status` exists for one real operation: flipping a verified address back to `unverified` (e.g. after a mailbox changes hands) to cut forwarding without deleting the address's history. Setting `verified` requires Cloudflare account admin privileges — do not reach for it as a verification shortcut. Note the Pulumi engine cannot send this field yet (SDK gap, documented in the module); use the Terraform engine when the override matters.
+`status` exists for one real operation: flipping a verified address back to `unverified` (e.g. after a mailbox changes hands) to cut forwarding without deleting the address's history. Setting `verified` requires Cloudflare account admin privileges — do not reach for it as a verification shortcut.
 
 ## A fresh address cannot be deleted for ~10 minutes
 

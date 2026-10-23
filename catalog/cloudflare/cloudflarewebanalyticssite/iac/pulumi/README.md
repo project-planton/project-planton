@@ -33,4 +33,4 @@ Import the site as `{account_id}/{site_tag}` (the site tag, not the id copy); ru
 
 ## SDK Version
 
-Uses `pulumi-cloudflare` v6.19.0.
+Uses `pulumi-cloudflare` SDK v6 (Cloudflare Terraform provider v5 line).

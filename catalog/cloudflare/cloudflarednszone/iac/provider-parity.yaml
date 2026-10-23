@@ -48,6 +48,8 @@ resources:
         arg: nameservers
       - spec: spec.dns_settings.nameservers.type
         arg: nameservers
+      - spec: spec.dns_settings.nameservers.nameserver_set_id
+        arg: nameservers
       - spec: spec.dns_settings.internal_dns.reference_zone_id
         arg: internal_dns
     exclusions:

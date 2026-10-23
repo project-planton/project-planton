@@ -49,6 +49,13 @@ spec:
     traces:
       enabled: true
       propagationPolicy: authenticated
+  cacheOptions:
+    enabled: true
+    crossVersionCache: false
+  packageDependencies:
+    - name: hono
+      installedVersion: 4.6.3
+      packageJsonVersion: ^4.6.0
 ```
 
 ## Spec Fields
@@ -1161,8 +1168,7 @@ lets Cloudflare default to "standard".
 
 `CloudflareWorkerCacheOptions`
 
-Global CacheW settings. Pulumi's Cloudflare SDK v6.17.0 has no matching
-input — tofu honors this; Pulumi logs a PARITY-EXCEPTION and skips it.
+Global CacheW settings.
 
 ### spec.cacheOptions.enabled
 
@@ -1176,8 +1182,7 @@ input — tofu honors this; Pulumi logs a PARITY-EXCEPTION and skips it.
 
 `map<string, CloudflareWorkerExport>`
 
-Per-entrypoint export configuration. Map key is the export name. Pulumi
-SDK v6.17.0 has no matching input — tofu honors this; Pulumi skips it.
+Per-entrypoint export configuration. Map key is the export name.
 
 ### spec.exports.*.type
 
@@ -1197,8 +1202,7 @@ SDK v6.17.0 has no matching input — tofu honors this; Pulumi skips it.
 
 `[]CloudflareWorkerPackageDependency`
 
-npm packages recorded against this Worker build. Pulumi SDK v6.17.0 has
-no matching input — tofu honors this; Pulumi skips it.
+npm packages recorded against this Worker build.
 
 ### spec.packageDependencies[].name
 

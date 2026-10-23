@@ -33,4 +33,4 @@ Import as `{account_id}/{token_id}` -- configuration only; the value is never re
 
 ## SDK Version
 
-Uses `pulumi-cloudflare` v6.19.0.
+Uses `pulumi-cloudflare` SDK v6 (Cloudflare Terraform provider v5 line).

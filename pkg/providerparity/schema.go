@@ -13,6 +13,8 @@ import (
 	"strings"
 
 	"github.com/pkg/errors"
+
+	"github.com/plantonhq/planton/pkg/iac/tofu/providerlocks"
 )
 
 // DefaultSchemaDir is repo-root-relative (where the CLI runs). Tests read the
@@ -134,6 +136,21 @@ func (b *Block) ConfigurableArgCount() int {
 		}
 	}
 	return n
+}
+
+// LockedVersion returns the release a dependency lock names for a provider
+// source address ("hashicorp/google"). Lock addresses are registry-qualified
+// ("registry.opentofu.org/hashicorp/google"), so the match is on the trailing
+// source. The canonical lock is the one place the catalog records which
+// release every OpenTofu module runs, which makes it the only valid answer to
+// "which version is parity measured at".
+func LockedVersion(lock providerlocks.Lock, source string) (string, bool) {
+	for address, locked := range lock {
+		if address == source || strings.HasSuffix(address, "/"+source) {
+			return locked.Version, true
+		}
+	}
+	return "", false
 }
 
 // LoadSchemas reads every artifact in dir and returns them keyed by provider

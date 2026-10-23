@@ -21,12 +21,10 @@ spec:
   # -- details in the records-portfolio scenario header): DNSSEC on a PENDING
   # zone (400/1017; works on ACTIVE zones, so live proof needs a
   # registrar-delegated zone created through this kind), record tags
-  # (400/9300), record settings ipv4/ipv6_only (400/9227), and the whole
-  # dns_settings singleton (non-defaults are 400/1003 entitlements; a partial
-  # block re-plans forever on terraform -- the provider echoes server
-  # defaults into unset Optional-not-Computed fields). Deliberately offline
-  # from authoring: hold, subscription (Billing Write scope; real money),
-  # vanity_name_servers, foundation_dns, multi_provider.
+  # (400/9300), record settings ipv4/ipv6_only (400/9227), and non-default
+  # dns_settings values (400/1003 entitlements, including Advanced
+  # Nameservers). Deliberately offline from authoring: hold, subscription
+  # (Billing Write scope; real money), vanity_name_servers, multi_provider.
   tier: 1
   # Proven live 2026-08-26: both engines ran minimal + records-portfolio
   # through the full lifecycle with the apply-idempotency gate green; the
@@ -34,6 +32,11 @@ spec:
   # zone + all five records (portfolio, ids from the record_ids output) with
   # zero drift. The destroy verification also taught the harness that a
   # deleted zone answers GET zones/{id} with 400 code 1001, not 404.
+  # Proven live 2026-10-23 on cloudflare/cloudflare 5.28.0 (pulumi-cloudflare
+  # v6.23.1): the dns-settings scenario (every Free-plan default declared,
+  # ns_ttl stated, nameservers.type standard) ran the full lifecycle on both
+  # engines with the apply-idempotency gate green, after the modules stopped
+  # managing the retired foundation_dns the API still reports.
   # The portfolio's root-dot NS record (content `...googledomains.com.`, which
   # the terraform module now sends without the dot, as the record kind's does)
   # joined after that run; its live proof on both engines is still owed.

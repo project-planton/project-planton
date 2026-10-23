@@ -59,7 +59,7 @@ These are the most important decisions when configuring a destination address. E
 
 **Account (`accountId`)** — the owning Cloudflare account. Immutable, and must match the account of the rules and zones that forward here.
 
-**Verification Override (`status`)** — normally leave empty. It exists for one real operation: flipping a verified address back to `unverified` (e.g. after a mailbox changes hands) to cut forwarding without deleting the address. Setting `verified` requires account admin privileges — it is not a verification shortcut. The Pulumi engine cannot send this field yet; use the Terraform engine when the override matters.
+**Verification Override (`status`)** — normally leave empty. It exists for one real operation: flipping a verified address back to `unverified` (e.g. after a mailbox changes hands) to cut forwarding without deleting the address. Setting `verified` requires account admin privileges — it is not a verification shortcut.
 
 ## Outputs and Dependencies
 

@@ -94,9 +94,9 @@ type CloudflareZeroTrustOrganizationSpec struct {
 	LoginDesign *CloudflareZeroTrustOrganizationLoginDesign `protobuf:"bytes,11,opt,name=login_design,json=loginDesign,proto3" json:"login_design,omitempty"`
 	// Organization-wide multi-factor authentication policy.
 	MfaConfig *CloudflareZeroTrustOrganizationMfaConfig `protobuf:"bytes,12,opt,name=mfa_config,json=mfaConfig,proto3" json:"mfa_config,omitempty"`
-	// Hardware requirements applied when ssh_piv_key is an allowed
+	// Hardware requirements applied when piv_key is an allowed
 	// authenticator.
-	MfaSshPivKeyRequirements *CloudflareZeroTrustOrganizationMfaSshPivKeyRequirements `protobuf:"bytes,13,opt,name=mfa_ssh_piv_key_requirements,json=mfaSshPivKeyRequirements,proto3" json:"mfa_ssh_piv_key_requirements,omitempty"`
+	MfaPivKeyRequirements *CloudflareZeroTrustOrganizationMfaPivKeyRequirements `protobuf:"bytes,13,opt,name=mfa_piv_key_requirements,json=mfaPivKeyRequirements,proto3" json:"mfa_piv_key_requirements,omitempty"`
 	// When true, users can authenticate to Access applications through an
 	// active WARP session instead of the login page.
 	AllowAuthenticateViaWarp *bool `protobuf:"varint,14,opt,name=allow_authenticate_via_warp,json=allowAuthenticateViaWarp,proto3,oneof" json:"allow_authenticate_via_warp,omitempty"`
@@ -106,8 +106,8 @@ type CloudflareZeroTrustOrganizationSpec struct {
 	// When true, global MFA settings apply to applications by default. The
 	// organization must have MFA enabled with at least one authentication
 	// method and a session duration configured. Cloudflare rejects
-	// allowed_authenticators containing ONLY ssh_piv_key when the organization
-	// has any non-infrastructure applications (PIV keys pair with
+	// allowed_authenticators containing ONLY piv_key or ssh_fido2_key when the
+	// organization has any non-infrastructure applications (both pair with
 	// infrastructure apps only).
 	MfaRequiredForAllApps *bool `protobuf:"varint,16,opt,name=mfa_required_for_all_apps,json=mfaRequiredForAllApps,proto3,oneof" json:"mfa_required_for_all_apps,omitempty"`
 	// When true, every Zero Trust setting becomes read-only in the dashboard
@@ -123,8 +123,25 @@ type CloudflareZeroTrustOrganizationSpec struct {
 	// Unset leaves the account's current cadence unmanaged. Account scope
 	// only.
 	KeyRotationIntervalDays *int32 `protobuf:"varint,19,opt,name=key_rotation_interval_days,json=keyRotationIntervalDays,proto3,oneof" json:"key_rotation_interval_days,omitempty"`
-	unknownFields           protoimpl.UnknownFields
-	sizeCache               protoimpl.SizeCache
+	// How Access treats a request made with a service token. When true,
+	// unauthorized requests emit audit logs and answer 401 or 403 instead of
+	// redirecting to the login page, and successful requests no longer
+	// receive a CF_Authorization cookie. Organizations created on or after
+	// 2026-10-05 have it on and cannot turn it off. Unset leaves the live
+	// value untouched.
+	StrictServiceTokenAuth *bool `protobuf:"varint,20,opt,name=strict_service_token_auth,json=strictServiceTokenAuth,proto3,oneof" json:"strict_service_token_auth,omitempty"`
+	// When true, a failed WARP authentication whose Accept header is not HTML
+	// (an API client, a CLI) answers 401 instead of redirecting to the login
+	// page. Unset writes false (the provider's default), so a manifest that
+	// wants it on must say so on every apply.
+	WarpAuthNonBrowser_401 *bool `protobuf:"varint,21,opt,name=warp_auth_non_browser_401,json=warpAuthNonBrowser401,proto3,oneof" json:"warp_auth_non_browser_401,omitempty"`
+	// Automatic enforcement against inactive service tokens: a token no
+	// policy references, and that has not authenticated to an Access
+	// application within the threshold, is disabled or deleted. Applies to
+	// every service token on the account.
+	ServiceTokenInactivity *CloudflareZeroTrustOrganizationServiceTokenInactivity `protobuf:"bytes,22,opt,name=service_token_inactivity,json=serviceTokenInactivity,proto3" json:"service_token_inactivity,omitempty"`
+	unknownFields          protoimpl.UnknownFields
+	sizeCache              protoimpl.SizeCache
 }
 
 func (x *CloudflareZeroTrustOrganizationSpec) Reset() {
@@ -241,9 +258,9 @@ func (x *CloudflareZeroTrustOrganizationSpec) GetMfaConfig() *CloudflareZeroTrus
 	return nil
 }
 
-func (x *CloudflareZeroTrustOrganizationSpec) GetMfaSshPivKeyRequirements() *CloudflareZeroTrustOrganizationMfaSshPivKeyRequirements {
+func (x *CloudflareZeroTrustOrganizationSpec) GetMfaPivKeyRequirements() *CloudflareZeroTrustOrganizationMfaPivKeyRequirements {
 	if x != nil {
-		return x.MfaSshPivKeyRequirements
+		return x.MfaPivKeyRequirements
 	}
 	return nil
 }
@@ -288,6 +305,27 @@ func (x *CloudflareZeroTrustOrganizationSpec) GetKeyRotationIntervalDays() int32
 		return *x.KeyRotationIntervalDays
 	}
 	return 0
+}
+
+func (x *CloudflareZeroTrustOrganizationSpec) GetStrictServiceTokenAuth() bool {
+	if x != nil && x.StrictServiceTokenAuth != nil {
+		return *x.StrictServiceTokenAuth
+	}
+	return false
+}
+
+func (x *CloudflareZeroTrustOrganizationSpec) GetWarpAuthNonBrowser_401() bool {
+	if x != nil && x.WarpAuthNonBrowser_401 != nil {
+		return *x.WarpAuthNonBrowser_401
+	}
+	return false
+}
+
+func (x *CloudflareZeroTrustOrganizationSpec) GetServiceTokenInactivity() *CloudflareZeroTrustOrganizationServiceTokenInactivity {
+	if x != nil {
+		return x.ServiceTokenInactivity
+	}
+	return nil
 }
 
 // CloudflareZeroTrustOrganizationCustomPages selects custom Access pages by
@@ -434,7 +472,10 @@ func (x *CloudflareZeroTrustOrganizationLoginDesign) GetFooterText() string {
 type CloudflareZeroTrustOrganizationMfaConfig struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// The authenticator methods users may satisfy MFA with. Cloudflare accepts
-	// exactly: totp, biometrics, security_key, ssh_piv_key.
+	// exactly: totp, biometrics, security_key, piv_key (a hardware PIV key,
+	// constrained by mfa_piv_key_requirements), and ssh_fido2_key (a FIDO2
+	// SSH key). piv_key and ssh_fido2_key apply to infrastructure
+	// applications only.
 	AllowedAuthenticators []string `protobuf:"bytes,1,rep,name=allowed_authenticators,json=allowedAuthenticators,proto3" json:"allowed_authenticators,omitempty"`
 	// How long an MFA assertion stays valid, as a duration using minutes or
 	// hours only (min "0m", max "720h").
@@ -508,9 +549,9 @@ func (x *CloudflareZeroTrustOrganizationMfaConfig) GetRequiredAaguids() string {
 	return ""
 }
 
-// CloudflareZeroTrustOrganizationMfaSshPivKeyRequirements constrains the
-// hardware PIV keys accepted when ssh_piv_key is an allowed authenticator.
-type CloudflareZeroTrustOrganizationMfaSshPivKeyRequirements struct {
+// CloudflareZeroTrustOrganizationMfaPivKeyRequirements constrains the
+// hardware PIV keys accepted when piv_key is an allowed authenticator.
+type CloudflareZeroTrustOrganizationMfaPivKeyRequirements struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// When the key requires its PIN: never, once (per session), or always.
 	PinPolicy string `protobuf:"bytes,1,opt,name=pin_policy,json=pinPolicy,proto3" json:"pin_policy,omitempty"`
@@ -527,20 +568,20 @@ type CloudflareZeroTrustOrganizationMfaSshPivKeyRequirements struct {
 	sizeCache         protoimpl.SizeCache
 }
 
-func (x *CloudflareZeroTrustOrganizationMfaSshPivKeyRequirements) Reset() {
-	*x = CloudflareZeroTrustOrganizationMfaSshPivKeyRequirements{}
+func (x *CloudflareZeroTrustOrganizationMfaPivKeyRequirements) Reset() {
+	*x = CloudflareZeroTrustOrganizationMfaPivKeyRequirements{}
 	mi := &file_catalog_cloudflare_cloudflarezerotrustorganization_v1alpha1_spec_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *CloudflareZeroTrustOrganizationMfaSshPivKeyRequirements) String() string {
+func (x *CloudflareZeroTrustOrganizationMfaPivKeyRequirements) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*CloudflareZeroTrustOrganizationMfaSshPivKeyRequirements) ProtoMessage() {}
+func (*CloudflareZeroTrustOrganizationMfaPivKeyRequirements) ProtoMessage() {}
 
-func (x *CloudflareZeroTrustOrganizationMfaSshPivKeyRequirements) ProtoReflect() protoreflect.Message {
+func (x *CloudflareZeroTrustOrganizationMfaPivKeyRequirements) ProtoReflect() protoreflect.Message {
 	mi := &file_catalog_cloudflare_cloudflarezerotrustorganization_v1alpha1_spec_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -552,51 +593,120 @@ func (x *CloudflareZeroTrustOrganizationMfaSshPivKeyRequirements) ProtoReflect()
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use CloudflareZeroTrustOrganizationMfaSshPivKeyRequirements.ProtoReflect.Descriptor instead.
-func (*CloudflareZeroTrustOrganizationMfaSshPivKeyRequirements) Descriptor() ([]byte, []int) {
+// Deprecated: Use CloudflareZeroTrustOrganizationMfaPivKeyRequirements.ProtoReflect.Descriptor instead.
+func (*CloudflareZeroTrustOrganizationMfaPivKeyRequirements) Descriptor() ([]byte, []int) {
 	return file_catalog_cloudflare_cloudflarezerotrustorganization_v1alpha1_spec_proto_rawDescGZIP(), []int{4}
 }
 
-func (x *CloudflareZeroTrustOrganizationMfaSshPivKeyRequirements) GetPinPolicy() string {
+func (x *CloudflareZeroTrustOrganizationMfaPivKeyRequirements) GetPinPolicy() string {
 	if x != nil {
 		return x.PinPolicy
 	}
 	return ""
 }
 
-func (x *CloudflareZeroTrustOrganizationMfaSshPivKeyRequirements) GetTouchPolicy() string {
+func (x *CloudflareZeroTrustOrganizationMfaPivKeyRequirements) GetTouchPolicy() string {
 	if x != nil {
 		return x.TouchPolicy
 	}
 	return ""
 }
 
-func (x *CloudflareZeroTrustOrganizationMfaSshPivKeyRequirements) GetSshKeyType() []string {
+func (x *CloudflareZeroTrustOrganizationMfaPivKeyRequirements) GetSshKeyType() []string {
 	if x != nil {
 		return x.SshKeyType
 	}
 	return nil
 }
 
-func (x *CloudflareZeroTrustOrganizationMfaSshPivKeyRequirements) GetSshKeySize() []int64 {
+func (x *CloudflareZeroTrustOrganizationMfaPivKeyRequirements) GetSshKeySize() []int64 {
 	if x != nil {
 		return x.SshKeySize
 	}
 	return nil
 }
 
-func (x *CloudflareZeroTrustOrganizationMfaSshPivKeyRequirements) GetRequireFipsDevice() bool {
+func (x *CloudflareZeroTrustOrganizationMfaPivKeyRequirements) GetRequireFipsDevice() bool {
 	if x != nil && x.RequireFipsDevice != nil {
 		return *x.RequireFipsDevice
 	}
 	return false
 }
 
+// CloudflareZeroTrustOrganizationServiceTokenInactivity disables or deletes
+// service tokens nobody uses. All three fields are required whenever the
+// block is set.
+type CloudflareZeroTrustOrganizationServiceTokenInactivity struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// What happens to an inactive token: disable (it stops authenticating and
+	// can be re-enabled) or delete (it is removed for good).
+	Action string `protobuf:"bytes,1,opt,name=action,proto3" json:"action,omitempty"`
+	// Whether the enforcement runs. False keeps the threshold and action on
+	// record without acting on any token.
+	Enabled bool `protobuf:"varint,2,opt,name=enabled,proto3" json:"enabled,omitempty"`
+	// How many days a token must be inactive before the action applies
+	// (30-365).
+	InactivityThresholdDays int32 `protobuf:"varint,3,opt,name=inactivity_threshold_days,json=inactivityThresholdDays,proto3" json:"inactivity_threshold_days,omitempty"`
+	unknownFields           protoimpl.UnknownFields
+	sizeCache               protoimpl.SizeCache
+}
+
+func (x *CloudflareZeroTrustOrganizationServiceTokenInactivity) Reset() {
+	*x = CloudflareZeroTrustOrganizationServiceTokenInactivity{}
+	mi := &file_catalog_cloudflare_cloudflarezerotrustorganization_v1alpha1_spec_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CloudflareZeroTrustOrganizationServiceTokenInactivity) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CloudflareZeroTrustOrganizationServiceTokenInactivity) ProtoMessage() {}
+
+func (x *CloudflareZeroTrustOrganizationServiceTokenInactivity) ProtoReflect() protoreflect.Message {
+	mi := &file_catalog_cloudflare_cloudflarezerotrustorganization_v1alpha1_spec_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CloudflareZeroTrustOrganizationServiceTokenInactivity.ProtoReflect.Descriptor instead.
+func (*CloudflareZeroTrustOrganizationServiceTokenInactivity) Descriptor() ([]byte, []int) {
+	return file_catalog_cloudflare_cloudflarezerotrustorganization_v1alpha1_spec_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *CloudflareZeroTrustOrganizationServiceTokenInactivity) GetAction() string {
+	if x != nil {
+		return x.Action
+	}
+	return ""
+}
+
+func (x *CloudflareZeroTrustOrganizationServiceTokenInactivity) GetEnabled() bool {
+	if x != nil {
+		return x.Enabled
+	}
+	return false
+}
+
+func (x *CloudflareZeroTrustOrganizationServiceTokenInactivity) GetInactivityThresholdDays() int32 {
+	if x != nil {
+		return x.InactivityThresholdDays
+	}
+	return 0
+}
+
 var File_catalog_cloudflare_cloudflarezerotrustorganization_v1alpha1_spec_proto protoreflect.FileDescriptor
 
 const file_catalog_cloudflare_cloudflarezerotrustorganization_v1alpha1_spec_proto_rawDesc = "" +
 	"\n" +
-	"Fcatalog/cloudflare/cloudflarezerotrustorganization/v1alpha1/spec.proto\x12?dev.planton.cloudflare.cloudflarezerotrustorganization.v1alpha1\x1a\x1bbuf/validate/validate.proto\x1a&shared/foreignkey/v1/foreign_key.proto\"\x8d\x11\n" +
+	"Fcatalog/cloudflare/cloudflarezerotrustorganization/v1alpha1/spec.proto\x12?dev.planton.cloudflare.cloudflarezerotrustorganization.v1alpha1\x1a\x1bbuf/validate/validate.proto\x1a&shared/foreignkey/v1/foreign_key.proto\"\xf1\x13\n" +
 	"#CloudflareZeroTrustOrganizationSpec\x12\x96\x01\n" +
 	"\n" +
 	"account_id\x18\x01 \x01(\tBw\xbaHt\xba\x01q\n" +
@@ -614,15 +724,18 @@ const file_catalog_cloudflare_cloudflarezerotrustorganization_v1alpha1_spec_prot
 	" \x01(\v2k.dev.planton.cloudflare.cloudflarezerotrustorganization.v1alpha1.CloudflareZeroTrustOrganizationCustomPagesR\vcustomPages\x12\x8e\x01\n" +
 	"\flogin_design\x18\v \x01(\v2k.dev.planton.cloudflare.cloudflarezerotrustorganization.v1alpha1.CloudflareZeroTrustOrganizationLoginDesignR\vloginDesign\x12\x88\x01\n" +
 	"\n" +
-	"mfa_config\x18\f \x01(\v2i.dev.planton.cloudflare.cloudflarezerotrustorganization.v1alpha1.CloudflareZeroTrustOrganizationMfaConfigR\tmfaConfig\x12\xb8\x01\n" +
-	"\x1cmfa_ssh_piv_key_requirements\x18\r \x01(\v2x.dev.planton.cloudflare.cloudflarezerotrustorganization.v1alpha1.CloudflareZeroTrustOrganizationMfaSshPivKeyRequirementsR\x18mfaSshPivKeyRequirements\x12B\n" +
+	"mfa_config\x18\f \x01(\v2i.dev.planton.cloudflare.cloudflarezerotrustorganization.v1alpha1.CloudflareZeroTrustOrganizationMfaConfigR\tmfaConfig\x12\xae\x01\n" +
+	"\x18mfa_piv_key_requirements\x18\r \x01(\v2u.dev.planton.cloudflare.cloudflarezerotrustorganization.v1alpha1.CloudflareZeroTrustOrganizationMfaPivKeyRequirementsR\x15mfaPivKeyRequirements\x12B\n" +
 	"\x1ballow_authenticate_via_warp\x18\x0e \x01(\bH\x01R\x18allowAuthenticateViaWarp\x88\x01\x01\x12>\n" +
 	"\x19auto_redirect_to_identity\x18\x0f \x01(\bH\x02R\x16autoRedirectToIdentity\x88\x01\x01\x12=\n" +
 	"\x19mfa_required_for_all_apps\x18\x10 \x01(\bH\x03R\x15mfaRequiredForAllApps\x88\x01\x01\x12*\n" +
 	"\x0fis_ui_read_only\x18\x11 \x01(\bH\x04R\fisUiReadOnly\x88\x01\x01\x12:\n" +
 	"\x1aui_read_only_toggle_reason\x18\x12 \x01(\tR\x16uiReadOnlyToggleReason\x12L\n" +
 	"\x1akey_rotation_interval_days\x18\x13 \x01(\x05B\n" +
-	"\xbaH\a\x1a\x05\x18\xed\x02(\x15H\x05R\x17keyRotationIntervalDays\x88\x01\x01:\xc7\x02\xbaH\xc3\x02\x1ao\n" +
+	"\xbaH\a\x1a\x05\x18\xed\x02(\x15H\x05R\x17keyRotationIntervalDays\x88\x01\x01\x12>\n" +
+	"\x19strict_service_token_auth\x18\x14 \x01(\bH\x06R\x16strictServiceTokenAuth\x88\x01\x01\x12=\n" +
+	"\x19warp_auth_non_browser_401\x18\x15 \x01(\bH\aR\x15warpAuthNonBrowser401\x88\x01\x01\x12\xb0\x01\n" +
+	"\x18service_token_inactivity\x18\x16 \x01(\v2v.dev.planton.cloudflare.cloudflarezerotrustorganization.v1alpha1.CloudflareZeroTrustOrganizationServiceTokenInactivityR\x16serviceTokenInactivity:\xc7\x02\xbaH\xc3\x02\x1ao\n" +
 	"\x15spec.account_xor_zone\x12(set exactly one of account_id or zone_id\x1a,(this.account_id != '') != has(this.zone_id)\x1a\xcf\x01\n" +
 	"\x1espec.key_rotation_account_only\x12mkey_rotation_interval_days applies only to an account-scoped organization -- unset it or switch to account_id\x1a>!has(this.key_rotation_interval_days) || this.account_id != ''B\x1a\n" +
 	"\x18_deny_unmatched_requestsB\x1e\n" +
@@ -630,7 +743,9 @@ const file_catalog_cloudflare_cloudflarezerotrustorganization_v1alpha1_spec_prot
 	"\x1a_auto_redirect_to_identityB\x1c\n" +
 	"\x1a_mfa_required_for_all_appsB\x12\n" +
 	"\x10_is_ui_read_onlyB\x1d\n" +
-	"\x1b_key_rotation_interval_days\"s\n" +
+	"\x1b_key_rotation_interval_daysB\x1c\n" +
+	"\x1a_strict_service_token_authB\x1c\n" +
+	"\x1a_warp_auth_non_browser_401\"s\n" +
 	"*CloudflareZeroTrustOrganizationCustomPages\x12\x1c\n" +
 	"\tforbidden\x18\x01 \x01(\tR\tforbidden\x12'\n" +
 	"\x0fidentity_denied\x18\x02 \x01(\tR\x0eidentityDenied\"\xd5\x01\n" +
@@ -642,14 +757,14 @@ const file_catalog_cloudflare_cloudflarezerotrustorganization_v1alpha1_spec_prot
 	"\vheader_text\x18\x04 \x01(\tR\n" +
 	"headerText\x12\x1f\n" +
 	"\vfooter_text\x18\x05 \x01(\tR\n" +
-	"footerText\"\xcd\x03\n" +
-	"(CloudflareZeroTrustOrganizationMfaConfig\x12\x87\x02\n" +
-	"\x16allowed_authenticators\x18\x01 \x03(\tB\xcf\x01\xbaH\xcb\x01\xba\x01\xc7\x01\n" +
-	"\x1dallowed_authenticators.values\x12]allowed_authenticators entries must be drawn from totp, biometrics, security_key, ssh_piv_key\x1aGthis.all(v, v in ['totp', 'biometrics', 'security_key', 'ssh_piv_key'])R\x15allowedAuthenticators\x12)\n" +
+	"footerText\"\xe5\x03\n" +
+	"(CloudflareZeroTrustOrganizationMfaConfig\x12\x9f\x02\n" +
+	"\x16allowed_authenticators\x18\x01 \x03(\tB\xe7\x01\xbaH\xe3\x01\xba\x01\xdf\x01\n" +
+	"\x1dallowed_authenticators.values\x12hallowed_authenticators entries must be drawn from totp, biometrics, security_key, piv_key, ssh_fido2_key\x1aTthis.all(v, v in ['totp', 'biometrics', 'security_key', 'piv_key', 'ssh_fido2_key'])R\x15allowedAuthenticators\x12)\n" +
 	"\x10session_duration\x18\x02 \x01(\tR\x0fsessionDuration\x12A\n" +
 	"\x1damr_matching_session_duration\x18\x03 \x01(\tR\x1aamrMatchingSessionDuration\x12)\n" +
-	"\x10required_aaguids\x18\x04 \x01(\tR\x0frequiredAaguids\"\xbe\x06\n" +
-	"7CloudflareZeroTrustOrganizationMfaSshPivKeyRequirements\x12\x9a\x01\n" +
+	"\x10required_aaguids\x18\x04 \x01(\tR\x0frequiredAaguids\"\xbb\x06\n" +
+	"4CloudflareZeroTrustOrganizationMfaPivKeyRequirements\x12\x9a\x01\n" +
 	"\n" +
 	"pin_policy\x18\x01 \x01(\tB{\xbaHx\xba\x01u\n" +
 	"\x11pin_policy.values\x12-pin_policy must be one of never, once, always\x1a1this == '' || this in ['never', 'once', 'always']R\tpinPolicy\x12\xa8\x01\n" +
@@ -662,7 +777,13 @@ const file_catalog_cloudflare_cloudflarezerotrustorganization_v1alpha1_spec_prot
 	"\x13ssh_key_size.values\x12Gssh_key_size entries must be drawn from 256, 384, 521, 2048, 3072, 4096\x1a3this.all(v, v in [256, 384, 521, 2048, 3072, 4096])R\n" +
 	"sshKeySize\x123\n" +
 	"\x13require_fips_device\x18\x05 \x01(\bH\x00R\x11requireFipsDevice\x88\x01\x01B\x16\n" +
-	"\x14_require_fips_deviceB\xf4\x03\n" +
+	"\x14_require_fips_device\"\xa8\x02\n" +
+	"5CloudflareZeroTrustOrganizationServiceTokenInactivity\x12\x8c\x01\n" +
+	"\x06action\x18\x01 \x01(\tBt\xbaHq\xba\x01n\n" +
+	"&service_token_inactivity.action.values\x12%action must be one of disable, delete\x1a\x1dthis in ['disable', 'delete']R\x06action\x12\x18\n" +
+	"\aenabled\x18\x02 \x01(\bR\aenabled\x12F\n" +
+	"\x19inactivity_threshold_days\x18\x03 \x01(\x05B\n" +
+	"\xbaH\a\x1a\x05\x18\xed\x02(\x1eR\x17inactivityThresholdDaysB\xf4\x03\n" +
 	"Ccom.dev.planton.cloudflare.cloudflarezerotrustorganization.v1alpha1B\tSpecProtoP\x01Z\x80\x01github.com/plantonhq/planton/catalog/cloudflare/cloudflarezerotrustorganization/v1alpha1;cloudflarezerotrustorganizationv1alpha1\xa2\x02\x04DPCC\xaa\x02?Dev.Planton.Cloudflare.Cloudflarezerotrustorganization.V1alpha1\xca\x02?Dev\\Planton\\Cloudflare\\Cloudflarezerotrustorganization\\V1alpha1\xe2\x02KDev\\Planton\\Cloudflare\\Cloudflarezerotrustorganization\\V1alpha1\\GPBMetadata\xea\x02CDev::Planton::Cloudflare::Cloudflarezerotrustorganization::V1alpha1b\x06proto3"
 
 var (
@@ -677,26 +798,28 @@ func file_catalog_cloudflare_cloudflarezerotrustorganization_v1alpha1_spec_proto
 	return file_catalog_cloudflare_cloudflarezerotrustorganization_v1alpha1_spec_proto_rawDescData
 }
 
-var file_catalog_cloudflare_cloudflarezerotrustorganization_v1alpha1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
+var file_catalog_cloudflare_cloudflarezerotrustorganization_v1alpha1_spec_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
 var file_catalog_cloudflare_cloudflarezerotrustorganization_v1alpha1_spec_proto_goTypes = []any{
-	(*CloudflareZeroTrustOrganizationSpec)(nil),                     // 0: dev.planton.cloudflare.cloudflarezerotrustorganization.v1alpha1.CloudflareZeroTrustOrganizationSpec
-	(*CloudflareZeroTrustOrganizationCustomPages)(nil),              // 1: dev.planton.cloudflare.cloudflarezerotrustorganization.v1alpha1.CloudflareZeroTrustOrganizationCustomPages
-	(*CloudflareZeroTrustOrganizationLoginDesign)(nil),              // 2: dev.planton.cloudflare.cloudflarezerotrustorganization.v1alpha1.CloudflareZeroTrustOrganizationLoginDesign
-	(*CloudflareZeroTrustOrganizationMfaConfig)(nil),                // 3: dev.planton.cloudflare.cloudflarezerotrustorganization.v1alpha1.CloudflareZeroTrustOrganizationMfaConfig
-	(*CloudflareZeroTrustOrganizationMfaSshPivKeyRequirements)(nil), // 4: dev.planton.cloudflare.cloudflarezerotrustorganization.v1alpha1.CloudflareZeroTrustOrganizationMfaSshPivKeyRequirements
-	(*v1.StringValueOrRef)(nil),                                     // 5: dev.planton.shared.foreignkey.v1.StringValueOrRef
+	(*CloudflareZeroTrustOrganizationSpec)(nil),                   // 0: dev.planton.cloudflare.cloudflarezerotrustorganization.v1alpha1.CloudflareZeroTrustOrganizationSpec
+	(*CloudflareZeroTrustOrganizationCustomPages)(nil),            // 1: dev.planton.cloudflare.cloudflarezerotrustorganization.v1alpha1.CloudflareZeroTrustOrganizationCustomPages
+	(*CloudflareZeroTrustOrganizationLoginDesign)(nil),            // 2: dev.planton.cloudflare.cloudflarezerotrustorganization.v1alpha1.CloudflareZeroTrustOrganizationLoginDesign
+	(*CloudflareZeroTrustOrganizationMfaConfig)(nil),              // 3: dev.planton.cloudflare.cloudflarezerotrustorganization.v1alpha1.CloudflareZeroTrustOrganizationMfaConfig
+	(*CloudflareZeroTrustOrganizationMfaPivKeyRequirements)(nil),  // 4: dev.planton.cloudflare.cloudflarezerotrustorganization.v1alpha1.CloudflareZeroTrustOrganizationMfaPivKeyRequirements
+	(*CloudflareZeroTrustOrganizationServiceTokenInactivity)(nil), // 5: dev.planton.cloudflare.cloudflarezerotrustorganization.v1alpha1.CloudflareZeroTrustOrganizationServiceTokenInactivity
+	(*v1.StringValueOrRef)(nil),                                   // 6: dev.planton.shared.foreignkey.v1.StringValueOrRef
 }
 var file_catalog_cloudflare_cloudflarezerotrustorganization_v1alpha1_spec_proto_depIdxs = []int32{
-	5, // 0: dev.planton.cloudflare.cloudflarezerotrustorganization.v1alpha1.CloudflareZeroTrustOrganizationSpec.zone_id:type_name -> dev.planton.shared.foreignkey.v1.StringValueOrRef
+	6, // 0: dev.planton.cloudflare.cloudflarezerotrustorganization.v1alpha1.CloudflareZeroTrustOrganizationSpec.zone_id:type_name -> dev.planton.shared.foreignkey.v1.StringValueOrRef
 	1, // 1: dev.planton.cloudflare.cloudflarezerotrustorganization.v1alpha1.CloudflareZeroTrustOrganizationSpec.custom_pages:type_name -> dev.planton.cloudflare.cloudflarezerotrustorganization.v1alpha1.CloudflareZeroTrustOrganizationCustomPages
 	2, // 2: dev.planton.cloudflare.cloudflarezerotrustorganization.v1alpha1.CloudflareZeroTrustOrganizationSpec.login_design:type_name -> dev.planton.cloudflare.cloudflarezerotrustorganization.v1alpha1.CloudflareZeroTrustOrganizationLoginDesign
 	3, // 3: dev.planton.cloudflare.cloudflarezerotrustorganization.v1alpha1.CloudflareZeroTrustOrganizationSpec.mfa_config:type_name -> dev.planton.cloudflare.cloudflarezerotrustorganization.v1alpha1.CloudflareZeroTrustOrganizationMfaConfig
-	4, // 4: dev.planton.cloudflare.cloudflarezerotrustorganization.v1alpha1.CloudflareZeroTrustOrganizationSpec.mfa_ssh_piv_key_requirements:type_name -> dev.planton.cloudflare.cloudflarezerotrustorganization.v1alpha1.CloudflareZeroTrustOrganizationMfaSshPivKeyRequirements
-	5, // [5:5] is the sub-list for method output_type
-	5, // [5:5] is the sub-list for method input_type
-	5, // [5:5] is the sub-list for extension type_name
-	5, // [5:5] is the sub-list for extension extendee
-	0, // [0:5] is the sub-list for field type_name
+	4, // 4: dev.planton.cloudflare.cloudflarezerotrustorganization.v1alpha1.CloudflareZeroTrustOrganizationSpec.mfa_piv_key_requirements:type_name -> dev.planton.cloudflare.cloudflarezerotrustorganization.v1alpha1.CloudflareZeroTrustOrganizationMfaPivKeyRequirements
+	5, // 5: dev.planton.cloudflare.cloudflarezerotrustorganization.v1alpha1.CloudflareZeroTrustOrganizationSpec.service_token_inactivity:type_name -> dev.planton.cloudflare.cloudflarezerotrustorganization.v1alpha1.CloudflareZeroTrustOrganizationServiceTokenInactivity
+	6, // [6:6] is the sub-list for method output_type
+	6, // [6:6] is the sub-list for method input_type
+	6, // [6:6] is the sub-list for extension type_name
+	6, // [6:6] is the sub-list for extension extendee
+	0, // [0:6] is the sub-list for field type_name
 }
 
 func init() { file_catalog_cloudflare_cloudflarezerotrustorganization_v1alpha1_spec_proto_init() }
@@ -712,7 +835,7 @@ func file_catalog_cloudflare_cloudflarezerotrustorganization_v1alpha1_spec_proto
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_catalog_cloudflare_cloudflarezerotrustorganization_v1alpha1_spec_proto_rawDesc), len(file_catalog_cloudflare_cloudflarezerotrustorganization_v1alpha1_spec_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   5,
+			NumMessages:   6,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

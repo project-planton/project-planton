@@ -3380,12 +3380,14 @@ func (x *CloudflareRulesetCacheReserve) GetMinimumFileSize() int64 {
 	return 0
 }
 
-// CloudflareRulesetVary configures variant caching keyed on response headers.
+// CloudflareRulesetVary configures how response Vary headers contribute to
+// the cache key: a default treatment plus per-header overrides.
 type CloudflareRulesetVary struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// Default vary behavior.
+	// How Vary headers without a per-header override are treated. Required
+	// whenever vary is set.
 	Default *CloudflareRulesetVaryDefault `protobuf:"bytes,1,opt,name=default,proto3" json:"default,omitempty"`
-	// Per-header vary configuration. Key is the header name.
+	// Per-header overrides. Key is the lowercase request header name.
 	Headers       map[string]*CloudflareRulesetVaryHeader `protobuf:"bytes,2,rep,name=headers,proto3" json:"headers,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -3435,10 +3437,11 @@ func (x *CloudflareRulesetVary) GetHeaders() map[string]*CloudflareRulesetVaryHe
 	return nil
 }
 
-// CloudflareRulesetVaryDefault is the default vary action.
+// CloudflareRulesetVaryDefault is the default vary treatment.
 type CloudflareRulesetVaryDefault struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The default vary action.
+	// How the header value is treated when building the cache key: bypass,
+	// passthrough, or normalize.
 	Action        string `protobuf:"bytes,1,opt,name=action,proto3" json:"action,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -3481,14 +3484,16 @@ func (x *CloudflareRulesetVaryDefault) GetAction() string {
 	return ""
 }
 
-// CloudflareRulesetVaryHeader configures vary for a single response header.
+// CloudflareRulesetVaryHeader configures vary for a single request header.
 type CloudflareRulesetVaryHeader struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The vary action for this header.
+	// How the header value is treated when building the cache key: bypass,
+	// passthrough, or normalize.
 	Action string `protobuf:"bytes,1,opt,name=action,proto3" json:"action,omitempty"`
-	// Media types this header variant applies to.
+	// Media types to normalize against. Only valid for the `accept` header.
 	MediaTypes []string `protobuf:"bytes,2,rep,name=media_types,json=mediaTypes,proto3" json:"media_types,omitempty"`
-	// Languages this header variant applies to.
+	// Languages to normalize against. Only valid for the `accept-language`
+	// header.
 	Languages     []string `protobuf:"bytes,3,rep,name=languages,proto3" json:"languages,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -4214,17 +4219,19 @@ const file_catalog_cloudflare_cloudflareruleset_v1alpha1_spec_proto_rawDesc = ""
 	"\x05_lang\"g\n" +
 	"\x1dCloudflareRulesetCacheReserve\x12\x1a\n" +
 	"\beligible\x18\x01 \x01(\bR\beligible\x12*\n" +
-	"\x11minimum_file_size\x18\x02 \x01(\x03R\x0fminimumFileSize\"\x80\x03\n" +
-	"\x15CloudflareRulesetVary\x12i\n" +
-	"\adefault\x18\x01 \x01(\v2O.dev.planton.cloudflare.cloudflareruleset.v1alpha1.CloudflareRulesetVaryDefaultR\adefault\x12o\n" +
+	"\x11minimum_file_size\x18\x02 \x01(\x03R\x0fminimumFileSize\"\x88\x03\n" +
+	"\x15CloudflareRulesetVary\x12q\n" +
+	"\adefault\x18\x01 \x01(\v2O.dev.planton.cloudflare.cloudflareruleset.v1alpha1.CloudflareRulesetVaryDefaultB\x06\xbaH\x03\xc8\x01\x01R\adefault\x12o\n" +
 	"\aheaders\x18\x02 \x03(\v2U.dev.planton.cloudflare.cloudflareruleset.v1alpha1.CloudflareRulesetVary.HeadersEntryR\aheaders\x1a\x8a\x01\n" +
 	"\fHeadersEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12d\n" +
-	"\x05value\x18\x02 \x01(\v2N.dev.planton.cloudflare.cloudflareruleset.v1alpha1.CloudflareRulesetVaryHeaderR\x05value:\x028\x01\"?\n" +
-	"\x1cCloudflareRulesetVaryDefault\x12\x1f\n" +
-	"\x06action\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06action\"}\n" +
-	"\x1bCloudflareRulesetVaryHeader\x12\x1f\n" +
-	"\x06action\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06action\x12\x1f\n" +
+	"\x05value\x18\x02 \x01(\v2N.dev.planton.cloudflare.cloudflareruleset.v1alpha1.CloudflareRulesetVaryHeaderR\x05value:\x028\x01\"\xc4\x01\n" +
+	"\x1cCloudflareRulesetVaryDefault\x12\xa3\x01\n" +
+	"\x06action\x18\x01 \x01(\tB\x8a\x01\xbaH\x86\x01\xba\x01\x82\x01\n" +
+	"\x1avary_default.action.values\x124action must be one of bypass, passthrough, normalize\x1a.this in ['bypass', 'passthrough', 'normalize']R\x06action\"\x81\x02\n" +
+	"\x1bCloudflareRulesetVaryHeader\x12\xa2\x01\n" +
+	"\x06action\x18\x01 \x01(\tB\x89\x01\xbaH\x85\x01\xba\x01\x81\x01\n" +
+	"\x19vary_header.action.values\x124action must be one of bypass, passthrough, normalize\x1a.this in ['bypass', 'passthrough', 'normalize']R\x06action\x12\x1f\n" +
 	"\vmedia_types\x18\x02 \x03(\tR\n" +
 	"mediaTypes\x12\x1c\n" +
 	"\tlanguages\x18\x03 \x03(\tR\tlanguages\"8\n" +

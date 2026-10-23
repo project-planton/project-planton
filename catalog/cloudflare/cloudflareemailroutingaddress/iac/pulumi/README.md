@@ -20,10 +20,6 @@ main.go (entrypoint)
 3. Creating the address sends a verification email; the `verified` output stays empty until the owner clicks the link.
 4. Outputs are exported matching `CloudflareEmailRoutingAddressOutputs`.
 
-## Engine parity note
-
-The spec's `status` field (explicit verification-state override) is provisioned by the Terraform module but NOT by this module: the pulumi-cloudflare SDK (v6.17.0) `EmailRoutingAddressArgs` carries only `AccountId` and `Email` while the terraform provider at v5.23.0 has `status`. See the `PARITY-EXCEPTION` note in `module/email_routing_address.go`; wire the field and remove the note when a newer Pulumi SDK adds it. Every other field is at full tofu↔Pulumi parity.
-
 ## Local Development
 
 Run the module from this directory with the planton CLI. It builds the IaC input from the manifest and the provider config file, and hands it to the module through `IAC_INPUT_YAML_FILE`:

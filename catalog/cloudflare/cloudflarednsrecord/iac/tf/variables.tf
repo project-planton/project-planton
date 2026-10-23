@@ -53,7 +53,8 @@ variable "spec" {
     }))
 
     # (Optional) Restrict the record to Cloudflare internal (private) routing.
-    private_routing = optional(bool, false)
+    private_routing         = optional(bool, false)
+    include_shadow_metadata = optional(bool)
 
     # Structured data for non-simple record types. The proto models these as a
     # oneof named `data`, and the tfvars converter emits the ACTIVE CASE as a

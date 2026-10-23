@@ -110,9 +110,9 @@ message CloudflareZeroTrustOrganizationSpec {
   // Organization-wide multi-factor authentication policy.
   CloudflareZeroTrustOrganizationMfaConfig mfa_config = 12;
 
-  // Hardware requirements applied when ssh_piv_key is an allowed
+  // Hardware requirements applied when piv_key is an allowed
   // authenticator.
-  CloudflareZeroTrustOrganizationMfaSshPivKeyRequirements mfa_ssh_piv_key_requirements = 13;
+  CloudflareZeroTrustOrganizationMfaPivKeyRequirements mfa_piv_key_requirements = 13;
 
   // When true, users can authenticate to Access applications through an
   // active WARP session instead of the login page.
@@ -125,8 +125,8 @@ message CloudflareZeroTrustOrganizationSpec {
   // When true, global MFA settings apply to applications by default. The
   // organization must have MFA enabled with at least one authentication
   // method and a session duration configured. Cloudflare rejects
-  // allowed_authenticators containing ONLY ssh_piv_key when the organization
-  // has any non-infrastructure applications (PIV keys pair with
+  // allowed_authenticators containing ONLY piv_key or ssh_fido2_key when the
+  // organization has any non-infrastructure applications (both pair with
   // infrastructure apps only).
   optional bool mfa_required_for_all_apps = 16;
 
@@ -148,6 +148,26 @@ message CloudflareZeroTrustOrganizationSpec {
     (buf.validate.field).int32.gte = 21,
     (buf.validate.field).int32.lte = 365
   ];
+
+  // How Access treats a request made with a service token. When true,
+  // unauthorized requests emit audit logs and answer 401 or 403 instead of
+  // redirecting to the login page, and successful requests no longer
+  // receive a CF_Authorization cookie. Organizations created on or after
+  // 2026-10-05 have it on and cannot turn it off. Unset leaves the live
+  // value untouched.
+  optional bool strict_service_token_auth = 20;
+
+  // When true, a failed WARP authentication whose Accept header is not HTML
+  // (an API client, a CLI) answers 401 instead of redirecting to the login
+  // page. Unset writes false (the provider's default), so a manifest that
+  // wants it on must say so on every apply.
+  optional bool warp_auth_non_browser_401 = 21;
+
+  // Automatic enforcement against inactive service tokens: a token no
+  // policy references, and that has not authenticated to an Access
+  // application within the threshold, is disabled or deleted. Applies to
+  // every service token on the account.
+  CloudflareZeroTrustOrganizationServiceTokenInactivity service_token_inactivity = 22;
 }
 
 // CloudflareZeroTrustOrganizationCustomPages selects custom Access pages by
@@ -183,11 +203,14 @@ message CloudflareZeroTrustOrganizationLoginDesign {
 // policy referenced by applications and policies that require MFA.
 message CloudflareZeroTrustOrganizationMfaConfig {
   // The authenticator methods users may satisfy MFA with. Cloudflare accepts
-  // exactly: totp, biometrics, security_key, ssh_piv_key.
+  // exactly: totp, biometrics, security_key, piv_key (a hardware PIV key,
+  // constrained by mfa_piv_key_requirements), and ssh_fido2_key (a FIDO2
+  // SSH key). piv_key and ssh_fido2_key apply to infrastructure
+  // applications only.
   repeated string allowed_authenticators = 1 [(buf.validate.field).cel = {
     id: "allowed_authenticators.values"
-    message: "allowed_authenticators entries must be drawn from totp, biometrics, security_key, ssh_piv_key"
-    expression: "this.all(v, v in ['totp', 'biometrics', 'security_key', 'ssh_piv_key'])"
+    message: "allowed_authenticators entries must be drawn from totp, biometrics, security_key, piv_key, ssh_fido2_key"
+    expression: "this.all(v, v in ['totp', 'biometrics', 'security_key', 'piv_key', 'ssh_fido2_key'])"
   }];
 
   // How long an MFA assertion stays valid, as a duration using minutes or
@@ -204,9 +227,9 @@ message CloudflareZeroTrustOrganizationMfaConfig {
   string required_aaguids = 4;
 }
 
-// CloudflareZeroTrustOrganizationMfaSshPivKeyRequirements constrains the
-// hardware PIV keys accepted when ssh_piv_key is an allowed authenticator.
-message CloudflareZeroTrustOrganizationMfaSshPivKeyRequirements {
+// CloudflareZeroTrustOrganizationMfaPivKeyRequirements constrains the
+// hardware PIV keys accepted when piv_key is an allowed authenticator.
+message CloudflareZeroTrustOrganizationMfaPivKeyRequirements {
   // When the key requires its PIN: never, once (per session), or always.
   string pin_policy = 1 [(buf.validate.field).cel = {
     id: "pin_policy.values"
@@ -238,4 +261,28 @@ message CloudflareZeroTrustOrganizationMfaSshPivKeyRequirements {
 
   // When true, only FIPS-certified hardware keys are accepted.
   optional bool require_fips_device = 5;
+}
+
+// CloudflareZeroTrustOrganizationServiceTokenInactivity disables or deletes
+// service tokens nobody uses. All three fields are required whenever the
+// block is set.
+message CloudflareZeroTrustOrganizationServiceTokenInactivity {
+  // What happens to an inactive token: disable (it stops authenticating and
+  // can be re-enabled) or delete (it is removed for good).
+  string action = 1 [(buf.validate.field).cel = {
+    id: "service_token_inactivity.action.values"
+    message: "action must be one of disable, delete"
+    expression: "this in ['disable', 'delete']"
+  }];
+
+  // Whether the enforcement runs. False keeps the threshold and action on
+  // record without acting on any token.
+  bool enabled = 2;
+
+  // How many days a token must be inactive before the action applies
+  // (30-365).
+  int32 inactivity_threshold_days = 3 [
+    (buf.validate.field).int32.gte = 30,
+    (buf.validate.field).int32.lte = 365
+  ];
 }

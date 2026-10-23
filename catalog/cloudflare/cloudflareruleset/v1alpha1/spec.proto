@@ -969,30 +969,43 @@ message CloudflareRulesetCacheReserve {
   int64 minimum_file_size = 2;
 }
 
-// CloudflareRulesetVary configures variant caching keyed on response headers.
+// CloudflareRulesetVary configures how response Vary headers contribute to
+// the cache key: a default treatment plus per-header overrides.
 message CloudflareRulesetVary {
-  // Default vary behavior.
-  CloudflareRulesetVaryDefault default = 1;
+  // How Vary headers without a per-header override are treated. Required
+  // whenever vary is set.
+  CloudflareRulesetVaryDefault default = 1 [(buf.validate.field).required = true];
 
-  // Per-header vary configuration. Key is the header name.
+  // Per-header overrides. Key is the lowercase request header name.
   map<string, CloudflareRulesetVaryHeader> headers = 2;
 }
 
-// CloudflareRulesetVaryDefault is the default vary action.
+// CloudflareRulesetVaryDefault is the default vary treatment.
 message CloudflareRulesetVaryDefault {
-  // The default vary action.
-  string action = 1 [(buf.validate.field).string.min_len = 1];
+  // How the header value is treated when building the cache key: bypass,
+  // passthrough, or normalize.
+  string action = 1 [(buf.validate.field).cel = {
+    id: "vary_default.action.values"
+    message: "action must be one of bypass, passthrough, normalize"
+    expression: "this in ['bypass', 'passthrough', 'normalize']"
+  }];
 }
 
-// CloudflareRulesetVaryHeader configures vary for a single response header.
+// CloudflareRulesetVaryHeader configures vary for a single request header.
 message CloudflareRulesetVaryHeader {
-  // The vary action for this header.
-  string action = 1 [(buf.validate.field).string.min_len = 1];
+  // How the header value is treated when building the cache key: bypass,
+  // passthrough, or normalize.
+  string action = 1 [(buf.validate.field).cel = {
+    id: "vary_header.action.values"
+    message: "action must be one of bypass, passthrough, normalize"
+    expression: "this in ['bypass', 'passthrough', 'normalize']"
+  }];
 
-  // Media types this header variant applies to.
+  // Media types to normalize against. Only valid for the `accept` header.
   repeated string media_types = 2;
 
-  // Languages this header variant applies to.
+  // Languages to normalize against. Only valid for the `accept-language`
+  // header.
   repeated string languages = 3;
 }
 

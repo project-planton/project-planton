@@ -196,10 +196,10 @@ spec:
 | `spec.rules[].actionParameters.readTimeout` | `int64` |  |  |  |
 | `spec.rules[].actionParameters.respectStrongEtags` | `bool` |  |  |  |
 | `spec.rules[].actionParameters.vary` | `CloudflareRulesetVary` |  |  |  |
-| `spec.rules[].actionParameters.vary.default` | `CloudflareRulesetVaryDefault` |  |  |  |
-| `spec.rules[].actionParameters.vary.default.action` | `string` | yes |  |  |
+| `spec.rules[].actionParameters.vary.default` | `CloudflareRulesetVaryDefault` | yes |  |  |
+| `spec.rules[].actionParameters.vary.default.action` | `string` |  |  |  |
 | `spec.rules[].actionParameters.vary.headers` | `map<string, CloudflareRulesetVaryHeader>` |  |  |  |
-| `spec.rules[].actionParameters.vary.headers.*.action` | `string` | yes |  |  |
+| `spec.rules[].actionParameters.vary.headers.*.action` | `string` |  |  |  |
 | `spec.rules[].actionParameters.vary.headers.*.mediaTypes` | `[]string` |  |  |  |
 | `spec.rules[].actionParameters.vary.headers.*.languages` | `[]string` |  |  |  |
 | `spec.rules[].actionParameters.stripEtags` | `bool` |  |  |  |
@@ -1325,43 +1325,49 @@ Vary-based caching (cache variants keyed on response headers).
 
 ### spec.rules[].actionParameters.vary.default
 
-`CloudflareRulesetVaryDefault`
+`CloudflareRulesetVaryDefault` · required
 
-Default vary behavior.
+How Vary headers without a per-header override are treated. Required
+whenever vary is set.
+
+- rule: {"required":true}
 
 ### spec.rules[].actionParameters.vary.default.action
 
-`string` · required
+`string`
 
-The default vary action.
+How the header value is treated when building the cache key: bypass,
+passthrough, or normalize.
 
-- rule: {"string":{"minLen":"1"}}
+- rule: action must be one of bypass, passthrough, normalize
 
 ### spec.rules[].actionParameters.vary.headers
 
 `map<string, CloudflareRulesetVaryHeader>`
 
-Per-header vary configuration. Key is the header name.
+Per-header overrides. Key is the lowercase request header name.
 
 ### spec.rules[].actionParameters.vary.headers.*.action
 
-`string` · required
+`string`
 
-The vary action for this header.
+How the header value is treated when building the cache key: bypass,
+passthrough, or normalize.
 
-- rule: {"string":{"minLen":"1"}}
+- rule: action must be one of bypass, passthrough, normalize
 
 ### spec.rules[].actionParameters.vary.headers.*.mediaTypes
 
 `[]string`
 
-Media types this header variant applies to.
+Media types to normalize against. Only valid for the `accept` header.
 
 ### spec.rules[].actionParameters.vary.headers.*.languages
 
 `[]string`
 
-Languages this header variant applies to.
+Languages to normalize against. Only valid for the `accept-language`
+header.
 
 ### spec.rules[].actionParameters.stripEtags
 

@@ -34,19 +34,27 @@ resources:
         arg: mfa_config
       - spec: spec.mfa_config.required_aaguids
         arg: mfa_config
-      # mfa_ssh_piv_key_requirements is a nested attribute; fan-in of every
+      # mfa_piv_key_requirements is a nested attribute; fan-in of every
       # spec leaf. The spec's singular ssh_key_type/ssh_key_size are the
       # wire names; the provider Go SDK pluralizes them.
-      - spec: spec.mfa_ssh_piv_key_requirements.pin_policy
-        arg: mfa_ssh_piv_key_requirements
-      - spec: spec.mfa_ssh_piv_key_requirements.touch_policy
-        arg: mfa_ssh_piv_key_requirements
-      - spec: spec.mfa_ssh_piv_key_requirements.ssh_key_type
-        arg: mfa_ssh_piv_key_requirements
-      - spec: spec.mfa_ssh_piv_key_requirements.ssh_key_size
-        arg: mfa_ssh_piv_key_requirements
-      - spec: spec.mfa_ssh_piv_key_requirements.require_fips_device
-        arg: mfa_ssh_piv_key_requirements
+      - spec: spec.mfa_piv_key_requirements.pin_policy
+        arg: mfa_piv_key_requirements
+      - spec: spec.mfa_piv_key_requirements.touch_policy
+        arg: mfa_piv_key_requirements
+      - spec: spec.mfa_piv_key_requirements.ssh_key_type
+        arg: mfa_piv_key_requirements
+      - spec: spec.mfa_piv_key_requirements.ssh_key_size
+        arg: mfa_piv_key_requirements
+      - spec: spec.mfa_piv_key_requirements.require_fips_device
+        arg: mfa_piv_key_requirements
+      # service_token_inactivity is a nested attribute; fan-in of every
+      # spec leaf.
+      - spec: spec.service_token_inactivity.action
+        arg: service_token_inactivity
+      - spec: spec.service_token_inactivity.enabled
+        arg: service_token_inactivity
+      - spec: spec.service_token_inactivity.inactivity_threshold_days
+        arg: service_token_inactivity
     exclusions:
       # The provider's own description says "Indicates if this organization
       # can enforce MFA" -- a server-reported capability flag (an

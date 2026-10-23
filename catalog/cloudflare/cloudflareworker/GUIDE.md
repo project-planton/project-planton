@@ -40,6 +40,6 @@ When Planton has no kind yet (Vectorize, Analytics Engine, Workflows, Pipelines,
 
 The provider's import restores only the Worker's identity and content — `mainModule`, bindings, compatibility flags, and tail consumers do not survive it. That is expected, not a broken import: run one apply after importing and those attributes converge in place from your configuration without touching the deployed code.
 
-## What Pulumi cannot send yet
+## Trace propagation is an account feature
 
-Pulumi's Cloudflare SDK v6.17.0 has no inputs for `cacheOptions`, `exports`, or `packageDependencies`. Tofu honors them. Pulumi logs a PARITY-EXCEPTION and skips them. Rate-limit `mitigationTimeout` and traces `propagationPolicy` have the same gap. Never `reserved` those fields — the proto stays complete; the lagging engine catches up on the next SDK bump.
+Traces `propagationPolicy` needs the account's trace-propagation feature: without it Cloudflare rejects the whole script upload with 403 code 100342 (measured live). Leave it unset unless the account carries the feature.

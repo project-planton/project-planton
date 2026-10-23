@@ -12,3 +12,4 @@ spec:
   proxied: true
   ttl: 1
   comment: "Test DNS record for local development"
+  include_shadow_metadata: true

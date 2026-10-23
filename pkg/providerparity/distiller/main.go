@@ -8,22 +8,29 @@
 // is self-describing: `providers schema -json` emits every resource, argument,
 // type, and flag at an exact released version. Committing that output whole
 // would carry descriptions and data sources the parity accounting never
-// reads; this tool resolves the pin in a throwaway OpenTofu workspace,
+// reads; this tool resolves each provider in a throwaway OpenTofu workspace,
 // reduces the schema to the configurable surface, and writes one
 // deterministic gzipped artifact per provider (see
 // providerparity.WriteSchemaFile for the determinism and replace-on-repin
 // contract).
 //
+// The version is never chosen here. Every OpenTofu module runs the exact
+// release the catalog's canonical lock names
+// (catalog/_providers/.terraform.lock.hcl), so parity is measured at that
+// release and no other: the workspace pins each provider to its locked
+// version, and a provider the lock does not carry is refused.
+//
 // Run via Makefile: make generate-provider-schemas
 //
 //	go run ./pkg/providerparity/distiller \
 //	    --out-dir pkg/providerparity/schemas \
-//	    --provider 'google=hashicorp/google@8.3.0' \
-//	    --provider 'google-beta=hashicorp/google-beta@8.3.0'
+//	    --provider 'google=hashicorp/google' \
+//	    --provider 'google-beta=hashicorp/google-beta'
 //
-// Bumping a pin is a one-line change to the Makefile invocation followed by a
-// re-run: the artifact for the same provider is replaced, never accumulated,
-// and the resulting parity-check failures ARE the migration work list.
+// Moving a provider is a lock sweep (`make lock-providers upgrade=<p>`)
+// followed by a re-run: the artifact for the same provider is replaced, never
+// accumulated, and the resulting parity-check failures ARE the migration work
+// list.
 package main
 
 import (
@@ -33,18 +40,18 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
-	"regexp"
 	"strings"
 
+	"github.com/plantonhq/planton/pkg/iac/tofu/providerlocks"
 	"github.com/plantonhq/planton/pkg/providerparity"
 )
 
 // pin is one provider to distill: the local/artifact name, the registry
-// source address, and the version constraint the workspace resolves.
+// source address, and the exact version the canonical lock names for it.
 type pin struct {
-	name       string
-	source     string
-	constraint string
+	name    string
+	source  string
+	version string
 }
 
 type pinList []pin
@@ -52,32 +59,41 @@ type pinList []pin
 func (p *pinList) String() string {
 	var parts []string
 	for _, x := range *p {
-		parts = append(parts, fmt.Sprintf("%s=%s@%s", x.name, x.source, x.constraint))
+		parts = append(parts, fmt.Sprintf("%s=%s", x.name, x.source))
 	}
 	return strings.Join(parts, ",")
 }
 
 func (p *pinList) Set(v string) error {
-	name, rest, ok := strings.Cut(v, "=")
-	if !ok {
-		return fmt.Errorf("provider %q: want name=source@constraint", v)
+	name, source, ok := strings.Cut(v, "=")
+	if !ok || name == "" || source == "" || strings.Contains(source, "@") {
+		return fmt.Errorf("provider %q: want name=source (the version comes from the canonical lock)", v)
 	}
-	source, constraint, ok := strings.Cut(rest, "@")
-	if !ok {
-		return fmt.Errorf("provider %q: want name=source@constraint", v)
-	}
-	*p = append(*p, pin{name: name, source: source, constraint: constraint})
+	*p = append(*p, pin{name: name, source: source})
 	return nil
 }
 
 func main() {
-	var outDir string
+	var outDir, lockPath string
 	var pins pinList
 	flag.StringVar(&outDir, "out-dir", providerparity.DefaultSchemaDir, "directory for the committed artifacts")
-	flag.Var(&pins, "provider", "provider to distill as name=source@constraint (repeatable)")
+	flag.StringVar(&lockPath, "lock", providerlocks.CanonicalLockPath, "the canonical provider lock that names each provider's version")
+	flag.Var(&pins, "provider", "provider to distill as name=source (repeatable)")
 	flag.Parse()
 	if len(pins) == 0 {
 		fatal("at least one --provider is required")
+	}
+
+	lock, err := providerlocks.ReadLock(lockPath)
+	if err != nil {
+		fatal("reading %s: %v", lockPath, err)
+	}
+	for i, p := range pins {
+		version, ok := providerparity.LockedVersion(lock, p.source)
+		if !ok {
+			fatal("%s locks no provider %q -- lock it with `make lock-providers` before distilling", lockPath, p.source)
+		}
+		pins[i].version = version
 	}
 
 	workDir, err := os.MkdirTemp("", "providerparity-distill-*")
@@ -91,10 +107,6 @@ func main() {
 	}
 	if out, err := tofu(workDir, "init", "-backend=false", "-input=false", "-no-color"); err != nil {
 		fatal("tofu init: %v\n%s", err, out)
-	}
-	versions, err := resolvedVersions(filepath.Join(workDir, ".terraform.lock.hcl"))
-	if err != nil {
-		fatal("%v", err)
 	}
 	schemaJSON, err := tofu(workDir, "providers", "schema", "-json")
 	if err != nil {
@@ -111,14 +123,10 @@ func main() {
 		if body == nil {
 			fatal("schema output carries no provider matching source %q", p.source)
 		}
-		version, ok := versions[p.source]
-		if !ok {
-			fatal("lock file carries no resolved version for source %q", p.source)
-		}
 		schema := &providerparity.Schema{
 			Provider:       p.name,
 			Source:         p.source,
-			Version:        version,
+			Version:        p.version,
 			ProviderConfig: distillBlock(body.Provider.Block),
 			Resources:      map[string]*providerparity.Block{},
 		}
@@ -129,16 +137,17 @@ func main() {
 		if err != nil {
 			fatal("writing artifact for %s: %v", p.name, err)
 		}
-		fmt.Printf("distilled %s %s: %d resources -> %s\n", p.name, version, len(schema.Resources), path)
+		fmt.Printf("distilled %s %s: %d resources -> %s\n", p.name, p.version, len(schema.Resources), path)
 	}
 }
 
-// workspaceConfig renders the throwaway workspace's required_providers block.
+// workspaceConfig renders the throwaway workspace's required_providers block,
+// each provider pinned to exactly its locked version.
 func workspaceConfig(pins pinList) string {
 	var b strings.Builder
 	b.WriteString("terraform {\n  required_providers {\n")
 	for _, p := range pins {
-		fmt.Fprintf(&b, "    %s = {\n      source  = %q\n      version = %q\n    }\n", p.name, p.source, p.constraint)
+		fmt.Fprintf(&b, "    %s = {\n      source  = %q\n      version = %q\n    }\n", p.name, p.source, p.version)
 	}
 	b.WriteString("  }\n}\n")
 	return b.String()
@@ -148,29 +157,6 @@ func tofu(dir string, args ...string) ([]byte, error) {
 	cmd := exec.Command("tofu", args...)
 	cmd.Dir = dir
 	return cmd.CombinedOutput()
-}
-
-// lockProviderRe pulls each provider block's source and resolved version out
-// of .terraform.lock.hcl -- the one place the exact release the constraint
-// resolved to is recorded.
-var lockProviderRe = regexp.MustCompile(`(?s)provider\s+"([^"]+)"\s*\{.*?version\s*=\s*"([^"]+)"`)
-
-func resolvedVersions(lockPath string) (map[string]string, error) {
-	content, err := os.ReadFile(lockPath)
-	if err != nil {
-		return nil, fmt.Errorf("reading %s: %w", lockPath, err)
-	}
-	versions := map[string]string{}
-	for _, m := range lockProviderRe.FindAllStringSubmatch(string(content), -1) {
-		// Lock addresses are registry-qualified (registry.opentofu.org/hashicorp/google);
-		// key by the trailing source address the pins use.
-		addr := m[1]
-		if i := strings.Index(addr, "/"); i >= 0 {
-			addr = addr[i+1:]
-		}
-		versions[addr] = m[2]
-	}
-	return versions, nil
 }
 
 // rawSchemas mirrors the slice of `providers schema -json` output the

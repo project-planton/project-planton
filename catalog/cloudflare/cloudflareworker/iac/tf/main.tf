@@ -50,8 +50,6 @@ resource "cloudflare_workers_script" "main" {
   logpush        = var.spec.logpush
   tail_consumers = length(local.tail_consumers) > 0 ? local.tail_consumers : null
 
-  # Pulumi SDK v6.17.0 has no matching inputs for these three — tofu honors
-  # them; Pulumi logs a PARITY-EXCEPTION and skips them.
   cache_options        = local.cache_options
   exports              = local.exports
   package_dependencies = local.package_dependencies

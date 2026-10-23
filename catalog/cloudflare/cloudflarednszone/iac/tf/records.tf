@@ -89,7 +89,7 @@ resource "cloudflare_dns_record" "records" {
   content = each.value.content == "" ? null : (
     contains(["CNAME", "NS", "MX", "PTR"], upper(each.value.type)) ? trimsuffix(each.value.content, ".") : each.value.content
   )
-  data    = local.record_data[each.key]
+  data = local.record_data[each.key]
 
   # proxied is only applicable to A, AAAA, and CNAME records
   proxied = contains(["A", "AAAA", "CNAME"], each.value.type) ? each.value.proxied : false
@@ -118,6 +118,9 @@ resource "cloudflare_dns_record" "records" {
 
   # Restrict the record to Cloudflare internal (private) routing when set.
   private_routing = each.value.private_routing ? true : null
+
+  # Shapes only what the API reports back about the record.
+  include_shadow_metadata = try(each.value.include_shadow_metadata, null)
 
   depends_on = [cloudflare_zone.main]
 }

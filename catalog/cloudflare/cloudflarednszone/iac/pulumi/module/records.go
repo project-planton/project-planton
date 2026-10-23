@@ -93,6 +93,10 @@ func records(
 		if record.PrivateRouting {
 			recordArgs.PrivateRouting = pulumi.Bool(true)
 		}
+		// Shapes only what the API reports back about the record.
+		if record.IncludeShadowMetadata != nil {
+			recordArgs.IncludeShadowMetadata = pulumi.BoolPtr(record.GetIncludeShadowMetadata())
+		}
 
 		createdRecord, err := cloudflare.NewDnsRecord(
 			ctx,

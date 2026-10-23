@@ -26,9 +26,12 @@ const DefaultBaselinePath = "pkg/providerparity/baseline.yaml"
 const baselineHeader = `# Provider-parity baseline -- the accepted backlog of parity gaps: kinds not
 # yet at total accounting against the pinned provider, GA resources whose
 # breadth disposition is not recorded yet, and provider blocks not yet at
-# total provider-config accounting. This list trends to 0 and never grows;
-# the permanent record lives in each kind's iac/provider-parity.yaml, each
-# provider's provider-config-parity.yaml, and pkg/providerparity/dispositions/.
+# total provider-config accounting. This list trends to 0. It grows only in
+# the change that moves a provider to a newer release (the canonical lock and
+# its schema artifact move together, and the findings that follow are the
+# move's migration work list); otherwise it only shrinks. The permanent record
+# lives in each kind's iac/provider-parity.yaml, each provider's
+# provider-config-parity.yaml, and pkg/providerparity/dispositions/.
 #
 # The CI guardrail (go test ./pkg/providerparity/...) fails when:
 #   - a finding appears for a kind/resource/provider NOT listed here (new gap

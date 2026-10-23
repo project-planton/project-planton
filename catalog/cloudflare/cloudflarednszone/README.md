@@ -129,9 +129,10 @@ spec:
 ### DNS Settings
 
 `dns_settings` folds the zone's DNS-level options: `flatten_all_cnames`,
-`foundation_dns`, `multi_provider`, `secondary_overrides`, `ns_ttl`, `zone_mode`
+`multi_provider`, `secondary_overrides`, `ns_ttl`, `zone_mode`
 (standard/cdn_only/dns_only), `soa` (expire/min_ttl/mname/refresh/retry/rname/ttl),
-`nameservers` (ns_set/type), and `internal_dns` (reference_zone_id).
+`nameservers` (type, ns_set, nameserver_set_id -- `type: cloudflare.advanced`
+turns on Advanced Nameservers), and `internal_dns` (reference_zone_id).
 
 ## Outputs
 

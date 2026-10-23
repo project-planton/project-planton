@@ -26,6 +26,7 @@ go_library(
         "//pkg/catalogkindreflect",
         "//pkg/e2e/profile",
         "//pkg/iac/iacinput/providerdetect",
+        "//pkg/iac/tofu/providerlocks",
         "//qa/catalogkinde2eprofile/v1:catalogkinde2eprofile",
         "//shared",
         "//shared/catalogkind",
@@ -56,6 +57,7 @@ go_test(
     embed = [":providerparity"],
     deps = [
         "//pkg/catalogkindreflect",
+        "//pkg/iac/tofu/providerlocks",
         "//shared/catalogkind",
         "@in_gopkg_yaml_v3//:yaml_v3",
     ],

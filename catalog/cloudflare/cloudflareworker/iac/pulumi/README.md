@@ -15,9 +15,9 @@ Provisions a Cloudflare Worker script and the companions that hang off it: worke
 
 `script_id`, `script_name`, `custom_domain_hostnames`, `route_patterns`, plus keyed maps `custom_domain_ids` (by hostname), `route_ids` and `route_zone_ids` (by list index) so import can reassemble `{account_id}/{domain_id}` and `{zone_id}/{route_id}`.
 
-## PARITY-EXCEPTION
+## Feature-gated fields
 
-Pulumi's Cloudflare SDK v6.17.0 has no inputs for `cacheOptions`, `exports`, or `packageDependencies`. Tofu honors them; this engine logs a warning and skips them. Rate-limit `mitigationTimeout` and traces `propagationPolicy` have the same gap. The proto keeps the fields (never `reserved`); the next SDK bump dissolves the exception.
+Traces `propagationPolicy` needs the account's trace-propagation feature: without it Cloudflare rejects the whole script upload with 403 code 100342 (measured live). Leave it unset unless the account carries the feature.
 
 ## Usage
 

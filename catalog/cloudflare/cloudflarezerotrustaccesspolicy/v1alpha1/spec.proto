@@ -253,10 +253,6 @@ message CloudflareAccessRule {
     AccessRuleUserRiskScore user_risk_score = 25;
 
     // Match members of the Cloudflare account (by account ID).
-    //
-    // tofu↔pulumi parity: the Pulumi Cloudflare SDK (v6.17.0) does not yet expose
-    // this rule variant; the Terraform module implements it and the Pulumi module
-    // omits it. See the Pulumi module README.
     AccessRuleCloudflareAccountMember cloudflare_account_member = 26;
   }
 }

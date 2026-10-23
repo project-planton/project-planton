@@ -27,7 +27,7 @@ how far that has progressed.
 
 | | |
 |---|---|
-| Provider schema (parity baseline) | `digitalocean@2.99.1` |
+| Provider schema (parity baseline) | `digitalocean@2.106.0` |
 | Kinds in the catalog | 31 |
 | Distinct provider resources consumed | 37 |
 | Spec fields authored across all kinds | 677 |
@@ -64,7 +64,7 @@ excluded with a recorded reason -- and every spec field must reach provider
 surface. **Accounted** means both directions hold with zero unexplained
 gaps. **Proven** means live end-to-end runs passed on every IaC engine the kind runs on.
 
-**31 of 31 kinds are at total accounting; 30 proven live.**
+**29 of 31 kinds are at total accounting; 30 proven live.**
 
 | Kind | Provider args | Matched | Mapped | Excluded | Open gaps | Accounted | Proven |
 |---|---|---|---|---|---|---|---|
@@ -85,9 +85,9 @@ gaps. **Proven** means live end-to-end runs passed on every IaC engine the kind 
 | DigitalOceanDnsZone | 12 | 8 | 3 | 1 | 0 | ✅ | ✅ pulumi, terraform |
 | DigitalOceanDroplet | 21 | 16 | 4 | 1 | 0 | ✅ | ✅ pulumi, terraform |
 | DigitalOceanDropletAutoscalePool | 18 | 10 | 8 | 0 | 0 | ✅ | — |
-| DigitalOceanFirewall | 17 | 2 | 15 | 0 | 0 | ✅ | ✅ pulumi, terraform |
+| DigitalOceanFirewall | 19 | 2 | 15 | 0 | 2 | ❌ | ✅ pulumi, terraform |
 | DigitalOceanFunction | 292 | 0 | 37 | 255 | 0 | ✅ | ✅ pulumi, terraform |
-| DigitalOceanKubernetesCluster | 47 | 31 | 15 | 1 | 0 | ✅ | ✅ pulumi, terraform |
+| DigitalOceanKubernetesCluster | 48 | 31 | 15 | 1 | 1 | ❌ | ✅ pulumi, terraform |
 | DigitalOceanKubernetesNodePool | 13 | 8 | 5 | 0 | 0 | ✅ | ✅ pulumi, terraform |
 | DigitalOceanLoadBalancer | 46 | 31 | 15 | 0 | 0 | ✅ | ✅ pulumi, terraform |
 | DigitalOceanMonitorAlert | 11 | 8 | 3 | 0 | 0 | ✅ | ✅ pulumi, terraform |
@@ -102,7 +102,7 @@ gaps. **Proven** means live end-to-end runs passed on every IaC engine the kind 
 
 ## Breadth: every GA resource, one disposition
 
-All resources of `digitalocean@2.99.1` land in exactly one class:
+All resources of `digitalocean@2.106.0` land in exactly one class:
 
 | Disposition | Resources | Meaning |
 |---|---|---|
@@ -111,9 +111,10 @@ All resources of `digitalocean@2.99.1` land in exactly one class:
 | IAM not offered per resource | 0 | per-resource IAM triplets for resources no kind grants on yet; access goes through a grant at a broader scope (the project or account) |
 | Composed | 17 | capability covered through an existing kind's surface rather than a kind of its own |
 | Planned | 6 | judged to be covered by a planned kind or planned composition, not built yet |
-| Deferred | 17 | deliberately not offered, each with the recorded reason |
+| Deferred | 8 | deliberately not offered, each with the recorded reason |
 | Excluded as deprecated | 2 | deprecated or superseded provider surface |
-| **Total** | **79** | |
+| UNDISPOSITIONED | 11 | awaiting recorded judgment -- carried loudly in the CI baseline |
+| **Total** | **81** | |
 
 ## The enumerated record
 
@@ -195,22 +196,13 @@ rather than trusted.
 | `digitalocean_partner_attachment` | judged as a planned DigitalOceanPartnerAttachment kind (GA but specialist private connectivity via Megaport-class providers with BGP config; first-class because nothing else could honestly absorb it; FK VPCs) |
 | `digitalocean_vector_database` | judged as a planned DigitalOceanVectorDatabase kind (Weaviate-powered managed cluster, managed independently from standard database clusters; FK project, vpc) |
 
-### Deferred (17)
+### Deferred (8)
 
 | Resource | Recorded reason |
 |---|---|
 | `digitalocean_byoip_prefix` | bring-your-own-IP needs an out-of-band provisioning workflow (signed request, DigitalOcean-side verification, later advertisement) and serves a small compliance-driven audience -- deferred until the workflow can be represented honestly |
 | `digitalocean_database_online_migration` | action-style virtual resource (start/stop a replication job that runs up to two weeks), not durable declarative state -- gated on an action/workflow surface |
 | `digitalocean_droplet_snapshot` | a point-in-time capture is operationally an action, not durable declared state -- gated with volume_snapshot on an action/snapshot-policy surface |
-| `digitalocean_gradientai_agent` | core object of the GradientAI family, deferred wholesale: the provider surface is visibly immature (copy-paste description bugs in its own schemas, churning release to release) -- revisit as one wave when it settles |
-| `digitalocean_gradientai_agent_knowledge_base_attachment` | attachment row of a deferred parent -- the GradientAI family is deferred wholesale on documented provider immaturity |
-| `digitalocean_gradientai_agent_route` | agent-to-agent routing rows whose schema carries placeholder-grade descriptions -- the GradientAI family is deferred wholesale on documented provider immaturity |
-| `digitalocean_gradientai_custom_model` | depends on the deferred agent surface -- the GradientAI family is deferred wholesale on documented provider immaturity |
-| `digitalocean_gradientai_function` | agent function attachment, deferred with its parent -- the GradientAI family is deferred wholesale on documented provider immaturity |
-| `digitalocean_gradientai_indexing_job_cancel` | action-style (cancel a running indexing job) -- would be deferred even in a mature family; the GradientAI family is deferred wholesale besides |
-| `digitalocean_gradientai_knowledge_base` | likely second anchor when the GradientAI family matures; deferred with the family today on documented provider immaturity |
-| `digitalocean_gradientai_knowledge_base_data_source` | data-source rows of a deferred parent -- the GradientAI family is deferred wholesale on documented provider immaturity |
-| `digitalocean_gradientai_openai_api_key` | credential row for a deferred family -- the GradientAI family is deferred wholesale on documented provider immaturity |
 | `digitalocean_nfs_snapshot` | point-in-time capture, action-style -- same reasoning as droplet and volume snapshots; gated on an action/snapshot-policy surface |
 | `digitalocean_spaces_bucket_object` | uploading object content is data-plane work, not infrastructure; a declarative kind for file contents is marginal and invites abuse as a deployment mechanism |
 | `digitalocean_tag` | Droplets and volumes create tags implicitly when they declare them, so a tagged fleet needs no standalone kind; tag CONSUMERS differ per API (all three live-verified) -- a firewall naming a tag no Droplet carries yet is rejected (422 'tag does not exist'), while a monitor alert policy and a load balancer both accept it as a selector and create nothing (the balancer's member list stays empty until a Droplet wears the tag). So only the firewall-before-its-first-Droplet ordering has no handle today and must target a tag some Droplet already carries. Revisit as a re-tier if that ordering constraint proves too costly for charts |

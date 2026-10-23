@@ -29,3 +29,10 @@ spec:
     traces:
       enabled: true
       propagationPolicy: authenticated
+  cacheOptions:
+    enabled: true
+    crossVersionCache: false
+  packageDependencies:
+    - name: hono
+      installedVersion: 4.6.3
+      packageJsonVersion: ^4.6.0

@@ -24,4 +24,4 @@ A plain CRUD resource: real create/update/delete; only the account forces replac
 
 ## SDK Version
 
-Uses `pulumi-cloudflare` v6.19.0.
+Uses `pulumi-cloudflare` SDK v6 (Cloudflare Terraform provider v5 line).

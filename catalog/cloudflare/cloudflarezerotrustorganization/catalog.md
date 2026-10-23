@@ -80,7 +80,7 @@ These are the most important decisions when configuring the Zero Trust organizat
 
 **Unset means unmanaged** — fields you leave unset are never sent, so dashboard-set values survive and partial adoption is safe (manage only the login design, say). The flip side: removing a field from the manifest does not clear it at Cloudflare — apply the empty or default value explicitly instead.
 
-**MFA pairing rules are API-side** — `mfaRequiredForAllApps` needs MFA enabled with at least one allowed authenticator and an MFA session duration configured. And Cloudflare rejects `allowedAuthenticators` containing only `ssh_piv_key` while the organization has any non-infrastructure applications — PIV keys pair with infrastructure apps only.
+**MFA pairing rules are API-side** — `mfaRequiredForAllApps` needs MFA enabled with at least one allowed authenticator and an MFA session duration configured. And Cloudflare rejects `allowedAuthenticators` containing only `piv_key` or `ssh_fido2_key` while the organization has any non-infrastructure applications — hardware PIV keys and FIDO2 SSH keys pair with infrastructure apps only.
 
 **The dashboard lock** — `isUiReadOnly: true` makes every Zero Trust setting read-only in the dashboard regardless of user permission, leaving the API (and therefore IaC) as the only write path — the natural companion of managing the organization from a manifest. Set `uiReadOnlyToggleReason` so dashboard users see why.
 

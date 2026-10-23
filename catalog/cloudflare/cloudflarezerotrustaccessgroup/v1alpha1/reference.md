@@ -32,6 +32,7 @@ spec:
   include:
     - emailDomain:
         domain: example.com
+    - cloudflareAccountMember: {}
   require:
     - geo:
         countryCode: US
@@ -734,10 +735,6 @@ Allowed values (use exactly as shown):
 
 Match members of the Cloudflare account (by account ID).
 
-tofu↔pulumi parity: the Pulumi Cloudflare SDK (v6.17.0) does not yet expose
-this rule variant; the Terraform module implements it and the Pulumi module
-omits it. See the Pulumi module README.
-
 ### spec.include[].cloudflareAccountMember.accountId
 
 `string`
@@ -1212,10 +1209,6 @@ Allowed values (use exactly as shown):
 `AccessRuleCloudflareAccountMember`
 
 Match members of the Cloudflare account (by account ID).
-
-tofu↔pulumi parity: the Pulumi Cloudflare SDK (v6.17.0) does not yet expose
-this rule variant; the Terraform module implements it and the Pulumi module
-omits it. See the Pulumi module README.
 
 ### spec.exclude[].cloudflareAccountMember.accountId
 
@@ -1692,10 +1685,6 @@ Allowed values (use exactly as shown):
 `AccessRuleCloudflareAccountMember`
 
 Match members of the Cloudflare account (by account ID).
-
-tofu↔pulumi parity: the Pulumi Cloudflare SDK (v6.17.0) does not yet expose
-this rule variant; the Terraform module implements it and the Pulumi module
-omits it. See the Pulumi module README.
 
 ### spec.require[].cloudflareAccountMember.accountId
 

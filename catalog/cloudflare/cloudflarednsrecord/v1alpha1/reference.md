@@ -34,6 +34,7 @@ spec:
   proxied: true
   ttl: 1
   comment: "Test DNS record for local development"
+  include_shadow_metadata: true
 ```
 
 ## Spec Fields
@@ -124,6 +125,7 @@ spec:
 | `spec.settings.ipv6Only` | `bool` |  |  |  |
 | `spec.settings.flattenCname` | `bool` |  |  |  |
 | `spec.privateRouting` | `bool` |  |  |  |
+| `spec.includeShadowMetadata` | `bool` |  |  |  |
 
 ## Field Details
 
@@ -815,6 +817,16 @@ records are returned instead of the CNAME. Unavailable for proxied records
 Whether the record is restricted to Cloudflare's internal (private) routing
 and not served over the public internet — used for internal DNS / Magic WAN
 scenarios. Defaults to false (public).
+
+### spec.includeShadowMetadata
+
+`bool` · optional (explicit presence)
+
+Whether Cloudflare includes shadow metadata in the record's API
+response (its `meta` field): whether another record shadows this one, as
+described in Cloudflare's "Shadowed records" reference. It shapes only
+what the API reports back; the record itself serves the same answers
+either way. Cloudflare treats an unset value as false.
 
 ## Validation Rules
 

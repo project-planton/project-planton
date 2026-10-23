@@ -44,8 +44,11 @@ Two hard provider facts shape this resource: it is a SINGLETON UPSERT (Cloudflar
 | `session_duration` | string | Access session lifetime (Go duration, e.g. `24h`). |
 | `login_design` | object | Colors, logo, header/footer of the login page. |
 | `mfa_config` | object | Allowed authenticators + MFA session durations. |
-| `mfa_ssh_piv_key_requirements` | object | Hardware PIV key constraints (pin/touch policy, key types/sizes). |
+| `mfa_piv_key_requirements` | object | Hardware PIV key constraints (pin/touch policy, key types/sizes). |
 | `key_rotation_interval_days` | int | The folded Access service-key rotation cadence (21-365; account scope only). |
+| `strict_service_token_auth` | bool | Service-token requests answer 401/403 instead of redirecting, and get no CF_Authorization cookie (always on for organizations created from 2026-10-05). |
+| `warp_auth_non_browser_401` | bool | A failed WARP authentication from a non-browser client answers 401 instead of redirecting. |
+| `service_token_inactivity` | object | Disable or delete service tokens unused for 30-365 days (action, enabled, inactivity_threshold_days). |
 
 ### Outputs
 

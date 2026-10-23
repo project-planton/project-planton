@@ -27,13 +27,13 @@ how far that has progressed.
 
 | | |
 |---|---|
-| Provider schema (parity baseline) | `cloudflare@5.23.0` |
-| Supporting schema (pinned by this catalog's modules) | `aws@6.58.0` |
+| Provider schema (parity baseline) | `cloudflare@5.28.0` |
+| Supporting schema (pinned by this catalog's modules) | `aws@6.69.1` |
 | Kinds in the catalog | 66 |
 | Distinct provider resources consumed | 113 |
-| Spec fields authored across all kinds | 2092 |
+| Spec fields authored across all kinds | 2099 |
 | Module pins on `aws` | `~> 6.58` × 1 |
-| Module pins on `cloudflare` | `~> 5.23` × 66 |
+| Module pins on `cloudflare` | `~> 5.28` × 66 |
 | Module pins on `tls` | `~> 4.0` × 1 |
 
 The GA provider is the parity baseline. Capability that exists only in a
@@ -67,71 +67,71 @@ excluded with a recorded reason -- and every spec field must reach provider
 surface. **Accounted** means both directions hold with zero unexplained
 gaps. **Proven** means live end-to-end runs passed on every IaC engine the kind runs on.
 
-**66 of 66 kinds are at total accounting; 58 proven live.**
+**47 of 66 kinds are at total accounting; 58 proven live.**
 
 | Kind | Provider args | Matched | Mapped | Excluded | Open gaps | Accounted | Proven |
 |---|---|---|---|---|---|---|---|
 | CloudflareAccountApiToken | 7 | 5 | 2 | 0 | 0 | ✅ | ✅ pulumi, terraform |
-| CloudflareAiGateway | 27 | 15 | 12 | 0 | 0 | ✅ | — |
+| CloudflareAiGateway | 29 | 15 | 12 | 0 | 2 | ❌ | — |
 | CloudflareAuthenticatedOriginPulls | 4 | 2 | 2 | 0 | 0 | ✅ | ✅ pulumi, terraform |
 | CloudflareAuthenticatedOriginPullsCertificate | 6 | 6 | 0 | 0 | 0 | ✅ | ✅ pulumi, terraform |
-| CloudflareBotManagement | 16 | 16 | 0 | 0 | 0 | ✅ | ✅ pulumi, terraform |
+| CloudflareBotManagement | 22 | 16 | 0 | 0 | 6 | ❌ | ✅ pulumi, terraform |
 | CloudflareCacheSettings | 12 | 6 | 6 | 0 | 0 | ✅ | ✅ pulumi, terraform |
 | CloudflareCertificatePack | 7 | 7 | 0 | 0 | 0 | ✅ | ✅ pulumi, terraform |
 | CloudflareCustomHostname | 6 | 5 | 1 | 0 | 0 | ✅ | ✅ pulumi, terraform |
 | CloudflareCustomHostnameFallbackOrigin | 2 | 2 | 0 | 0 | 0 | ✅ | ✅ pulumi, terraform |
 | CloudflareCustomSslCertificate | 9 | 8 | 1 | 0 | 0 | ✅ | — |
-| CloudflareD1Database | 5 | 2 | 3 | 0 | 0 | ✅ | ✅ pulumi, terraform |
-| CloudflareDnsRecord | 12 | 10 | 2 | 0 | 0 | ✅ | ✅ pulumi, terraform |
+| CloudflareD1Database | 6 | 2 | 3 | 0 | 1 | ❌ | ✅ pulumi, terraform |
+| CloudflareDnsRecord | 13 | 11 | 2 | 0 | 0 | ✅ | ✅ pulumi, terraform |
 | CloudflareDnsZone | 38 | 21 | 12 | 5 | 0 | ✅ | ✅ pulumi, terraform |
 | CloudflareEmailRoutingAddress | 3 | 3 | 0 | 0 | 0 | ✅ | ✅ pulumi, terraform |
 | CloudflareEmailRoutingRule | 8 | 4 | 2 | 2 | 0 | ✅ | ✅ pulumi, terraform |
-| CloudflareEmailRoutingZone | 10 | 3 | 4 | 3 | 0 | ✅ | — |
+| CloudflareEmailRoutingZone | 12 | 3 | 4 | 3 | 2 | ❌ | — |
 | CloudflareHealthcheck | 14 | 11 | 2 | 1 | 0 | ✅ | ✅ pulumi, terraform |
-| CloudflareHyperdriveConfig | 6 | 3 | 3 | 0 | 0 | ✅ | — |
+| CloudflareHyperdriveConfig | 7 | 3 | 3 | 0 | 1 | ❌ | — |
 | CloudflareIpAccessRule | 5 | 4 | 1 | 0 | 0 | ✅ | ✅ pulumi, terraform |
-| CloudflareKvNamespace | 2 | 1 | 1 | 0 | 0 | ✅ | ✅ pulumi, terraform |
+| CloudflareKvNamespace | 4 | 1 | 1 | 0 | 2 | ❌ | ✅ pulumi, terraform |
 | CloudflareList | 5 | 4 | 0 | 1 | 0 | ✅ | ✅ pulumi, terraform |
 | CloudflareListItem | 7 | 5 | 2 | 0 | 0 | ✅ | ✅ pulumi, terraform |
 | CloudflareLoadBalancer | 20 | 11 | 9 | 0 | 0 | ✅ | ✅ pulumi, terraform |
 | CloudflareLoadBalancerMonitor | 17 | 16 | 1 | 0 | 0 | ✅ | ✅ pulumi, terraform |
-| CloudflareLoadBalancerPool | 15 | 9 | 4 | 2 | 0 | ✅ | ✅ pulumi, terraform |
-| CloudflareLogpushJob | 16 | 12 | 4 | 0 | 0 | ✅ | — |
+| CloudflareLoadBalancerPool | 16 | 9 | 4 | 2 | 1 | ❌ | ✅ pulumi, terraform |
+| CloudflareLogpushJob | 17 | 12 | 4 | 0 | 1 | ❌ | — |
 | CloudflareMtlsCertificate | 5 | 5 | 0 | 0 | 0 | ✅ | ✅ pulumi, terraform |
 | CloudflareNotificationPolicy | 8 | 6 | 2 | 0 | 0 | ✅ | ✅ pulumi, terraform |
 | CloudflareNotificationWebhook | 4 | 4 | 0 | 0 | 0 | ✅ | ✅ pulumi, terraform |
 | CloudflareOriginCaCertificate | 4 | 4 | 0 | 0 | 0 | ✅ | ✅ pulumi, terraform |
 | CloudflarePagesProject | 9 | 4 | 5 | 0 | 0 | ✅ | ✅ pulumi, terraform |
-| CloudflareQueue | 9 | 5 | 2 | 2 | 0 | ✅ | ✅ pulumi, terraform |
+| CloudflareQueue | 10 | 5 | 2 | 2 | 1 | ❌ | ✅ pulumi, terraform |
 | CloudflareR2Bucket | 34 | 22 | 12 | 0 | 0 | ✅ | ✅ pulumi, terraform |
 | CloudflareRuleset | 7 | 5 | 2 | 0 | 0 | ✅ | ✅ pulumi, terraform |
-| CloudflareSecretsStore | 2 | 2 | 0 | 0 | 0 | ✅ | ✅ pulumi, terraform |
+| CloudflareSecretsStore | 3 | 2 | 0 | 0 | 1 | ❌ | ✅ pulumi, terraform |
 | CloudflareSecretsStoreSecret | 6 | 6 | 0 | 0 | 0 | ✅ | ✅ pulumi, terraform |
 | CloudflareSnippet | 4 | 2 | 2 | 0 | 0 | ✅ | ✅ pulumi, terraform |
 | CloudflareSnippetRules | 2 | 1 | 1 | 0 | 0 | ✅ | ✅ pulumi, terraform |
-| CloudflareTurnstileWidget | 9 | 9 | 0 | 0 | 0 | ✅ | ✅ pulumi, terraform |
+| CloudflareTurnstileWidget | 14 | 9 | 0 | 0 | 5 | ❌ | ✅ pulumi, terraform |
 | CloudflareWaitingRoom | 25 | 21 | 3 | 1 | 0 | ✅ | — |
 | CloudflareWaitingRoomEvent | 17 | 17 | 0 | 0 | 0 | ✅ | — |
 | CloudflareWebAnalyticsSite | 12 | 6 | 5 | 1 | 0 | ✅ | ✅ pulumi, terraform |
-| CloudflareWorker | 40 | 10 | 20 | 10 | 0 | ✅ | ✅ pulumi, terraform |
-| CloudflareWorkersKvPair | 5 | 5 | 0 | 0 | 0 | ✅ | ✅ pulumi, terraform |
-| CloudflareWorkflow | 7 | 4 | 3 | 0 | 0 | ✅ | ✅ pulumi, terraform |
+| CloudflareWorker | 43 | 10 | 20 | 10 | 3 | ❌ | ✅ pulumi, terraform |
+| CloudflareWorkersKvPair | 7 | 5 | 0 | 0 | 2 | ❌ | ✅ pulumi, terraform |
+| CloudflareWorkflow | 8 | 4 | 3 | 0 | 1 | ❌ | ✅ pulumi, terraform |
 | CloudflareZeroTrustAccessApplication | 39 | 29 | 10 | 0 | 0 | ✅ | ✅ pulumi, terraform |
 | CloudflareZeroTrustAccessGroup | 7 | 4 | 3 | 0 | 0 | ✅ | ✅ pulumi, terraform |
 | CloudflareZeroTrustAccessIdentityProvider | 8 | 6 | 2 | 0 | 0 | ✅ | ✅ pulumi, terraform |
-| CloudflareZeroTrustAccessInfrastructureTarget | 3 | 2 | 1 | 0 | 0 | ✅ | ✅ pulumi, terraform |
+| CloudflareZeroTrustAccessInfrastructureTarget | 4 | 2 | 1 | 0 | 1 | ❌ | ✅ pulumi, terraform |
 | CloudflareZeroTrustAccessPolicy | 14 | 8 | 6 | 0 | 0 | ✅ | ✅ pulumi, terraform |
-| CloudflareZeroTrustAccessServiceToken | 6 | 6 | 0 | 0 | 0 | ✅ | ✅ pulumi, terraform |
-| CloudflareZeroTrustDeviceCustomProfile | 29 | 21 | 6 | 2 | 0 | ✅ | ✅ pulumi, terraform |
-| CloudflareZeroTrustDeviceDefaultProfile | 25 | 16 | 8 | 1 | 0 | ✅ | ✅ pulumi, terraform |
+| CloudflareZeroTrustAccessServiceToken | 7 | 6 | 0 | 0 | 1 | ❌ | ✅ pulumi, terraform |
+| CloudflareZeroTrustDeviceCustomProfile | 32 | 21 | 6 | 2 | 3 | ❌ | ✅ pulumi, terraform |
+| CloudflareZeroTrustDeviceDefaultProfile | 26 | 16 | 8 | 1 | 1 | ❌ | ✅ pulumi, terraform |
 | CloudflareZeroTrustDevicePostureRule | 8 | 6 | 2 | 0 | 0 | ✅ | ✅ pulumi, terraform |
 | CloudflareZeroTrustDnsLocation | 8 | 5 | 3 | 0 | 0 | ✅ | ✅ pulumi, terraform |
 | CloudflareZeroTrustGatewayPolicy | 13 | 9 | 4 | 0 | 0 | ✅ | — |
 | CloudflareZeroTrustGatewaySettings | 10 | 3 | 7 | 0 | 0 | ✅ | ✅ pulumi, terraform |
 | CloudflareZeroTrustList | 5 | 4 | 1 | 0 | 0 | ✅ | ✅ pulumi, terraform |
-| CloudflareZeroTrustMcpPortal | 7 | 6 | 1 | 0 | 0 | ✅ | ✅ pulumi, terraform |
+| CloudflareZeroTrustMcpPortal | 7 | 5 | 1 | 0 | 2 | ❌ | ✅ pulumi, terraform |
 | CloudflareZeroTrustMcpServer | 11 | 9 | 2 | 0 | 0 | ✅ | ✅ pulumi, terraform |
-| CloudflareZeroTrustOrganization | 21 | 16 | 4 | 1 | 0 | ✅ | ✅ pulumi, terraform |
+| CloudflareZeroTrustOrganization | 24 | 18 | 5 | 1 | 0 | ✅ | ✅ pulumi, terraform |
 | CloudflareZeroTrustTunnel | 8 | 5 | 2 | 1 | 0 | ✅ | ✅ pulumi, terraform |
 | CloudflareZeroTrustTunnelRoute | 5 | 5 | 0 | 0 | 0 | ✅ | ✅ pulumi, terraform |
 | CloudflareZeroTrustTunnelVirtualNetwork | 4 | 4 | 0 | 0 | 0 | ✅ | ✅ pulumi, terraform |
@@ -140,7 +140,7 @@ gaps. **Proven** means live end-to-end runs passed on every IaC engine the kind 
 
 ## Breadth: every GA resource, one disposition
 
-All resources of `cloudflare@5.23.0` land in exactly one class:
+All resources of `cloudflare@5.28.0` land in exactly one class:
 
 | Disposition | Resources | Meaning |
 |---|---|---|
@@ -149,9 +149,10 @@ All resources of `cloudflare@5.23.0` land in exactly one class:
 | IAM not offered per resource | 0 | per-resource IAM triplets for resources no kind grants on yet; access goes through a grant at a broader scope (the project or account) |
 | Composed | 0 | capability covered through an existing kind's surface rather than a kind of its own |
 | Planned | 94 | judged to be covered by a planned kind or planned composition, not built yet |
-| Deferred | 45 | deliberately not offered, each with the recorded reason |
+| Deferred | 44 | deliberately not offered, each with the recorded reason |
 | Excluded as deprecated | 7 | deprecated or superseded provider surface |
-| **Total** | **257** | |
+| UNDISPOSITIONED | 16 | awaiting recorded judgment -- carried loudly in the CI baseline |
+| **Total** | **272** | |
 
 ## The enumerated record
 
@@ -373,7 +374,7 @@ rather than trusted.
 | `cloudflare_zero_trust_tunnel_warp_connector_config` | folds into the planned CloudflareZeroTrustWarpConnector kind (configuration of the connector, mirroring the cloudflared pattern) |
 | `cloudflare_zone_lockdown` | judged as a planned CloudflareZoneLockdown kind (URL lockdown rules, many per zone with independent lifecycle) |
 
-### Deferred (45)
+### Deferred (44)
 
 | Resource | Recorded reason |
 |---|---|
@@ -411,7 +412,6 @@ rather than trusted.
 | `cloudflare_page_rule` | legacy surface superseded by the Rulesets engine, which the catalog already models; Cloudflare is migrating users off Page Rules |
 | `cloudflare_page_shield_policy` | Enterprise add-on entitlement: Page Shield CSP policies |
 | `cloudflare_regional_hostname` | Enterprise add-on entitlement: Regional Services |
-| `cloudflare_registrar_domain` | interactive, account-singular domain transfers; not fleet-deployable infrastructure |
 | `cloudflare_sso_connector` | Enterprise-only entitlement: dashboard single sign-on |
 | `cloudflare_stream` | per-video content object; application data rather than provisioned infrastructure |
 | `cloudflare_stream_audio_track` | content-follower of a video; application data rather than provisioned infrastructure |

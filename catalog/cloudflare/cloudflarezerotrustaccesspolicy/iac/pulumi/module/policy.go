@@ -19,16 +19,16 @@ func policy(
 		AccountId:                    pulumi.String(spec.AccountId),
 		Name:                         pulumi.String(spec.Name),
 		Decision:                     pulumi.String(spec.Decision.String()),
-		Includes:                     policyIncludes(ctx, spec.Include),
+		Includes:                     policyIncludes(spec.Include),
 		ApprovalRequired:             pulumi.BoolPtr(spec.ApprovalRequired),
 		IsolationRequired:            pulumi.BoolPtr(spec.IsolationRequired),
 		PurposeJustificationRequired: pulumi.BoolPtr(spec.PurposeJustificationRequired),
 	}
 	if len(spec.Exclude) > 0 {
-		args.Excludes = policyExcludes(ctx, spec.Exclude)
+		args.Excludes = policyExcludes(spec.Exclude)
 	}
 	if len(spec.Require) > 0 {
-		args.Requires = policyRequires(ctx, spec.Require)
+		args.Requires = policyRequires(spec.Require)
 	}
 	if sd := spec.GetSessionDuration(); sd != "" {
 		args.SessionDuration = pulumi.StringPtr(sd)
@@ -106,10 +106,8 @@ func riskLevels(levels []cloudflarezerotrustaccesspolicyv1alpha1.AccessRuleUserR
 	return out
 }
 
-const cfAccountMemberWarning = "cloudflare_account_member access rule is not supported by the Pulumi Cloudflare SDK (v6.17.0); skipping this rule. Use the Terraform engine to provision it. See the Pulumi module README."
-
 // policyIncludes maps the access rules onto the provider's include array.
-func policyIncludes(ctx *pulumi.Context, rules []*cloudflarezerotrustaccesspolicyv1alpha1.CloudflareAccessRule) cloudflare.ZeroTrustAccessPolicyIncludeArray {
+func policyIncludes(rules []*cloudflarezerotrustaccesspolicyv1alpha1.CloudflareAccessRule) cloudflare.ZeroTrustAccessPolicyIncludeArray {
 	out := cloudflare.ZeroTrustAccessPolicyIncludeArray{}
 	for _, r := range rules {
 		e := &cloudflare.ZeroTrustAccessPolicyIncludeArgs{}
@@ -169,8 +167,11 @@ func policyIncludes(ctx *pulumi.Context, rules []*cloudflarezerotrustaccesspolic
 		case *cloudflarezerotrustaccesspolicyv1alpha1.CloudflareAccessRule_UserRiskScore:
 			e.UserRiskScore = &cloudflare.ZeroTrustAccessPolicyIncludeUserRiskScoreArgs{UserRiskScores: riskLevels(v.UserRiskScore.UserRiskScore)}
 		case *cloudflarezerotrustaccesspolicyv1alpha1.CloudflareAccessRule_CloudflareAccountMember:
-			ctx.Log.Warn(cfAccountMemberWarning, nil)
-			continue
+			member := &cloudflare.ZeroTrustAccessPolicyIncludeCloudflareAccountMemberArgs{}
+			if v.CloudflareAccountMember.AccountId != "" {
+				member.AccountId = pulumi.String(v.CloudflareAccountMember.AccountId)
+			}
+			e.CloudflareAccountMember = member
 		default:
 			continue
 		}
@@ -180,7 +181,7 @@ func policyIncludes(ctx *pulumi.Context, rules []*cloudflarezerotrustaccesspolic
 }
 
 // policyExcludes maps the access rules onto the provider's exclude array.
-func policyExcludes(ctx *pulumi.Context, rules []*cloudflarezerotrustaccesspolicyv1alpha1.CloudflareAccessRule) cloudflare.ZeroTrustAccessPolicyExcludeArray {
+func policyExcludes(rules []*cloudflarezerotrustaccesspolicyv1alpha1.CloudflareAccessRule) cloudflare.ZeroTrustAccessPolicyExcludeArray {
 	out := cloudflare.ZeroTrustAccessPolicyExcludeArray{}
 	for _, r := range rules {
 		e := &cloudflare.ZeroTrustAccessPolicyExcludeArgs{}
@@ -240,8 +241,11 @@ func policyExcludes(ctx *pulumi.Context, rules []*cloudflarezerotrustaccesspolic
 		case *cloudflarezerotrustaccesspolicyv1alpha1.CloudflareAccessRule_UserRiskScore:
 			e.UserRiskScore = &cloudflare.ZeroTrustAccessPolicyExcludeUserRiskScoreArgs{UserRiskScores: riskLevels(v.UserRiskScore.UserRiskScore)}
 		case *cloudflarezerotrustaccesspolicyv1alpha1.CloudflareAccessRule_CloudflareAccountMember:
-			ctx.Log.Warn(cfAccountMemberWarning, nil)
-			continue
+			member := &cloudflare.ZeroTrustAccessPolicyExcludeCloudflareAccountMemberArgs{}
+			if v.CloudflareAccountMember.AccountId != "" {
+				member.AccountId = pulumi.String(v.CloudflareAccountMember.AccountId)
+			}
+			e.CloudflareAccountMember = member
 		default:
 			continue
 		}
@@ -251,7 +255,7 @@ func policyExcludes(ctx *pulumi.Context, rules []*cloudflarezerotrustaccesspolic
 }
 
 // policyRequires maps the access rules onto the provider's require array.
-func policyRequires(ctx *pulumi.Context, rules []*cloudflarezerotrustaccesspolicyv1alpha1.CloudflareAccessRule) cloudflare.ZeroTrustAccessPolicyRequireArray {
+func policyRequires(rules []*cloudflarezerotrustaccesspolicyv1alpha1.CloudflareAccessRule) cloudflare.ZeroTrustAccessPolicyRequireArray {
 	out := cloudflare.ZeroTrustAccessPolicyRequireArray{}
 	for _, r := range rules {
 		e := &cloudflare.ZeroTrustAccessPolicyRequireArgs{}
@@ -311,8 +315,11 @@ func policyRequires(ctx *pulumi.Context, rules []*cloudflarezerotrustaccesspolic
 		case *cloudflarezerotrustaccesspolicyv1alpha1.CloudflareAccessRule_UserRiskScore:
 			e.UserRiskScore = &cloudflare.ZeroTrustAccessPolicyRequireUserRiskScoreArgs{UserRiskScores: riskLevels(v.UserRiskScore.UserRiskScore)}
 		case *cloudflarezerotrustaccesspolicyv1alpha1.CloudflareAccessRule_CloudflareAccountMember:
-			ctx.Log.Warn(cfAccountMemberWarning, nil)
-			continue
+			member := &cloudflare.ZeroTrustAccessPolicyRequireCloudflareAccountMemberArgs{}
+			if v.CloudflareAccountMember.AccountId != "" {
+				member.AccountId = pulumi.String(v.CloudflareAccountMember.AccountId)
+			}
+			e.CloudflareAccountMember = member
 		default:
 			continue
 		}

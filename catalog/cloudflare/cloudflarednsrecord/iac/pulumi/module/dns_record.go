@@ -86,6 +86,10 @@ func dnsRecord(
 	if spec.PrivateRouting {
 		recordArgs.PrivateRouting = pulumi.Bool(true)
 	}
+	// Shapes only what the API reports back about the record.
+	if spec.IncludeShadowMetadata != nil {
+		recordArgs.IncludeShadowMetadata = pulumi.BoolPtr(spec.GetIncludeShadowMetadata())
+	}
 
 	// Create the DNS record using DnsRecord (Record is deprecated in v6).
 	createdRecord, err := cloudflare.NewDnsRecord(

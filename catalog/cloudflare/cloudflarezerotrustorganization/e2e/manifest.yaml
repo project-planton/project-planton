@@ -27,3 +27,19 @@ spec:
   allow_authenticate_via_warp: true
   auto_redirect_to_identity: false
   key_rotation_interval_days: 90
+  mfa_piv_key_requirements:
+    pin_policy: once
+    touch_policy: cached
+    ssh_key_type:
+      - ecdsa
+      - ed25519
+    ssh_key_size:
+      - 256
+      - 384
+    require_fips_device: false
+  strict_service_token_auth: true
+  warp_auth_non_browser_401: true
+  service_token_inactivity:
+    action: disable
+    enabled: true
+    inactivity_threshold_days: 90

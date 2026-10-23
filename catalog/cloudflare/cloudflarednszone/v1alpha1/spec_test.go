@@ -129,6 +129,26 @@ var _ = ginkgo.Describe("CloudflareDnsZoneSpec Custom Validation Tests", func() 
 				gomega.Expect(err).To(gomega.BeNil())
 			})
 
+			ginkgo.It("accepts Advanced Nameservers", func() {
+				err := protovalidate.Validate(zone("z", &CloudflareDnsZoneSpec{
+					ZoneName: "example.com", AccountId: "test-account-123",
+					DnsSettings: &CloudflareDnsZoneDnsSettings{
+						Nameservers: &CloudflareDnsZoneNameservers{Type: "cloudflare.advanced"},
+					},
+				}))
+				gomega.Expect(err).To(gomega.BeNil())
+			})
+
+			ginkgo.It("accepts an account-owned custom nameserver set", func() {
+				err := protovalidate.Validate(zone("z", &CloudflareDnsZoneSpec{
+					ZoneName: "example.com", AccountId: "test-account-123",
+					DnsSettings: &CloudflareDnsZoneDnsSettings{
+						Nameservers: &CloudflareDnsZoneNameservers{Type: "custom", NameserverSetId: "f1e2d3c4"},
+					},
+				}))
+				gomega.Expect(err).To(gomega.BeNil())
+			})
+
 			ginkgo.It("accepts an enabled dnssec block", func() {
 				err := protovalidate.Validate(zone("z", &CloudflareDnsZoneSpec{
 					ZoneName: "example.com", AccountId: "test-account-123",
@@ -184,7 +204,15 @@ var _ = ginkgo.Describe("CloudflareDnsZoneSpec Custom Validation Tests", func() 
 			ginkgo.It("rejects an ns_set out of range", func() {
 				err := protovalidate.Validate(zone("z", &CloudflareDnsZoneSpec{
 					ZoneName: "example.com", AccountId: "a",
-					DnsSettings: &CloudflareDnsZoneDnsSettings{Nameservers: &CloudflareDnsZoneNameservers{NsSet: 9}},
+					DnsSettings: &CloudflareDnsZoneDnsSettings{Nameservers: &CloudflareDnsZoneNameservers{NsSet: 9, Type: "custom.account"}},
+				}))
+				gomega.Expect(err).ToNot(gomega.BeNil())
+			})
+
+			ginkgo.It("rejects a nameservers block without a type", func() {
+				err := protovalidate.Validate(zone("z", &CloudflareDnsZoneSpec{
+					ZoneName: "example.com", AccountId: "a",
+					DnsSettings: &CloudflareDnsZoneDnsSettings{Nameservers: &CloudflareDnsZoneNameservers{NsSet: 1}},
 				}))
 				gomega.Expect(err).ToNot(gomega.BeNil())
 			})

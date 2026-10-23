@@ -147,8 +147,6 @@ func worker(
 			obsArgs.Logs = logsArgs
 		}
 		if t := o.Traces; t != nil {
-			// PARITY-EXCEPTION: pulumi-cloudflare SDK v6.17.0 has no
-			// PropagationPolicy on traces — tofu honors it, this engine skips it.
 			tracesArgs := &cloudfl.WorkersScriptObservabilityTracesArgs{
 				Enabled: pulumi.Bool(t.Enabled),
 			}
@@ -160,6 +158,9 @@ func worker(
 			}
 			if t.Persist {
 				tracesArgs.Persist = pulumi.Bool(true)
+			}
+			if t.PropagationPolicy != "" {
+				tracesArgs.PropagationPolicy = pulumi.String(t.PropagationPolicy)
 			}
 			obsArgs.Traces = tracesArgs
 		}
@@ -211,17 +212,33 @@ func worker(
 		scriptArgs.Annotations = ann
 	}
 
-	// PARITY-EXCEPTION: pulumi-cloudflare SDK v6.17.0 has no CacheOptions,
-	// Exports, or PackageDependencies inputs. tofu honors them; this engine
-	// skips them so a set field is never silently dropped without a trail.
-	if spec.CacheOptions != nil {
-		_ = ctx.Log.Warn("PARITY-EXCEPTION: cache_options is absent from pulumi-cloudflare SDK v6.17.0; tofu honors it, this engine skips it", nil)
+	if c := spec.CacheOptions; c != nil {
+		scriptArgs.CacheOptions = &cloudfl.WorkersScriptCacheOptionsArgs{
+			Enabled:           pulumi.Bool(c.Enabled),
+			CrossVersionCache: pulumi.Bool(c.CrossVersionCache),
+		}
 	}
 	if len(spec.Exports) > 0 {
-		_ = ctx.Log.Warn("PARITY-EXCEPTION: exports is absent from pulumi-cloudflare SDK v6.17.0; tofu honors it, this engine skips it", nil)
+		exports := cloudfl.WorkersScriptExportsMap{}
+		for name, e := range spec.Exports {
+			export := cloudfl.WorkersScriptExportsArgs{Type: pulumi.String(e.Type)}
+			if e.Cache != nil {
+				export.Cache = &cloudfl.WorkersScriptExportsCacheArgs{Enabled: pulumi.Bool(e.Cache.Enabled)}
+			}
+			exports[name] = export
+		}
+		scriptArgs.Exports = exports
 	}
 	if len(spec.PackageDependencies) > 0 {
-		_ = ctx.Log.Warn("PARITY-EXCEPTION: package_dependencies is absent from pulumi-cloudflare SDK v6.17.0; tofu honors it, this engine skips it", nil)
+		var deps cloudfl.WorkersScriptPackageDependencyArray
+		for _, d := range spec.PackageDependencies {
+			deps = append(deps, cloudfl.WorkersScriptPackageDependencyArgs{
+				Name:               pulumi.String(d.Name),
+				InstalledVersion:   pulumi.String(d.InstalledVersion),
+				PackageJsonVersion: pulumi.String(d.PackageJsonVersion),
+			})
+		}
+		scriptArgs.PackageDependencies = deps
 	}
 
 	createdScript, err := cloudfl.NewWorkersScript(ctx, "workers-script", scriptArgs, pulumi.Provider(cloudflareProvider))

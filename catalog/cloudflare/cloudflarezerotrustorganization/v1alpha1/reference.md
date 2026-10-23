@@ -58,6 +58,22 @@ spec:
   allow_authenticate_via_warp: true
   auto_redirect_to_identity: false
   key_rotation_interval_days: 90
+  mfa_piv_key_requirements:
+    pin_policy: once
+    touch_policy: cached
+    ssh_key_type:
+      - ecdsa
+      - ed25519
+    ssh_key_size:
+      - 256
+      - 384
+    require_fips_device: false
+  strict_service_token_auth: true
+  warp_auth_non_browser_401: true
+  service_token_inactivity:
+    action: disable
+    enabled: true
+    inactivity_threshold_days: 90
 ```
 
 ## Spec Fields
@@ -87,18 +103,24 @@ spec:
 | `spec.mfaConfig.sessionDuration` | `string` |  |  |  |
 | `spec.mfaConfig.amrMatchingSessionDuration` | `string` |  |  |  |
 | `spec.mfaConfig.requiredAaguids` | `string` |  |  |  |
-| `spec.mfaSshPivKeyRequirements` | `CloudflareZeroTrustOrganizationMfaSshPivKeyRequirements` |  |  |  |
-| `spec.mfaSshPivKeyRequirements.pinPolicy` | `string` |  |  |  |
-| `spec.mfaSshPivKeyRequirements.touchPolicy` | `string` |  |  |  |
-| `spec.mfaSshPivKeyRequirements.sshKeyType` | `[]string` |  |  |  |
-| `spec.mfaSshPivKeyRequirements.sshKeySize` | `[]int64` |  |  |  |
-| `spec.mfaSshPivKeyRequirements.requireFipsDevice` | `bool` |  |  |  |
+| `spec.mfaPivKeyRequirements` | `CloudflareZeroTrustOrganizationMfaPivKeyRequirements` |  |  |  |
+| `spec.mfaPivKeyRequirements.pinPolicy` | `string` |  |  |  |
+| `spec.mfaPivKeyRequirements.touchPolicy` | `string` |  |  |  |
+| `spec.mfaPivKeyRequirements.sshKeyType` | `[]string` |  |  |  |
+| `spec.mfaPivKeyRequirements.sshKeySize` | `[]int64` |  |  |  |
+| `spec.mfaPivKeyRequirements.requireFipsDevice` | `bool` |  |  |  |
 | `spec.allowAuthenticateViaWarp` | `bool` |  |  |  |
 | `spec.autoRedirectToIdentity` | `bool` |  |  |  |
 | `spec.mfaRequiredForAllApps` | `bool` |  |  |  |
 | `spec.isUiReadOnly` | `bool` |  |  |  |
 | `spec.uiReadOnlyToggleReason` | `string` |  |  |  |
 | `spec.keyRotationIntervalDays` | `int32` |  |  |  |
+| `spec.strictServiceTokenAuth` | `bool` |  |  |  |
+| `spec.warpAuthNonBrowser401` | `bool` |  |  |  |
+| `spec.serviceTokenInactivity` | `CloudflareZeroTrustOrganizationServiceTokenInactivity` |  |  |  |
+| `spec.serviceTokenInactivity.action` | `string` |  |  |  |
+| `spec.serviceTokenInactivity.enabled` | `bool` |  |  |  |
+| `spec.serviceTokenInactivity.inactivityThresholdDays` | `int32` |  |  |  |
 
 ## Field Details
 
@@ -257,9 +279,12 @@ Organization-wide multi-factor authentication policy.
 `[]string`
 
 The authenticator methods users may satisfy MFA with. Cloudflare accepts
-exactly: totp, biometrics, security_key, ssh_piv_key.
+exactly: totp, biometrics, security_key, piv_key (a hardware PIV key,
+constrained by mfa_piv_key_requirements), and ssh_fido2_key (a FIDO2
+SSH key). piv_key and ssh_fido2_key apply to infrastructure
+applications only.
 
-- rule: allowed_authenticators entries must be drawn from totp, biometrics, security_key, ssh_piv_key
+- rule: allowed_authenticators entries must be drawn from totp, biometrics, security_key, piv_key, ssh_fido2_key
 
 ### spec.mfaConfig.sessionDuration
 
@@ -283,14 +308,14 @@ The NAME of a Cloudflare List of FIDO2 AAGUIDs restricting which
 security keys are accepted. A single list name, not the AAGUIDs
 themselves.
 
-### spec.mfaSshPivKeyRequirements
+### spec.mfaPivKeyRequirements
 
-`CloudflareZeroTrustOrganizationMfaSshPivKeyRequirements`
+`CloudflareZeroTrustOrganizationMfaPivKeyRequirements`
 
-Hardware requirements applied when ssh_piv_key is an allowed
+Hardware requirements applied when piv_key is an allowed
 authenticator.
 
-### spec.mfaSshPivKeyRequirements.pinPolicy
+### spec.mfaPivKeyRequirements.pinPolicy
 
 `string`
 
@@ -298,7 +323,7 @@ When the key requires its PIN: never, once (per session), or always.
 
 - rule: pin_policy must be one of never, once, always
 
-### spec.mfaSshPivKeyRequirements.touchPolicy
+### spec.mfaPivKeyRequirements.touchPolicy
 
 `string`
 
@@ -306,7 +331,7 @@ When the key requires a touch: never, always, or cached.
 
 - rule: touch_policy must be one of never, always, cached
 
-### spec.mfaSshPivKeyRequirements.sshKeyType
+### spec.mfaPivKeyRequirements.sshKeyType
 
 `[]string`
 
@@ -314,7 +339,7 @@ The accepted key algorithms: ecdsa, ed25519, rsa.
 
 - rule: ssh_key_type entries must be drawn from ecdsa, ed25519, rsa
 
-### spec.mfaSshPivKeyRequirements.sshKeySize
+### spec.mfaPivKeyRequirements.sshKeySize
 
 `[]int64`
 
@@ -323,7 +348,7 @@ The accepted key sizes in bits: 256, 384, 521 (ECDSA), 2048, 3072, 4096
 
 - rule: ssh_key_size entries must be drawn from 256, 384, 521, 2048, 3072, 4096
 
-### spec.mfaSshPivKeyRequirements.requireFipsDevice
+### spec.mfaPivKeyRequirements.requireFipsDevice
 
 `bool` · optional (explicit presence)
 
@@ -350,8 +375,8 @@ to the sole configured provider.
 When true, global MFA settings apply to applications by default. The
 organization must have MFA enabled with at least one authentication
 method and a session duration configured. Cloudflare rejects
-allowed_authenticators containing ONLY ssh_piv_key when the organization
-has any non-infrastructure applications (PIV keys pair with
+allowed_authenticators containing ONLY piv_key or ssh_fido2_key when the
+organization has any non-infrastructure applications (both pair with
 infrastructure apps only).
 
 ### spec.isUiReadOnly
@@ -380,6 +405,60 @@ Unset leaves the account's current cadence unmanaged. Account scope
 only.
 
 - rule: {"int32":{"lte":365,"gte":21}}
+
+### spec.strictServiceTokenAuth
+
+`bool` · optional (explicit presence)
+
+How Access treats a request made with a service token. When true,
+unauthorized requests emit audit logs and answer 401 or 403 instead of
+redirecting to the login page, and successful requests no longer
+receive a CF_Authorization cookie. Organizations created on or after
+2026-10-05 have it on and cannot turn it off. Unset leaves the live
+value untouched.
+
+### spec.warpAuthNonBrowser401
+
+`bool` · optional (explicit presence)
+
+When true, a failed WARP authentication whose Accept header is not HTML
+(an API client, a CLI) answers 401 instead of redirecting to the login
+page. Unset writes false (the provider's default), so a manifest that
+wants it on must say so on every apply.
+
+### spec.serviceTokenInactivity
+
+`CloudflareZeroTrustOrganizationServiceTokenInactivity`
+
+Automatic enforcement against inactive service tokens: a token no
+policy references, and that has not authenticated to an Access
+application within the threshold, is disabled or deleted. Applies to
+every service token on the account.
+
+### spec.serviceTokenInactivity.action
+
+`string`
+
+What happens to an inactive token: disable (it stops authenticating and
+can be re-enabled) or delete (it is removed for good).
+
+- rule: action must be one of disable, delete
+
+### spec.serviceTokenInactivity.enabled
+
+`bool`
+
+Whether the enforcement runs. False keeps the threshold and action on
+record without acting on any token.
+
+### spec.serviceTokenInactivity.inactivityThresholdDays
+
+`int32`
+
+How many days a token must be inactive before the action applies
+(30-365).
+
+- rule: {"int32":{"lte":365,"gte":30}}
 
 ## Validation Rules
 

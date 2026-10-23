@@ -40,11 +40,15 @@ Several small levers fail with a 400 on accounts/zones that lack the matching fe
 - Record `settings.ipv4_only`/`ipv6_only`: code 9227 "not available to this zone".
 - `dns_settings` non-default values: SOA tuning, `ns_ttl`, and `flatten_all_cnames` each answer code 1003 "not available to this account or zone".
 
-On top of that, the Terraform provider (v5.23.0) echoes server defaults into any `dns_settings` field you left unset, and then plans to remove them forever -- so declare EVERY field the server echoes (ns_ttl, the SOA block, nameservers) or omit `dns_settings` entirely. Partial `dns_settings` blocks are a permanent-diff trap even on entitled accounts.
+On top of that, the provider reads the zone's live `ns_ttl` back on every refresh and holds no default for it, so a `dns_settings` block that leaves `ns_ttl` unset plans a change on every apply. Declare it (Cloudflare's default is 86400) or omit `dns_settings` entirely.
+
+## Advanced Nameservers
+
+Cloudflare's Advanced Nameservers (Foundation DNS) are a nameserver type, not a toggle: set `dns_settings.nameservers.type: cloudflare.advanced` to turn them on and `cloudflare.standard` to turn them off. They are a paid entitlement; on an account without it Cloudflare refuses the write. Any `nameservers` block names its type -- Cloudflare requires one on every write of nameserver settings.
 
 ## Importing an existing zone
 
-The zone imports by its bare zone id, and every zone-singleton satellite (DNSSEC, hold, subscription) shares that identity. Inline records import as `{zone_id}/{record_id}`; a prior deploy's `record_ids` output carries each record's id keyed by its name-type-index key, so recipes derive them without dashboard archaeology. `dns_settings` has no importer at provider v5.23.0 -- after adopting a zone, one apply re-asserts the settings from configuration (an idempotent PUT).
+The zone imports by its bare zone id, and every zone-singleton satellite (DNSSEC, hold, subscription) shares that identity. Inline records import as `{zone_id}/{record_id}`; a prior deploy's `record_ids` output carries each record's id keyed by its name-type-index key, so recipes derive them without dashboard archaeology. `dns_settings` has no importer -- after adopting a zone, one apply re-asserts the settings from configuration (an idempotent PUT).
 
 ## The hold is a takeover guard, not a lock
 
@@ -52,7 +56,7 @@ The zone imports by its bare zone id, and every zone-singleton satellite (DNSSEC
 
 ## Subscription is a billing action
 
-`subscription.rate_plan` is real money on anything above `free`, effective at apply, and the deploying token needs Billing Write scope (a plain Zone-Edit token gets a 403 on just this satellite). Plan choice also gates other levers in this spec: `vanity_name_servers` needs Business+, `foundation_dns` is a paid add-on, and `multi_provider`/`secondary_overrides` are plan-gated. If your organization manages plans centrally, leave `subscription` unset and let the account default stand.
+`subscription.rate_plan` is real money on anything above `free`, effective at apply, and the deploying token needs Billing Write scope (a plain Zone-Edit token gets a 403 on just this satellite). Plan choice also gates other levers in this spec: `vanity_name_servers` needs Business+, Advanced Nameservers (`nameservers.type: cloudflare.advanced`) are a paid add-on, and `multi_provider`/`secondary_overrides` are plan-gated. If your organization manages plans centrally, leave `subscription` unset and let the account default stand.
 
 ## Zone types pair with specific settings
 

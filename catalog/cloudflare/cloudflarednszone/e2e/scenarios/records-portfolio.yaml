@@ -8,29 +8,23 @@
 # output spells a nameserver: Cloudflare stores it without the dot, so the
 # apply-idempotency re-plan proves the module sends what Cloudflare keeps.
 #
-# Live-measured walls keep the dnsSettings singleton and three record
-# surfaces OUT of this scenario (all remain offline-plan-proven by the kind's
-# e2e/manifest.yaml; measured 2026-08-26 on the real account):
+# Live-measured walls keep three record surfaces OUT of this scenario (all
+# remain offline-plan-proven by the kind's e2e/manifest.yaml; measured
+# 2026-08-26 on the real account), and the dnsSettings singleton lives in its
+# own dns-settings scenario:
 #   - record tags: 400 code 9300 "DNS record has 1 tags, exceeding the quota
 #     of 0" (a paid entitlement);
 #   - record settings ipv4_only/ipv6_only: 400 code 9227 "not available to
 #     this zone";
-#   - dnsSettings (the whole singleton): its non-default values are
-#     entitlement-gated one by one (soa tuning, nsTtl, flattenAllCnames each
-#     answer 400 code 1003 "not available to this account or zone"), and even
-#     a defaults-only write (zoneMode: standard PATCHes fine) re-plans forever
-#     on the terraform engine: the v5.23.0 provider echoes server defaults
-#     (ns_ttl 86400, the SOA timer block, nameservers.type) into state on
-#     refresh while the schema marks those attributes Optional but NOT
-#     Computed, so an unset field plans a perpetual removal -- an upstream
-#     modeling defect the apply-idempotency gate rightly refuses. Pulumi's
-#     preview never refreshes, so only terraform detects it.
+#   - dnsSettings non-default values: entitlement-gated one by one (soa
+#     tuning, nsTtl, flattenAllCnames each answer 400 code 1003 "not
+#     available to this account or zone");
 #   - dnssec: 400 code 1017 "Invalid zone plan for action" on a PENDING zone
 #     -- the same PATCH succeeds on an ACTIVE free-plan zone, so the wall is
 #     delegation state, not plan tier; a zone this kind creates is always
 #     pending, so DNSSEC is provable live only on a registrar-delegated zone.
-# The plan-gated levers (vanity nameservers, foundation_dns, multi_provider)
-# were offline-only from authoring.
+# The plan-gated levers (vanity nameservers, Advanced Nameservers,
+# multi_provider) are offline-only.
 apiVersion: cloudflare.planton.dev/v1alpha1
 kind: CloudflareDnsZone
 metadata:

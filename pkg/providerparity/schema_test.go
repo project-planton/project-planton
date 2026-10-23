@@ -8,6 +8,8 @@ import (
 	"os"
 	"path/filepath"
 	"testing"
+
+	"github.com/plantonhq/planton/pkg/iac/tofu/providerlocks"
 )
 
 // fixtureSchema exercises every distillation shape: required/optional/
@@ -206,6 +208,41 @@ func TestCommittedArtifacts(t *testing.T) {
 		}
 		if len(s.ProviderConfig.ConfigurableArgs("")) == 0 {
 			t.Errorf("%s: provider block carries no configurable argument -- the block was dropped; regenerate with the current distiller", name)
+		}
+	}
+}
+
+// TestCommittedArtifactsMatchCanonicalLock holds every committed schema to the
+// release the OpenTofu modules actually run. Parity measured at any other
+// version describes a provider nobody deploys with: an argument the running
+// release renamed passes the gate while every apply fails, and one it added
+// stays invisible. A lock sweep that moves a provider therefore moves its
+// artifact in the same change (`make generate-provider-schemas`), and the
+// parity failures that follow are the migration work list.
+func TestCommittedArtifactsMatchCanonicalLock(t *testing.T) {
+	lockPath := filepath.Join("..", "..", providerlocks.CanonicalLockPath)
+	if _, err := os.Stat("schemas"); err != nil {
+		t.Skip("schemas dir not present (bazel sandbox); runs under go test")
+	}
+	if _, err := os.Stat(lockPath); err != nil {
+		t.Skip("canonical lock not present (bazel sandbox); runs under go test")
+	}
+	lock, err := providerlocks.ReadLock(lockPath)
+	if err != nil {
+		t.Fatalf("reading the canonical lock: %v", err)
+	}
+	schemas, err := LoadSchemas("schemas")
+	if err != nil {
+		t.Fatalf("committed artifacts unreadable: %v", err)
+	}
+	for name, s := range schemas {
+		locked, ok := LockedVersion(lock, s.Source)
+		if !ok {
+			t.Errorf("%s: %s locks no provider %q -- parity measures a provider no module runs", name, providerlocks.CanonicalLockPath, s.Source)
+			continue
+		}
+		if s.Version != locked {
+			t.Errorf("%s: artifact is %s but every module runs %s -- run `make generate-provider-schemas` and work the parity findings it surfaces", name, s.Version, locked)
 		}
 	}
 }

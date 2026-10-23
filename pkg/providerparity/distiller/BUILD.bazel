@@ -5,7 +5,10 @@ go_library(
     srcs = ["main.go"],
     importpath = "github.com/plantonhq/planton/pkg/providerparity/distiller",
     visibility = ["//visibility:private"],
-    deps = ["//pkg/providerparity"],
+    deps = [
+        "//pkg/iac/tofu/providerlocks",
+        "//pkg/providerparity",
+    ],
 )
 
 go_binary(
