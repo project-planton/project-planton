@@ -9,7 +9,10 @@
 # whole account -- roles on a project, folder, organization, account or
 # subscription, roles and policies themselves, users, keys, and acting as
 # another identity -- so it is granted only when asked for. A principal
-# holding it could grant itself anything.
+# holding it could grant itself anything. A deny policy is on this side of
+# the line too: attached to a project, folder or organization, it takes
+# access away from anyone beneath it, so writing one decides who may do
+# what across that scope.
 #
 # Granting access to ONE resource a kind manages (a secret its service
 # reads, a bucket's reader, a service's public invoker) is part of managing
@@ -55,6 +58,9 @@ providers:
       - iam.serviceAccounts.actAs
     grants_access:
       - billing.accounts.setIamPolicy
+      - iam.denypolicies.create
+      - iam.denypolicies.delete
+      - iam.denypolicies.update
       - iam.roles.create
       - iam.roles.update
       - iam.serviceAccountKeys.create
