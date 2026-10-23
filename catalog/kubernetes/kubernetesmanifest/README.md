@@ -21,6 +21,9 @@ The one piece of defaulting the kind performs, identical on both engines:
 - Documents that declare their own `metadata.namespace` **keep it**
 - Namespaced documents that declare none **land in `spec.namespace`** (the anchor)
 - Cluster-scoped documents (CRDs, ClusterRoles, ...) are **applied as-is** — the anchor never distorts them
+- With **no anchor**, a namespaced document that names no namespace of its own is **refused** before anything applies, naming the document — so a manifest of cluster-scoped objects needs no namespace at all, and nothing lands in `default` by accident
+
+Scope is decided from the built-in Kubernetes kinds, the manifest's own CRDs, and — only when a kind is neither — the cluster's CRDs; a kind none of them knows counts as namespaced.
 
 `spec.namespace` accepts a literal namespace name or a reference to a KubernetesNamespace resource. With `create_namespace: true`, the anchor namespace is created (with the standard Planton governance labels — on the namespace object only, never inside your manifest) before the manifest applies, and deleted with the resource. With `false`, the namespace must already exist.
 
@@ -28,12 +31,12 @@ The one piece of defaulting the kind performs, identical on both engines:
 
 ### Required
 
-- **`spec.namespace`**: The anchor namespace (value or ref). Where namespaced documents without an explicit `metadata.namespace` are applied
 - **`spec.manifest_yaml`**: The raw Kubernetes YAML to apply — single or multi-document, must contain at least one non-blank document. Content is never validated beyond that: the manifest's kinds are the API server's business, by design
 
 ### Optional
 
-- **`spec.create_namespace`** (default `false`): Whether this resource creates and owns the anchor namespace
+- **`spec.namespace`**: The anchor namespace (value or ref). Where namespaced documents without an explicit `metadata.namespace` are applied. Omit it for a manifest of cluster-scoped documents, or one whose namespaced documents all name their own namespace
+- **`spec.create_namespace`** (default `false`): Whether this resource creates and owns the anchor namespace (needs `spec.namespace`)
 - **`spec.skip_await`** (default `false`): When `true`, the deploy returns as soon as the API server accepts every document. When `false`, both engines block until readiness: Deployments/DaemonSets/StatefulSets complete their rollout, and other kinds pass their engine's readiness checks. Skip the await for manifests whose readiness depends on something deployed later (e.g. a webhook configuration waiting on its service) or that intentionally stay not-ready at install time — vendor install bundles are the usual case
 
 ## Outputs
@@ -85,7 +88,7 @@ Neither document declares a namespace, so both land in `my-app`, which the compo
 
 This kind includes both **Pulumi** (Go) and **Terraform** (HCL) modules that uphold one parity contract:
 
-1. **Anchoring**: Pulumi constructs its Kubernetes provider with `spec.namespace` as the default namespace (scope-aware — cluster-scoped kinds are skipped); Terraform sets `override_namespace` per document, only on documents that declare no namespace. Same outcome
+1. **Anchoring**: Pulumi constructs its Kubernetes provider with `spec.namespace` as the default namespace (scope-aware — cluster-scoped kinds are skipped); Terraform sets `override_namespace` per document, only on documents that declare no namespace. Same outcome. Without an anchor, both engines decide each document's scope from the same generated table (`pkg/kubernetes/kindscope`) and refuse an unplaced namespaced document before anything applies
 2. **Apply**: both engines apply server-side. Pulumi feeds the whole manifest to a `yaml/v2` ConfigGroup; Terraform creates one `kubectl_manifest` per document, keyed by the document's identity (`apiVersion/Kind/namespace/name`) so reordering documents never churns state
 3. **CRD ordering**: a CRD and its custom resources apply in one pass on both engines — the ConfigGroup orders CRDs first, and `kubectl_manifest` needs no cluster connection at plan time
 4. **Await**: `skip_await` maps to `SkipAwait` on Pulumi and inverted `wait`/`wait_for_rollout` on Terraform; both default to awaiting readiness. (One benign breadth difference: when awaiting, Pulumi also readiness-checks non-workload kinds like Services; kubectl awaits workload rollouts only. The applied objects are identical)
@@ -110,7 +113,7 @@ Use **KubernetesManifest** when:
 
 - **Kubernetes Cluster**: Access to a Kubernetes cluster
 - **Credentials**: Kubernetes cluster credentials (kubeconfig)
-- **The anchor namespace**: must already exist unless `create_namespace: true`
+- **The anchor namespace**, when set: must already exist unless `create_namespace: true`
 
 ## Best Practices
 

@@ -148,3 +148,24 @@ func splitYAMLDocuments(content string) []string {
 
 	return docs
 }
+
+// failureUnplacedNamespacedDocument is a KubernetesManifest with no anchor
+// namespace whose namespaced documents name no namespace of their own: both
+// engines refuse it before any document applies, naming the documents.
+const failureUnplacedNamespacedDocument = "unplaced-namespaced-document"
+
+// VerifyExpectedDeployFailure pins the no-anchor refusal: the error names the
+// rule and the cause, and no embedded document reached the cluster.
+func (v *ConfigGroupVerifier) VerifyExpectedDeployFailure(ctx context.Context, kubeconfig, expectation string, deployErr error) error {
+	if expectation != failureUnplacedNamespacedDocument {
+		return errors.Errorf("manifest verifier pins no deploy failure %q", expectation)
+	}
+	if deployErr == nil {
+		return errors.New("expected the manifest to be refused for a namespaced document with no namespace, but the deploy succeeded")
+	}
+	// OpenTofu wraps its error text across lines; compare it as one line.
+	if !strings.Contains(strings.Join(strings.Fields(deployErr.Error()), " "), "name no metadata.namespace of their own") {
+		return errors.Errorf("the refusal does not explain the unplaced documents -- got: %s", deployErr.Error())
+	}
+	return v.VerifyAbsent(ctx, kubeconfig)
+}

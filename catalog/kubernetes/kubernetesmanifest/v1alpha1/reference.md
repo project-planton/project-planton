@@ -22,10 +22,16 @@ install manifest, a CRD bundle, an exotic custom resource).
 
 NAMESPACE SEMANTICS (identical on both engines): documents that declare
 their own `metadata.namespace` keep it; namespaced documents that declare
-none land in `spec.namespace`. Cluster-scoped documents (CRDs,
-ClusterRoles, ...) are applied as-is — the anchor namespace never distorts
-them. The manifest content itself is never otherwise mutated: no injected
-labels, no rewritten fields.
+none land in `spec.namespace`, the anchor. Cluster-scoped documents (CRDs,
+ClusterRoles, StorageClasses, cluster-wide custom resources, ...) are
+applied as-is — the anchor never distorts them, so a manifest of only
+cluster-scoped documents needs no anchor at all. Without an anchor, a
+namespaced document that names no namespace of its own is refused before
+anything applies, naming the document; nothing lands in "default" by
+accident. Scope is decided from the built-in Kubernetes kinds, the
+manifest's own CRDs, and the cluster's CRDs; a kind none of them knows is
+treated as namespaced. The manifest content itself is never otherwise
+mutated: no injected labels, no rewritten fields.
 
 ## Example
 
@@ -73,7 +79,7 @@ spec:
 
 | Path | Type | Required | Default | References |
 |---|---|---|---|---|
-| `spec.namespace` | `string \| valueFrom` | yes |  | KubernetesNamespace (`spec.name`) |
+| `spec.namespace` | `string \| valueFrom` |  |  | KubernetesNamespace (`spec.name`) |
 | `spec.createNamespace` | `bool` |  |  |  |
 | `spec.manifestYaml` | `string` | yes |  |  |
 | `spec.skipAwait` | `bool` |  |  |  |
@@ -82,16 +88,17 @@ spec:
 
 ### spec.namespace
 
-`string | valueFrom` · required
+`string | valueFrom`
 
 The anchor namespace for this manifest: namespaced documents that do not
 declare their own `metadata.namespace` are applied here. Accepts a
 literal namespace name or a reference to a KubernetesNamespace resource.
 Documents with an explicit namespace, and cluster-scoped documents, are
-unaffected.
+unaffected. Omit it for a manifest of cluster-scoped documents (or one
+whose namespaced documents all name their own namespace); a namespaced
+document without a namespace is then refused rather than placed.
 
 - references: KubernetesNamespace (`spec.name`)
-- rule: {"required":true}
 - rule: write as {value: <literal>} or {valueFrom: {kind: KubernetesNamespace, name: <that resource's name>, fieldPath: spec.name}} -- a bare string does not parse
 
 ### spec.createNamespace
@@ -100,7 +107,8 @@ unaffected.
 
 When true, the anchor namespace is created (with the standard Planton
 governance labels) before the manifest is applied, and deleted with the
-resource. When false, the namespace must already exist.
+resource. When false, the namespace must already exist. Needs a
+namespace.
 
 ### spec.manifestYaml
 
@@ -144,6 +152,10 @@ kinds pass their engine's readiness checks. Skip the await for manifests
 whose readiness depends on something deployed later (e.g. a webhook
 configuration waiting on its service) or that intentionally stay
 not-ready at install time.
+
+## Validation Rules
+
+- `spec.create_namespace_needs_namespace`: create_namespace needs a namespace to create -- set namespace, or turn create_namespace off
 
 ## Outputs
 

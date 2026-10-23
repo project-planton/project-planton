@@ -62,6 +62,24 @@ on [reference.md](v1alpha1/reference.md)). Compose the initial manifest with a r
 image, but do not build automation that edits those two paths out-of-band
 — the pipeline writes them on every build.
 
+## Calling an Agent Substrate
+
+A product's server that creates actors on a KubernetesAgentSubstrate
+presents three things the substrate's outputs name: a projected
+ServiceAccount token with `api_token_audience`, trust in the
+ClusterTrustBundle `api_trust_bundle_name`, and — for the router's TLS
+endpoint — a client certificate from `router_client_signer_name`. Mount all
+three as projected volume sources (`serviceAccountToken`,
+`clusterTrustBundle`, `podCertificate`) and reference the bundle from the
+substrate rather than copying its PEM: the kubelet keeps every file current
+as the substrate rotates its CA and certificates, which a hand-copied
+ConfigMap never does. Run the workload in a namespace carrying
+`api_access_namespace_label`, name its SPIFFE ID
+(`spiffe://cluster.local/ns/<namespace>/sa/<service-account>`) in the
+substrate's `router.allowed_client_spiffe_ids`, and deploy it on the Pulumi
+engine — the OpenTofu engine cannot write the last two projections. The
+**Agent Substrate Client** preset wires all of it.
+
 ## On the diagram
 
 Each composed piece — namespace, ingress/route, certificate chain,
@@ -79,3 +97,5 @@ infrastructure a reviewer needs to see.
   above).
 - KubernetesConfigMap / KubernetesSecret / KubernetesExternalSecret —
   configuration and credentials mounted by the containers.
+- KubernetesAgentSubstrate — the actor platform a client workload calls,
+  wired through its outputs (section above).

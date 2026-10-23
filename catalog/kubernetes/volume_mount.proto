@@ -3,17 +3,18 @@ syntax = "proto3";
 package dev.planton.kubernetes;
 
 import "buf/validate/validate.proto";
+import "catalog/kubernetes/core_v1_api.proto";
+import "shared/foreignkey/v1/foreign_key.proto";
 
 // =============================================================================
 // SHARED VOLUME MOUNT DEFINITIONS
 // =============================================================================
 //
 // This file contains shared protobuf messages for volume mounts that are used
-// across multiple Kubernetes workload kinds:
-// - KubernetesDeployment
-// - KubernetesDaemonSet
-// - KubernetesStatefulSet
-// - KubernetesCronJob
+// across multiple Kubernetes workload kinds: the app, sidecar and init
+// containers of KubernetesDeployment, KubernetesStatefulSet,
+// KubernetesDaemonSet, KubernetesJob and KubernetesCronJob, plus the extra
+// volumes of KubernetesOtelCollector and KubernetesLangfuse.
 //
 // By centralizing these definitions, we ensure consistency and reduce duplication.
 // =============================================================================
@@ -21,8 +22,12 @@ import "buf/validate/validate.proto";
 /**
  * VolumeMount defines how to mount a volume into a container.
  * Supports multiple volume types: ConfigMap, Secret, HostPath, EmptyDir, PVC,
- * and projected ServiceAccount tokens.
- * Only one volume source should be specified per mount.
+ * and three projected sources: a ServiceAccount token, a ClusterTrustBundle's
+ * CA certificates, and a pod certificate (a kubelet-managed key and X.509
+ * certificate).
+ * At most one volume source per mount. A mount with no source names a volume
+ * defined elsewhere -- a StatefulSet volumeClaimTemplate, or another mount of
+ * the same name that carries the source.
  *
  * Example usage:
  *   volumeMounts:
@@ -38,6 +43,12 @@ import "buf/validate/validate.proto";
  *         type: Directory
  */
 message VolumeMount {
+  option (buf.validate.message).cel = {
+    id: "volume_mount.at_most_one_source"
+    message: "a volume mount takes at most one source (configMap, secret, hostPath, emptyDir, pvc, serviceAccountToken, clusterTrustBundle or podCertificate)"
+    expression: "[has(this.config_map), has(this.secret), has(this.host_path), has(this.empty_dir), has(this.pvc), has(this.service_account_token), has(this.cluster_trust_bundle), has(this.pod_certificate)].filter(x, x).size() <= 1"
+  };
+
   // Name of the volume mount. Must be unique within the container.
   // Used to correlate with the volume definition.
   string name = 1 [(buf.validate.field).required = true];
@@ -82,6 +93,30 @@ message VolumeMount {
   // Use this to mount a short-lived, audience-bound identity token that the
   // kubelet issues for the pod's ServiceAccount and rotates automatically.
   ServiceAccountTokenVolumeSource service_account_token = 10;
+
+  // Projected ClusterTrustBundle volume source.
+  // Use this to mount the CA certificates of a ClusterTrustBundle, so the
+  // container can verify servers whose certificates a cluster signer issues
+  // (the Agent Substrate API's, for one). The kubelet keeps the file current
+  // as the bundle rotates, which a hand-copied ConfigMap never does.
+  // Requires the cluster's ClusterTrustBundle and ClusterTrustBundleProjection
+  // features (certificates.k8s.io/v1beta1).
+  // OpenTofu engine: not supported -- the hashicorp/kubernetes provider has
+  // no clusterTrustBundle projection; deploy the workload with the Pulumi
+  // engine (set planton.dev/provisioner to pulumi).
+  ClusterTrustBundleVolumeSource cluster_trust_bundle = 11;
+
+  // Projected pod certificate volume source.
+  // Use this to give the container a private key and an X.509 certificate the
+  // kubelet requests from a signer for the pod and rotates before expiry --
+  // the client certificate a workload presents to an mTLS endpoint (the Agent
+  // Substrate router's TLS listener, for one).
+  // Requires the cluster's PodCertificateRequest feature
+  // (certificates.k8s.io/v1beta1) and a signer controller for signer_name.
+  // OpenTofu engine: not supported -- the hashicorp/kubernetes provider has
+  // no podCertificate projection; deploy the workload with the Pulumi engine
+  // (set planton.dev/provisioner to pulumi).
+  PodCertificateVolumeSource pod_certificate = 12;
 }
 
 /**
@@ -289,4 +324,130 @@ message ServiceAccountTokenVolumeSource {
   // Filename for the token relative to the mount path.
   // Defaults to "token".
   string path = 3;
+}
+
+/**
+ * ClusterTrustBundleVolumeSource projects the CA certificates of one or more
+ * ClusterTrustBundles into the container as a single PEM file. The volume is
+ * always mounted read-only.
+ *
+ * Select the bundle by name, or every bundle of a signer by signer_name (and
+ * optionally a label selector); exactly one of name or signer_name.
+ *
+ * Example - the Agent Substrate API's trust bundle, by reference:
+ *   volumeMounts:
+ *     - name: substrate-ca
+ *       mountPath: /var/run/substrate
+ *       readOnly: true
+ *       clusterTrustBundle:
+ *         name:
+ *           valueFrom:
+ *             name: agents
+ *         path: ca.crt
+ */
+message ClusterTrustBundleVolumeSource {
+  option (buf.validate.message).cel = {
+    id: "cluster_trust_bundle.name_xor_signer"
+    message: "set exactly one of name or signerName"
+    expression: "has(this.name) != (this.signer_name != '')"
+  };
+  option (buf.validate.message).cel = {
+    id: "cluster_trust_bundle.label_selector_needs_signer"
+    message: "labelSelector applies only with signerName"
+    expression: "!has(this.label_selector) || this.signer_name != ''"
+  };
+
+  // The ClusterTrustBundle to project, by object name. A literal name, or a
+  // reference to the KubernetesAgentSubstrate whose API trust bundle this is
+  // (status.outputs.api_trust_bundle_name). Mutually exclusive with
+  // signer_name.
+  dev.planton.shared.foreignkey.v1.StringValueOrRef name = 1 [
+    (dev.planton.shared.foreignkey.v1.default_kind) = KubernetesAgentSubstrate,
+    (dev.planton.shared.foreignkey.v1.default_kind_field_path) = "status.outputs.api_trust_bundle_name"
+  ];
+
+  // Project every ClusterTrustBundle of this signer, deduplicated into one
+  // file (e.g. "servicedns.podcert.ate.dev/identity"). Mutually exclusive
+  // with name.
+  string signer_name = 2;
+
+  // Narrows the signer's bundles to those matching the selector. Applies only
+  // with signer_name. Unset matches NOTHING; set but empty matches every
+  // bundle of the signer -- upstream's own semantics.
+  KubernetesCoreV1ApiLabelSelector label_selector = 3;
+
+  // When true, the pod starts even if no bundle matches (the file is then
+  // absent); when false the pod waits for the bundle.
+  bool optional = 4;
+
+  // File name for the PEM bundle relative to the mount path.
+  // Defaults to "ca.crt".
+  string path = 5;
+}
+
+/**
+ * PodCertificateVolumeSource has the kubelet generate a private key, request a
+ * certificate for the pod from a signer, and project both into the container,
+ * rotating them before the certificate expires. The volume is always mounted
+ * read-only.
+ *
+ * Example - the Agent Substrate router's client certificate:
+ *   volumeMounts:
+ *     - name: workload-identity
+ *       mountPath: /var/run/podidentity
+ *       readOnly: true
+ *       podCertificate:
+ *         signerName: podidentity.podcert.ate.dev/identity
+ *         keyType: ECDSAP256
+ *         credentialBundlePath: credential-bundle.pem
+ */
+message PodCertificateVolumeSource {
+  option (buf.validate.message).cel = {
+    id: "pod_certificate.key_and_chain_paths_together"
+    message: "keyPath and certificateChainPath are set together"
+    expression: "(this.key_path != '') == (this.certificate_chain_path != '')"
+  };
+
+  // The signer the kubelet's certificate requests are addressed to. A
+  // controller for this signer must run in the cluster, or the pod never
+  // starts. The Agent Substrate router's client certificates come from
+  // "podidentity.podcert.ate.dev/identity" (the substrate's
+  // status.outputs.router_client_signer_name).
+  string signer_name = 1 [(buf.validate.field).required = true];
+
+  // The key pair the kubelet generates: RSA3072, RSA4096, ECDSAP256,
+  // ECDSAP384, ECDSAP521 or ED25519. The signer decides which it accepts.
+  string key_type = 2 [(buf.validate.field).cel = {
+    id: "pod_certificate.key_type.values"
+    message: "keyType must be one of RSA3072, RSA4096, ECDSAP256, ECDSAP384, ECDSAP521, ED25519"
+    expression: "this in ['RSA3072', 'RSA4096', 'ECDSAP256', 'ECDSAP384', 'ECDSAP521', 'ED25519']"
+  }];
+
+  // The longest lifetime the certificate may have, in seconds (3600 to
+  // 7862400). Unset lets the API server choose 86400 (24 hours); the signer
+  // may issue a shorter one, and kubernetes.io signers never exceed 24 hours.
+  optional int32 max_expiration_seconds = 3 [
+    (buf.validate.field).int32.gte = 3600,
+    (buf.validate.field).int32.lte = 7862400
+  ];
+
+  // File name for the credential bundle -- one file holding the PKCS#8
+  // private key followed by the certificate chain, so the application reads a
+  // consistent pair in one atomic read. Defaults to "credential-bundle.pem"
+  // when no path below is set.
+  string credential_bundle_path = 4;
+
+  // File name for the private key alone. Set together with
+  // certificate_chain_path; the application must then check the key matches
+  // the leaf certificate, because the two files can be read mid-rotation.
+  string key_path = 5;
+
+  // File name for the certificate chain alone (leaf first). Set together
+  // with key_path.
+  string certificate_chain_path = 6;
+
+  // Extra information for the signer, copied into the certificate requests
+  // the kubelet creates. Keys must be domain-prefixed; signers refuse keys
+  // they do not recognize.
+  map<string, string> user_annotations = 7;
 }

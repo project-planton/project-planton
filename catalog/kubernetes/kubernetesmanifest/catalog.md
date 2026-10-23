@@ -81,7 +81,7 @@ These are the most important decisions when configuring a Kubernetes Manifest de
 
 **Manifest YAML content** — The `manifestYaml` field is the core of this kind. Paste any valid Kubernetes YAML, including multi-document manifests separated by `---`. The IaC module handles resource ordering automatically, applying CRDs before custom resources that depend on them.
 
-**Namespace behavior** — The `namespace` field is an ANCHOR, not a rewrite: namespaced documents that do not declare their own `metadata.namespace` are applied there, documents with an explicit namespace keep it, and cluster-scoped documents (CRDs, ClusterRoles) are never distorted by it. Set `createNamespace: true` to create the anchor namespace if it does not exist.
+**Namespace behavior** — The `namespace` field is an ANCHOR, not a rewrite: namespaced documents that do not declare their own `metadata.namespace` are applied there, documents with an explicit namespace keep it, and cluster-scoped documents (CRDs, ClusterRoles) are never distorted by it. Set `createNamespace: true` to create the anchor namespace if it does not exist. A manifest of only cluster-scoped documents omits the anchor entirely; without one, a namespaced document that names no namespace is refused before anything applies.
 
 **Readiness semantics** — By default the deploy blocks until every applied resource becomes ready: Deployments, DaemonSets, and StatefulSets complete their rollout, and other kinds pass readiness checks. Set `skipAwait: true` to return as soon as the API server accepts every document — for manifests whose readiness depends on something deployed later (a webhook configuration waiting on its Service) or that intentionally stay not-ready at install time.
 

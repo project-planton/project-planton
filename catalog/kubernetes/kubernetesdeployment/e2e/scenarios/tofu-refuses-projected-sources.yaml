@@ -1,0 +1,34 @@
+# The OpenTofu engine's designed refusal: the hashicorp/kubernetes provider
+# models neither the clusterTrustBundle nor the podCertificate projection, so
+# the workload module's precondition fails the plan, naming the mounts and the
+# engine that writes them, before anything reaches the cluster. The verifier
+# pins the refusal text and that no Deployment exists.
+apiVersion: kubernetes.planton.dev/v1alpha1
+kind: KubernetesDeployment
+metadata:
+  name: e2e-dep-tofu-refusal
+  annotations:
+    planton.dev/e2e-engines: "terraform"
+    planton.dev/e2e-expect-deploy-failure: engine-unsupported-volume-source
+spec:
+  namespace:
+    value: default
+  version: main
+  container:
+    app:
+      image:
+        repo: nginx
+        tag: "1.27-alpine"
+      ports:
+        - name: http
+          container_port: 80
+          network_protocol: TCP
+          app_protocol: http
+          service_port: 80
+      volume_mounts:
+        - name: cluster-ca
+          mount_path: /var/run/ca
+          read_only: true
+          cluster_trust_bundle:
+            name:
+              value: example-bundle

@@ -1,6 +1,6 @@
 # Kubernetes Deployment
 
-Deploys a containerized application on any Kubernetes cluster as an apps/v1 Deployment fronted by a Kubernetes Service. Supports custom container images, environment variables with cross-resource references, secret variables, sidecar and init containers, liveness/readiness/startup probes, volume mounts from ConfigMaps, Secrets, HostPath, EmptyDir, or PVCs, horizontal pod autoscaling, pod disruption budgets, zero-downtime rolling update strategies, pod scheduling (affinity, tolerations, topology spread), and the full restricted-profile security hardening surface. External exposure is composed with first-class kinds (Kubernetes Ingress, Gateway API routes) referencing the exported Service. Credentials are delivered through a Kubernetes Provider Connection or Runner-based delivery.
+Deploys a containerized application on any Kubernetes cluster as an apps/v1 Deployment fronted by a Kubernetes Service. Supports custom container images, environment variables with cross-resource references, secret variables, sidecar and init containers, liveness/readiness/startup probes, volume mounts from ConfigMaps, Secrets, HostPath, EmptyDir, PVCs, or projected ServiceAccount tokens, ClusterTrustBundles and pod certificates, horizontal pod autoscaling, pod disruption budgets, zero-downtime rolling update strategies, pod scheduling (affinity, tolerations, topology spread), and the full restricted-profile security hardening surface. External exposure is composed with first-class kinds (Kubernetes Ingress, Gateway API routes) referencing the exported Service. Credentials are delivered through a Kubernetes Provider Connection or Runner-based delivery.
 
 ## What Gets Created
 
@@ -132,6 +132,8 @@ Browse the [Presets](#presets) tab for ready-to-deploy configurations.
 **Background worker** — A long-running process without ports, such as a queue consumer or event processor. No Kubernetes Service is created. Start from the **Background Worker** preset.
 
 **Hardened production service** — Passes the restricted Pod Security Standard: non-root with a pinned UID, read-only root filesystem, all capabilities dropped, runtime-default seccomp, no API token mount, and zone-spread replicas with composed identity. Start from the **Hardened Production Service** preset.
+
+**Agent Substrate client** — A service that creates and calls actors on a Kubernetes Agent Substrate in the same cluster: a ServiceAccount token for the API's audience, the API's trust bundle and a router client certificate projected by the kubelet and rotated on their own, and the endpoints read from the substrate's outputs. Deploys on the Pulumi engine. Start from the **Agent Substrate Client** preset.
 
 ## Works With
 

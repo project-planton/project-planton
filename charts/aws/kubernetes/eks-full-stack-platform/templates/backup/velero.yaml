@@ -104,11 +104,6 @@ metadata:
       name: "{{ values.env }}-eks-snapshot-controller"
       type: depends_on
 spec:
-  # The document is cluster-scoped; the anchor namespace is required by the
-  # kind's contract but unused here — kube-system always exists.
-  namespace:
-    value: kube-system
-  createNamespace: false
   manifestYaml: |
     apiVersion: snapshot.storage.k8s.io/v1
     kind: VolumeSnapshotClass

@@ -1,0 +1,51 @@
+# A manifest of only cluster-scoped documents needs no anchor namespace: a
+# ClusterRole and a PriorityClass (built-in kinds) plus a CRD and an instance
+# of the cluster-scoped kind it defines (scope read from the manifest's own
+# CRD). Both engines apply it with no namespace and create none; the cluster
+# is never read for scope, because every kind is known locally.
+apiVersion: kubernetes.planton.dev/v1alpha1
+kind: KubernetesManifest
+metadata:
+  name: e2e-manifest-cluster-only
+spec:
+  manifest_yaml: |
+    apiVersion: rbac.authorization.k8s.io/v1
+    kind: ClusterRole
+    metadata:
+      name: e2e-manifest-cluster-only-reader
+    rules:
+      - apiGroups: [""]
+        resources: ["configmaps"]
+        verbs: ["get", "list"]
+    ---
+    apiVersion: scheduling.k8s.io/v1
+    kind: PriorityClass
+    metadata:
+      name: e2e-manifest-cluster-only-priority
+    value: 1000
+    description: cluster-scoped document applied with no anchor namespace
+    ---
+    apiVersion: apiextensions.k8s.io/v1
+    kind: CustomResourceDefinition
+    metadata:
+      name: clusterwidgets.e2e.planton.dev
+    spec:
+      group: e2e.planton.dev
+      scope: Cluster
+      names:
+        plural: clusterwidgets
+        singular: clusterwidget
+        kind: ClusterWidget
+      versions:
+        - name: v1
+          served: true
+          storage: true
+          schema:
+            openAPIV3Schema:
+              type: object
+              x-kubernetes-preserve-unknown-fields: true
+    ---
+    apiVersion: e2e.planton.dev/v1
+    kind: ClusterWidget
+    metadata:
+      name: e2e-manifest-cluster-only-widget

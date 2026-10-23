@@ -1,0 +1,76 @@
+# A workload set up to call the Agent Substrate the way a product does: a
+# projected ServiceAccount token for the API's audience, the API's
+# ClusterTrustBundle (referenced from the installed substrate's outputs, not
+# copied), and a pod certificate from the router's client-certificate signer.
+# The readiness probe passes only once all three files are present and
+# non-empty, so the rollout completes only when the kubelet projected every
+# source -- the lane needs no verifier of its own.
+#
+# The substrate installs from its published profile on the pod-certificates
+# cluster profile (the ClusterTrustBundle, ClusterTrustBundleProjection and
+# PodCertificateRequest features); its namespace, store and store key come
+# from this kind's consumer-scoped prerequisites/. Pulumi only: the OpenTofu
+# engine refuses both projections by design (tofu-refuses-projected-sources).
+apiVersion: kubernetes.planton.dev/v1alpha1
+kind: KubernetesDeployment
+metadata:
+  name: e2e-dep-substrate-client
+  annotations:
+    planton.dev/e2e-cluster-profile: "pod-certificates"
+    planton.dev/e2e-engines: "pulumi"
+    planton.dev/e2e-prerequisites: "KubernetesAgentSubstrate"
+spec:
+  namespace:
+    value: e2e-dep-substrate-client
+  create_namespace: true
+  version: main
+  container:
+    app:
+      image:
+        repo: busybox
+        tag: "1.37"
+      resources:
+        requests:
+          cpu: "10m"
+          memory: "16Mi"
+        limits:
+          cpu: "50m"
+          memory: "32Mi"
+      ports:
+        - name: http
+          container_port: 8080
+          network_protocol: TCP
+          app_protocol: http
+          service_port: 8080
+      command:
+        - "/bin/sh"
+        - "-c"
+      args:
+        - "while true; do sleep 30; done"
+      readiness_probe:
+        exec:
+          command:
+            - "/bin/sh"
+            - "-c"
+            - "test -s /var/run/substrate/token/token && test -s /var/run/substrate/ca/ca.crt && test -s /var/run/podidentity/credential-bundle.pem"
+        initial_delay_seconds: 2
+        period_seconds: 5
+      volume_mounts:
+        - name: substrate-token
+          mount_path: /var/run/substrate/token
+          read_only: true
+          service_account_token:
+            audience: api.ate-system.svc
+        - name: substrate-ca
+          mount_path: /var/run/substrate/ca
+          read_only: true
+          cluster_trust_bundle:
+            name:
+              value_from:
+                name: e2e-ate-prereq
+        - name: router-identity
+          mount_path: /var/run/podidentity
+          read_only: true
+          pod_certificate:
+            signer_name: podidentity.podcert.ate.dev/identity
+            key_type: ECDSAP256

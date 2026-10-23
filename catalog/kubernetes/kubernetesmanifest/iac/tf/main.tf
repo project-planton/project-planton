@@ -9,7 +9,9 @@
 # untouched. Cluster-scoped documents without a namespace also receive the
 # override — the API server ignores metadata.namespace on cluster-scoped
 # objects, so the outcome matches the Pulumi provider's scope-aware
-# defaulting (which skips them client-side instead).
+# defaulting (which skips them client-side instead). Without an anchor,
+# scope_check refuses namespaced documents that name no namespace, deciding
+# scope from kindscope.tf exactly as the Pulumi module does.
 
 # The optional anchor namespace. Created before any document applies;
 # documents and namespace are deleted together on destroy.
@@ -31,8 +33,10 @@ resource "kubectl_manifest" "documents" {
 
   yaml_body = each.value
 
-  # Anchor-namespace defaulting: only for documents that declare none.
-  override_namespace = try(yamldecode(each.value).metadata.namespace, "") == "" ? local.namespace_name : null
+  # Anchor-namespace defaulting: only for documents that declare none, and
+  # only when the manifest has an anchor (without one, scope_check has
+  # already refused every namespaced document that names no namespace).
+  override_namespace = try(yamldecode(each.value).metadata.namespace, "") == "" && local.namespace_name != "" ? local.namespace_name : null
 
   server_side_apply = true
   force_conflicts   = true
@@ -49,5 +53,28 @@ resource "kubectl_manifest" "documents" {
   wait             = !try(var.spec.skip_await, false)
   wait_for_rollout = !try(var.spec.skip_await, false)
 
-  depends_on = [kubernetes_namespace_v1.manifest_namespace]
+  depends_on = [kubernetes_namespace_v1.manifest_namespace, terraform_data.scope_check]
+}
+
+# The cluster's CRDs, read only when a document without a namespace has a kind
+# neither built in nor defined by the manifest (see locals.scope_needs_cluster),
+# so an anchored plan never contacts the cluster.
+data "kubernetes_resources" "cluster_crds" {
+  count = local.scope_needs_cluster ? 1 : 0
+
+  api_version = "apiextensions.k8s.io/v1"
+  kind        = "CustomResourceDefinition"
+}
+
+# Refuses, before any document applies, a manifest without an anchor whose
+# namespaced documents name no namespace of their own.
+resource "terraform_data" "scope_check" {
+  count = local.namespace_name == "" ? 1 : 0
+
+  lifecycle {
+    precondition {
+      condition     = length(local.unplaced_documents) == 0
+      error_message = "spec.namespace is not set, and these namespaced documents name no metadata.namespace of their own: ${join(", ", local.unplaced_documents)} -- give each its namespace, or set spec.namespace as their anchor."
+    }
+  }
 }

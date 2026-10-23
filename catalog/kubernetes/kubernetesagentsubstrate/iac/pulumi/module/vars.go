@@ -43,6 +43,9 @@ var vars = struct {
 	APITrustBundleSign  string
 	APIAccessLabelKey   string
 	APIAccessLabelValue string
+	// RouterClientSigner issues the client certificates the router's TLS
+	// endpoint accepts (upstream's podidentity signer).
+	RouterClientSigner string
 
 	// VersionAnnotation records the installed release on the API server
 	// Deployment; MinorLabel records the minor that wrote the bundled
@@ -83,6 +86,7 @@ var vars = struct {
 	APITrustBundleSign:       "servicedns.podcert.ate.dev/identity",
 	APIAccessLabelKey:        "ate.dev/api-access",
 	APIAccessLabelValue:      "true",
+	RouterClientSigner:       "podidentity.podcert.ate.dev/identity",
 	VersionAnnotation:        "planton.ai/agent-substrate-version",
 	MinorLabel:               "planton.ai/agent-substrate-minor",
 	EnvHashAnnotation:        "ate.dev/env-hash",

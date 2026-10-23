@@ -33,6 +33,12 @@ deploy time:
    component that owns the namespace deletes the namespace — and everything
    every other component deployed into it.
 
+KubernetesManifest is the one kind whose anchor is optional: a raw manifest
+can hold nothing but cluster-scoped objects, which no namespace distorts.
+Without an anchor, a namespaced document that names no namespace of its own
+is refused before anything applies, so the omission never places an object
+in `default`; `createNamespace` needs an anchor to create.
+
 ## The composition
 
 Give the namespace one owner: a dedicated KubernetesNamespace component.

@@ -63,6 +63,29 @@ variable "spec" {
         expiration_seconds = optional(number, 0)
         path               = optional(string, "")
       }))
+      cluster_trust_bundle = optional(object({
+        name        = optional(string, "")
+        signer_name = optional(string, "")
+        label_selector = optional(object({
+          match_labels = optional(map(string), {})
+          match_expressions = optional(list(object({
+            key      = string
+            operator = string
+            values   = optional(list(string), [])
+          })), [])
+        }))
+        optional = optional(bool, false)
+        path     = optional(string, "")
+      }))
+      pod_certificate = optional(object({
+        signer_name            = string
+        key_type               = string
+        max_expiration_seconds = optional(number)
+        credential_bundle_path = optional(string, "")
+        key_path               = optional(string, "")
+        certificate_chain_path = optional(string, "")
+        user_annotations       = optional(map(string), {})
+      }))
     })), [])
     additional_ports = optional(list(object({
       name     = string

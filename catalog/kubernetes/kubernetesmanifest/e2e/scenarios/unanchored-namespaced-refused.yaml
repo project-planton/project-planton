@@ -1,0 +1,24 @@
+# Without an anchor, a namespaced document that names no namespace of its own
+# has nowhere it was asked to go: both engines refuse the manifest before any
+# document applies, naming the ConfigMap, and the cluster-scoped document
+# beside it is not applied either.
+apiVersion: kubernetes.planton.dev/v1alpha1
+kind: KubernetesManifest
+metadata:
+  name: e2e-manifest-unanchored-refused
+  annotations:
+    planton.dev/e2e-expect-deploy-failure: unplaced-namespaced-document
+spec:
+  manifest_yaml: |
+    apiVersion: scheduling.k8s.io/v1
+    kind: PriorityClass
+    metadata:
+      name: e2e-manifest-unanchored-priority
+    value: 1000
+    ---
+    apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: e2e-manifest-unanchored-config
+    data:
+      placed: "false"

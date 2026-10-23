@@ -19,11 +19,17 @@ import (
 // explicit namespaces and cluster-scoped documents pass through untouched —
 // the provider resolves each kind's scope before defaulting. The Terraform
 // module reaches the same outcome with a per-document override_namespace on
-// documents that declare no namespace.
+// documents that declare no namespace. With no spec.namespace, a namespaced
+// document that names no namespace is refused before anything registers
+// (refuseUnplacedDocuments); both engines decide scope from the same table.
 func Resources(ctx *pulumi.Context, iacInput *kubernetesmanifestv1alpha1.KubernetesManifestIacInput) error {
 	locals, err := initializeLocals(ctx, iacInput)
 	if err != nil {
 		return errors.Wrap(err, "failed to initialize locals")
+	}
+
+	if err := refuseUnplacedDocuments(locals, iacInput.ProviderConfig); err != nil {
+		return err
 	}
 
 	// Create kubernetes provider from the credential in the iac-input,

@@ -243,6 +243,30 @@ func BuildVolumes(containers ...*kubernetesv1.WorkloadContainer) corev1.VolumeAr
 					},
 				}
 
+			// PARITY-EXCEPTION: the two projections below are written by this
+			// engine only. The OpenTofu workload modules refuse them in a
+			// precondition (locals.unsupported_projected_mounts), because the
+			// hashicorp/kubernetes provider models neither.
+			case vm.ClusterTrustBundle != nil:
+				// A ClusterTrustBundle's CA certificates, kept current by the kubelet.
+				volumeArgs.Projected = &corev1.ProjectedVolumeSourceArgs{
+					Sources: corev1.VolumeProjectionArray{
+						&corev1.VolumeProjectionArgs{
+							ClusterTrustBundle: clusterTrustBundleProjection(vm.ClusterTrustBundle),
+						},
+					},
+				}
+
+			case vm.PodCertificate != nil:
+				// A kubelet-generated key and the certificate a signer issued for it.
+				volumeArgs.Projected = &corev1.ProjectedVolumeSourceArgs{
+					Sources: corev1.VolumeProjectionArray{
+						&corev1.VolumeProjectionArgs{
+							PodCertificate: podCertificateProjection(vm.PodCertificate),
+						},
+					},
+				}
+
 			default:
 				// A mount without a source references a volume defined elsewhere —
 				// for StatefulSets that is a volumeClaimTemplate name, which the
@@ -265,6 +289,73 @@ func serviceAccountTokenPath(source *kubernetesv1.ServiceAccountTokenVolumeSourc
 		return source.Path
 	}
 	return "token"
+}
+
+// clusterTrustBundleProjection selects the bundle by name or by signer (and
+// label selector), writing the PEM bundle to "ca.crt" unless a path is set.
+func clusterTrustBundleProjection(source *kubernetesv1.ClusterTrustBundleVolumeSource) *corev1.ClusterTrustBundleProjectionArgs {
+	path := source.Path
+	if path == "" {
+		path = "ca.crt"
+	}
+	projection := &corev1.ClusterTrustBundleProjectionArgs{
+		Path: pulumi.String(path),
+	}
+	if name := source.GetName().GetValue(); name != "" {
+		projection.Name = pulumi.String(name)
+	}
+	if source.SignerName != "" {
+		projection.SignerName = pulumi.String(source.SignerName)
+	}
+	if selector := source.LabelSelector; selector != nil {
+		labelSelector := &metav1.LabelSelectorArgs{}
+		if len(selector.MatchLabels) > 0 {
+			labelSelector.MatchLabels = pulumi.ToStringMap(selector.MatchLabels)
+		}
+		if len(selector.MatchExpressions) > 0 {
+			expressions := make(metav1.LabelSelectorRequirementArray, 0, len(selector.MatchExpressions))
+			for _, e := range selector.MatchExpressions {
+				expressions = append(expressions, &metav1.LabelSelectorRequirementArgs{
+					Key:      pulumi.String(e.Key),
+					Operator: pulumi.String(e.Operator),
+					Values:   pulumi.ToStringArray(e.Values),
+				})
+			}
+			labelSelector.MatchExpressions = expressions
+		}
+		projection.LabelSelector = labelSelector
+	}
+	if source.Optional {
+		projection.Optional = pulumi.Bool(true)
+	}
+	return projection
+}
+
+// podCertificateProjection writes the credential bundle to
+// "credential-bundle.pem" unless the source names its own paths.
+func podCertificateProjection(source *kubernetesv1.PodCertificateVolumeSource) *corev1.PodCertificateProjectionArgs {
+	projection := &corev1.PodCertificateProjectionArgs{
+		SignerName: pulumi.String(source.SignerName),
+		KeyType:    pulumi.String(source.KeyType),
+	}
+	bundlePath := source.CredentialBundlePath
+	if bundlePath == "" && source.KeyPath == "" {
+		bundlePath = "credential-bundle.pem"
+	}
+	if bundlePath != "" {
+		projection.CredentialBundlePath = pulumi.String(bundlePath)
+	}
+	if source.KeyPath != "" {
+		projection.KeyPath = pulumi.String(source.KeyPath)
+		projection.CertificateChainPath = pulumi.String(source.CertificateChainPath)
+	}
+	if source.MaxExpirationSeconds != nil {
+		projection.MaxExpirationSeconds = pulumi.Int(int(source.GetMaxExpirationSeconds()))
+	}
+	if len(source.UserAnnotations) > 0 {
+		projection.UserAnnotations = pulumi.ToStringMap(source.UserAnnotations)
+	}
+	return projection
 }
 
 func applyScheduling(podSpec *corev1.PodSpecArgs, s *kubernetesv1.WorkloadScheduling) {

@@ -31,8 +31,9 @@ locals {
   )
 
   # The anchor namespace (the generator flattens the spec's value-or-ref to a
-  # plain string) and whether this module creates it.
-  namespace_name   = var.spec.namespace
+  # plain string; "" when the manifest has none) and whether this module
+  # creates it.
+  namespace_name   = try(var.spec.namespace, "")
   create_namespace = try(var.spec.create_namespace, false)
 
   # Document split rule (identical in the Pulumi module's inventory parser):
@@ -79,6 +80,51 @@ locals {
       try(yamldecode(doc).apiVersion, ""),
       try(yamldecode(doc).kind, ""),
       try(yamldecode(doc).metadata.name, ""),
+    )
+  ]
+
+  # ---- No-anchor scope check (twin of the Pulumi module's
+  # refuseUnplacedDocuments, deciding from the same tables in kindscope.tf) --
+  # Without an anchor, a namespaced document that names no namespace of its
+  # own has nowhere it was asked to go, so the plan refuses it instead of
+  # letting the API place it in "default".
+  unanchored_documents = local.namespace_name != "" ? [] : [
+    for doc in local.manifest_documents : {
+      label = trimspace(format("%s %s %s", try(yamldecode(doc).apiVersion, ""), try(yamldecode(doc).kind, ""), try(yamldecode(doc).metadata.name, "")))
+      group = length(split("/", try(yamldecode(doc).apiVersion, ""))) == 2 ? split("/", yamldecode(doc).apiVersion)[0] : ""
+      key = (
+        length(split("/", try(yamldecode(doc).apiVersion, ""))) == 2
+        ? format("%s/%s", split("/", yamldecode(doc).apiVersion)[0], try(yamldecode(doc).kind, ""))
+        : try(yamldecode(doc).kind, "")
+      )
+    }
+    if try(yamldecode(doc).metadata.namespace, "") == ""
+  ]
+
+  # Kinds the manifest's own CRDs define, and whether each is namespaced.
+  manifest_defined_kinds = {
+    for doc in local.manifest_documents :
+    format("%s/%s", yamldecode(doc).spec.group, yamldecode(doc).spec.names.kind) => try(yamldecode(doc).spec.scope, "Namespaced") != "Cluster"
+    if try(yamldecode(doc).kind, "") == "CustomResourceDefinition" && startswith(try(yamldecode(doc).apiVersion, ""), "apiextensions.k8s.io/")
+  }
+
+  # The cluster is read only for a kind neither built in nor defined above.
+  scope_needs_cluster = length([
+    for d in local.unanchored_documents : d
+    if !contains(local.kindscope_builtin_cluster_scoped, d.key) && !contains(local.kindscope_builtin_groups, d.group) && !contains(keys(local.manifest_defined_kinds), d.key)
+  ]) > 0
+
+  cluster_crd_kinds = local.scope_needs_cluster ? {
+    for crd in data.kubernetes_resources.cluster_crds[0].objects :
+    format("%s/%s", crd.spec.group, crd.spec.names.kind) => crd.spec.scope != "Cluster"
+  } : {}
+
+  # Namespaced (or of unknown scope) and naming no namespace: refused.
+  unplaced_documents = [
+    for d in local.unanchored_documents : d.label
+    if !contains(local.kindscope_builtin_cluster_scoped, d.key) && (
+      contains(local.kindscope_builtin_groups, d.group) ? true :
+      lookup(local.manifest_defined_kinds, d.key, lookup(local.cluster_crd_kinds, d.key, true))
     )
   ]
 }

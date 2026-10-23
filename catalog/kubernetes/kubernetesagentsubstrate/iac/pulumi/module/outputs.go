@@ -20,6 +20,7 @@ const (
 	OpGvisorWorkerImage       = "gvisor_worker_image"
 	OpMicrovmWorkerImage      = "microvm_worker_image"
 	OpVersion                 = "version"
+	OpRouterClientSignerName  = "router_client_signer_name"
 )
 
 // outputValues resolves the outputs from the settings and the release's
@@ -39,6 +40,7 @@ func outputValues(s *settings, images map[string]string) map[string]string {
 		OpAPITokenAudience:        vars.APIServerHost,
 		OpAPITrustBundleName:      vars.APITrustBundleName,
 		OpAPITrustBundleSigner:    vars.APITrustBundleSign,
+		OpRouterClientSignerName:  vars.RouterClientSigner,
 		OpAPIAccessNamespaceLabel: vars.APIAccessLabelKey + "=" + vars.APIAccessLabelValue,
 		OpRouterEndpoint:          "http://" + vars.RouterName + "." + vars.Namespace + ".svc:80",
 		OpRouterTLSEndpoint:       "https://" + vars.RouterName + "." + vars.Namespace + ".svc:443",

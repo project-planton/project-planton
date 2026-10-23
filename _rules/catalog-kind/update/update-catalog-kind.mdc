@@ -1182,7 +1182,11 @@ Based on scenario:
   divergence that silently ignores user intent still deploys different
   behavior per engine; a loud plan failure routes the user before anything
   ships. (Keep the kind's e2e manifest free of those fields — the offline
-  plan proof runs through both engines from one manifest.)
+  plan proof runs through both engines from one manifest.) Prove both
+  halves live: a scenario restricted to the working engine
+  (`planton.dev/e2e-engines`) that sets the field, and one restricted to the
+  refusing engine with `planton.dev/e2e-expect-deploy-failure`, whose cause
+  the kind's verifier pins (the refusal text and that nothing was created).
   The same discipline runs in the OTHER direction: when the PULUMI side is
   the one that cannot express a field (the pinned SDK predates a provider
   argument the Terraform provider already ships), the Pulumi module returns

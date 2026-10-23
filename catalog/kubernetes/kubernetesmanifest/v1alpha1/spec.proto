@@ -20,21 +20,35 @@ import "shared/foreignkey/v1/foreign_key.proto";
  *
  * NAMESPACE SEMANTICS (identical on both engines): documents that declare
  * their own `metadata.namespace` keep it; namespaced documents that declare
- * none land in `spec.namespace`. Cluster-scoped documents (CRDs,
- * ClusterRoles, ...) are applied as-is — the anchor namespace never distorts
- * them. The manifest content itself is never otherwise mutated: no injected
- * labels, no rewritten fields.
+ * none land in `spec.namespace`, the anchor. Cluster-scoped documents (CRDs,
+ * ClusterRoles, StorageClasses, cluster-wide custom resources, ...) are
+ * applied as-is — the anchor never distorts them, so a manifest of only
+ * cluster-scoped documents needs no anchor at all. Without an anchor, a
+ * namespaced document that names no namespace of its own is refused before
+ * anything applies, naming the document; nothing lands in "default" by
+ * accident. Scope is decided from the built-in Kubernetes kinds, the
+ * manifest's own CRDs, and the cluster's CRDs; a kind none of them knows is
+ * treated as namespaced. The manifest content itself is never otherwise
+ * mutated: no injected labels, no rewritten fields.
  */
 message KubernetesManifestSpec {
+  // An anchor that does not exist cannot be created.
+  option (buf.validate.message).cel = {
+    id: "spec.create_namespace_needs_namespace"
+    message: "create_namespace needs a namespace to create -- set namespace, or turn create_namespace off"
+    expression: "!this.create_namespace || has(this.namespace)"
+  };
+
   /**
    * The anchor namespace for this manifest: namespaced documents that do not
    * declare their own `metadata.namespace` are applied here. Accepts a
    * literal namespace name or a reference to a KubernetesNamespace resource.
    * Documents with an explicit namespace, and cluster-scoped documents, are
-   * unaffected.
+   * unaffected. Omit it for a manifest of cluster-scoped documents (or one
+   * whose namespaced documents all name their own namespace); a namespaced
+   * document without a namespace is then refused rather than placed.
    */
   dev.planton.shared.foreignkey.v1.StringValueOrRef namespace = 1 [
-    (buf.validate.field).required = true,
     (dev.planton.shared.foreignkey.v1.default_kind) = KubernetesNamespace,
     (dev.planton.shared.foreignkey.v1.default_kind_field_path) = "spec.name"
   ];
@@ -42,7 +56,8 @@ message KubernetesManifestSpec {
   /**
    * When true, the anchor namespace is created (with the standard Planton
    * governance labels) before the manifest is applied, and deleted with the
-   * resource. When false, the namespace must already exist.
+   * resource. When false, the namespace must already exist. Needs a
+   * namespace.
    */
   bool create_namespace = 2;
 

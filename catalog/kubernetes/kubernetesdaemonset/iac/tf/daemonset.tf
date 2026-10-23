@@ -19,6 +19,15 @@ resource "kubernetes_daemon_set_v1" "this" {
 
   wait_for_rollout = true
 
+  lifecycle {
+    # PARITY-EXCEPTION (see locals.unsupported_projected_mounts): failing the
+    # plan beats silently dropping a mount the user declared.
+    precondition {
+      condition     = length(local.unsupported_projected_mounts) == 0
+      error_message = "Volume mounts ${join(", ", local.unsupported_projected_mounts)}: clusterTrustBundle and podCertificate sources are not supported on the OpenTofu engine (the hashicorp/kubernetes provider models neither projection) -- set planton.dev/provisioner to pulumi to deploy this workload."
+    }
+  }
+
   spec {
     # The selector is the workload's immutable pod-selection identity — it must
     # never include mutable labels.

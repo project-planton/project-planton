@@ -1,0 +1,19 @@
+# An instance of a cluster-scoped kind whose CRD the cluster already serves
+# (the shape of GKE's ComputeClass) applies with no anchor: neither the
+# built-in table nor the manifest knows the kind, so each engine reads the
+# cluster's CRDs, finds it cluster-scoped, and applies it as written.
+apiVersion: kubernetes.planton.dev/v1alpha1
+kind: KubernetesManifest
+metadata:
+  name: e2e-manifest-cluster-crd-instance
+  annotations:
+    planton.dev/e2e-prerequisites: "catalog/kubernetes/kubernetesmanifest/e2e/fixture-cluster-crd.yaml"
+spec:
+  manifest_yaml: |
+    apiVersion: e2e.planton.dev/v1
+    kind: ComputeProfile
+    metadata:
+      name: default
+    spec:
+      priorities:
+        - machineFamily: n4

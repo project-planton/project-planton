@@ -4,6 +4,12 @@ metadata:
   name: kubernetesmanifest
 spec:
   tier: 1
+  # Proven live 2026-10-23 on both engines (kind v1.37): manifests of only
+  # cluster-scoped documents apply with no anchor, whether the scope comes
+  # from the built-in table, the manifest's own CRD, or a CRD the cluster
+  # already serves (cluster-crd-instance); and a namespaced document with no
+  # namespace and no anchor is refused before anything applies, on both
+  # engines, with nothing left behind.
   status: green
   validated_provisioners:
     - pulumi

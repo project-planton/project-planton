@@ -56,3 +56,7 @@ output "microvm_worker_image" {
 output "version" {
   value = local.release
 }
+
+output "router_client_signer_name" {
+  value = local.router_client_signer
+}

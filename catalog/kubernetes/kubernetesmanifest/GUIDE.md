@@ -24,10 +24,14 @@ deploy ordering against dependents is yours to manage.
 
 ## Namespace ownership
 
-`spec.namespace` is the anchor namespace and a required foreign key
-targeting KubernetesNamespace; `createNamespace: true` follows the same
-ownership contract as every workload kind — owned in IaC state, deleted
-with the resource. The judgment and wiring:
+`spec.namespace` is the anchor namespace, a foreign key targeting
+KubernetesNamespace, and the one optional anchor in the catalog: a
+manifest of cluster-scoped objects (a ClusterRole, a StorageClass, a CRD, a
+cloud's cluster-wide custom resource like GKE's ComputeClass) omits it, and
+a namespaced document that names no namespace is then refused rather than
+placed in `default`. `createNamespace: true` needs an anchor and follows the
+same ownership contract as every workload kind — owned in IaC state,
+deleted with the resource. The judgment and wiring:
 [namespace-ownership pattern](../../_patterns/namespace-ownership.md).
 
 ## On the diagram

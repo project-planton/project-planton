@@ -6,6 +6,7 @@ import (
 	"github.com/pkg/errors"
 	kubernetesprovider "github.com/plantonhq/planton/catalog/kubernetes"
 	kubernetesotelcollectorv1alpha1 "github.com/plantonhq/planton/catalog/kubernetes/kubernetesotelcollector/v1alpha1"
+	"github.com/plantonhq/planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/workloadpod"
 	"github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/apiextensions"
 	kubernetesmeta "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/meta/v1"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
@@ -365,6 +366,18 @@ func volumeBody(v *kubernetesprovider.VolumeMount) map[string]interface{} {
 		volume["projected"] = map[string]interface{}{
 			"sources": []interface{}{map[string]interface{}{
 				"serviceAccountToken": token,
+			}},
+		}
+	case v.GetClusterTrustBundle() != nil:
+		volume["projected"] = map[string]interface{}{
+			"sources": []interface{}{map[string]interface{}{
+				"clusterTrustBundle": workloadpod.ClusterTrustBundleProjectionBody(v.GetClusterTrustBundle()),
+			}},
+		}
+	case v.GetPodCertificate() != nil:
+		volume["projected"] = map[string]interface{}{
+			"sources": []interface{}{map[string]interface{}{
+				"podCertificate": workloadpod.PodCertificateProjectionBody(v.GetPodCertificate()),
 			}},
 		}
 	}

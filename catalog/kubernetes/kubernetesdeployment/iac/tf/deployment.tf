@@ -20,6 +20,15 @@ resource "kubernetes_deployment_v1" "this" {
   # does not wait, so it cannot notice a rollout an earlier apply left failing.
   wait_for_rollout = true
 
+  lifecycle {
+    # PARITY-EXCEPTION (see locals.unsupported_projected_mounts): failing the
+    # plan beats silently dropping a mount the user declared.
+    precondition {
+      condition     = length(local.unsupported_projected_mounts) == 0
+      error_message = "Volume mounts ${join(", ", local.unsupported_projected_mounts)}: clusterTrustBundle and podCertificate sources are not supported on the OpenTofu engine (the hashicorp/kubernetes provider models neither projection) -- set planton.dev/provisioner to pulumi to deploy this workload."
+    }
+  }
+
   spec {
     replicas = local.replicas
 
@@ -61,16 +70,16 @@ resource "kubernetes_deployment_v1" "this" {
       }
 
       spec {
-        service_account_name            = try(var.spec.pod.service_account, "") != "" ? var.spec.pod.service_account : null
-        automount_service_account_token = try(var.spec.pod.automount_service_account_token, null)
+        service_account_name             = try(var.spec.pod.service_account, "") != "" ? var.spec.pod.service_account : null
+        automount_service_account_token  = try(var.spec.pod.automount_service_account_token, null)
         termination_grace_period_seconds = try(var.spec.pod.termination_grace_period_seconds, null)
-        dns_policy                      = try(var.spec.pod.dns_policy, "") != "" ? var.spec.pod.dns_policy : null
-        host_network                    = try(var.spec.pod.host_network, false)
-        host_pid                        = try(var.spec.pod.host_pid, false)
-        priority_class_name             = try(var.spec.pod.priority_class_name, "") != "" ? var.spec.pod.priority_class_name : null
-        runtime_class_name              = try(var.spec.pod.runtime_class_name, "") != "" ? var.spec.pod.runtime_class_name : null
-        node_selector                   = length(try(var.spec.pod.scheduling.node_selector, {})) > 0 ? var.spec.pod.scheduling.node_selector : null
-        scheduler_name                  = try(var.spec.pod.scheduling.scheduler_name, "") != "" ? var.spec.pod.scheduling.scheduler_name : null
+        dns_policy                       = try(var.spec.pod.dns_policy, "") != "" ? var.spec.pod.dns_policy : null
+        host_network                     = try(var.spec.pod.host_network, false)
+        host_pid                         = try(var.spec.pod.host_pid, false)
+        priority_class_name              = try(var.spec.pod.priority_class_name, "") != "" ? var.spec.pod.priority_class_name : null
+        runtime_class_name               = try(var.spec.pod.runtime_class_name, "") != "" ? var.spec.pod.runtime_class_name : null
+        node_selector                    = length(try(var.spec.pod.scheduling.node_selector, {})) > 0 ? var.spec.pod.scheduling.node_selector : null
+        scheduler_name                   = try(var.spec.pod.scheduling.scheduler_name, "") != "" ? var.spec.pod.scheduling.scheduler_name : null
 
         dynamic "image_pull_secrets" {
           for_each = local.image_pull_secret_names

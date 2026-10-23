@@ -2,6 +2,7 @@ package module
 
 import (
 	kubernetesprovider "github.com/plantonhq/planton/catalog/kubernetes"
+	"github.com/plantonhq/planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/workloadpod"
 )
 
 // The renderers below turn the shared Kubernetes workload messages into the
@@ -349,6 +350,14 @@ func volumeBody(v *kubernetesprovider.VolumeMount) map[string]interface{} {
 		}
 		volume["projected"] = map[string]interface{}{
 			"sources": []interface{}{map[string]interface{}{"serviceAccountToken": token}},
+		}
+	case v.GetClusterTrustBundle() != nil:
+		volume["projected"] = map[string]interface{}{
+			"sources": []interface{}{map[string]interface{}{"clusterTrustBundle": workloadpod.ClusterTrustBundleProjectionBody(v.GetClusterTrustBundle())}},
+		}
+	case v.GetPodCertificate() != nil:
+		volume["projected"] = map[string]interface{}{
+			"sources": []interface{}{map[string]interface{}{"podCertificate": workloadpod.PodCertificateProjectionBody(v.GetPodCertificate())}},
 		}
 	}
 	return volume

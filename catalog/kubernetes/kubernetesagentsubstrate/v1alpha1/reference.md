@@ -2168,6 +2168,7 @@ Reference an output from another manifest as `valueFrom: {kind: KubernetesAgentS
 | `status.outputs.gvisor_worker_image` | `string` | The gVisor worker image built for this control plane's version, digest pinned (with image_registry applied): what a WorkerPool of class gvisor runs. |
 | `status.outputs.microvm_worker_image` | `string` | The microVM worker image built for this control plane's version, digest pinned (with image_registry applied): what a WorkerPool of class microvm runs. |
 | `status.outputs.version` | `string` | The Agent Substrate release installed, such as "v0.5.0". |
+| `status.outputs.router_client_signer_name` | `string` | The signer of the client certificates the router's TLS endpoint accepts, "podidentity.podcert.ate.dev/identity". A workload gets one through a podCertificate projected volume addressed to this signer; the certificate carries the SPIFFE ID spiffe://cluster.local/ns/<namespace>/sa/<service-account>, which router.allowed_client_spiffe_ids must name. |
 
 ## References
 
@@ -2195,6 +2196,23 @@ Fields on other kinds that can point at this resource:
 | Kind | Field | Reads |
 |---|---|---|
 | KubernetesAgentSubstrateWorkerPool | `spec.workerImage` | `status.outputs.gvisor_worker_image` |
+| KubernetesCronJob | `spec.jobTemplate.container.app.volumeMounts[].clusterTrustBundle.name` | `status.outputs.api_trust_bundle_name` |
+| KubernetesCronJob | `spec.jobTemplate.container.sidecars[].volumeMounts[].clusterTrustBundle.name` | `status.outputs.api_trust_bundle_name` |
+| KubernetesCronJob | `spec.jobTemplate.pod.initContainers[].volumeMounts[].clusterTrustBundle.name` | `status.outputs.api_trust_bundle_name` |
+| KubernetesDaemonSet | `spec.container.app.volumeMounts[].clusterTrustBundle.name` | `status.outputs.api_trust_bundle_name` |
+| KubernetesDaemonSet | `spec.container.sidecars[].volumeMounts[].clusterTrustBundle.name` | `status.outputs.api_trust_bundle_name` |
+| KubernetesDaemonSet | `spec.pod.initContainers[].volumeMounts[].clusterTrustBundle.name` | `status.outputs.api_trust_bundle_name` |
+| KubernetesDeployment | `spec.container.app.volumeMounts[].clusterTrustBundle.name` | `status.outputs.api_trust_bundle_name` |
+| KubernetesDeployment | `spec.container.sidecars[].volumeMounts[].clusterTrustBundle.name` | `status.outputs.api_trust_bundle_name` |
+| KubernetesDeployment | `spec.pod.initContainers[].volumeMounts[].clusterTrustBundle.name` | `status.outputs.api_trust_bundle_name` |
+| KubernetesJob | `spec.container.app.volumeMounts[].clusterTrustBundle.name` | `status.outputs.api_trust_bundle_name` |
+| KubernetesJob | `spec.container.sidecars[].volumeMounts[].clusterTrustBundle.name` | `status.outputs.api_trust_bundle_name` |
+| KubernetesJob | `spec.pod.initContainers[].volumeMounts[].clusterTrustBundle.name` | `status.outputs.api_trust_bundle_name` |
+| KubernetesLangfuse | `spec.extraVolumes[].clusterTrustBundle.name` | `status.outputs.api_trust_bundle_name` |
+| KubernetesOtelCollector | `spec.volumes[].clusterTrustBundle.name` | `status.outputs.api_trust_bundle_name` |
+| KubernetesStatefulSet | `spec.container.app.volumeMounts[].clusterTrustBundle.name` | `status.outputs.api_trust_bundle_name` |
+| KubernetesStatefulSet | `spec.container.sidecars[].volumeMounts[].clusterTrustBundle.name` | `status.outputs.api_trust_bundle_name` |
+| KubernetesStatefulSet | `spec.pod.initContainers[].volumeMounts[].clusterTrustBundle.name` | `status.outputs.api_trust_bundle_name` |
 
 ## See Also
 

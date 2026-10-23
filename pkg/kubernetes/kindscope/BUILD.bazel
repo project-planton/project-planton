@@ -1,0 +1,25 @@
+load("@rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "kindscope",
+    srcs = [
+        "documents.go",
+        "kindscope.go",
+    ],
+    embedsrcs = [
+        "builtin_groups.txt",
+        "cluster_scoped.txt",
+    ],
+    importpath = "github.com/plantonhq/planton/pkg/kubernetes/kindscope",
+    visibility = ["//visibility:public"],
+    deps = [
+        "@com_github_pkg_errors//:errors",
+        "@io_k8s_sigs_yaml//:yaml",
+    ],
+)
+
+go_test(
+    name = "kindscope_test",
+    srcs = ["kindscope_test.go"],
+    embed = [":kindscope"],
+)

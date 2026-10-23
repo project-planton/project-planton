@@ -1,0 +1,66 @@
+apiVersion: kubernetes.planton.dev/v1alpha1
+kind: KubernetesDeployment
+metadata:
+  name: my-substrate-client
+spec:
+  namespace:
+    valueFrom:
+      kind: KubernetesNamespace
+      name: "<your-substrate-client-namespace>"
+  createNamespace: false
+  container:
+    app:
+      image:
+        repo: "<your-container-registry>/<your-image>"
+        tag: "<your-image-tag>"
+      resources:
+        requests:
+          cpu: 50m
+          memory: 100Mi
+        limits:
+          cpu: 1000m
+          memory: 1Gi
+      env:
+        variables:
+          - name: SUBSTRATE_API_ADDRESS
+            valueFrom:
+              kind: KubernetesAgentSubstrate
+              name: "<your-agent-substrate>"
+              fieldPath: "status.outputs.api_address"
+          - name: SUBSTRATE_API_SERVER_NAME
+            valueFrom:
+              kind: KubernetesAgentSubstrate
+              name: "<your-agent-substrate>"
+              fieldPath: "status.outputs.api_server_name"
+          - name: SUBSTRATE_ROUTER_TLS_ENDPOINT
+            valueFrom:
+              kind: KubernetesAgentSubstrate
+              name: "<your-agent-substrate>"
+              fieldPath: "status.outputs.router_tls_endpoint"
+          - name: SUBSTRATE_API_TOKEN_FILE
+            value: /var/run/substrate/token/token
+          - name: SUBSTRATE_CA_FILE
+            value: /var/run/substrate/ca/ca.crt
+          - name: SUBSTRATE_CLIENT_CREDENTIALS_FILE
+            value: /var/run/podidentity/credential-bundle.pem
+      volumeMounts:
+        - name: substrate-token
+          mountPath: /var/run/substrate/token
+          readOnly: true
+          serviceAccountToken:
+            audience: api.ate-system.svc
+        - name: substrate-ca
+          mountPath: /var/run/substrate/ca
+          readOnly: true
+          clusterTrustBundle:
+            name:
+              valueFrom:
+                kind: KubernetesAgentSubstrate
+                name: "<your-agent-substrate>"
+                fieldPath: "status.outputs.api_trust_bundle_name"
+        - name: router-identity
+          mountPath: /var/run/podidentity
+          readOnly: true
+          podCertificate:
+            signerName: podidentity.podcert.ate.dev/identity
+            keyType: ECDSAP256

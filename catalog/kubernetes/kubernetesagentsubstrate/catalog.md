@@ -159,6 +159,7 @@ After provisioning, `status.outputs` contains values that downstream Infra Compo
 | `api_trust_bundle_name` | The ClusterTrustBundle that verifies the API | A clusterTrustBundle projected volume |
 | `api_access_namespace_label` | `ate.dev/api-access=true` | The label on your product's namespace |
 | `router_endpoint`, `router_tls_endpoint` | Where requests reach an agent | Your product's data path |
+| `router_client_signer_name` | The signer of the client certificates the TLS endpoint accepts | A client workload's podCertificate volume mount |
 | `storage_location` | `gs://` or `s3://` with the bucket | Actor templates' snapshot location |
 | `gvisor_worker_image`, `microvm_worker_image` | The worker images built for this release | A worker pool |
 | `actor_jwt_issuer`, `version` | The actor token issuer, the installed release | Verifying actor tokens, upgrades |

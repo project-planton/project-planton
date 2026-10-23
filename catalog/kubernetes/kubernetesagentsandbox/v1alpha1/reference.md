@@ -3395,8 +3395,9 @@ The named signer controls chooses the format of the certificate it issues;
 consult the signer implementation's documentation to learn how to use the
 certificates it issues.
 
-Requires the PodCertificateProjection feature gate on the cluster; a
-cluster without it drops this field from the pod.
+Requires the PodCertificateRequest feature gate and the
+certificates.k8s.io/v1beta1 API on the cluster; a cluster without them
+drops this field from the pod.
 
 ### spec.podTemplate.spec.volumes[].projected.sources[].podCertificate.signerName
 

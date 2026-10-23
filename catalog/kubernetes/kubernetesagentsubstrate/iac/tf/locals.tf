@@ -40,6 +40,7 @@ locals {
   api_server_host        = "api.ate-system.svc"
   api_trust_bundle_name  = "servicedns.podcert.ate.dev:identity:primary-bundle"
   api_trust_bundle_sign  = "servicedns.podcert.ate.dev/identity"
+  router_client_signer   = "podidentity.podcert.ate.dev/identity"
   api_access_label_key   = "ate.dev/api-access"
   api_access_label_value = "true"
 

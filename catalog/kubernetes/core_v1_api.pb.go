@@ -3645,8 +3645,9 @@ type KubernetesCoreV1ApiVolumeProjection struct {
 	// consult the signer implementation's documentation to learn how to use the
 	// certificates it issues.
 	//
-	// Requires the PodCertificateProjection feature gate on the cluster; a
-	// cluster without it drops this field from the pod.
+	// Requires the PodCertificateRequest feature gate and the
+	// certificates.k8s.io/v1beta1 API on the cluster; a cluster without them
+	// drops this field from the pod.
 	PodCertificate *KubernetesCoreV1ApiPodCertificateProjection `protobuf:"bytes,6,opt,name=pod_certificate,json=podCertificate,proto3" json:"pod_certificate,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache

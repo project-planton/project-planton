@@ -147,3 +147,7 @@ env = {
 | terraform | >= 1.0 |
 | kubernetes | ~> 2.35 |
 
+
+## Volume sources this engine cannot write
+
+The `clusterTrustBundle` and `podCertificate` volume-mount sources are refused at plan time on this engine: the hashicorp/kubernetes provider models neither projection. The plan names the mounts and asks for the Pulumi engine (`planton.dev/provisioner: pulumi`), which writes both. Every other volume source is written identically by both engines.

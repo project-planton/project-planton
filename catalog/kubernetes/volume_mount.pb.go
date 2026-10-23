@@ -8,6 +8,7 @@ package kubernetes
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
+	v1 "github.com/plantonhq/planton/shared/foreignkey/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -25,8 +26,12 @@ const (
 // *
 // VolumeMount defines how to mount a volume into a container.
 // Supports multiple volume types: ConfigMap, Secret, HostPath, EmptyDir, PVC,
-// and projected ServiceAccount tokens.
-// Only one volume source should be specified per mount.
+// and three projected sources: a ServiceAccount token, a ClusterTrustBundle's
+// CA certificates, and a pod certificate (a kubelet-managed key and X.509
+// certificate).
+// At most one volume source per mount. A mount with no source names a volume
+// defined elsewhere -- a StatefulSet volumeClaimTemplate, or another mount of
+// the same name that carries the source.
 //
 // Example usage:
 //
@@ -78,8 +83,30 @@ type VolumeMount struct {
 	// Use this to mount a short-lived, audience-bound identity token that the
 	// kubelet issues for the pod's ServiceAccount and rotates automatically.
 	ServiceAccountToken *ServiceAccountTokenVolumeSource `protobuf:"bytes,10,opt,name=service_account_token,json=serviceAccountToken,proto3" json:"service_account_token,omitempty"`
-	unknownFields       protoimpl.UnknownFields
-	sizeCache           protoimpl.SizeCache
+	// Projected ClusterTrustBundle volume source.
+	// Use this to mount the CA certificates of a ClusterTrustBundle, so the
+	// container can verify servers whose certificates a cluster signer issues
+	// (the Agent Substrate API's, for one). The kubelet keeps the file current
+	// as the bundle rotates, which a hand-copied ConfigMap never does.
+	// Requires the cluster's ClusterTrustBundle and ClusterTrustBundleProjection
+	// features (certificates.k8s.io/v1beta1).
+	// OpenTofu engine: not supported -- the hashicorp/kubernetes provider has
+	// no clusterTrustBundle projection; deploy the workload with the Pulumi
+	// engine (set planton.dev/provisioner to pulumi).
+	ClusterTrustBundle *ClusterTrustBundleVolumeSource `protobuf:"bytes,11,opt,name=cluster_trust_bundle,json=clusterTrustBundle,proto3" json:"cluster_trust_bundle,omitempty"`
+	// Projected pod certificate volume source.
+	// Use this to give the container a private key and an X.509 certificate the
+	// kubelet requests from a signer for the pod and rotates before expiry --
+	// the client certificate a workload presents to an mTLS endpoint (the Agent
+	// Substrate router's TLS listener, for one).
+	// Requires the cluster's PodCertificateRequest feature
+	// (certificates.k8s.io/v1beta1) and a signer controller for signer_name.
+	// OpenTofu engine: not supported -- the hashicorp/kubernetes provider has
+	// no podCertificate projection; deploy the workload with the Pulumi engine
+	// (set planton.dev/provisioner to pulumi).
+	PodCertificate *PodCertificateVolumeSource `protobuf:"bytes,12,opt,name=pod_certificate,json=podCertificate,proto3" json:"pod_certificate,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *VolumeMount) Reset() {
@@ -178,6 +205,20 @@ func (x *VolumeMount) GetPvc() *PvcVolumeSource {
 func (x *VolumeMount) GetServiceAccountToken() *ServiceAccountTokenVolumeSource {
 	if x != nil {
 		return x.ServiceAccountToken
+	}
+	return nil
+}
+
+func (x *VolumeMount) GetClusterTrustBundle() *ClusterTrustBundleVolumeSource {
+	if x != nil {
+		return x.ClusterTrustBundle
+	}
+	return nil
+}
+
+func (x *VolumeMount) GetPodCertificate() *PodCertificateVolumeSource {
+	if x != nil {
+		return x.PodCertificate
 	}
 	return nil
 }
@@ -686,11 +727,250 @@ func (x *ServiceAccountTokenVolumeSource) GetPath() string {
 	return ""
 }
 
+// *
+// ClusterTrustBundleVolumeSource projects the CA certificates of one or more
+// ClusterTrustBundles into the container as a single PEM file. The volume is
+// always mounted read-only.
+//
+// Select the bundle by name, or every bundle of a signer by signer_name (and
+// optionally a label selector); exactly one of name or signer_name.
+//
+// Example - the Agent Substrate API's trust bundle, by reference:
+//
+//	volumeMounts:
+//	  - name: substrate-ca
+//	    mountPath: /var/run/substrate
+//	    readOnly: true
+//	    clusterTrustBundle:
+//	      name:
+//	        valueFrom:
+//	          name: agents
+//	      path: ca.crt
+type ClusterTrustBundleVolumeSource struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The ClusterTrustBundle to project, by object name. A literal name, or a
+	// reference to the KubernetesAgentSubstrate whose API trust bundle this is
+	// (status.outputs.api_trust_bundle_name). Mutually exclusive with
+	// signer_name.
+	Name *v1.StringValueOrRef `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	// Project every ClusterTrustBundle of this signer, deduplicated into one
+	// file (e.g. "servicedns.podcert.ate.dev/identity"). Mutually exclusive
+	// with name.
+	SignerName string `protobuf:"bytes,2,opt,name=signer_name,json=signerName,proto3" json:"signer_name,omitempty"`
+	// Narrows the signer's bundles to those matching the selector. Applies only
+	// with signer_name. Unset matches NOTHING; set but empty matches every
+	// bundle of the signer -- upstream's own semantics.
+	LabelSelector *KubernetesCoreV1ApiLabelSelector `protobuf:"bytes,3,opt,name=label_selector,json=labelSelector,proto3" json:"label_selector,omitempty"`
+	// When true, the pod starts even if no bundle matches (the file is then
+	// absent); when false the pod waits for the bundle.
+	Optional bool `protobuf:"varint,4,opt,name=optional,proto3" json:"optional,omitempty"`
+	// File name for the PEM bundle relative to the mount path.
+	// Defaults to "ca.crt".
+	Path          string `protobuf:"bytes,5,opt,name=path,proto3" json:"path,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ClusterTrustBundleVolumeSource) Reset() {
+	*x = ClusterTrustBundleVolumeSource{}
+	mi := &file_catalog_kubernetes_volume_mount_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ClusterTrustBundleVolumeSource) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ClusterTrustBundleVolumeSource) ProtoMessage() {}
+
+func (x *ClusterTrustBundleVolumeSource) ProtoReflect() protoreflect.Message {
+	mi := &file_catalog_kubernetes_volume_mount_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ClusterTrustBundleVolumeSource.ProtoReflect.Descriptor instead.
+func (*ClusterTrustBundleVolumeSource) Descriptor() ([]byte, []int) {
+	return file_catalog_kubernetes_volume_mount_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *ClusterTrustBundleVolumeSource) GetName() *v1.StringValueOrRef {
+	if x != nil {
+		return x.Name
+	}
+	return nil
+}
+
+func (x *ClusterTrustBundleVolumeSource) GetSignerName() string {
+	if x != nil {
+		return x.SignerName
+	}
+	return ""
+}
+
+func (x *ClusterTrustBundleVolumeSource) GetLabelSelector() *KubernetesCoreV1ApiLabelSelector {
+	if x != nil {
+		return x.LabelSelector
+	}
+	return nil
+}
+
+func (x *ClusterTrustBundleVolumeSource) GetOptional() bool {
+	if x != nil {
+		return x.Optional
+	}
+	return false
+}
+
+func (x *ClusterTrustBundleVolumeSource) GetPath() string {
+	if x != nil {
+		return x.Path
+	}
+	return ""
+}
+
+// *
+// PodCertificateVolumeSource has the kubelet generate a private key, request a
+// certificate for the pod from a signer, and project both into the container,
+// rotating them before the certificate expires. The volume is always mounted
+// read-only.
+//
+// Example - the Agent Substrate router's client certificate:
+//
+//	volumeMounts:
+//	  - name: workload-identity
+//	    mountPath: /var/run/podidentity
+//	    readOnly: true
+//	    podCertificate:
+//	      signerName: podidentity.podcert.ate.dev/identity
+//	      keyType: ECDSAP256
+//	      credentialBundlePath: credential-bundle.pem
+type PodCertificateVolumeSource struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The signer the kubelet's certificate requests are addressed to. A
+	// controller for this signer must run in the cluster, or the pod never
+	// starts. The Agent Substrate router's client certificates come from
+	// "podidentity.podcert.ate.dev/identity" (the substrate's
+	// status.outputs.router_client_signer_name).
+	SignerName string `protobuf:"bytes,1,opt,name=signer_name,json=signerName,proto3" json:"signer_name,omitempty"`
+	// The key pair the kubelet generates: RSA3072, RSA4096, ECDSAP256,
+	// ECDSAP384, ECDSAP521 or ED25519. The signer decides which it accepts.
+	KeyType string `protobuf:"bytes,2,opt,name=key_type,json=keyType,proto3" json:"key_type,omitempty"`
+	// The longest lifetime the certificate may have, in seconds (3600 to
+	// 7862400). Unset lets the API server choose 86400 (24 hours); the signer
+	// may issue a shorter one, and kubernetes.io signers never exceed 24 hours.
+	MaxExpirationSeconds *int32 `protobuf:"varint,3,opt,name=max_expiration_seconds,json=maxExpirationSeconds,proto3,oneof" json:"max_expiration_seconds,omitempty"`
+	// File name for the credential bundle -- one file holding the PKCS#8
+	// private key followed by the certificate chain, so the application reads a
+	// consistent pair in one atomic read. Defaults to "credential-bundle.pem"
+	// when no path below is set.
+	CredentialBundlePath string `protobuf:"bytes,4,opt,name=credential_bundle_path,json=credentialBundlePath,proto3" json:"credential_bundle_path,omitempty"`
+	// File name for the private key alone. Set together with
+	// certificate_chain_path; the application must then check the key matches
+	// the leaf certificate, because the two files can be read mid-rotation.
+	KeyPath string `protobuf:"bytes,5,opt,name=key_path,json=keyPath,proto3" json:"key_path,omitempty"`
+	// File name for the certificate chain alone (leaf first). Set together
+	// with key_path.
+	CertificateChainPath string `protobuf:"bytes,6,opt,name=certificate_chain_path,json=certificateChainPath,proto3" json:"certificate_chain_path,omitempty"`
+	// Extra information for the signer, copied into the certificate requests
+	// the kubelet creates. Keys must be domain-prefixed; signers refuse keys
+	// they do not recognize.
+	UserAnnotations map[string]string `protobuf:"bytes,7,rep,name=user_annotations,json=userAnnotations,proto3" json:"user_annotations,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
+}
+
+func (x *PodCertificateVolumeSource) Reset() {
+	*x = PodCertificateVolumeSource{}
+	mi := &file_catalog_kubernetes_volume_mount_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PodCertificateVolumeSource) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PodCertificateVolumeSource) ProtoMessage() {}
+
+func (x *PodCertificateVolumeSource) ProtoReflect() protoreflect.Message {
+	mi := &file_catalog_kubernetes_volume_mount_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PodCertificateVolumeSource.ProtoReflect.Descriptor instead.
+func (*PodCertificateVolumeSource) Descriptor() ([]byte, []int) {
+	return file_catalog_kubernetes_volume_mount_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *PodCertificateVolumeSource) GetSignerName() string {
+	if x != nil {
+		return x.SignerName
+	}
+	return ""
+}
+
+func (x *PodCertificateVolumeSource) GetKeyType() string {
+	if x != nil {
+		return x.KeyType
+	}
+	return ""
+}
+
+func (x *PodCertificateVolumeSource) GetMaxExpirationSeconds() int32 {
+	if x != nil && x.MaxExpirationSeconds != nil {
+		return *x.MaxExpirationSeconds
+	}
+	return 0
+}
+
+func (x *PodCertificateVolumeSource) GetCredentialBundlePath() string {
+	if x != nil {
+		return x.CredentialBundlePath
+	}
+	return ""
+}
+
+func (x *PodCertificateVolumeSource) GetKeyPath() string {
+	if x != nil {
+		return x.KeyPath
+	}
+	return ""
+}
+
+func (x *PodCertificateVolumeSource) GetCertificateChainPath() string {
+	if x != nil {
+		return x.CertificateChainPath
+	}
+	return ""
+}
+
+func (x *PodCertificateVolumeSource) GetUserAnnotations() map[string]string {
+	if x != nil {
+		return x.UserAnnotations
+	}
+	return nil
+}
+
 var File_catalog_kubernetes_volume_mount_proto protoreflect.FileDescriptor
 
 const file_catalog_kubernetes_volume_mount_proto_rawDesc = "" +
 	"\n" +
-	"%catalog/kubernetes/volume_mount.proto\x12\x16dev.planton.kubernetes\x1a\x1bbuf/validate/validate.proto\"\xd8\x04\n" +
+	"%catalog/kubernetes/volume_mount.proto\x12\x16dev.planton.kubernetes\x1a\x1bbuf/validate/validate.proto\x1a$catalog/kubernetes/core_v1_api.proto\x1a&shared/foreignkey/v1/foreign_key.proto\"\xb5\t\n" +
 	"\vVolumeMount\x12\x1a\n" +
 	"\x04name\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04name\x12%\n" +
 	"\n" +
@@ -704,7 +984,10 @@ const file_catalog_kubernetes_volume_mount_proto_rawDesc = "" +
 	"\tempty_dir\x18\b \x01(\v2,.dev.planton.kubernetes.EmptyDirVolumeSourceR\bemptyDir\x129\n" +
 	"\x03pvc\x18\t \x01(\v2'.dev.planton.kubernetes.PvcVolumeSourceR\x03pvc\x12k\n" +
 	"\x15service_account_token\x18\n" +
-	" \x01(\v27.dev.planton.kubernetes.ServiceAccountTokenVolumeSourceR\x13serviceAccountToken\"|\n" +
+	" \x01(\v27.dev.planton.kubernetes.ServiceAccountTokenVolumeSourceR\x13serviceAccountToken\x12h\n" +
+	"\x14cluster_trust_bundle\x18\v \x01(\v26.dev.planton.kubernetes.ClusterTrustBundleVolumeSourceR\x12clusterTrustBundle\x12[\n" +
+	"\x0fpod_certificate\x18\f \x01(\v22.dev.planton.kubernetes.PodCertificateVolumeSourceR\x0epodCertificate:\x93\x03\xbaH\x8f\x03\x1a\x8c\x03\n" +
+	"\x1fvolume_mount.at_most_one_source\x12\x8f\x01a volume mount takes at most one source (configMap, secret, hostPath, emptyDir, pvc, serviceAccountToken, clusterTrustBundle or podCertificate)\x1a\xd6\x01[has(this.config_map), has(this.secret), has(this.host_path), has(this.empty_dir), has(this.pvc), has(this.service_account_token), has(this.cluster_trust_bundle), has(this.pod_certificate)].filter(x, x).size() <= 1\"|\n" +
 	"\x15ConfigMapVolumeSource\x12\x1a\n" +
 	"\x04name\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04name\x12\x10\n" +
 	"\x03key\x18\x02 \x01(\tR\x03key\x12\x12\n" +
@@ -732,7 +1015,32 @@ const file_catalog_kubernetes_volume_mount_proto_rawDesc = "" +
 	"\baudience\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\baudience\x12\xc2\x01\n" +
 	"\x12expiration_seconds\x18\x02 \x01(\x03B\x92\x01\xbaH\x8e\x01\xba\x01\x8a\x01\n" +
 	"(service_account_token.expiration_seconds\x12DExpiration must be at least 600 seconds (the Kubernetes API minimum)\x1a\x18this == 0 || this >= 600R\x11expirationSeconds\x12\x12\n" +
-	"\x04path\x18\x03 \x01(\tR\x04pathB\xd9\x01\n" +
+	"\x04path\x18\x03 \x01(\tR\x04path\"\xe1\x04\n" +
+	"\x1eClusterTrustBundleVolumeSource\x12u\n" +
+	"\x04name\x18\x01 \x01(\v22.dev.planton.shared.foreignkey.v1.StringValueOrRefB-\x88\xd4a\xde \x92\xd4a$status.outputs.api_trust_bundle_nameR\x04name\x12\x1f\n" +
+	"\vsigner_name\x18\x02 \x01(\tR\n" +
+	"signerName\x12_\n" +
+	"\x0elabel_selector\x18\x03 \x01(\v28.dev.planton.kubernetes.KubernetesCoreV1ApiLabelSelectorR\rlabelSelector\x12\x1a\n" +
+	"\boptional\x18\x04 \x01(\bR\boptional\x12\x12\n" +
+	"\x04path\x18\x05 \x01(\tR\x04path:\x95\x02\xbaH\x91\x02\x1ay\n" +
+	"$cluster_trust_bundle.name_xor_signer\x12%set exactly one of name or signerName\x1a*has(this.name) != (this.signer_name != '')\x1a\x93\x01\n" +
+	"0cluster_trust_bundle.label_selector_needs_signer\x12*labelSelector applies only with signerName\x1a3!has(this.label_selector) || this.signer_name != ''\"\xff\x06\n" +
+	"\x1aPodCertificateVolumeSource\x12'\n" +
+	"\vsigner_name\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\n" +
+	"signerName\x12\xea\x01\n" +
+	"\bkey_type\x18\x02 \x01(\tB\xce\x01\xbaH\xca\x01\xba\x01\xc6\x01\n" +
+	"\x1fpod_certificate.key_type.values\x12QkeyType must be one of RSA3072, RSA4096, ECDSAP256, ECDSAP384, ECDSAP521, ED25519\x1aPthis in ['RSA3072', 'RSA4096', 'ECDSAP256', 'ECDSAP384', 'ECDSAP521', 'ED25519']R\akeyType\x12H\n" +
+	"\x16max_expiration_seconds\x18\x03 \x01(\x05B\r\xbaH\n" +
+	"\x1a\b\x18\x80\xf1\xdf\x03(\x90\x1cH\x00R\x14maxExpirationSeconds\x88\x01\x01\x124\n" +
+	"\x16credential_bundle_path\x18\x04 \x01(\tR\x14credentialBundlePath\x12\x19\n" +
+	"\bkey_path\x18\x05 \x01(\tR\akeyPath\x124\n" +
+	"\x16certificate_chain_path\x18\x06 \x01(\tR\x14certificateChainPath\x12r\n" +
+	"\x10user_annotations\x18\a \x03(\v2G.dev.planton.kubernetes.PodCertificateVolumeSource.UserAnnotationsEntryR\x0fuserAnnotations\x1aB\n" +
+	"\x14UserAnnotationsEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:\xa6\x01\xbaH\xa2\x01\x1a\x9f\x01\n" +
+	",pod_certificate.key_and_chain_paths_together\x121keyPath and certificateChainPath are set together\x1a<(this.key_path != '') == (this.certificate_chain_path != '')B\x19\n" +
+	"\x17_max_expiration_secondsB\xd9\x01\n" +
 	"\x1acom.dev.planton.kubernetesB\x10VolumeMountProtoP\x01Z/github.com/plantonhq/planton/catalog/kubernetes\xa2\x02\x03DPK\xaa\x02\x16Dev.Planton.Kubernetes\xca\x02\x16Dev\\Planton\\Kubernetes\xe2\x02\"Dev\\Planton\\Kubernetes\\GPBMetadata\xea\x02\x18Dev::Planton::Kubernetesb\x06proto3"
 
 var (
@@ -747,28 +1055,38 @@ func file_catalog_kubernetes_volume_mount_proto_rawDescGZIP() []byte {
 	return file_catalog_kubernetes_volume_mount_proto_rawDescData
 }
 
-var file_catalog_kubernetes_volume_mount_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
+var file_catalog_kubernetes_volume_mount_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
 var file_catalog_kubernetes_volume_mount_proto_goTypes = []any{
-	(*VolumeMount)(nil),                     // 0: dev.planton.kubernetes.VolumeMount
-	(*ConfigMapVolumeSource)(nil),           // 1: dev.planton.kubernetes.ConfigMapVolumeSource
-	(*SecretVolumeSource)(nil),              // 2: dev.planton.kubernetes.SecretVolumeSource
-	(*HostPathVolumeSource)(nil),            // 3: dev.planton.kubernetes.HostPathVolumeSource
-	(*EmptyDirVolumeSource)(nil),            // 4: dev.planton.kubernetes.EmptyDirVolumeSource
-	(*PvcVolumeSource)(nil),                 // 5: dev.planton.kubernetes.PvcVolumeSource
-	(*ServiceAccountTokenVolumeSource)(nil), // 6: dev.planton.kubernetes.ServiceAccountTokenVolumeSource
+	(*VolumeMount)(nil),                      // 0: dev.planton.kubernetes.VolumeMount
+	(*ConfigMapVolumeSource)(nil),            // 1: dev.planton.kubernetes.ConfigMapVolumeSource
+	(*SecretVolumeSource)(nil),               // 2: dev.planton.kubernetes.SecretVolumeSource
+	(*HostPathVolumeSource)(nil),             // 3: dev.planton.kubernetes.HostPathVolumeSource
+	(*EmptyDirVolumeSource)(nil),             // 4: dev.planton.kubernetes.EmptyDirVolumeSource
+	(*PvcVolumeSource)(nil),                  // 5: dev.planton.kubernetes.PvcVolumeSource
+	(*ServiceAccountTokenVolumeSource)(nil),  // 6: dev.planton.kubernetes.ServiceAccountTokenVolumeSource
+	(*ClusterTrustBundleVolumeSource)(nil),   // 7: dev.planton.kubernetes.ClusterTrustBundleVolumeSource
+	(*PodCertificateVolumeSource)(nil),       // 8: dev.planton.kubernetes.PodCertificateVolumeSource
+	nil,                                      // 9: dev.planton.kubernetes.PodCertificateVolumeSource.UserAnnotationsEntry
+	(*v1.StringValueOrRef)(nil),              // 10: dev.planton.shared.foreignkey.v1.StringValueOrRef
+	(*KubernetesCoreV1ApiLabelSelector)(nil), // 11: dev.planton.kubernetes.KubernetesCoreV1ApiLabelSelector
 }
 var file_catalog_kubernetes_volume_mount_proto_depIdxs = []int32{
-	1, // 0: dev.planton.kubernetes.VolumeMount.config_map:type_name -> dev.planton.kubernetes.ConfigMapVolumeSource
-	2, // 1: dev.planton.kubernetes.VolumeMount.secret:type_name -> dev.planton.kubernetes.SecretVolumeSource
-	3, // 2: dev.planton.kubernetes.VolumeMount.host_path:type_name -> dev.planton.kubernetes.HostPathVolumeSource
-	4, // 3: dev.planton.kubernetes.VolumeMount.empty_dir:type_name -> dev.planton.kubernetes.EmptyDirVolumeSource
-	5, // 4: dev.planton.kubernetes.VolumeMount.pvc:type_name -> dev.planton.kubernetes.PvcVolumeSource
-	6, // 5: dev.planton.kubernetes.VolumeMount.service_account_token:type_name -> dev.planton.kubernetes.ServiceAccountTokenVolumeSource
-	6, // [6:6] is the sub-list for method output_type
-	6, // [6:6] is the sub-list for method input_type
-	6, // [6:6] is the sub-list for extension type_name
-	6, // [6:6] is the sub-list for extension extendee
-	0, // [0:6] is the sub-list for field type_name
+	1,  // 0: dev.planton.kubernetes.VolumeMount.config_map:type_name -> dev.planton.kubernetes.ConfigMapVolumeSource
+	2,  // 1: dev.planton.kubernetes.VolumeMount.secret:type_name -> dev.planton.kubernetes.SecretVolumeSource
+	3,  // 2: dev.planton.kubernetes.VolumeMount.host_path:type_name -> dev.planton.kubernetes.HostPathVolumeSource
+	4,  // 3: dev.planton.kubernetes.VolumeMount.empty_dir:type_name -> dev.planton.kubernetes.EmptyDirVolumeSource
+	5,  // 4: dev.planton.kubernetes.VolumeMount.pvc:type_name -> dev.planton.kubernetes.PvcVolumeSource
+	6,  // 5: dev.planton.kubernetes.VolumeMount.service_account_token:type_name -> dev.planton.kubernetes.ServiceAccountTokenVolumeSource
+	7,  // 6: dev.planton.kubernetes.VolumeMount.cluster_trust_bundle:type_name -> dev.planton.kubernetes.ClusterTrustBundleVolumeSource
+	8,  // 7: dev.planton.kubernetes.VolumeMount.pod_certificate:type_name -> dev.planton.kubernetes.PodCertificateVolumeSource
+	10, // 8: dev.planton.kubernetes.ClusterTrustBundleVolumeSource.name:type_name -> dev.planton.shared.foreignkey.v1.StringValueOrRef
+	11, // 9: dev.planton.kubernetes.ClusterTrustBundleVolumeSource.label_selector:type_name -> dev.planton.kubernetes.KubernetesCoreV1ApiLabelSelector
+	9,  // 10: dev.planton.kubernetes.PodCertificateVolumeSource.user_annotations:type_name -> dev.planton.kubernetes.PodCertificateVolumeSource.UserAnnotationsEntry
+	11, // [11:11] is the sub-list for method output_type
+	11, // [11:11] is the sub-list for method input_type
+	11, // [11:11] is the sub-list for extension type_name
+	11, // [11:11] is the sub-list for extension extendee
+	0,  // [0:11] is the sub-list for field type_name
 }
 
 func init() { file_catalog_kubernetes_volume_mount_proto_init() }
@@ -776,13 +1094,15 @@ func file_catalog_kubernetes_volume_mount_proto_init() {
 	if File_catalog_kubernetes_volume_mount_proto != nil {
 		return
 	}
+	file_catalog_kubernetes_core_v1_api_proto_init()
+	file_catalog_kubernetes_volume_mount_proto_msgTypes[8].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_catalog_kubernetes_volume_mount_proto_rawDesc), len(file_catalog_kubernetes_volume_mount_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   7,
+			NumMessages:   10,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

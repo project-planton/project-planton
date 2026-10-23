@@ -1,0 +1,13 @@
+apiVersion: kubernetes.planton.dev/v1alpha1
+kind: KubernetesNamespace
+metadata:
+  name: my-substrate-client-namespace
+spec:
+  name: my-substrate-client-namespace
+  labels:
+    # The Agent Substrate's NetworkPolicy admits API callers only from
+    # namespaces carrying this label (its api_access_namespace_label output).
+    ate.dev/api-access: "true"
+  resourceProfile:
+    preset: small
+  podSecurityStandard: baseline

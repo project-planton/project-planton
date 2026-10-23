@@ -78,13 +78,21 @@ var _ = ginkgo.Describe("KubernetesManifestSpec validations", func() {
 			}
 			gomega.Expect(protovalidate.Validate(spec)).To(gomega.BeNil())
 		})
+
+		ginkgo.It("accepts a manifest with no anchor namespace", func() {
+			spec := &KubernetesManifestSpec{
+				ManifestYaml: singleDocYaml,
+			}
+			gomega.Expect(protovalidate.Validate(spec)).To(gomega.BeNil())
+		})
 	})
 
 	ginkgo.Context("When invalid specs are provided", func() {
 
-		ginkgo.It("rejects a missing namespace", func() {
+		ginkgo.It("rejects creating a namespace that is not named", func() {
 			spec := &KubernetesManifestSpec{
-				ManifestYaml: singleDocYaml,
+				CreateNamespace: true,
+				ManifestYaml:    singleDocYaml,
 			}
 			gomega.Expect(protovalidate.Validate(spec)).ToNot(gomega.BeNil())
 		})

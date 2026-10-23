@@ -289,19 +289,66 @@ locals {
             readOnly  = try(v.pvc.read_only, false) ? true : null
           } : pk => pv if pv != null
         }
-        # Kubelet-rotated, audience-bound ServiceAccount tokens ride the
-        # "projected" volume type in the Kubernetes API.
-        projected = try(v.service_account_token, null) == null ? null : {
-          sources = [{
-            serviceAccountToken = {
-              for tk, tv in {
-                audience          = v.service_account_token.audience
-                expirationSeconds = try(v.service_account_token.expiration_seconds, 0) > 0 ? v.service_account_token.expiration_seconds : null
-                path              = try(v.service_account_token.path, "") != "" ? v.service_account_token.path : "token"
-              } : tk => tv if tv != null
-            }
-          }]
-        }
+        # Kubelet-rotated ServiceAccount tokens, ClusterTrustBundle CA files
+        # and pod certificates all ride the "projected" volume type in the
+        # Kubernetes API; a mount carries at most one of them (spec rule).
+        projected = (
+          try(v.service_account_token, null) != null ? {
+            sources = [{
+              serviceAccountToken = {
+                for tk, tv in {
+                  audience          = v.service_account_token.audience
+                  expirationSeconds = try(v.service_account_token.expiration_seconds, 0) > 0 ? v.service_account_token.expiration_seconds : null
+                  path              = try(v.service_account_token.path, "") != "" ? v.service_account_token.path : "token"
+                } : tk => tv if tv != null
+              }
+            }]
+          } :
+          try(v.cluster_trust_bundle, null) != null ? {
+            sources = [{
+              clusterTrustBundle = {
+                for bk, bv in {
+                  name       = try(v.cluster_trust_bundle.name, "") != "" ? v.cluster_trust_bundle.name : null
+                  signerName = try(v.cluster_trust_bundle.signer_name, "") != "" ? v.cluster_trust_bundle.signer_name : null
+                  labelSelector = try(v.cluster_trust_bundle.label_selector, null) == null ? null : {
+                    for lk, lv in {
+                      matchLabels = length(try(v.cluster_trust_bundle.label_selector.match_labels, {})) > 0 ? v.cluster_trust_bundle.label_selector.match_labels : null
+                      matchExpressions = length(try(v.cluster_trust_bundle.label_selector.match_expressions, [])) > 0 ? [
+                        for e in v.cluster_trust_bundle.label_selector.match_expressions : {
+                          for ek, ev in {
+                            key      = e.key
+                            operator = e.operator
+                            values   = length(try(e.values, [])) > 0 ? e.values : null
+                          } : ek => ev if ev != null
+                        }
+                      ] : null
+                    } : lk => lv if lv != null
+                  }
+                  optional = try(v.cluster_trust_bundle.optional, false) ? true : null
+                  path     = try(v.cluster_trust_bundle.path, "") != "" ? v.cluster_trust_bundle.path : "ca.crt"
+                } : bk => bv if bv != null
+              }
+            }]
+          } :
+          try(v.pod_certificate, null) != null ? {
+            sources = [{
+              podCertificate = {
+                for ck, cv in {
+                  signerName           = v.pod_certificate.signer_name
+                  keyType              = v.pod_certificate.key_type
+                  maxExpirationSeconds = try(v.pod_certificate.max_expiration_seconds, null)
+                  credentialBundlePath = (
+                    try(v.pod_certificate.credential_bundle_path, "") != "" ? v.pod_certificate.credential_bundle_path :
+                    try(v.pod_certificate.key_path, "") == "" ? "credential-bundle.pem" : null
+                  )
+                  keyPath              = try(v.pod_certificate.key_path, "") != "" ? v.pod_certificate.key_path : null
+                  certificateChainPath = try(v.pod_certificate.certificate_chain_path, "") != "" ? v.pod_certificate.certificate_chain_path : null
+                  userAnnotations      = length(try(v.pod_certificate.user_annotations, {})) > 0 ? v.pod_certificate.user_annotations : null
+                } : ck => cv if cv != null
+              }
+            }]
+          } : null
+        )
       } : vk => vv if vv != null
     }
   ]

@@ -38,10 +38,16 @@ const (
 //
 // NAMESPACE SEMANTICS (identical on both engines): documents that declare
 // their own `metadata.namespace` keep it; namespaced documents that declare
-// none land in `spec.namespace`. Cluster-scoped documents (CRDs,
-// ClusterRoles, ...) are applied as-is — the anchor namespace never distorts
-// them. The manifest content itself is never otherwise mutated: no injected
-// labels, no rewritten fields.
+// none land in `spec.namespace`, the anchor. Cluster-scoped documents (CRDs,
+// ClusterRoles, StorageClasses, cluster-wide custom resources, ...) are
+// applied as-is — the anchor never distorts them, so a manifest of only
+// cluster-scoped documents needs no anchor at all. Without an anchor, a
+// namespaced document that names no namespace of its own is refused before
+// anything applies, naming the document; nothing lands in "default" by
+// accident. Scope is decided from the built-in Kubernetes kinds, the
+// manifest's own CRDs, and the cluster's CRDs; a kind none of them knows is
+// treated as namespaced. The manifest content itself is never otherwise
+// mutated: no injected labels, no rewritten fields.
 type KubernetesManifestSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// *
@@ -49,12 +55,15 @@ type KubernetesManifestSpec struct {
 	// declare their own `metadata.namespace` are applied here. Accepts a
 	// literal namespace name or a reference to a KubernetesNamespace resource.
 	// Documents with an explicit namespace, and cluster-scoped documents, are
-	// unaffected.
+	// unaffected. Omit it for a manifest of cluster-scoped documents (or one
+	// whose namespaced documents all name their own namespace); a namespaced
+	// document without a namespace is then refused rather than placed.
 	Namespace *v1.StringValueOrRef `protobuf:"bytes,1,opt,name=namespace,proto3" json:"namespace,omitempty"`
 	// *
 	// When true, the anchor namespace is created (with the standard Planton
 	// governance labels) before the manifest is applied, and deleted with the
-	// resource. When false, the namespace must already exist.
+	// resource. When false, the namespace must already exist. Needs a
+	// namespace.
 	CreateNamespace bool `protobuf:"varint,2,opt,name=create_namespace,json=createNamespace,proto3" json:"create_namespace,omitempty"`
 	// *
 	// The raw Kubernetes manifest YAML to apply. A single document or multiple
@@ -164,14 +173,15 @@ var File_catalog_kubernetes_kubernetesmanifest_v1alpha1_spec_proto protoreflect.
 
 const file_catalog_kubernetes_kubernetesmanifest_v1alpha1_spec_proto_rawDesc = "" +
 	"\n" +
-	"9catalog/kubernetes/kubernetesmanifest/v1alpha1/spec.proto\x122dev.planton.kubernetes.kubernetesmanifest.v1alpha1\x1a\x1bbuf/validate/validate.proto\x1a&shared/foreignkey/v1/foreign_key.proto\"\x85\x03\n" +
-	"\x16KubernetesManifestSpec\x12j\n" +
-	"\tnamespace\x18\x01 \x01(\v22.dev.planton.shared.foreignkey.v1.StringValueOrRefB\x18\xbaH\x03\xc8\x01\x01\x88\xd4a\xa0\x1f\x92\xd4a\tspec.nameR\tnamespace\x12)\n" +
+	"9catalog/kubernetes/kubernetesmanifest/v1alpha1/spec.proto\x122dev.planton.kubernetes.kubernetesmanifest.v1alpha1\x1a\x1bbuf/validate/validate.proto\x1a&shared/foreignkey/v1/foreign_key.proto\"\xbc\x04\n" +
+	"\x16KubernetesManifestSpec\x12d\n" +
+	"\tnamespace\x18\x01 \x01(\v22.dev.planton.shared.foreignkey.v1.StringValueOrRefB\x12\x88\xd4a\xa0\x1f\x92\xd4a\tspec.nameR\tnamespace\x12)\n" +
 	"\x10create_namespace\x18\x02 \x01(\bR\x0fcreateNamespace\x12\xb4\x01\n" +
 	"\rmanifest_yaml\x18\x03 \x01(\tB\x8e\x01\xbaH\x8a\x01\xba\x01\x83\x01\n" +
 	"\x17manifest_yaml.not_blank\x12SManifest YAML must contain at least one Kubernetes document (a non-empty YAML body)\x1a\x13this.matches('\\\\S')\xc8\x01\x01R\fmanifestYaml\x12\x1d\n" +
 	"\n" +
-	"skip_await\x18\x04 \x01(\bR\tskipAwaitB\x98\x03\n" +
+	"skip_await\x18\x04 \x01(\bR\tskipAwait:\xba\x01\xbaH\xb6\x01\x1a\xb3\x01\n" +
+	"%spec.create_namespace_needs_namespace\x12[create_namespace needs a namespace to create -- set namespace, or turn create_namespace off\x1a-!this.create_namespace || has(this.namespace)B\x98\x03\n" +
 	"6com.dev.planton.kubernetes.kubernetesmanifest.v1alpha1B\tSpecProtoP\x01Zfgithub.com/plantonhq/planton/catalog/kubernetes/kubernetesmanifest/v1alpha1;kubernetesmanifestv1alpha1\xa2\x02\x04DPKK\xaa\x022Dev.Planton.Kubernetes.Kubernetesmanifest.V1alpha1\xca\x022Dev\\Planton\\Kubernetes\\Kubernetesmanifest\\V1alpha1\xe2\x02>Dev\\Planton\\Kubernetes\\Kubernetesmanifest\\V1alpha1\\GPBMetadata\xea\x026Dev::Planton::Kubernetes::Kubernetesmanifest::V1alpha1b\x06proto3"
 
 var (

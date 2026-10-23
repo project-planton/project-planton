@@ -1,0 +1,28 @@
+# Fixture for the cluster-crd-instance scenario: a cluster-scoped CRD the
+# cluster already serves when the scenario applies, the way a cloud installs
+# GKE's ComputeClass. Itself a manifest with no anchor -- a lone CRD.
+apiVersion: kubernetes.planton.dev/v1alpha1
+kind: KubernetesManifest
+metadata:
+  name: e2e-manifest-fixture-cluster-crd
+spec:
+  manifest_yaml: |
+    apiVersion: apiextensions.k8s.io/v1
+    kind: CustomResourceDefinition
+    metadata:
+      name: computeprofiles.e2e.planton.dev
+    spec:
+      group: e2e.planton.dev
+      scope: Cluster
+      names:
+        plural: computeprofiles
+        singular: computeprofile
+        kind: ComputeProfile
+      versions:
+        - name: v1
+          served: true
+          storage: true
+          schema:
+            openAPIV3Schema:
+              type: object
+              x-kubernetes-preserve-unknown-fields: true

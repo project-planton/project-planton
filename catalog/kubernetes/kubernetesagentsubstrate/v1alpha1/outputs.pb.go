@@ -88,9 +88,17 @@ type KubernetesAgentSubstrateOutputs struct {
 	MicrovmWorkerImage string `protobuf:"bytes,13,opt,name=microvm_worker_image,json=microvmWorkerImage,proto3" json:"microvm_worker_image,omitempty"`
 	// *
 	// The Agent Substrate release installed, such as "v0.5.0".
-	Version       string `protobuf:"bytes,14,opt,name=version,proto3" json:"version,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	Version string `protobuf:"bytes,14,opt,name=version,proto3" json:"version,omitempty"`
+	// *
+	// The signer of the client certificates the router's TLS endpoint accepts,
+	// "podidentity.podcert.ate.dev/identity". A workload gets one through a
+	// podCertificate projected volume addressed to this signer; the
+	// certificate carries the SPIFFE ID
+	// spiffe://cluster.local/ns/<namespace>/sa/<service-account>, which
+	// router.allowed_client_spiffe_ids must name.
+	RouterClientSignerName string `protobuf:"bytes,15,opt,name=router_client_signer_name,json=routerClientSignerName,proto3" json:"router_client_signer_name,omitempty"`
+	unknownFields          protoimpl.UnknownFields
+	sizeCache              protoimpl.SizeCache
 }
 
 func (x *KubernetesAgentSubstrateOutputs) Reset() {
@@ -221,11 +229,18 @@ func (x *KubernetesAgentSubstrateOutputs) GetVersion() string {
 	return ""
 }
 
+func (x *KubernetesAgentSubstrateOutputs) GetRouterClientSignerName() string {
+	if x != nil {
+		return x.RouterClientSignerName
+	}
+	return ""
+}
+
 var File_catalog_kubernetes_kubernetesagentsubstrate_v1alpha1_outputs_proto protoreflect.FileDescriptor
 
 const file_catalog_kubernetes_kubernetesagentsubstrate_v1alpha1_outputs_proto_rawDesc = "" +
 	"\n" +
-	"Bcatalog/kubernetes/kubernetesagentsubstrate/v1alpha1/outputs.proto\x128dev.planton.kubernetes.kubernetesagentsubstrate.v1alpha1\"\x87\x05\n" +
+	"Bcatalog/kubernetes/kubernetesagentsubstrate/v1alpha1/outputs.proto\x128dev.planton.kubernetes.kubernetesagentsubstrate.v1alpha1\"\xc2\x05\n" +
 	"\x1fKubernetesAgentSubstrateOutputs\x12\x1c\n" +
 	"\tnamespace\x18\x01 \x01(\tR\tnamespace\x12\x1f\n" +
 	"\vapi_address\x18\x02 \x01(\tR\n" +
@@ -242,7 +257,8 @@ const file_catalog_kubernetes_kubernetesagentsubstrate_v1alpha1_outputs_proto_ra
 	"\x10actor_jwt_issuer\x18\v \x01(\tR\x0eactorJwtIssuer\x12.\n" +
 	"\x13gvisor_worker_image\x18\f \x01(\tR\x11gvisorWorkerImage\x120\n" +
 	"\x14microvm_worker_image\x18\r \x01(\tR\x12microvmWorkerImage\x12\x18\n" +
-	"\aversion\x18\x0e \x01(\tR\aversionB\xc5\x03\n" +
+	"\aversion\x18\x0e \x01(\tR\aversion\x129\n" +
+	"\x19router_client_signer_name\x18\x0f \x01(\tR\x16routerClientSignerNameB\xc5\x03\n" +
 	"<com.dev.planton.kubernetes.kubernetesagentsubstrate.v1alpha1B\fOutputsProtoP\x01Zrgithub.com/plantonhq/planton/catalog/kubernetes/kubernetesagentsubstrate/v1alpha1;kubernetesagentsubstratev1alpha1\xa2\x02\x04DPKK\xaa\x028Dev.Planton.Kubernetes.Kubernetesagentsubstrate.V1alpha1\xca\x028Dev\\Planton\\Kubernetes\\Kubernetesagentsubstrate\\V1alpha1\xe2\x02DDev\\Planton\\Kubernetes\\Kubernetesagentsubstrate\\V1alpha1\\GPBMetadata\xea\x02<Dev::Planton::Kubernetes::Kubernetesagentsubstrate::V1alpha1b\x06proto3"
 
 var (

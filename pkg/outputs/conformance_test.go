@@ -1818,7 +1818,8 @@ func TestOutputsConformance(t *testing.T) {
 		{
 			// KubernetesAgentSubstrate: the handles a product calls the API
 			// with (address, server name, token audience, trust bundle, the
-			// namespace label the API admits), the router, the storage
+			// namespace label the API admits), the router and the signer of
+			// its client certificates, the storage
 			// location actor templates use, and the worker images the worker
 			// pool kind runs.
 			name: "KubernetesAgentSubstrate",
@@ -1838,11 +1839,12 @@ func TestOutputsConformance(t *testing.T) {
 				"gvisor_worker_image":        "ghcr.io/plantonhq/planton/agent-substrate/ateom-gvisor:v0.5.0@sha256:0000000000000000000000000000000000000000000000000000000000000000",
 				"microvm_worker_image":       "ghcr.io/plantonhq/planton/agent-substrate/ateom-microvm:v0.5.0@sha256:0000000000000000000000000000000000000000000000000000000000000000",
 				"version":                    "v0.5.0",
+				"router_client_signer_name":  "podidentity.podcert.ate.dev/identity",
 			},
 			mustPopulate: []string{
 				"namespace", "api_address", "api_server_name", "api_token_audience",
 				"api_trust_bundle_name", "api_trust_bundle_signer", "api_access_namespace_label",
-				"router_endpoint", "router_tls_endpoint", "storage_location", "actor_jwt_issuer",
+				"router_endpoint", "router_tls_endpoint", "router_client_signer_name", "storage_location", "actor_jwt_issuer",
 				"gvisor_worker_image", "microvm_worker_image", "version",
 			},
 		},

@@ -89,8 +89,22 @@ locals {
 
   pod_volumes = {
     for vm in local.volume_mounts_flat : vm.name => vm...
-    if !(try(vm.pvc, null) != null && contains(local.volume_claim_template_names, vm.pvc.claim_name))
+    if !(try(vm.pvc, null) != null && contains(local.volume_claim_template_names, vm.pvc.claim_name)) && (
+      try(vm.config_map, null) != null || try(vm.secret, null) != null || try(vm.host_path, null) != null ||
+      try(vm.empty_dir, null) != null || try(vm.pvc, null) != null || try(vm.service_account_token, null) != null ||
+      try(vm.cluster_trust_bundle, null) != null || try(vm.pod_certificate, null) != null
+    )
   }
+
+  # PARITY-EXCEPTION: the hashicorp/kubernetes provider models neither the
+  # clusterTrustBundle nor the podCertificate projection, so this engine cannot
+  # write either; the workload resource's precondition refuses them by name.
+  # The Pulumi engine writes both (pkg/iac/pulumi/pulumimodule/provider/
+  # kubernetes/workloadpod).
+  unsupported_projected_mounts = distinct([
+    for vm in local.volume_mounts_flat : vm.name
+    if try(vm.cluster_trust_bundle, null) != null || try(vm.pod_certificate, null) != null
+  ])
 
   # Registry logins the workload declares on pod.image_registries, rendered as the
   # .dockerconfigjson document of the module-owned image-pull Secret: one `auths`

@@ -389,6 +389,25 @@ spec:
 | `spec.container.app.volumeMounts[].serviceAccountToken.audience` | `string` | yes |  |  |
 | `spec.container.app.volumeMounts[].serviceAccountToken.expirationSeconds` | `int64` |  |  |  |
 | `spec.container.app.volumeMounts[].serviceAccountToken.path` | `string` |  |  |  |
+| `spec.container.app.volumeMounts[].clusterTrustBundle` | `ClusterTrustBundleVolumeSource` |  |  |  |
+| `spec.container.app.volumeMounts[].clusterTrustBundle.name` | `string \| valueFrom` |  |  | KubernetesAgentSubstrate (`status.outputs.api_trust_bundle_name`) |
+| `spec.container.app.volumeMounts[].clusterTrustBundle.signerName` | `string` |  |  |  |
+| `spec.container.app.volumeMounts[].clusterTrustBundle.labelSelector` | `KubernetesCoreV1ApiLabelSelector` |  |  |  |
+| `spec.container.app.volumeMounts[].clusterTrustBundle.labelSelector.matchLabels` | `map<string, string>` |  |  |  |
+| `spec.container.app.volumeMounts[].clusterTrustBundle.labelSelector.matchExpressions` | `[]KubernetesCoreV1ApiLabelSelectorRequirement` |  |  |  |
+| `spec.container.app.volumeMounts[].clusterTrustBundle.labelSelector.matchExpressions[].key` | `string` | yes |  |  |
+| `spec.container.app.volumeMounts[].clusterTrustBundle.labelSelector.matchExpressions[].operator` | `string` | yes |  |  |
+| `spec.container.app.volumeMounts[].clusterTrustBundle.labelSelector.matchExpressions[].values` | `[]string` |  |  |  |
+| `spec.container.app.volumeMounts[].clusterTrustBundle.optional` | `bool` |  |  |  |
+| `spec.container.app.volumeMounts[].clusterTrustBundle.path` | `string` |  |  |  |
+| `spec.container.app.volumeMounts[].podCertificate` | `PodCertificateVolumeSource` |  |  |  |
+| `spec.container.app.volumeMounts[].podCertificate.signerName` | `string` | yes |  |  |
+| `spec.container.app.volumeMounts[].podCertificate.keyType` | `string` |  |  |  |
+| `spec.container.app.volumeMounts[].podCertificate.maxExpirationSeconds` | `int32` |  |  |  |
+| `spec.container.app.volumeMounts[].podCertificate.credentialBundlePath` | `string` |  |  |  |
+| `spec.container.app.volumeMounts[].podCertificate.keyPath` | `string` |  |  |  |
+| `spec.container.app.volumeMounts[].podCertificate.certificateChainPath` | `string` |  |  |  |
+| `spec.container.app.volumeMounts[].podCertificate.userAnnotations` | `map<string, string>` |  |  |  |
 | `spec.container.app.lifecycle` | `WorkloadContainerLifecycle` |  |  |  |
 | `spec.container.app.lifecycle.postStart` | `WorkloadLifecycleHandler` |  |  |  |
 | `spec.container.app.lifecycle.postStart.exec` | `ExecAction` |  |  |  |
@@ -604,6 +623,25 @@ spec:
 | `spec.container.sidecars[].volumeMounts[].serviceAccountToken.audience` | `string` | yes |  |  |
 | `spec.container.sidecars[].volumeMounts[].serviceAccountToken.expirationSeconds` | `int64` |  |  |  |
 | `spec.container.sidecars[].volumeMounts[].serviceAccountToken.path` | `string` |  |  |  |
+| `spec.container.sidecars[].volumeMounts[].clusterTrustBundle` | `ClusterTrustBundleVolumeSource` |  |  |  |
+| `spec.container.sidecars[].volumeMounts[].clusterTrustBundle.name` | `string \| valueFrom` |  |  | KubernetesAgentSubstrate (`status.outputs.api_trust_bundle_name`) |
+| `spec.container.sidecars[].volumeMounts[].clusterTrustBundle.signerName` | `string` |  |  |  |
+| `spec.container.sidecars[].volumeMounts[].clusterTrustBundle.labelSelector` | `KubernetesCoreV1ApiLabelSelector` |  |  |  |
+| `spec.container.sidecars[].volumeMounts[].clusterTrustBundle.labelSelector.matchLabels` | `map<string, string>` |  |  |  |
+| `spec.container.sidecars[].volumeMounts[].clusterTrustBundle.labelSelector.matchExpressions` | `[]KubernetesCoreV1ApiLabelSelectorRequirement` |  |  |  |
+| `spec.container.sidecars[].volumeMounts[].clusterTrustBundle.labelSelector.matchExpressions[].key` | `string` | yes |  |  |
+| `spec.container.sidecars[].volumeMounts[].clusterTrustBundle.labelSelector.matchExpressions[].operator` | `string` | yes |  |  |
+| `spec.container.sidecars[].volumeMounts[].clusterTrustBundle.labelSelector.matchExpressions[].values` | `[]string` |  |  |  |
+| `spec.container.sidecars[].volumeMounts[].clusterTrustBundle.optional` | `bool` |  |  |  |
+| `spec.container.sidecars[].volumeMounts[].clusterTrustBundle.path` | `string` |  |  |  |
+| `spec.container.sidecars[].volumeMounts[].podCertificate` | `PodCertificateVolumeSource` |  |  |  |
+| `spec.container.sidecars[].volumeMounts[].podCertificate.signerName` | `string` | yes |  |  |
+| `spec.container.sidecars[].volumeMounts[].podCertificate.keyType` | `string` |  |  |  |
+| `spec.container.sidecars[].volumeMounts[].podCertificate.maxExpirationSeconds` | `int32` |  |  |  |
+| `spec.container.sidecars[].volumeMounts[].podCertificate.credentialBundlePath` | `string` |  |  |  |
+| `spec.container.sidecars[].volumeMounts[].podCertificate.keyPath` | `string` |  |  |  |
+| `spec.container.sidecars[].volumeMounts[].podCertificate.certificateChainPath` | `string` |  |  |  |
+| `spec.container.sidecars[].volumeMounts[].podCertificate.userAnnotations` | `map<string, string>` |  |  |  |
 | `spec.container.sidecars[].lifecycle` | `WorkloadContainerLifecycle` |  |  |  |
 | `spec.container.sidecars[].lifecycle.postStart` | `WorkloadLifecycleHandler` |  |  |  |
 | `spec.container.sidecars[].lifecycle.postStart.exec` | `ExecAction` |  |  |  |
@@ -828,6 +866,25 @@ spec:
 | `spec.pod.initContainers[].volumeMounts[].serviceAccountToken.audience` | `string` | yes |  |  |
 | `spec.pod.initContainers[].volumeMounts[].serviceAccountToken.expirationSeconds` | `int64` |  |  |  |
 | `spec.pod.initContainers[].volumeMounts[].serviceAccountToken.path` | `string` |  |  |  |
+| `spec.pod.initContainers[].volumeMounts[].clusterTrustBundle` | `ClusterTrustBundleVolumeSource` |  |  |  |
+| `spec.pod.initContainers[].volumeMounts[].clusterTrustBundle.name` | `string \| valueFrom` |  |  | KubernetesAgentSubstrate (`status.outputs.api_trust_bundle_name`) |
+| `spec.pod.initContainers[].volumeMounts[].clusterTrustBundle.signerName` | `string` |  |  |  |
+| `spec.pod.initContainers[].volumeMounts[].clusterTrustBundle.labelSelector` | `KubernetesCoreV1ApiLabelSelector` |  |  |  |
+| `spec.pod.initContainers[].volumeMounts[].clusterTrustBundle.labelSelector.matchLabels` | `map<string, string>` |  |  |  |
+| `spec.pod.initContainers[].volumeMounts[].clusterTrustBundle.labelSelector.matchExpressions` | `[]KubernetesCoreV1ApiLabelSelectorRequirement` |  |  |  |
+| `spec.pod.initContainers[].volumeMounts[].clusterTrustBundle.labelSelector.matchExpressions[].key` | `string` | yes |  |  |
+| `spec.pod.initContainers[].volumeMounts[].clusterTrustBundle.labelSelector.matchExpressions[].operator` | `string` | yes |  |  |
+| `spec.pod.initContainers[].volumeMounts[].clusterTrustBundle.labelSelector.matchExpressions[].values` | `[]string` |  |  |  |
+| `spec.pod.initContainers[].volumeMounts[].clusterTrustBundle.optional` | `bool` |  |  |  |
+| `spec.pod.initContainers[].volumeMounts[].clusterTrustBundle.path` | `string` |  |  |  |
+| `spec.pod.initContainers[].volumeMounts[].podCertificate` | `PodCertificateVolumeSource` |  |  |  |
+| `spec.pod.initContainers[].volumeMounts[].podCertificate.signerName` | `string` | yes |  |  |
+| `spec.pod.initContainers[].volumeMounts[].podCertificate.keyType` | `string` |  |  |  |
+| `spec.pod.initContainers[].volumeMounts[].podCertificate.maxExpirationSeconds` | `int32` |  |  |  |
+| `spec.pod.initContainers[].volumeMounts[].podCertificate.credentialBundlePath` | `string` |  |  |  |
+| `spec.pod.initContainers[].volumeMounts[].podCertificate.keyPath` | `string` |  |  |  |
+| `spec.pod.initContainers[].volumeMounts[].podCertificate.certificateChainPath` | `string` |  |  |  |
+| `spec.pod.initContainers[].volumeMounts[].podCertificate.userAnnotations` | `map<string, string>` |  |  |  |
 | `spec.pod.initContainers[].lifecycle` | `WorkloadContainerLifecycle` |  |  |  |
 | `spec.pod.initContainers[].lifecycle.postStart` | `WorkloadLifecycleHandler` |  |  |  |
 | `spec.pod.initContainers[].lifecycle.postStart.exec` | `ExecAction` |  |  |  |
@@ -3679,6 +3736,8 @@ module derives the pod-level volume list from the union of all containers'
 mounts, de-duplicating by name — so two containers sharing an EmptyDir simply
 declare the same mount name and source.
 
+- rule: a volume mount takes at most one source (configMap, secret, hostPath, emptyDir, pvc, serviceAccountToken, clusterTrustBundle or podCertificate)
+
 ### spec.container.app.volumeMounts[].name
 
 `string` · required
@@ -3912,6 +3971,190 @@ minimum of 600 (10 minutes).
 
 Filename for the token relative to the mount path.
 Defaults to "token".
+
+### spec.container.app.volumeMounts[].clusterTrustBundle
+
+`ClusterTrustBundleVolumeSource`
+
+Projected ClusterTrustBundle volume source.
+Use this to mount the CA certificates of a ClusterTrustBundle, so the
+container can verify servers whose certificates a cluster signer issues
+(the Agent Substrate API's, for one). The kubelet keeps the file current
+as the bundle rotates, which a hand-copied ConfigMap never does.
+Requires the cluster's ClusterTrustBundle and ClusterTrustBundleProjection
+features (certificates.k8s.io/v1beta1).
+OpenTofu engine: not supported -- the hashicorp/kubernetes provider has
+no clusterTrustBundle projection; deploy the workload with the Pulumi
+engine (set planton.dev/provisioner to pulumi).
+
+- rule: set exactly one of name or signerName
+- rule: labelSelector applies only with signerName
+
+### spec.container.app.volumeMounts[].clusterTrustBundle.name
+
+`string | valueFrom`
+
+The ClusterTrustBundle to project, by object name. A literal name, or a
+reference to the KubernetesAgentSubstrate whose API trust bundle this is
+(status.outputs.api_trust_bundle_name). Mutually exclusive with
+signer_name.
+
+- references: KubernetesAgentSubstrate (`status.outputs.api_trust_bundle_name`)
+- rule: write as {value: <literal>} or {valueFrom: {kind: KubernetesAgentSubstrate, name: <that resource's name>, fieldPath: status.outputs.api_trust_bundle_name}} -- a bare string does not parse
+
+### spec.container.app.volumeMounts[].clusterTrustBundle.signerName
+
+`string`
+
+Project every ClusterTrustBundle of this signer, deduplicated into one
+file (e.g. "servicedns.podcert.ate.dev/identity"). Mutually exclusive
+with name.
+
+### spec.container.app.volumeMounts[].clusterTrustBundle.labelSelector
+
+`KubernetesCoreV1ApiLabelSelector`
+
+Narrows the signer's bundles to those matching the selector. Applies only
+with signer_name. Unset matches NOTHING; set but empty matches every
+bundle of the signer -- upstream's own semantics.
+
+### spec.container.app.volumeMounts[].clusterTrustBundle.labelSelector.matchLabels
+
+`map<string, string>`
+
+matchLabels is a map of {key,value} pairs. A single {key,value} in the
+matchLabels map is equivalent to an element of matchExpressions, whose key
+field is "key", the operator is "In", and the values array contains only
+"value". The requirements are ANDed.
+
+### spec.container.app.volumeMounts[].clusterTrustBundle.labelSelector.matchExpressions
+
+`[]KubernetesCoreV1ApiLabelSelectorRequirement`
+
+matchExpressions is a list of label selector requirements. The requirements
+are ANDed.
+
+- rule: In and NotIn need at least one value; Exists and DoesNotExist take none
+
+### spec.container.app.volumeMounts[].clusterTrustBundle.labelSelector.matchExpressions[].key
+
+`string` · required
+
+key is the label key that the selector applies to.
+
+- rule: {"string":{"minLen":"1"}}
+
+### spec.container.app.volumeMounts[].clusterTrustBundle.labelSelector.matchExpressions[].operator
+
+`string` · required
+
+operator represents a key's relationship to a set of values. Valid
+operators are In, NotIn, Exists and DoesNotExist.
+
+- rule: {"string":{"minLen":"1"}}
+
+### spec.container.app.volumeMounts[].clusterTrustBundle.labelSelector.matchExpressions[].values
+
+`[]string`
+
+values is an array of string values. If the operator is In or NotIn, the
+values array must be non-empty. If the operator is Exists or DoesNotExist,
+the values array must be empty. This array is replaced during a strategic
+merge patch.
+
+### spec.container.app.volumeMounts[].clusterTrustBundle.optional
+
+`bool`
+
+When true, the pod starts even if no bundle matches (the file is then
+absent); when false the pod waits for the bundle.
+
+### spec.container.app.volumeMounts[].clusterTrustBundle.path
+
+`string`
+
+File name for the PEM bundle relative to the mount path.
+Defaults to "ca.crt".
+
+### spec.container.app.volumeMounts[].podCertificate
+
+`PodCertificateVolumeSource`
+
+Projected pod certificate volume source.
+Use this to give the container a private key and an X.509 certificate the
+kubelet requests from a signer for the pod and rotates before expiry --
+the client certificate a workload presents to an mTLS endpoint (the Agent
+Substrate router's TLS listener, for one).
+Requires the cluster's PodCertificateRequest feature
+(certificates.k8s.io/v1beta1) and a signer controller for signer_name.
+OpenTofu engine: not supported -- the hashicorp/kubernetes provider has
+no podCertificate projection; deploy the workload with the Pulumi engine
+(set planton.dev/provisioner to pulumi).
+
+- rule: keyPath and certificateChainPath are set together
+
+### spec.container.app.volumeMounts[].podCertificate.signerName
+
+`string` · required
+
+The signer the kubelet's certificate requests are addressed to. A
+controller for this signer must run in the cluster, or the pod never
+starts. The Agent Substrate router's client certificates come from
+"podidentity.podcert.ate.dev/identity" (the substrate's
+status.outputs.router_client_signer_name).
+
+- rule: {"required":true}
+
+### spec.container.app.volumeMounts[].podCertificate.keyType
+
+`string`
+
+The key pair the kubelet generates: RSA3072, RSA4096, ECDSAP256,
+ECDSAP384, ECDSAP521 or ED25519. The signer decides which it accepts.
+
+- rule: keyType must be one of RSA3072, RSA4096, ECDSAP256, ECDSAP384, ECDSAP521, ED25519
+
+### spec.container.app.volumeMounts[].podCertificate.maxExpirationSeconds
+
+`int32` · optional (explicit presence)
+
+The longest lifetime the certificate may have, in seconds (3600 to
+7862400). Unset lets the API server choose 86400 (24 hours); the signer
+may issue a shorter one, and kubernetes.io signers never exceed 24 hours.
+
+- rule: {"int32":{"lte":7862400,"gte":3600}}
+
+### spec.container.app.volumeMounts[].podCertificate.credentialBundlePath
+
+`string`
+
+File name for the credential bundle -- one file holding the PKCS#8
+private key followed by the certificate chain, so the application reads a
+consistent pair in one atomic read. Defaults to "credential-bundle.pem"
+when no path below is set.
+
+### spec.container.app.volumeMounts[].podCertificate.keyPath
+
+`string`
+
+File name for the private key alone. Set together with
+certificate_chain_path; the application must then check the key matches
+the leaf certificate, because the two files can be read mid-rotation.
+
+### spec.container.app.volumeMounts[].podCertificate.certificateChainPath
+
+`string`
+
+File name for the certificate chain alone (leaf first). Set together
+with key_path.
+
+### spec.container.app.volumeMounts[].podCertificate.userAnnotations
+
+`map<string, string>`
+
+Extra information for the signer, copied into the certificate requests
+the kubelet creates. Keys must be domain-prefixed; signers refuse keys
+they do not recognize.
 
 ### spec.container.app.lifecycle
 
@@ -6916,6 +7159,8 @@ module derives the pod-level volume list from the union of all containers'
 mounts, de-duplicating by name — so two containers sharing an EmptyDir simply
 declare the same mount name and source.
 
+- rule: a volume mount takes at most one source (configMap, secret, hostPath, emptyDir, pvc, serviceAccountToken, clusterTrustBundle or podCertificate)
+
 ### spec.container.sidecars[].volumeMounts[].name
 
 `string` · required
@@ -7149,6 +7394,190 @@ minimum of 600 (10 minutes).
 
 Filename for the token relative to the mount path.
 Defaults to "token".
+
+### spec.container.sidecars[].volumeMounts[].clusterTrustBundle
+
+`ClusterTrustBundleVolumeSource`
+
+Projected ClusterTrustBundle volume source.
+Use this to mount the CA certificates of a ClusterTrustBundle, so the
+container can verify servers whose certificates a cluster signer issues
+(the Agent Substrate API's, for one). The kubelet keeps the file current
+as the bundle rotates, which a hand-copied ConfigMap never does.
+Requires the cluster's ClusterTrustBundle and ClusterTrustBundleProjection
+features (certificates.k8s.io/v1beta1).
+OpenTofu engine: not supported -- the hashicorp/kubernetes provider has
+no clusterTrustBundle projection; deploy the workload with the Pulumi
+engine (set planton.dev/provisioner to pulumi).
+
+- rule: set exactly one of name or signerName
+- rule: labelSelector applies only with signerName
+
+### spec.container.sidecars[].volumeMounts[].clusterTrustBundle.name
+
+`string | valueFrom`
+
+The ClusterTrustBundle to project, by object name. A literal name, or a
+reference to the KubernetesAgentSubstrate whose API trust bundle this is
+(status.outputs.api_trust_bundle_name). Mutually exclusive with
+signer_name.
+
+- references: KubernetesAgentSubstrate (`status.outputs.api_trust_bundle_name`)
+- rule: write as {value: <literal>} or {valueFrom: {kind: KubernetesAgentSubstrate, name: <that resource's name>, fieldPath: status.outputs.api_trust_bundle_name}} -- a bare string does not parse
+
+### spec.container.sidecars[].volumeMounts[].clusterTrustBundle.signerName
+
+`string`
+
+Project every ClusterTrustBundle of this signer, deduplicated into one
+file (e.g. "servicedns.podcert.ate.dev/identity"). Mutually exclusive
+with name.
+
+### spec.container.sidecars[].volumeMounts[].clusterTrustBundle.labelSelector
+
+`KubernetesCoreV1ApiLabelSelector`
+
+Narrows the signer's bundles to those matching the selector. Applies only
+with signer_name. Unset matches NOTHING; set but empty matches every
+bundle of the signer -- upstream's own semantics.
+
+### spec.container.sidecars[].volumeMounts[].clusterTrustBundle.labelSelector.matchLabels
+
+`map<string, string>`
+
+matchLabels is a map of {key,value} pairs. A single {key,value} in the
+matchLabels map is equivalent to an element of matchExpressions, whose key
+field is "key", the operator is "In", and the values array contains only
+"value". The requirements are ANDed.
+
+### spec.container.sidecars[].volumeMounts[].clusterTrustBundle.labelSelector.matchExpressions
+
+`[]KubernetesCoreV1ApiLabelSelectorRequirement`
+
+matchExpressions is a list of label selector requirements. The requirements
+are ANDed.
+
+- rule: In and NotIn need at least one value; Exists and DoesNotExist take none
+
+### spec.container.sidecars[].volumeMounts[].clusterTrustBundle.labelSelector.matchExpressions[].key
+
+`string` · required
+
+key is the label key that the selector applies to.
+
+- rule: {"string":{"minLen":"1"}}
+
+### spec.container.sidecars[].volumeMounts[].clusterTrustBundle.labelSelector.matchExpressions[].operator
+
+`string` · required
+
+operator represents a key's relationship to a set of values. Valid
+operators are In, NotIn, Exists and DoesNotExist.
+
+- rule: {"string":{"minLen":"1"}}
+
+### spec.container.sidecars[].volumeMounts[].clusterTrustBundle.labelSelector.matchExpressions[].values
+
+`[]string`
+
+values is an array of string values. If the operator is In or NotIn, the
+values array must be non-empty. If the operator is Exists or DoesNotExist,
+the values array must be empty. This array is replaced during a strategic
+merge patch.
+
+### spec.container.sidecars[].volumeMounts[].clusterTrustBundle.optional
+
+`bool`
+
+When true, the pod starts even if no bundle matches (the file is then
+absent); when false the pod waits for the bundle.
+
+### spec.container.sidecars[].volumeMounts[].clusterTrustBundle.path
+
+`string`
+
+File name for the PEM bundle relative to the mount path.
+Defaults to "ca.crt".
+
+### spec.container.sidecars[].volumeMounts[].podCertificate
+
+`PodCertificateVolumeSource`
+
+Projected pod certificate volume source.
+Use this to give the container a private key and an X.509 certificate the
+kubelet requests from a signer for the pod and rotates before expiry --
+the client certificate a workload presents to an mTLS endpoint (the Agent
+Substrate router's TLS listener, for one).
+Requires the cluster's PodCertificateRequest feature
+(certificates.k8s.io/v1beta1) and a signer controller for signer_name.
+OpenTofu engine: not supported -- the hashicorp/kubernetes provider has
+no podCertificate projection; deploy the workload with the Pulumi engine
+(set planton.dev/provisioner to pulumi).
+
+- rule: keyPath and certificateChainPath are set together
+
+### spec.container.sidecars[].volumeMounts[].podCertificate.signerName
+
+`string` · required
+
+The signer the kubelet's certificate requests are addressed to. A
+controller for this signer must run in the cluster, or the pod never
+starts. The Agent Substrate router's client certificates come from
+"podidentity.podcert.ate.dev/identity" (the substrate's
+status.outputs.router_client_signer_name).
+
+- rule: {"required":true}
+
+### spec.container.sidecars[].volumeMounts[].podCertificate.keyType
+
+`string`
+
+The key pair the kubelet generates: RSA3072, RSA4096, ECDSAP256,
+ECDSAP384, ECDSAP521 or ED25519. The signer decides which it accepts.
+
+- rule: keyType must be one of RSA3072, RSA4096, ECDSAP256, ECDSAP384, ECDSAP521, ED25519
+
+### spec.container.sidecars[].volumeMounts[].podCertificate.maxExpirationSeconds
+
+`int32` · optional (explicit presence)
+
+The longest lifetime the certificate may have, in seconds (3600 to
+7862400). Unset lets the API server choose 86400 (24 hours); the signer
+may issue a shorter one, and kubernetes.io signers never exceed 24 hours.
+
+- rule: {"int32":{"lte":7862400,"gte":3600}}
+
+### spec.container.sidecars[].volumeMounts[].podCertificate.credentialBundlePath
+
+`string`
+
+File name for the credential bundle -- one file holding the PKCS#8
+private key followed by the certificate chain, so the application reads a
+consistent pair in one atomic read. Defaults to "credential-bundle.pem"
+when no path below is set.
+
+### spec.container.sidecars[].volumeMounts[].podCertificate.keyPath
+
+`string`
+
+File name for the private key alone. Set together with
+certificate_chain_path; the application must then check the key matches
+the leaf certificate, because the two files can be read mid-rotation.
+
+### spec.container.sidecars[].volumeMounts[].podCertificate.certificateChainPath
+
+`string`
+
+File name for the certificate chain alone (leaf first). Set together
+with key_path.
+
+### spec.container.sidecars[].volumeMounts[].podCertificate.userAnnotations
+
+`map<string, string>`
+
+Extra information for the signer, copied into the certificate requests
+the kubelet creates. Keys must be domain-prefixed; signers refuse keys
+they do not recognize.
 
 ### spec.container.sidecars[].lifecycle
 
@@ -10269,6 +10698,8 @@ module derives the pod-level volume list from the union of all containers'
 mounts, de-duplicating by name — so two containers sharing an EmptyDir simply
 declare the same mount name and source.
 
+- rule: a volume mount takes at most one source (configMap, secret, hostPath, emptyDir, pvc, serviceAccountToken, clusterTrustBundle or podCertificate)
+
 ### spec.pod.initContainers[].volumeMounts[].name
 
 `string` · required
@@ -10502,6 +10933,190 @@ minimum of 600 (10 minutes).
 
 Filename for the token relative to the mount path.
 Defaults to "token".
+
+### spec.pod.initContainers[].volumeMounts[].clusterTrustBundle
+
+`ClusterTrustBundleVolumeSource`
+
+Projected ClusterTrustBundle volume source.
+Use this to mount the CA certificates of a ClusterTrustBundle, so the
+container can verify servers whose certificates a cluster signer issues
+(the Agent Substrate API's, for one). The kubelet keeps the file current
+as the bundle rotates, which a hand-copied ConfigMap never does.
+Requires the cluster's ClusterTrustBundle and ClusterTrustBundleProjection
+features (certificates.k8s.io/v1beta1).
+OpenTofu engine: not supported -- the hashicorp/kubernetes provider has
+no clusterTrustBundle projection; deploy the workload with the Pulumi
+engine (set planton.dev/provisioner to pulumi).
+
+- rule: set exactly one of name or signerName
+- rule: labelSelector applies only with signerName
+
+### spec.pod.initContainers[].volumeMounts[].clusterTrustBundle.name
+
+`string | valueFrom`
+
+The ClusterTrustBundle to project, by object name. A literal name, or a
+reference to the KubernetesAgentSubstrate whose API trust bundle this is
+(status.outputs.api_trust_bundle_name). Mutually exclusive with
+signer_name.
+
+- references: KubernetesAgentSubstrate (`status.outputs.api_trust_bundle_name`)
+- rule: write as {value: <literal>} or {valueFrom: {kind: KubernetesAgentSubstrate, name: <that resource's name>, fieldPath: status.outputs.api_trust_bundle_name}} -- a bare string does not parse
+
+### spec.pod.initContainers[].volumeMounts[].clusterTrustBundle.signerName
+
+`string`
+
+Project every ClusterTrustBundle of this signer, deduplicated into one
+file (e.g. "servicedns.podcert.ate.dev/identity"). Mutually exclusive
+with name.
+
+### spec.pod.initContainers[].volumeMounts[].clusterTrustBundle.labelSelector
+
+`KubernetesCoreV1ApiLabelSelector`
+
+Narrows the signer's bundles to those matching the selector. Applies only
+with signer_name. Unset matches NOTHING; set but empty matches every
+bundle of the signer -- upstream's own semantics.
+
+### spec.pod.initContainers[].volumeMounts[].clusterTrustBundle.labelSelector.matchLabels
+
+`map<string, string>`
+
+matchLabels is a map of {key,value} pairs. A single {key,value} in the
+matchLabels map is equivalent to an element of matchExpressions, whose key
+field is "key", the operator is "In", and the values array contains only
+"value". The requirements are ANDed.
+
+### spec.pod.initContainers[].volumeMounts[].clusterTrustBundle.labelSelector.matchExpressions
+
+`[]KubernetesCoreV1ApiLabelSelectorRequirement`
+
+matchExpressions is a list of label selector requirements. The requirements
+are ANDed.
+
+- rule: In and NotIn need at least one value; Exists and DoesNotExist take none
+
+### spec.pod.initContainers[].volumeMounts[].clusterTrustBundle.labelSelector.matchExpressions[].key
+
+`string` · required
+
+key is the label key that the selector applies to.
+
+- rule: {"string":{"minLen":"1"}}
+
+### spec.pod.initContainers[].volumeMounts[].clusterTrustBundle.labelSelector.matchExpressions[].operator
+
+`string` · required
+
+operator represents a key's relationship to a set of values. Valid
+operators are In, NotIn, Exists and DoesNotExist.
+
+- rule: {"string":{"minLen":"1"}}
+
+### spec.pod.initContainers[].volumeMounts[].clusterTrustBundle.labelSelector.matchExpressions[].values
+
+`[]string`
+
+values is an array of string values. If the operator is In or NotIn, the
+values array must be non-empty. If the operator is Exists or DoesNotExist,
+the values array must be empty. This array is replaced during a strategic
+merge patch.
+
+### spec.pod.initContainers[].volumeMounts[].clusterTrustBundle.optional
+
+`bool`
+
+When true, the pod starts even if no bundle matches (the file is then
+absent); when false the pod waits for the bundle.
+
+### spec.pod.initContainers[].volumeMounts[].clusterTrustBundle.path
+
+`string`
+
+File name for the PEM bundle relative to the mount path.
+Defaults to "ca.crt".
+
+### spec.pod.initContainers[].volumeMounts[].podCertificate
+
+`PodCertificateVolumeSource`
+
+Projected pod certificate volume source.
+Use this to give the container a private key and an X.509 certificate the
+kubelet requests from a signer for the pod and rotates before expiry --
+the client certificate a workload presents to an mTLS endpoint (the Agent
+Substrate router's TLS listener, for one).
+Requires the cluster's PodCertificateRequest feature
+(certificates.k8s.io/v1beta1) and a signer controller for signer_name.
+OpenTofu engine: not supported -- the hashicorp/kubernetes provider has
+no podCertificate projection; deploy the workload with the Pulumi engine
+(set planton.dev/provisioner to pulumi).
+
+- rule: keyPath and certificateChainPath are set together
+
+### spec.pod.initContainers[].volumeMounts[].podCertificate.signerName
+
+`string` · required
+
+The signer the kubelet's certificate requests are addressed to. A
+controller for this signer must run in the cluster, or the pod never
+starts. The Agent Substrate router's client certificates come from
+"podidentity.podcert.ate.dev/identity" (the substrate's
+status.outputs.router_client_signer_name).
+
+- rule: {"required":true}
+
+### spec.pod.initContainers[].volumeMounts[].podCertificate.keyType
+
+`string`
+
+The key pair the kubelet generates: RSA3072, RSA4096, ECDSAP256,
+ECDSAP384, ECDSAP521 or ED25519. The signer decides which it accepts.
+
+- rule: keyType must be one of RSA3072, RSA4096, ECDSAP256, ECDSAP384, ECDSAP521, ED25519
+
+### spec.pod.initContainers[].volumeMounts[].podCertificate.maxExpirationSeconds
+
+`int32` · optional (explicit presence)
+
+The longest lifetime the certificate may have, in seconds (3600 to
+7862400). Unset lets the API server choose 86400 (24 hours); the signer
+may issue a shorter one, and kubernetes.io signers never exceed 24 hours.
+
+- rule: {"int32":{"lte":7862400,"gte":3600}}
+
+### spec.pod.initContainers[].volumeMounts[].podCertificate.credentialBundlePath
+
+`string`
+
+File name for the credential bundle -- one file holding the PKCS#8
+private key followed by the certificate chain, so the application reads a
+consistent pair in one atomic read. Defaults to "credential-bundle.pem"
+when no path below is set.
+
+### spec.pod.initContainers[].volumeMounts[].podCertificate.keyPath
+
+`string`
+
+File name for the private key alone. Set together with
+certificate_chain_path; the application must then check the key matches
+the leaf certificate, because the two files can be read mid-rotation.
+
+### spec.pod.initContainers[].volumeMounts[].podCertificate.certificateChainPath
+
+`string`
+
+File name for the certificate chain alone (leaf first). Set together
+with key_path.
+
+### spec.pod.initContainers[].volumeMounts[].podCertificate.userAnnotations
+
+`map<string, string>`
+
+Extra information for the signer, copied into the certificate requests
+the kubelet creates. Keys must be domain-prefixed; signers refuse keys
+they do not recognize.
 
 ### spec.pod.initContainers[].lifecycle
 
@@ -11695,8 +12310,11 @@ Fields that can point at another resource's outputs:
 | Field | Kind | Output |
 |---|---|---|
 | `spec.namespace` | KubernetesNamespace | `spec.name` |
+| `spec.container.app.volumeMounts[].clusterTrustBundle.name` | KubernetesAgentSubstrate | `status.outputs.api_trust_bundle_name` |
+| `spec.container.sidecars[].volumeMounts[].clusterTrustBundle.name` | KubernetesAgentSubstrate | `status.outputs.api_trust_bundle_name` |
 | `spec.pod.serviceAccount` | KubernetesServiceAccount | `status.outputs.service_account_name` |
 | `spec.pod.imagePullSecrets` | KubernetesSecret | `spec.name` |
+| `spec.pod.initContainers[].volumeMounts[].clusterTrustBundle.name` | KubernetesAgentSubstrate | `status.outputs.api_trust_bundle_name` |
 
 ## See Also
 

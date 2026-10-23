@@ -31,3 +31,7 @@ planton tofu apply --manifest e2e/manifest.yaml --auto-approve
 ```shell
 planton tofu destroy --manifest e2e/manifest.yaml --auto-approve
 ```
+
+## Volume sources this engine cannot write
+
+The `clusterTrustBundle` and `podCertificate` volume-mount sources are refused at plan time on this engine: the hashicorp/kubernetes provider models neither projection. The plan names the mounts and asks for the Pulumi engine (`planton.dev/provisioner: pulumi`), which writes both. Every other volume source is written identically by both engines.

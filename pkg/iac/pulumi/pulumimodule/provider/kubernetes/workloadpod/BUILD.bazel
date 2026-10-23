@@ -6,6 +6,7 @@ go_library(
         "container.go",
         "image_registries.go",
         "pod.go",
+        "projection_bodies.go",
     ],
     importpath = "github.com/plantonhq/planton/pkg/iac/pulumi/pulumimodule/provider/kubernetes/workloadpod",
     visibility = ["//visibility:public"],

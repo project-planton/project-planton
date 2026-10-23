@@ -14,9 +14,6 @@ kind: KubernetesManifest
 metadata:
   name: e2e-foreign-crd
 spec:
-  namespace:
-    value: e2e-foreign-crd-ns
-  create_namespace: true
   skip_await: true
   manifest_yaml: |
     apiVersion: apiextensions.k8s.io/v1

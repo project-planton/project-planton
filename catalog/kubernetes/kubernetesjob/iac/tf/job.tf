@@ -34,6 +34,10 @@ resource "kubernetes_job_v1" "this" {
       condition     = try(var.spec.success_policy, null) == null
       error_message = "spec.success_policy is not supported on the Terraform engine for Jobs (provider gap) — deploy with the Pulumi engine or omit success_policy."
     }
+    precondition {
+      condition     = length(local.unsupported_projected_mounts) == 0
+      error_message = "Volume mounts ${join(", ", local.unsupported_projected_mounts)}: clusterTrustBundle and podCertificate sources are not supported on the OpenTofu engine (the hashicorp/kubernetes provider models neither projection) -- set planton.dev/provisioner to pulumi to deploy this workload."
+    }
   }
 
   spec {

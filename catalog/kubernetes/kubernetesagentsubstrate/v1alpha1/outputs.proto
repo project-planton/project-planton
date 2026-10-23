@@ -97,4 +97,14 @@ message KubernetesAgentSubstrateOutputs {
    * The Agent Substrate release installed, such as "v0.5.0".
    */
   string version = 14;
+
+  /**
+   * The signer of the client certificates the router's TLS endpoint accepts,
+   * "podidentity.podcert.ate.dev/identity". A workload gets one through a
+   * podCertificate projected volume addressed to this signer; the
+   * certificate carries the SPIFFE ID
+   * spiffe://cluster.local/ns/<namespace>/sa/<service-account>, which
+   * router.allowed_client_spiffe_ids must name.
+   */
+  string router_client_signer_name = 15;
 }

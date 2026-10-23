@@ -469,4 +469,96 @@ var _ = ginkgo.Describe("KubernetesDeploymentSpec validations", func() {
 			}
 		})
 	})
+
+	ginkgo.Context("When volume mounts project CA bundles and pod certificates", func() {
+
+		withMounts := func(mounts ...*kubernetes.VolumeMount) *KubernetesDeploymentSpec {
+			spec := validSpec()
+			spec.Container.App.VolumeMounts = mounts
+			return spec
+		}
+
+		ginkgo.It("accepts the Agent Substrate client wiring: token, trust bundle and pod certificate", func() {
+			spec := withMounts(
+				&kubernetes.VolumeMount{
+					Name: "substrate-token", MountPath: "/var/run/substrate/token",
+					ServiceAccountToken: &kubernetes.ServiceAccountTokenVolumeSource{Audience: "api.ate-system.svc"},
+				},
+				&kubernetes.VolumeMount{
+					Name: "substrate-ca", MountPath: "/var/run/substrate/ca",
+					ClusterTrustBundle: &kubernetes.ClusterTrustBundleVolumeSource{
+						Name: literal("servicedns.podcert.ate.dev:identity:primary-bundle"),
+					},
+				},
+				&kubernetes.VolumeMount{
+					Name: "router-identity", MountPath: "/var/run/podidentity",
+					PodCertificate: &kubernetes.PodCertificateVolumeSource{
+						SignerName: "podidentity.podcert.ate.dev/identity",
+						KeyType:    "ECDSAP256",
+					},
+				},
+			)
+			gomega.Expect(protovalidate.Validate(spec)).To(gomega.BeNil())
+		})
+
+		ginkgo.It("accepts a trust bundle selected by signer and label selector", func() {
+			spec := withMounts(&kubernetes.VolumeMount{
+				Name: "ca", MountPath: "/etc/ca",
+				ClusterTrustBundle: &kubernetes.ClusterTrustBundleVolumeSource{
+					SignerName:    "servicedns.podcert.ate.dev/identity",
+					LabelSelector: &kubernetes.KubernetesCoreV1ApiLabelSelector{MatchLabels: map[string]string{"podcert.ate.dev/canarying": "live"}},
+				},
+			})
+			gomega.Expect(protovalidate.Validate(spec)).To(gomega.BeNil())
+		})
+
+		ginkgo.It("accepts a mount with no source, which names a volume defined elsewhere", func() {
+			spec := withMounts(&kubernetes.VolumeMount{Name: "shared", MountPath: "/data"})
+			gomega.Expect(protovalidate.Validate(spec)).To(gomega.BeNil())
+		})
+
+		ginkgo.It("rejects a mount carrying two sources", func() {
+			spec := withMounts(&kubernetes.VolumeMount{
+				Name: "both", MountPath: "/x",
+				EmptyDir: &kubernetes.EmptyDirVolumeSource{},
+				ClusterTrustBundle: &kubernetes.ClusterTrustBundleVolumeSource{
+					Name: literal("bundle"),
+				},
+			})
+			gomega.Expect(protovalidate.Validate(spec)).ToNot(gomega.BeNil())
+		})
+
+		ginkgo.It("rejects a trust bundle naming both a bundle and a signer, or neither", func() {
+			for _, source := range []*kubernetes.ClusterTrustBundleVolumeSource{
+				{Name: literal("bundle"), SignerName: "example.com/signer"},
+				{},
+			} {
+				spec := withMounts(&kubernetes.VolumeMount{Name: "ca", MountPath: "/etc/ca", ClusterTrustBundle: source})
+				gomega.Expect(protovalidate.Validate(spec)).ToNot(gomega.BeNil())
+			}
+		})
+
+		ginkgo.It("rejects a label selector without a signer", func() {
+			spec := withMounts(&kubernetes.VolumeMount{
+				Name: "ca", MountPath: "/etc/ca",
+				ClusterTrustBundle: &kubernetes.ClusterTrustBundleVolumeSource{
+					Name:          literal("bundle"),
+					LabelSelector: &kubernetes.KubernetesCoreV1ApiLabelSelector{},
+				},
+			})
+			gomega.Expect(protovalidate.Validate(spec)).ToNot(gomega.BeNil())
+		})
+
+		ginkgo.It("rejects a pod certificate with an unknown key type, a short lifetime, or a key path without its chain", func() {
+			for _, source := range []*kubernetes.PodCertificateVolumeSource{
+				{SignerName: "example.com/signer", KeyType: "DSA1024"},
+				{SignerName: "example.com/signer", KeyType: "ED25519", MaxExpirationSeconds: proto.Int32(600)},
+				{SignerName: "example.com/signer", KeyType: "ED25519", KeyPath: "tls.key"},
+				{KeyType: "ED25519"},
+			} {
+				spec := withMounts(&kubernetes.VolumeMount{Name: "id", MountPath: "/id", PodCertificate: source})
+				gomega.Expect(protovalidate.Validate(spec)).ToNot(gomega.BeNil())
+			}
+		})
+	})
 })
